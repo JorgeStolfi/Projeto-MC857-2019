@@ -1,5 +1,5 @@
-# Last edited on 2019-08-12 19:18:53 by stolfilocal
+# Last edited on 2019-08-12 20:18:48 by stolfilocal
 
 all:
-	chmod a+x servidor_mc857.py
-	./servidor_mc857.py > out/pagina_de_entrada.html
+	chmod a+x testa_html.py
+	./testa_html.py > out/pagina_de_entrada.html
