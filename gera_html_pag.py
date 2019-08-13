@@ -1,5 +1,5 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-12 18:31:25 by stolfilocal
+# Last edited on 2019-08-13 00:32:21 by stolfilocal
 
 # Interface do módulo {gera_html_pag}.
 # As funções deste módulo retornam cadeias de caracteres que são 
@@ -16,3 +16,8 @@ import gera_html_pag_IMP
 def entrada():
   """Retorna a página de entrada do projeto."""
   return gera_html_pag_IMP.entrada()
+
+def generica(conteudo):
+  """Retorna uma página com cabeçalho, menus, e rodapé padrões
+  do projeto, e o {conteudo} dado (um {string} em formato HTML5)."""
+  return gera_html_pag_IMP.generica(conteudo)

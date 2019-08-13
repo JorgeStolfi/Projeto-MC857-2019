@@ -1,5 +1,6 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-12 18:27:23 by stolfilocal
+
+# Last edited on 2019-08-13 01:11:16 by stolfilocal
 
 # Implementação do módulo {gera_html_elem}.
 
@@ -32,9 +33,10 @@ def rodape():
 def menu_geral():
   return \
     "<nav>\n" + \
-    "  " + botao_do_menu("Cique Aqui") + "\n" + \
-    "  " + botao_do_menu("Não, Clique Aqui!") + "\n" + \
-    "  " + botao_do_menu("Não Clique Aqui") + "\n" + \
+    "  " + botao_de_busca() + "\n" + \
+    "  " + botao_de_popup("Clique Aqui") + "\n" + \
+    "  " + botao_de_popup("Não, Clique Aqui!") + "\n" + \
+    "  " + botao_de_popup("Não Clique Aqui") + "\n" + \
     "</nav>"
    
 def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
@@ -51,8 +53,10 @@ def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
 
 # Funções internas deste módulo:
 
-def botao_do_menu(texto): 
-  """Função interna: retorna HTML de um botão do menu."""
+
+def botao_de_popup(texto): 
+  """Função interna: retorna HTML de um botão do menu 
+  que mostra um popup com o {texto} dado."""
   fam_fonte = "Courier"
   tam_fonte = "18px"
   cor_fundo = "#fff888"
@@ -71,3 +75,27 @@ def botao_do_menu(texto):
     "  >" + texto + "</button>\n" + \
     "</span>"
  
+def botao_de_busca(): 
+  """Função interna: retorna HTML de um botão ed busca com o campo a buscar."""
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  cor_cinza = "#fff888"
+  cor_fundo = "#fff888"
+  return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form action=\"search\" method=\"post\">\n" + \
+    "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
+    "      <input type =\"text\" name=\"search_arg\" value=\"Buscar o que?\">\n" + \
+    "    </span>\n" + \
+    "    <span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
+    "      <input type=\"submit\" value=\"Buscar\">" + \
+    "    </span>\n" + \
+    "  </form>\n" + \
+    "</span>"
+
+
