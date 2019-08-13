@@ -1,4 +1,5 @@
 #! /usr/bin/python3
+
 # Last edited on 2019-08-13 01:11:16 by stolfilocal
 
 # Implementação do módulo {gera_html_elem}.
@@ -52,6 +53,7 @@ def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
 
 # Funções internas deste módulo:
 
+
 def botao_de_popup(texto): 
   """Função interna: retorna HTML de um botão do menu 
   que mostra um popup com o {texto} dado."""
@@ -95,4 +97,5 @@ def botao_de_busca():
     "    </span>\n" + \
     "  </form>\n" + \
     "</span>"
+
 
