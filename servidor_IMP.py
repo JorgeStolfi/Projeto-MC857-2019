@@ -1,5 +1,5 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-13 01:38:51 by stolfilocal
+# Last edited on 2019-08-13 17:04:31 by stolfilocal
 
 # Interfaces do projeto usadas por este módulo:
 import processa_pedido_http
@@ -130,7 +130,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 # Comandos para rodar o servidor:
 
 def dispara():
-  host = '127.0.0.1'
+  host = '0.0.0.0' # Aceita pedidos de qualquer IP.
   porta = 8081 # Porta 8081 em vez de 80, para não precisar de acesso "root"
   endereco = (host,porta)
   objeto_servidor = HTTPServer(endereco, Processador_de_pedido_HTTP)
