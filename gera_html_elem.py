@@ -22,6 +22,10 @@ def rodape():
 def menu_geral():
   """Retorna o menu geral do site."""
   return gera_html_elem_IMP.menu_geral()
+
+def botao_subm_login(login,senha):
+  """Retorna o botão para a submissão de login"""
+  return gera_html_elem_IMP.botao_subm_login()
   
 def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
   """Retorna un string que é um fragmento HTML consistindo do {texto}
