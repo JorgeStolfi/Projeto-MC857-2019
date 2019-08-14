@@ -99,4 +99,4 @@ def botao_de_busca():
     "</span>"
 
 def bloco_de_produto(produto):
-  return bloco_texto(produto.nome + ";\n" + produto.desc, "Courier", "18px", "5px", "center", "#ff0000", "fff888")
+  return bloco_texto(produto.nome + ";\n" + produto.desc, "Courier", "18px", "5px", "center", "#ff0000", "#fff888")
