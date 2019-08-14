@@ -1,1 +1,1 @@
-2019-08-13 - Realizado botao_subm_comprar no arquivo gera_html_elem.py
+2019-08-13 - Realizado botao_subm_comprar no arquivo gera_html_elem.py e sua implementação em gera_html_elem_IMP.py
