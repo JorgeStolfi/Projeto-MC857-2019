@@ -27,3 +27,10 @@ def generica(conteudo):
   
   return cabe + menu + conteudo + roda
   
+def produto(prod):
+  cabe = gera_html_elem.cabecalho("PRODUTO: ")
+  menu = gera_html_elem.menu_geral()
+  roda = gera_html_elem.rodape()
+  
+  return cabe + menu + roda
+  
