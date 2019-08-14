@@ -24,6 +24,5 @@ def logout():
 
     print('logout realizado com sucesso')
 
-
-def recuperar_senha():
-    raise Exception('recuperar_senha nao implementado')
+def recuperar_senha(usuario):
+    print(usuario + ',', 'sua senha é:', '321teste')

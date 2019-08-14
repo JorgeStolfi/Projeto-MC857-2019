@@ -14,10 +14,11 @@ class Sessao():
     def logout(self):
         sessao_IMP.logout()
 
-    def recuperar_senha(self):
-        raise Exception('recuperar_senha nao implementado')
+    def recuperar_senha(self, usuario):
+        sessao_IMP.recuperar_senha(usuario)
 
 
 s = Sessao()
-s.login('Teste 123', '321teste')
+s.login('bilbo', '321teste')
 s.logout()
+s.recuperar_senha('bilbo')
