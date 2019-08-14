@@ -1,0 +1,3 @@
+############ 13/AGO/2019 ############
+Criação da interface de Sessao com as funções de login, logout e recuperação de senha.
+Implementação das funções de Sessao
