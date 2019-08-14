@@ -1,0 +1,2 @@
+Data: 2019-08-13
+Atividades: As "Instruções de Laboratório" foram seguidas com sucesso conforme o documento entregue pelo professor no início da aula. Em seguida, foi definido que minha tarefa inicial seria "Especificar a função 'gera_html_elem.bloco_de_produto". A função foi especificada em "gera_html_elem.py" como "bloco_de_produto(produto)". Ela foi então implementada em "gera_html_elem_IMP.py" com o mesmo nome.
