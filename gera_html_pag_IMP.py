@@ -97,3 +97,10 @@ def formulario_login():
             </form>""" \
             % (css, metodoDeEnvio, textoCampoUsuario, textoCampoSenha, textoBotaoLogin)
   return html
+
+def produtos(lista):
+  todos_prods = []
+  for prod in lista:
+      todos_prods = todos_prods + gera_html_elem.bloco_de_produto(prod)
+      
+  return gera_html_pag.generica(todos_prods)

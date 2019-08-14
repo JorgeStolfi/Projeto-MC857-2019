@@ -28,7 +28,7 @@ def produto(prod):
   return gera_html_pag_IMP.produto(prod)
   
 def lista_de_produtos(lista):
-  """Retorna uma página contendo todos os produtos de determinado tipo site."""
+  """Retorna uma página contendo todos os produtos de determinado tipo do site."""
   return gera_html_pag_IMP.produtos(lista)
 
 def login():
@@ -40,3 +40,7 @@ def cadastrar():
      que contém os campos do objeto usuário e 
 um botão para submeter o cadastro."""
   return gera_html_pag_IMP.cadastrar()
+
+def lista_de_produtos(lista):
+  """Retorna uma página contendo todos os produtos de determinado tipo do site."""
+  return gera_html_pag_IMP.produtos(lista)
