@@ -9,7 +9,7 @@ import base_usuario_IMP
 #Connect to dabase
 def connect_to_users_database(database_name, user_name, password):
     '''
-    Tries to connect to database_name
+    Tries to connect to database
     '''
     database_reference = base_usuario_IMP.connect_to_users_database(database_name, user_name, password)
 
