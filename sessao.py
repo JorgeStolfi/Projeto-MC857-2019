@@ -12,7 +12,7 @@ class Sessao():
         sessao_IMP.login(usuario, senha)
 
     def logout(self):
-        raise Exception('logout nao implementado')
+        sessao_IMP.logout()
 
     def recuperar_senha(self):
         raise Exception('recuperar_senha nao implementado')
@@ -20,3 +20,4 @@ class Sessao():
 
 s = Sessao()
 s.login('Teste 123', '321teste')
+s.logout()

@@ -5,6 +5,7 @@ def login(usuario, senha):
     s = requests.session()
     jar = requests.cookies.RequestsCookieJar()
     jar.set("NOME USUARIO", usuario)
+    jar.set("PASSWORD", senha)
 
     s.cookies = jar
 
@@ -12,7 +13,17 @@ def login(usuario, senha):
     print('login realizado com sucesso')
 
 def logout():
-    raise Exception('logout nao implementado')
+    s = requests.session()
+    try:
+        jar = requests.cookies.RequestsCookieJar()
+        jar.pop("NOME USUARIO")
+        jar.pop("PASSWORD")
+        s.cookies = jar
+    except KeyError:
+        print('Usuario nao esta logado')
+
+    print('logout realizado com sucesso')
+
 
 def recuperar_senha():
     raise Exception('recuperar_senha nao implementado')
