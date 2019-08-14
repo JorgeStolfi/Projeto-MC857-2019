@@ -27,3 +27,45 @@ def generica(conteudo):
   
   return cabe + menu + conteudo + roda
   
+def produto(prod):
+  cabe = gera_html_elem.cabecalho("PRODUTO: ")
+  menu = gera_html_elem.menu_geral()
+  roda = gera_html_elem.rodape()
+  
+  return cabe + menu + roda
+  
+def login():
+  cabecalho = gera_html_elem.cabecalho("Bilbo's Store")
+  formulario = formulario_login()
+  rodape = gera_html_elem.rodape()
+  return cabecalho + formulario + rodape
+
+def formulario_login():
+  textoCampoUsuario = "Usuário"
+  textoCampoSenha = "Senha"
+  textoBotaoLogin = "Entrar"
+  metodoDeEnvio = "post"
+  css = """form {
+            margin:0 auto;
+            width:300px
+          }
+          input {
+            margin-bottom:3px;
+            padding:10px;
+            width: 100%;
+            border:1px solid; #CCC
+          }
+          button {
+            padding:10px;
+          }
+          label {
+            cursor:pointer;
+          }"""
+  html = """<style type="text/css">%s</style>
+            <form id='login-form' action="" method='%s'>
+              <input type="text" placeholder="%s" required>
+              <input type="password" placeholder="%s" required>
+              <button type='submit'>%s</button>
+            </form>""" \
+            % (css, metodoDeEnvio, textoCampoUsuario, textoCampoSenha, textoBotaoLogin)
+  return html

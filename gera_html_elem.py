@@ -38,7 +38,7 @@ def botao_subm_comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_
   
   Os parâmetros {cor_texto} e {cor_fundo} devem ser cores aceitáveis no
   CSS (por exemplo, '#ff8800')."""
-  return gera_html_elem_IMP.botao_subm_comprar()
+  return gera_html_elem_IMP.botao_subm_comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo)
 
 def botao_subm_login(login,senha):
   """Retorna o botão para a submissão de login"""
@@ -63,6 +63,10 @@ def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
   
   Cada parâmetro de estilo pode ser {None} para indicar o defô."""
   return gera_html_elem_IMP.bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo)
+
+def botao_cadastrar():
+  """Retorna o botão para cadastro de um novo produto"""
+  return gera_html_elem_IMP.botao_cadastrar()
 
 def bloco_de_produto(produto):
   """A funcao recebe o parâmetro {produto}, da classe Produto, e recupera
