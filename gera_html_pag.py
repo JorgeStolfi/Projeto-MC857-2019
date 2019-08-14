@@ -34,3 +34,9 @@ def lista_de_produtos(lista):
 def login():
   """Retorna uma página contendo o fomulário de login. """
   return gera_html_pag_IMP.login()
+
+def cadastrar():
+  """Retorna uma página de cadastro de usuário
+     que contém os campos do objeto usuário e 
+um botão para submeter o cadastro."""
+  return gera_html_pag_IMP.cadastrar()

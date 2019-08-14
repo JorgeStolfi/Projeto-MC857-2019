@@ -26,6 +26,34 @@ def generica(conteudo):
   roda = gera_html_elem.rodape()
   
   return cabe + menu + conteudo + roda
+
+def cadastrar(conteudo):
+  conteudo_cadastro = "  <form action=\"cadastrar\" method=\"post\">" + \
+			"    <div>" + \
+			"	<label>Nome:</label>" + \
+			"	<input type=\"text\" id=\"nome\" name=\"nome\"/>" + \
+			"    </div>" + \
+			"    <div>" + \
+			"	<label>E-mail:</label>" + \
+			"	<input type=\"email\" id=\"email\" name=\"email\"/>" + \
+			"    </div>" + \
+			"    <div>" + \
+			"	<label>CPF::</label>" + \
+			"	<input type=\"text\" id=\"cpf\" name=\"cpf\"/>" + \
+			"    </div>" + \
+			"    <div>" + \
+			"	<label>Telefone:</label>" + \
+			"	<input type=\"text\" id=\"telefone\" name=\"telefone\"/>" + \
+			"    </div>" + \
+			"    <div>" + \
+			"	<label>Senha:</label>" + \
+			"	<input type=\"text\" id=\"senha\" name=\"senha\"/>" + \
+			"    </div>" + gera_html_elem.botao_subm_cadastrar("Cadastrar") + \
+			"</form>"
+
+  pagina = gera_html_pag.generica(conteudo_cadastro) 
+	
+  return pagina
   
 def produto(prod):
   cabe = gera_html_elem.cabecalho("PRODUTO: ")
