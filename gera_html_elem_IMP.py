@@ -98,4 +98,14 @@ def botao_de_busca():
     "  </form>\n" + \
     "</span>"
 
-
+def bloco_de_produto(produto):
+  return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    ( "  font-family:" + "Courier" + ";\n") + \
+    ( "  font-size:" + "18px" + ";\n") + \
+    ( "  padding:" + "5px" + ";\n") + \
+    ( "  background-color:" + "#fff888" + ";\n") + \
+    ( "  text-color:" + "##ff0000" + ";\n") + \
+    ( "  text-align:" + "center" + ";\n") + \
+    "\">" + produto.nome + ";\n" + produto.desc + "</span>"
