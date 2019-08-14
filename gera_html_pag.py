@@ -24,4 +24,4 @@ def generica(conteudo):
 
 def lista_de_produtos(lista):
   """Retorna uma página contendo todos os produtos de determinado tipo site."""
-  return gera_html_pag_IMP.produtos()
+  return gera_html_pag_IMP.produtos(lista)
