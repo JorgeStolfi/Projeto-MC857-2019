@@ -157,7 +157,9 @@ def botao_cadastrar():
     "</span>"
     
 def bloco_de_produto(produto):
-  return bloco_texto(produto.nome + ";\n" + produto.desc, "Courier", "18px", "5px", "center", "#ff0000", "#fff888")
+    bloco_final =  """ <img src="placeholder.jpg" alt="Produto teste" style="width:500px;height:600px;"> """ + bloco_texto(produto.nome + ";\n" + produto.desc, "Courier", "18px", "5px", "center", "#ff0000", "fff888")
+    
+    return bloco_final
 
 def botao_subm_cadastrar(texto,fam_fonte="Courier",tam_fonte="18",pad="5",haling="Center",cor_texto="#000000",cor_fundo="#fff888"):
     # Fonte
