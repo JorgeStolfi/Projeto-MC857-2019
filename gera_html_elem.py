@@ -36,7 +36,6 @@ def botao_subm_comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_
   CSS (por exemplo, '#ff8800')."""
   return gera_html_elem_IMP.botao_subm_comprar()
 
-
 def botao_subm_login(login,senha):
   """Retorna o botão para a submissão de login"""
   return gera_html_elem_IMP.botao_subm_login()
