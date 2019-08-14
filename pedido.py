@@ -13,13 +13,9 @@ from pedido_IMP import Pedido_IMP
 # Funções exportadas por este módulo:
 
 class Pedido(Pedido_IMP):
-    def lista_produtos(self):
-        """Esta função lista dos produtos do pedido"""
-        return Pedido_IMP.lista_produtos(self)
-
-    def deleta(pedido_id):
-        """Esta função deleta um pedido. Recebe como parametro o pedido_id e retorna true, para sucesso e false para falha na operacao"""
-        return Pedido_IMP.deleta(pedido_id)
+    def lista_itens(self):
+        """Esta função lista dos produtos do pedido. Retorna uma lista de itens: itens é uma tupla do tipo (produto, quantidade, preco)"""
+        return Pedido_IMP.lista_itens(self)
 
 def cria(carrinho):
     """Esta função cria um pedido. Para isso, recebe como parametro um carrinho:"""
