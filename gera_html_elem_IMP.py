@@ -38,6 +38,23 @@ def menu_geral():
     "  " + botao_de_popup("Não, Clique Aqui!") + "\n" + \
     "  " + botao_de_popup("Não Clique Aqui") + "\n" + \
     "</nav>"
+
+def botao_subm_comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo):
+  return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form action=\"search\" method=\"post\">\n" + \
+    "    <input type =\"hidden\" name=\"id_produto\" value=\"" + id_produto + "\">\n" + \
+    "    <input type =\"hidden\" name=\"qtd_produto\" value=\"" + qtd_produto + "\">\n" + \
+    "    <span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
+    "      <input type=\"submit\" style=\"background-color:" + cor_fundo + ";color:" + cor_texto + ";\" value=\"COMPRAR\">" + \
+    "    </span>\n" + \
+    "  </form>\n" + \
+    "</span>"
    
 def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
   return \
