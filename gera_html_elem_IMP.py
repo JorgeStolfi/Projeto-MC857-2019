@@ -136,5 +136,25 @@ def botao_de_busca():
     "  </form>\n" + \
     "</span>"
 
+def botao_cadastrar():
+  """Função interna: retorna HTML de um botão de cadastro"""
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  cor_cinza = "#fff888"
+  cor_fundo = "#fff888"
+  return \
+      "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form action=\"insert\" method=\"post\">\n" + \
+    "    <span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
+    "      <input type=\"submit\" value=\"Cadastrar\">" + \
+    "    </span>\n" + \
+    "  </form>\n" + \
+    "</span>"
+    
 def bloco_de_produto(produto):
   return bloco_texto(produto.nome + ";\n" + produto.desc, "Courier", "18px", "5px", "center", "#ff0000", "#fff888")
