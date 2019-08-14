@@ -68,4 +68,4 @@ def bloco_de_produto(produto):
   """A funcao recebe o parâmetro {produto}, da classe Produto, e recupera
   a partir dele nome, descrição e imagem do produto correspondente em
   formato HTML."""
-  return gera_html_elem_IMP.bloco_de_produto()
+  return gera_html_elem_IMP.bloco_de_produto(produto)
