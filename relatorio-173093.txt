@@ -1,0 +1,4 @@
+Criei a uma função genérica para gerar o html da pagina de login no arquivo
+gera_html_pag.py. A função login, implementada no arquivo gera_html_pag_IMP.py
+retorna a html para que um usuário possa entrar no sistema utilizando seu usuário
+e senha.

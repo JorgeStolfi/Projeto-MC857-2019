@@ -30,3 +30,7 @@ def produto(prod):
 def lista_de_produtos(lista):
   """Retorna uma página contendo todos os produtos de determinado tipo site."""
   return gera_html_pag_IMP.produtos(lista)
+
+def login():
+  """Retorna uma página contendo o fomulário de login. """
+  return gera_html_pag_IMP.login()
