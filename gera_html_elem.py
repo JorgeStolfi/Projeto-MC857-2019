@@ -25,7 +25,7 @@ def menu_geral():
 
 def botao_login():
   """Retorna fragmento de HTML5 que representa o botao de login"""
-  return gera_html_elem_IMP.login()
+  return gera_html_elem_IMP.botao_login()
 
 def botao_subm_comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo):
   """Retorna um botão que é um fragmento HTML com o texto 'COMPRAR'.
