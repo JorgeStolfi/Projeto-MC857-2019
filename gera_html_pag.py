@@ -23,5 +23,6 @@ def generica(conteudo):
   return gera_html_pag_IMP.generica(conteudo)
 
 def produto(prod):
-  """Retorna uma página com os elementos referentes ao produto passado como parâmetro"""
+  """Retorna uma página com os elementos referentes ao produto passado como parâmetro, 
+  como nome, categoria, preço, quantidade disponíve"""
   return gera_html_pag_IMP.produto(prod)
