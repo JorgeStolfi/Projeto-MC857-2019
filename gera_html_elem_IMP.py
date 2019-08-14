@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-# Last edited on 2019-08-13 01:11:16 by stolfilocal
+# Last edited on 2019-08-13 20:15:11 by humanolaranja
 
 # Implementação do módulo {gera_html_elem}.
 
@@ -90,7 +90,7 @@ def botao_de_busca():
     "\">\n" + \
     "  <form action=\"search\" method=\"post\">\n" + \
     "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
-    "      <input type =\"text\" name=\"search_arg\" value=\"Buscar o que?\">\n" + \
+    "      <input type =\"text\" name=\"search_arg\" placeholder=\"Buscar o que?\">\n" + \
     "    </span>\n" + \
     "    <span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
     "      <input type=\"submit\" value=\"Buscar\">" + \
@@ -98,4 +98,14 @@ def botao_de_busca():
     "  </form>\n" + \
     "</span>"
 
-
+def bloco_de_produto(produto):
+  return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    ( "  font-family:" + "Courier" + ";\n") + \
+    ( "  font-size:" + "18px" + ";\n") + \
+    ( "  padding:" + "5px" + ";\n") + \
+    ( "  background-color:" + "#fff888" + ";\n") + \
+    ( "  text-color:" + "##ff0000" + ";\n") + \
+    ( "  text-align:" + "center" + ";\n") + \
+    "\">" + produto.nome + ";\n" + produto.desc + "</span>"
