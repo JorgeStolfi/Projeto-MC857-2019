@@ -9,31 +9,46 @@
 #A busca pode filtrar por diferentes argumentos.
 import base_pedidos_IMP.py
 
-#retorna a lista de pedidos do usuario(s?) fornecido(s?)
-def busca_pedidos_usuario(usuario)
-    return  base_pedidos_IMP.busca_pedidos_usuario(dados)
 
-#retorna o pedido com o id fornecido
-def busca_pedidos_id(pedido_id)
-    return base_pedidos_IMP.busca_pedidos_id(dados)
+def busca_pedidos_usuario(usuario):
+    '''
+    retorna a lista de pedidos do usuario(s?) fornecido(s?)
+    '''
+    return  base_pedidos_IMP.busca_pedidos_usuario(usuario)
 
-#retorna os pedidos de certa data
-def busca_pedidos_data(data)
-    return base_pedidos_IMP.busca_pedidos_data(dados)
 
-#retorna a busca entre os valores fornecidos e cruza no banco
-def busca_pedidos_valor(valor_min,valor_max)
-    return base_pedidos_IMP.busca_pedidos_valor(dados)
+def busca_pedidos_id(pedido_id):
+    '''
+    retorna o pedido com o id fornecido
+    '''
+    return base_pedidos_IMP.busca_pedidos_id(pedido_id)
+
+
+def busca_pedidos_data(data):
+    '''
+    retorna os pedidos de certa data
+    '''
+    return base_pedidos_IMP.busca_pedidos_data(data)
+
+
+def busca_pedidos_valor(valor_min,valor_max):
+    '''
+    retorna a busca entre os valores fornecidos e cruza no banco
+    '''
+    return base_pedidos_IMP.busca_pedidos_valor(valor_min,valor_max)
 
 #funcoes basicas de banco de dados
-def create(pedido)
-    return base_pedidos_IMP.create(dados)
+def create(pedido):
+    '''
+    cria entrada no banco
+    '''
+    return base_pedidos_IMP.create(pedido)
 
-def retrieve(pedido)
-    return base_pedidos_IMP.retrieve(dados)
+def retrieve(pedido):
+    return base_pedidos_IMP.retrieve(pedido)
 
-def update(pedido)
-    return base_pedidos_IMP.update(dados)
+def update(pedido):
+    return base_pedidos_IMP.update(pedido)
 
-def delete(pedido)
-    return base_pedidos_IMP.delete(dados)
+def delete(pedido):
+    return base_pedidos_IMP.delete(pedido)
