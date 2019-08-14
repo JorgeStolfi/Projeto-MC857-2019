@@ -47,7 +47,7 @@ def botao_subm_comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_
     "  font-size:" + tam_fonte + ";\n" + \
     "  padding: 5px;\n" + \
     "\">\n" + \
-    "  <form action=\"search\" method=\"post\">\n" + \
+    "  <form action=\"buy\" method=\"post\">\n" + \
     "    <input type =\"hidden\" name=\"id_produto\" value=\"" + id_produto + "\">\n" + \
     "    <input type =\"hidden\" name=\"qtd_produto\" value=\"" + qtd_produto + "\">\n" + \
     "    <span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
