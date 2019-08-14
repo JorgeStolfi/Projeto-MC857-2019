@@ -9,12 +9,15 @@ import sessao_IMP
 
 class Sessao():
     def login(self, usuario, senha):
+        """Faz o login do usuario"""
         sessao_IMP.login(usuario, senha)
 
     def logout(self):
+        """Faz o logout do usuario"""
         sessao_IMP.logout()
 
     def recuperar_senha(self, usuario):
+        """Recuepera a senha do usuario"""
         sessao_IMP.recuperar_senha(usuario)
 
 
