@@ -21,3 +21,7 @@ def generica(conteudo):
   """Retorna uma página com cabeçalho, menus, e rodapé padrões
   do projeto, e o {conteudo} dado (um {string} em formato HTML5)."""
   return gera_html_pag_IMP.generica(conteudo)
+
+def produto(prod):
+  """Retorna uma página com os elementos referentes ao produto passado como parâmetro"""
+  return gera_html_pag_IMP.produto(prod)
