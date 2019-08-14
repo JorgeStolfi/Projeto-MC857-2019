@@ -1,5 +1,8 @@
-#! /usr/bin/python3
-# Last edited on 2019-08-13 20:29:21 by PedroBarcha
+#!/usr/bin/python3
+
+#Pedro Henrique Barcha Correia (PedroBarcha)
+#158338
+#Última Atualização: 13/08
 
 # Funções para busca de produtos
 # recebidos do usuário.  
@@ -10,7 +13,7 @@
 # Implementação desta interface:
 import base_produtos_IMP
 
-def busca_produto(id):
+def busca_produto(produto):
   """Esta função checa quais campos de busca foram usados pelo usuário, chama as funções de busca correspondente e faz a junção das tabelas retornadas"""
   return base_produtos_IMP.busca_produto_id(dados)
 
