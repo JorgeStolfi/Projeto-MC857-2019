@@ -26,3 +26,7 @@ def produto(prod):
   """Retorna uma página com os elementos referentes ao produto passado como parâmetro, 
   como nome, categoria, preço, quantidade disponíve"""
   return gera_html_pag_IMP.produto(prod)
+  
+def lista_de_produtos(lista):
+  """Retorna uma página contendo todos os produtos de determinado tipo site."""
+  return gera_html_pag_IMP.produtos(lista)
