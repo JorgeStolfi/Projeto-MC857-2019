@@ -24,16 +24,16 @@
 
 
 # Implementação desta interface:
-import processa_pedido_http_IMP
+import processa_comando_http_IMP
 
 def comando_GET(dados):
-  """Esta função processa um pedido HTTP 'GET'."""
-  return processa_pedido_http_IMP.comando_GET(dados)
+  """Esta função processa um comando HTTP 'GET' recebido pelo servidor."""
+  return processa_comando_http_IMP.comando_GET(dados)
 
 def comando_POST(dados):
-  """Esta função processa um pedido HTTP 'POST'."""
-  return processa_pedido_http_IMP.comando_POST(dados)
+  """Esta função processa um comando HTTP 'POST' recebido pelo servidor."""
+  return processa_comando_http_IMP.comando_POST(dados)
 
 def comando_HEAD(dados):
-  """Esta função processa um pedido HTTP 'HEAD'."""
-  return processa_pedido_http_IMPcomando_.HEAD(dados)
+  """Esta função processa um comando HTTP 'HEAD' recebido pelo servidor."""
+  return processa_comando_http_IMPcomando_.HEAD(dados)
