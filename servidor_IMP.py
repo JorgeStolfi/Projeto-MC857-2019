@@ -2,7 +2,7 @@
 # Last edited on 2019-08-13 17:04:31 by stolfilocal
 
 # Interfaces do projeto usadas por este módulo:
-import processa_pedido_http
+import processa_comando_http
 
 # Outras interfaces usadas por este módulo:
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -23,21 +23,21 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     """Este método chamado pela classe {BaseHTTPRequestHandler} 
     ao receber um pedido 'GET'."""
     dados = self.extrai_dados('GET')
-    pagina = processa_pedido_http.comando_GET(dados)
+    pagina = processa_comando_http.comando_GET(dados)
     self.devolve(pagina)
 
   def do_POST(self):
     """Este método chamado pela classe {BaseHTTPRequestHandler}
     ao receber um pedido 'POST'."""
     dados = self.extrai_dados('POST')
-    pagina = processa_pedido_http.comando_POST(dados)
+    pagina = processa_comando_http.comando_POST(dados)
     self.devolve(pagina)
 
   def do_HEAD(self):
     """Este método chamado pela classe {BaseHTTPRequestHandler}
     ao receber um pedido 'HEAD'."""
     dados = self.extrai_dados('HEAD')
-    pagina = processa_pedido_http.comando_HEAD(dados)
+    pagina = processa_comando_http.comando_HEAD(dados)
     self.devolve(pagina)
     
   # Método interno, usado pelos métodos acima:
