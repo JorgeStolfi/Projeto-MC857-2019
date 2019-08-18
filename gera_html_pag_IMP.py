@@ -5,6 +5,7 @@
 
 # Interfaces importadas por este módulo:
 import gera_html_elem
+from utils import page_loader
 
 # Outras interfaces usadas por este módulo:
 from datetime import datetime, timezone
@@ -69,34 +70,7 @@ def login():
   return cabecalho + formulario + rodape
 
 def formulario_login():
-  textoCampoUsuario = "Usuário"
-  textoCampoSenha = "Senha"
-  textoBotaoLogin = "Entrar"
-  metodoDeEnvio = "post"
-  css = """form {
-            margin:0 auto;
-            width:300px
-          }
-          input {
-            margin-bottom:3px;
-            padding:10px;
-            width: 100%;
-            border:1px solid; #CCC
-          }
-          button {
-            padding:10px;
-          }
-          label {
-            cursor:pointer;
-          }"""
-  html = """<style type="text/css">%s</style>
-            <form id='login-form' action="" method='%s'>
-              <input type="text" placeholder="%s" required>
-              <input type="password" placeholder="%s" required>
-              <button type='submit'>%s</button>
-            </form>""" \
-            % (css, metodoDeEnvio, textoCampoUsuario, textoCampoSenha, textoBotaoLogin)
-  return html
+  return page_loader.load_page('login')
 
 def produtos(lista):
   todos_prods = []
