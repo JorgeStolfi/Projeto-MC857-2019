@@ -1,46 +1,29 @@
 from carrinho_IMP import *
 
-class Carrinho():
-    def __init__(self, marca, nome, ano, preco, descricao):
-        #Inicializa a classe carrinho
-        self.__carrinho = Carrinho_IMP(marca, nome, ano, preco, descricao)
-    
-    def marca(self):
-        #retorna a marca
-        return self.__carrinho.marca
-    
-    def nome(self):
-        #retorna o nome
-        return self.__carrinho.nome
-    
-    def ano(self):
-        #retorna o ano
-        return self.__carrinho.ano
-    
-    def preco(self):
-        #retorna o preco
-        return self.__carrinho.preco
-    
-    def descricao(self):
-        #retorna a descricao
-        return self.__carrinho.descricao
+class Carrinho(Carrinho_IMP):
 
-    def muda_marca(self,marca):
-        #muda a marca do carro
-        self.__carrinho.muda_marca(marca)
-    
-    def muda_nome(self,nome):
-        #muda o nome
-        self.__carrinho.muda_nome(nome)
-    
-    def muda_ano(self,ano):
-        #muda o ano
-        self.__carrinho.muda_ano(ano)
-    
-    def muda_preco(self,preco):
-        #muda o preco
-        self.__carrinho.muda_preco(preco)
-    
-    def muda_descricao(self,descricao):
-        #muda a descricao
-        self.__carrinho.muda_descricao(descricao)
+    def pega_itens():
+        #retorna uma tupla de itens e sua quantidade
+        super().pega_itens()
+
+    def calcula_total():
+        #retorna o preco total do carrinho
+        super().calcula_total()
+
+    def acrescenta_item(self, prod, qt):
+        #acrescenta um novo item no carrinho
+        super().acrescenta_item(self, prod, qt)
+
+    def troca_qtd( self, prod, qt):
+        #modifica a quantidade de um item
+        super().troca_qtd(self, prod, qt)
+
+    def elimina_prod(self, prod):
+        #elimina um produto do carrinho
+        super().elimina_prod(self, prod)
+
+    def cria(usr):
+        #cria uma nova instância com um usuário
+        instance = Carrinho()
+        instance.usr = usr
+        return instance
