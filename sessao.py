@@ -21,8 +21,16 @@ class Sessao():
         """Recuepera a senha do usuario"""
         Sessao_IMP.recuperar_senha(self, usuario)
 
+    def aberta(self):
+        return Sessao_IMP.aberta(self)
+
 
 s = Sessao()
 s.login('bilbo', '321teste')
 s.logout()
 s.recuperar_senha('bilbo')
+
+if s.aberta():
+    print('aberta')
+else:
+    print('fechada')

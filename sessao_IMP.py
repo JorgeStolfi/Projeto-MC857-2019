@@ -6,15 +6,19 @@ import requests
 
 
 class Sessao_IMP:
-    def login(self, usuario, senha):
-        #TODO: Fazer a busca do usuario na base
+    def aberta(self):
         s = requests.session()
+        try:
+            jar = requests.cookies.RequestsCookieJar()
+            aberta = jar.get("aberta")
+            return aberta
+        except KeyError:
+            return False
 
+    def login(self, usuario, senha):
+        s = requests.session()
         jar = requests.cookies.RequestsCookieJar()
-        
-        #TODO: Adicionar o cookie da forma correta
         jar.set("aberta", True)
-
         s.cookies = jar
         print('login realizado com sucesso')
 
