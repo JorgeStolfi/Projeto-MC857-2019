@@ -3,52 +3,55 @@
 
 #Funcoes para busca de pedidos na base de dados
 #Estas funcoes devolvem objetos(classe  Pedido) ou {none} caso 
-#a busca invalida.Os argumentos são atributos da classe Pedido 
+#a busca invalida. Os argumentos são atributos da classe Pedido 
 #(usuario,pedido_id,data,etc..) armazenada nas tabelas do banco.
 
 #A busca pode filtrar por diferentes argumentos.
 import base_pedidos_IMP.py
 
 
-def busca_pedidos_usuario(usuario):
+def busca_por_usuario(usr):
     '''
-    retorna a lista de pedidos do usuario(s?) fornecido(s?)
+    Devolve uma lista de objetos da classe {Pedido} associados ao usuário {usr} na base. Se não houver nenhum pedido associado a esse usuário, devolve {None}.
     '''
-    return  base_pedidos_IMP.busca_pedidos_usuario(usuario)
+    return  base_pedidos_IMP.busca_pedidos_usuario(usr)
 
 
-def busca_pedidos_id(pedido_id):
+def busca_por_id(pedido_id):
     '''
-    retorna o pedido com o id fornecido
+    Devolve uma um objetos da classe {Pedido} cujo id na base é  {id}. Se não houver nenhum pedido com esse {id}, devolve {None}.
     '''
     return base_pedidos_IMP.busca_pedidos_id(pedido_id)
 
 
-def busca_pedidos_data(data):
+def busca_por_data(data):
     '''
-    retorna os pedidos de certa data
+    Devolve uma lista de objetos da classe {Pedido} realizados na data {data}. Se não houver nenhum pedido nessa {data}, devolve {None}.
     '''
     return base_pedidos_IMP.busca_pedidos_data(data)
 
 
-def busca_pedidos_valor(valor_min,valor_max):
-    '''
-    retorna a busca entre os valores fornecidos e cruza no banco
-    '''
-    return base_pedidos_IMP.busca_pedidos_valor(valor_min,valor_max)
-
 #funcoes basicas de banco de dados
-def create(pedido):
+def cria(ped):
     '''
-    cria entrada no banco
+    Cria uma entrada no banco de dados com as informações pertencentes ao objeto {ped}.
     '''
-    return base_pedidos_IMP.create(pedido)
+    return base_pedidos_IMP.create(ped)
 
-def retrieve(pedido):
-    return base_pedidos_IMP.retrieve(pedido)
+def recupera(ped):
+    '''
+    Recupera uma entrada no banco de dados com as informações pertencentes ao objeto {ped}.
+    '''
+    return base_pedidos_IMP.retrieve(ped)
 
-def update(pedido):
-    return base_pedidos_IMP.update(pedido)
+def atualiza(ped):
+    '''
+    Atualiza os dados da entrada referente ao objeto {ped} no banco.
+    '''
+    return base_pedidos_IMP.update(ped)
 
-def delete(pedido):
-    return base_pedidos_IMP.delete(pedido)
+def deleta(ped):
+    '''
+    Deleta do banco a entrada referente ao objeto {ped}.
+    '''
+    return base_pedidos_IMP.delete(ped)

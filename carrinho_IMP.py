@@ -1,12 +1,18 @@
-#from produto import Produto
+# import produto
+# from produto import Produto
 
 class Carrinho_IMP:
     compras = dict()
 
-    def pega_itens():
+    def cria(usr):
+        instance = Carrinho_IMP()
+        instance.usr = usr
+        return instance
+
+    def pega_itens(self):
         return compras.items()
 
-    def calcula_total():
+    def calcula_total(self):
         return
 
     def acrescenta_item(self, prod, qt):

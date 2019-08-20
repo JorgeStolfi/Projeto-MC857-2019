@@ -45,23 +45,23 @@ def teste_de_popup(texto):
     "  >" + texto + "</button>\n" + \
     "</span>"
 
-def subm_comprar():
-  cor_fundo = "#fff888"
+def subm_botao_simples(texto, cor_fundo):
   return \
     "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
-    "  <input type=\"submit\" value=\"COMPRAR\">" + \
+    "  <input type=\"submit\" value=\"" + texto + "\">" + \
     "</span>"
+
+def subm_comprar():
+  texto = "COMPRAR"
+  cor_fundo = "#fff888"
+  return subm_botao_simples(texto, cor_fundo)
 
 def subm_busca():
+  texto = "BUSCAR"
   cor_fundo = "#fff888"
-  return \
-    "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
-    "  <input type=\"submit\" value=\"BUSCAR\">" + \
-    "</span>"
+  return subm_botao_simples(texto, cor_fundo)
 
 def subm_cadastrar():
+  texto = "CADASTRAR"
   cor_fundo = "#fff888"
-  return \
-    "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
-    "  <input type=\"submit\" value=\"CADASTRAR\">" + \
-    "</span>"
+  return subm_botao_simples(texto, cor_fundo)
