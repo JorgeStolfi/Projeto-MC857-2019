@@ -1,10 +1,10 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-13 00:28:38 by stolfilocal
+# Last edited on 2019-08-19 23:47:22 by stolfilocal
 
 # Implementação do módulo {gera_html_pag}.
 
 # Interfaces importadas por este módulo:
-import gera_html_elem
+import gera_html_elem, gera_html_form, gera_html_botao
 from utils import page_loader
 
 # Outras interfaces usadas por este módulo:
@@ -49,7 +49,7 @@ def cadastrar(conteudo):
 			"    <div>" + \
 			"	<label>Senha:</label>" + \
 			"	<input type=\"text\" id=\"senha\" name=\"senha\"/>" + \
-			"    </div>" + gera_html_elem.botao_subm_cadastrar("Cadastrar") + \
+			"    </div>" + gera_html_botao.subm_cadastrar("Cadastrar") + \
 			"</form>"
 
   pagina = gera_html_pag.generica(conteudo_cadastro) 
