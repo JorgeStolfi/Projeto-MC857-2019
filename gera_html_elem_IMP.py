@@ -53,6 +53,6 @@ def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
     ( "  text-align:" + halign + ";\n" if halign != None else "") + \
     "\">" + texto + "</span>"
 
-def bloco_de_produto(produto):
-    bloco_final =  """ <img src="placeholder.jpg" alt="Produto teste" style="width:500px;height:600px;"> """ + bloco_texto("produto.nome" + ";\n" + "produto.desc", "Courier", "18px", "5px", "center", "#ff0000", "fff888")
+def bloco_de_produto(prod):
+    bloco_final =  """ <img src="placeholder.jpg" alt="Produto teste" style="width:500px;height:600px;"> """ + bloco_texto("prod.nome" + ";\n" + "prod.desc", "Courier", "18px", "5px", "center", "#ff0000", "fff888")
     return bloco_final
