@@ -8,7 +8,16 @@
 import sessao_IMP
 from sessao_IMP import Sessao_IMP
 
+def cria():
+    s = Sessao()
+    return s
+
 class Sessao():
+    sessao_aberta = False
+
+    def __self__(self):
+        Sessao_IMP(self)
+
     def login(self, usuario, senha):
         """Faz o login do usuario"""
         Sessao_IMP.login(self, usuario, senha)
@@ -23,13 +32,25 @@ class Sessao():
 
     def aberta(self):
         return Sessao_IMP.aberta(self)
+    
+    #TODO: Descomentar esse método quando a classe Usuario estiver corrigida
+    # def obtem_usuario(self):
+    #     return Sessao_IMP.obtem_usuario(self)
 
 
-s = Sessao()
+s = cria()
+if s.aberta():
+    print('aberta')
+else:
+    print('fechada')
+
 s.login('bilbo', '321teste')
-s.logout()
-s.recuperar_senha('bilbo')
+if s.aberta():
+    print('aberta')
+else:
+    print('fechada')
 
+s.logout()
 if s.aberta():
     print('aberta')
 else:
