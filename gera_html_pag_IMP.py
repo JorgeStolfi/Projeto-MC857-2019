@@ -25,17 +25,18 @@ def generica(conteudo):
   roda = gera_html_elem.rodape()
   return cabe + menu + conteudo + roda
 
-def cadastrar_usuario(conteudo):
-  conteudo_cadastro = gera_html_form.cadastrar_usuario()
-  pagina = generica(conteudo_cadastro) 
-  return pagina
-  
 def produto(prod):
   cabe = gera_html_elem.cabecalho("PRODUTO: ")
   menu = gera_html_elem.menu_geral()
   roda = gera_html_elem.rodape()
   return cabe + menu + roda
-  
+
+def produtos(lista):
+  todos_prods = []
+  for prod in lista:
+      todos_prods = todos_prods + gera_html_elem.bloco_de_produto(prod)
+  return generica(todos_prods)
+
 def login():
   cabecalho = gera_html_elem.cabecalho("Bilbo's Store")
   formulario = gera_html_elem.formulario_login(altura="auto",
@@ -46,8 +47,7 @@ def login():
   rodape = gera_html_elem.rodape()
   return cabecalho + formulario + rodape
 
-def produtos(lista):
-  todos_prods = []
-  for prod in lista:
-      todos_prods = todos_prods + gera_html_elem.bloco_de_produto(prod)
-  return generica(todos_prods)
+def cadastrar_usuario(conteudo):
+  conteudo_cadastro = gera_html_form.cadastrar_usuario()
+  pagina = generica(conteudo_cadastro) 
+  return pagina

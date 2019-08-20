@@ -10,7 +10,6 @@
 # Implementaçao deste módulo:
 import gera_html_pag_IMP
 
-
 # Funções exportadas por este módulo:
 
 def entrada():
@@ -18,13 +17,11 @@ def entrada():
   return gera_html_pag_IMP.entrada()
 
 def generica(conteudo):
-  """Retorna uma página com cabeçalho, menus, e rodapé padrões
-  do projeto, e o {conteudo} dado (um {string} em formato HTML5)."""
+  """Retorna uma página com cabeçalho, menus, e rodapé padrões do projeto, e o {conteudo} dado (um {string} em formato HTML5)."""
   return gera_html_pag_IMP.generica(conteudo)
 
 def produto(prod):
-  """Retorna uma página com os elementos referentes ao produto passado como parâmetro, 
-  como nome, categoria, preço, quantidade disponíve"""
+  """Retorna uma página com os elementos referentes ao produto passado como parâmetro, como nome, categoria, preço, quantidade disponíve"""
   return gera_html_pag_IMP.produto(prod)
   
 def lista_de_produtos(lista):
@@ -36,11 +33,5 @@ def login():
   return gera_html_pag_IMP.login()
 
 def cadastrar_usuario():
-  """Retorna uma página de cadastro de usuário
-     que contém os campos do objeto usuário e 
-um botão para submeter o cadastro."""
+  """Retorna uma página de cadastro de usuário que contém os campos do objeto usuário e um botão para submeter o cadastro."""
   return gera_html_pag_IMP.cadastrar_usuario()
-
-def lista_de_produtos(lista):
-  """Retorna uma página contendo todos os produtos de determinado tipo do site."""
-  return gera_html_pag_IMP.produtos(lista)
