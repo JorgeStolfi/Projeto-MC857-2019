@@ -26,7 +26,3 @@ class Sessao_IMP:
     #         return Usuario()
     #     else:
     #         return None
-
-    def recuperar_senha(self, usuario):
-        #TODO: Verificar se essa funcao irá existir
-        print(usuario + ',', 'sua senha é:', '321teste')
