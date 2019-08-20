@@ -57,20 +57,21 @@ def bloco_de_produto(prod):
     bloco_final =  """ <img src="placeholder.jpg" alt="Produto teste" style="width:500px;height:600px;"> """ + bloco_texto("prod.nome" + ";\n" + "prod.desc", "Courier", "18px", "5px", "center", "#ff0000", "fff888")
     return bloco_final
 
-def formulario_login():
+def formulario_login(altura, largura, margem, acolchoamento, margem_entradas):
   """ Retorna o html para o formulário de login base, com campos de usuário, senha e lembrar da sessão. """
   css = """.formulario {
               border: 3px solid #f1f1f1;
-              padding: 16px;
-              width: 640px;
+              padding: """ + acolchoamento + """;
+              width: """ + largura + """;
+              height: """ + altura + """
               align-self: center;
               position: center;
-              margin: 64px auto;
+              margin: """ + margem + """ auto;
           }
           .entrada {
               width: 100%;
               padding: 12px 20px;
-              margin: 8px 0;
+              margin: """ + margem_entradas + """ 0;
               display: inline-block;
               border: 1px solid #ccc;
               box-sizing: border-box;
@@ -91,7 +92,7 @@ def formulario_login():
               cursor:pointer;
           }
           .container {
-              padding: 16px;
+              padding: 4px;
           }
           .link {
               float: right;

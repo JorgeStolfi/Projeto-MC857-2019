@@ -38,7 +38,11 @@ def produto(prod):
   
 def login():
   cabecalho = gera_html_elem.cabecalho("Bilbo's Store")
-  formulario = gera_html_elem.formulario_login()
+  formulario = gera_html_elem.formulario_login(altura="auto",
+                                             largura="400px",
+                                             margem="64px",
+                                             acolchoamento="32px",
+                                             margem_entradas="8px")
   rodape = gera_html_elem.rodape()
   return cabecalho + formulario + rodape
 
