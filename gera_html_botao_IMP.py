@@ -45,7 +45,7 @@ def teste_de_popup(texto):
     "  >" + texto + "</button>\n" + \
     "</span>"
 
-def subm_comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo):
+def subm_comprar():
   cor_fundo = "#fff888"
   return \
     "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
