@@ -1,0 +1,3 @@
+Fatorar partes comuns das funções em gera_html_botao_IMP.py
+correção da issue 11
+Ajeitar base_produtos_IMP.py
