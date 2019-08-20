@@ -1,5 +1,5 @@
 import carrinho_IMP
-from carrinho_IMP import Carrinho_IMP
+
 
 def cria(usr):
     """Cria uma nova instância com um usuário"""
@@ -7,12 +7,12 @@ def cria(usr):
 
 class Carrinho(Carrinho_IMP):
     def pega_itens(self):
-        """Retorna os itens e sua quantidade"""
-        return super().pega_itens(self)
+        """ Escolhe um item e o coloca no carrinho """
+        return carrinho_IMP.pega_itens(self)
 
     def calcula_total(self):
-        """Retorna o preco total do carrinho"""
-        return super().calcula_total(self)
+        """ Retorna o preco total do carrinho"""
+        return carrinho_IMP.calcula_total(self)
 
     def acrescenta_item(self, prod, qt):
         """
@@ -26,7 +26,7 @@ class Carrinho(Carrinho_IMP):
             qt : int
                 Quantidade de itens que serão comprados do produto
         """
-        super().acrescenta_item(self, prod, qt)
+        return carrinho_IMP.acrescenta_item(self, prod, qt)
 
     def troca_qtd(self, prod, qt):
         """
@@ -40,7 +40,7 @@ class Carrinho(Carrinho_IMP):
             qt : int
                 Nova quantidade do produto
         """
-        super().troca_qtd(self, prod, qt)
+        return carrinho_IMP.troca_qtd(self, prod, qt)
 
     def elimina_prod(self, prod):
         """
@@ -51,4 +51,4 @@ class Carrinho(Carrinho_IMP):
             prod : Produto
                 Objeto produto que será removido do carrinho
         """
-        super().elimina_prod(self, prod)
+        return carrinho_IMP.elimina_prod(self, prod)
