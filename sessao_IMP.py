@@ -14,11 +14,9 @@ class Sessao_IMP:
 
     def login(self, usr):
         self.sessao_aberta = True
-        print('login realizado com sucesso')
 
     def logout(self):
         self.sessao_aberta = False
-        print('logout realizado com sucesso')
     
     #TODO: Descomentar esse método quando a classe Usuario estiver corrigida
     # def obtem_usuario(self):

@@ -19,9 +19,10 @@ class Sessao():
         Sessao_IMP(self)
 
     def login(self, usr):
-        """Faz o login do usuario
-           Parametros
-            ----------
+        """
+            Faz o login do usuario
+            Parametros
+            -----------
             usr : Usuario
                 Objeto da classe Usuario
         """
