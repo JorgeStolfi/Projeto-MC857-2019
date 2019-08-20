@@ -25,7 +25,7 @@ def generica(conteudo):
   roda = gera_html_elem.rodape()
   return cabe + menu + conteudo + roda
 
-def cadastrar(conteudo):
+def cadastrar_usuario(conteudo):
   conteudo_cadastro = gera_html_form.cadastrar_usuario()
   pagina = generica(conteudo_cadastro) 
   return pagina
