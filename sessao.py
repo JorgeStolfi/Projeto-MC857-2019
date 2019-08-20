@@ -18,9 +18,9 @@ class Sessao():
     def __self__(self):
         Sessao_IMP(self)
 
-    def login(self, usuario, senha):
+    def login(self):
         """Faz o login do usuario"""
-        Sessao_IMP.login(self, usuario, senha)
+        Sessao_IMP.login(self)
 
     def logout(self):
         """Faz o logout do usuario"""

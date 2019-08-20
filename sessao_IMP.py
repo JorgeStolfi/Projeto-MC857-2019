@@ -12,7 +12,7 @@ class Sessao_IMP:
     def aberta(self):
         return self.sessao_aberta
 
-    def login(self, usuario, senha):
+    def login(self):
         self.sessao_aberta = True
         print('login realizado com sucesso')
 
