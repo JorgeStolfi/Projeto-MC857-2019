@@ -15,10 +15,12 @@ class Carrinho_IMP:
         return compras.items()
 
     def calcula_total(self):
-    """ Calcula valor dos itens escolhidos pelo usuario """
+    """ Calcula valor dos itens escolhidos pelo usuario 
+        no momento, aguardando a adicao do VALOR do produto
+        para que o calculo seja correto """
         total = 0
         for elem in compras:
-            total += elem.valor*elem
+            total += elem
         return total
 
     def acrescenta_item(self, prod, qt):
