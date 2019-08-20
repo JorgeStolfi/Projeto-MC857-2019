@@ -1,0 +1,27 @@
+Não se deve usar nomes de variáveis ou parâmetros iguais aos nomes
+de módulos. Assim, carrinho deve ser car, etc.
+Solução: Substituição dos termos inadequados
+
+Os comentários devem ter sintaxe, maúsculas e pontuação corretas, no tempo indicativo presente ("Devolve" em vez de "Devolver", "Devolva", "Devolverá", etc.). Variáveis e funções citadas nos comentários devem ser marcadas com "{}" para reduzir confusão.
+Solução: Substituição dos termos inadequados
+
+Os nomes das funções não precisam dizer _carrinho porque isso já está no nome do módulo.A função remove_carrinho deveria se chamar apenas remova.
+Solução: Remoção dos termos redundantes
+
+Os comentários devem descrever mais precisamente e detalhadamente o que a função faz. Por exemplo, lista_todos_os_carrinhos(usr) deve ser "Devolve uma lista Python de objetos da classe {Carrinho}, consistindo de todos os carrinho do usuário {usr} na base, em ordem cronológica de criação. Se não houver nenhum carrinho desse usuário na base, devolve {None}."
+Solução: Adicionar comentários indicando as classes e os tipos que serão devolvidos
+
+Falta uma função conecta() que conecta o programa com a base armazenada no disco.
+Solução: Professor recomendou ignorar a função conecta no estágio atual do projeto
+
+A função cria_novo_carrinho(usuario) não cabe aqui. Quem cria objetos da classe Carrinho deve ser carrinho.cria(usr) em carrinho.py
+Solução: Função removida
+
+Em seu lugar deveria ter uma função armazena(car) que armazena o carrinho {car} na base de dados de carrinhos, ou substitui se já existir.
+Solução: Função substituida
+
+A função get_carrinho não faz sentido se cada usuário pode ter mais de um carrinho.
+Solução: Função Removida
+
+A função remove_carrinho(usuario, carrinho) não precisa do usuario porque o carrinho já tem um usuário dono. E deveria se chamar apenas remove(car)
+Solução: Remoção do parâmetro e documentação re-escrita
