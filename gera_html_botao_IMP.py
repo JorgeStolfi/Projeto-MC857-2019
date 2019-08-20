@@ -65,3 +65,10 @@ def subm_cadastrar():
     "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
     "  <input type=\"submit\" value=\"CADASTRAR\">" + \
     "</span>"
+
+def subm_login(login,senha):
+cor_fundo = "#fff888"
+  return \
+    "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
+    "  <input type=\"submit\" value=\"ENTRAR\">" + \
+    "</span>"

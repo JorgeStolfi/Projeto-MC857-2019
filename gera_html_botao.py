@@ -42,7 +42,7 @@ def subm_comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo)
 
 def subm_login(login,senha):
   """Retorna o botão para a submissão de login"""
-  return gera_html_botao_IMP.subm_login()
+  return gera_html_botao_IMP.subm_login(login,senha)
 
 def subm_cadastrar(texto,fam_fonte,tam_fonte,pad,haling,cor_texto,cor_fundo):
     """Retorna uma string que é um fragmento HTML consistindo do {texto} dado, que pode conter tags de HTML (como '<b>', <i>) de um botão de submeter cadastro.
