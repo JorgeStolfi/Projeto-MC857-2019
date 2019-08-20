@@ -1,0 +1,7 @@
+Relatorio Aula 2019-08-13
+
+Tarefa: Especificar a função gera_html_elem.botao_subm_cadastrar
+
+Especificação da função gera_html_elem.botao_subm_cadastrar
+Implementação da função gera_html_elem.botao_subm_cadastrar com texto como
+argumento obrigatório e os outros argumentos de estilo como opcionais.

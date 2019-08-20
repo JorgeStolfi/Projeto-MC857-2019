@@ -1,0 +1,5 @@
+############ 20/AGO/2019 ############
+Implementacao das alteracoes solicitadas na issue #5
+Implementacao da base.py
+Implementacao da base_IMP.py
+Criacao do script gera_base.py

@@ -13,11 +13,21 @@ def comando_GET(dados):
     return gera_html_pag.entrada()
   elif dados['path'] == '/login':
     return gera_html_pag.login()
+  elif dados['path'] == '/cadastro':
+    return gera_html_pag.cadastrar_usuario()
+  elif dados['path'] == '/produto':
+    return gera_html_pag.produto(dados['query'])
+  elif dados['path'] == '/produtos':
+    return gera_html_pag.produto(dados['query'])
   else:
     return mostra_comando(dados)
 
 def comando_POST(dados):
-  return mostra_comando(dados)
+  print(dados)
+  if dados['path'] == '/search':
+      return gera_html_pag.produto(dados['query'])      
+  else:    
+    return mostra_comando(dados)
 
 def comando_HEAD(dados):
   return mostra_comando(dados)

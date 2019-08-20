@@ -5,7 +5,6 @@
 
 # Interfaces importadas por este módulo:
 import gera_html_elem, gera_html_form, gera_html_botao
-from utils import page_loader
 
 # Outras interfaces usadas por este módulo:
 from datetime import datetime, timezone
@@ -26,7 +25,7 @@ def generica(conteudo):
   roda = gera_html_elem.rodape()
   return cabe + menu + conteudo + roda
 
-def cadastrar(conteudo):
+def cadastrar_usuario(conteudo):
   conteudo_cadastro = gera_html_form.cadastrar_usuario()
   pagina = generica(conteudo_cadastro) 
   return pagina
@@ -39,12 +38,13 @@ def produto(prod):
   
 def login():
   cabecalho = gera_html_elem.cabecalho("Bilbo's Store")
-  formulario = formulario_login()
+  formulario = gera_html_elem.formulario_login(altura="auto",
+                                             largura="400px",
+                                             margem="64px",
+                                             acolchoamento="32px",
+                                             margem_entradas="8px")
   rodape = gera_html_elem.rodape()
   return cabecalho + formulario + rodape
-
-def formulario_login():
-  return page_loader.load_page('login')
 
 def produtos(lista):
   todos_prods = []

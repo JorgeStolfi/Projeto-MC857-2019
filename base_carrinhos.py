@@ -9,18 +9,17 @@ import base_carrinhos_IMP
 
 # Funções exportadas por este módulo:
 
-def get_carrinho(usuario):
-  """Dado um usuario, retornar o carrinho do usuario."""
-  return base_carrinhos_IMP.get_carrinho()
+def lista_todos_carrinhos(user):
+  """Dado um usuario {user}, devolve uma lista Python de objetos da classe {Carrinho}, 
+  consistindo de todos os carrinho do usuario {usr} na base, em ordem cronologica de criação. 
+  Se nao houver nenhum carrinho desse usuario na base, devolve {None}."""
+  return base_carrinhos_IMP.lista_todos()
 
-def lista_todos_carrinhos(usuario):
-  """Dado um usuario, retornar a lista com todos os carrinhos do usuario."""
-  return base_carrinhos_IMP.lista_todos_carrinhos()
+def armazena(car):
+  """Dado um carrinho {car} da classe {Carrinho}, adiciona o {car} na base de dados de carrinhos,
+  ou substitui se já existir"""
 
-def cria_novo_carrinho(usuario):
-  """Dado um usuario, criar um novo carrinho para ele."""
-  return base_carrinhos_IMP.cria_novo_carrinho()
-
-def remove_carrinho(usuario, carrinho):
-  """Dado um usuario e o carrinho desejado, remove de sua base de carrinhos."""
-  return base_carrinhos_IMP.remove_carrinho()
+def remove_carrinho(car):
+  """Dado um objeto carrinho {car} da classe {Carrinho} associado a um usuario, remove o carrinho
+  e retorna {True}. Se o carrinho não estiver associado ao usuario, devolve {False}"""
+  return base_carrinhos_IMP.remove()
