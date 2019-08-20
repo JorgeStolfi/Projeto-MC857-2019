@@ -6,19 +6,20 @@
 # realizando o login, logout e recuperando a senha.
 
 import sessao_IMP
+from sessao_IMP import Sessao_IMP
 
 class Sessao():
     def login(self, usuario, senha):
         """Faz o login do usuario"""
-        sessao_IMP.login(usuario, senha)
+        Sessao_IMP.login(self, usuario, senha)
 
     def logout(self):
         """Faz o logout do usuario"""
-        sessao_IMP.logout()
+        Sessao_IMP.logout(self)
 
     def recuperar_senha(self, usuario):
         """Recuepera a senha do usuario"""
-        sessao_IMP.recuperar_senha(usuario)
+        Sessao_IMP.recuperar_senha(self, usuario)
 
 
 s = Sessao()
