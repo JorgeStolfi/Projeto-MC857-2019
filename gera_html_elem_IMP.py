@@ -56,3 +56,66 @@ def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
 def bloco_de_produto(prod):
     bloco_final =  """ <img src="placeholder.jpg" alt="Produto teste" style="width:500px;height:600px;"> """ + bloco_texto("prod.nome" + ";\n" + "prod.desc", "Courier", "18px", "5px", "center", "#ff0000", "fff888")
     return bloco_final
+
+def formulario_login():
+  """ Retorna o html para o formulário de login base, com campos de usuário, senha e lembrar da sessão. """
+  css = """.formulario {
+              border: 3px solid #f1f1f1;
+              padding: 16px;
+              width: 640px;
+              align-self: center;
+              position: center;
+              margin: 64px auto;
+          }
+          .entrada {
+              width: 100%;
+              padding: 12px 20px;
+              margin: 8px 0;
+              display: inline-block;
+              border: 1px solid #ccc;
+              box-sizing: border-box;
+          }
+          .botao {
+              background-color: #4CAF50;
+              color: white;
+              padding: 14px 20px;
+              margin: 8px 0;
+              border: none;
+              cursor: pointer;
+              width: 100%;
+          }
+          .botao:hover {
+              opacity: 0.8;
+          }
+          .texto {
+              cursor:pointer;
+          }
+          .container {
+              padding: 16px;
+          }
+          .link {
+              float: right;
+              padding-top: 4px;
+          }"""
+  html = """<body class="body">
+            <style>%s</style>
+            <form id='login-form' class="formulario" action="" method='post'>
+                <div class="container">
+                    <label for="username"><b>Usuário/E-mail</b></label>
+                    <input type="text" class="entrada" placeholder="Entre com o usuário ou e-mail" name="username" required>
+                </div>
+                <div class="container">
+                    <label for="senha" class="texto"><b>Senha</b></label>
+                    <input type="password" class="entrada" placeholder="Entre com a senha" name="senha" required>
+                </div>
+                <div class="container">
+                    <label class="texto">
+                        <input type="checkbox" checked="checked" name="lembrar">Lembrar de mim</input>
+                    </label>
+                    <button type='submit' class="botao">Entrar</button>
+                    <span class="link"><a href="#">Esqueceu a senha?</a></span>
+                </div>
+            </form>
+        </body>""" % css
+
+  return html
