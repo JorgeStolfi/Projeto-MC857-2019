@@ -9,6 +9,8 @@ class Usuario_IMP:
         self.cpf = atrs.cpf
         self.endereco = atrs.endereco
         self.telefone = atrs.telefone
+    def obtem_atributos(self):
+        return self
 
 def cria(atrs):
     """Cria um novo usuário com um novo identificador único e os
@@ -39,10 +41,12 @@ def muda_atributos(self,alts):
         self.telefone = alts.telefone
 
 def obtem_atributos(self):
-        """Retorna um dicionário Python com os atributos do usuário,
-        exceto identificador."""
+    """Retorna um dicionário Python com os atributos do usuário,
+    exceto identificador."""
+    return {self.nome, self.sobrenome, self.nascDt, self.email, self.cpf, self.endereco, self.telefone}
 
 def obtem_id(self):
-        """Devolve uma cadeia consistindo das letras 'U-' e 8 algarismos decimais,
-        que identifica unicamente o usuário. Este identificador é 
-        atribuído na criação do usuário e não pode ser alterado."""
+    """Devolve uma cadeia consistindo das letras 'U-' e 8 algarismos decimais,
+    que identifica unicamente o usuário. Este identificador é 
+    atribuído na criação do usuário e não pode ser alterado."""
+    return self.login

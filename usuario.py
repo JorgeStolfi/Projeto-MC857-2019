@@ -15,7 +15,7 @@ class Usuario(Usuario_IMP):
     """Devolve uma cadeia consistindo das letras 'U-' e 8 algarismos decimais,
     que identifica unicamente o usuário. Este identificador é 
     atribuído na criação do usuário e não pode ser alterado."""
-    return Usuario_IMP.obtem_id(self)
+    return usuario_IMP.obtem_id(self)
     
   def obtem_atributos(self):
     """Retorna um dicionário Python com os atributos do usuário,
@@ -26,7 +26,7 @@ class Usuario(Usuario_IMP):
     """Recebe um dicionário Python {alts} cujas chaves são um subconjunto
     dos nomes de atributos do usuário, e troca os valores desses atributos 
     pels valores correspondentes em {alts}."""
-    return Usuario_IMP.muda_atributos(self,alts)
+    return usuario_IMP.muda_atributos(self,alts)
     
 # Construtor da classe:
 
