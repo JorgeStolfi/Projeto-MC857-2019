@@ -13,22 +13,14 @@
 # Implementação desta interface:
 import base_produtos_IMP
 
-def busca_produto(produto):
-  """Esta função checa quais campos de busca foram usados pelo usuário, chama as funções de busca correspondente e faz a junção das tabelas retornadas"""
-  return base_produtos_IMP.busca_produto_id(dados)
+def conecta():
+  """Devolve uma conexao com a base Produto. Se houver algum erro, devolve {None}."""
+  return base_produtos_IMP.conecta()
 
-def busca_produto_nome(nome):
-  """Esta função processa uma busca por nome"""
-  return base_produtos_IMP.busca_produto_nome(dados)
+def busca_por_nome(nome):
+  """Devolve uma lista Python de objetos da classe {Produto}, consistindo de todos os produtos da base que tem a cadeia {nome} no seu nome, em ordem arbitrária. Se não houver nenhum produto que satisfaz essa busca, devolve {None}."""
+  return base_produtos_IMP.busca_por_nome(nome)
 
-def busca_produto_tipo(tipo):
-  """Esta função processa uma busca por tipo de produto"""
-  return base_produtos_IMP.busca_produto_tipo(dados)
-
-def busca_produto_id(id):
-  """Esta função processa uma busca pelo id do produto"""
-  return base_produtos_IMP.busca_produto_id(dados)
-
-def busca_produto_preco(preco_min, preco_max):
-  """Esta função processa uma busca por um intervalo de preco"""
-  return base_produtos_IMP.busca_produto_preco(dados)
+def busca_por_id(id):
+  """Devolve um objetos da classe {Produto}, consistindo do produto da base que tem a cadeia {id} no seu id. Se não houver nenhum produto que satisfaz essa busca, devolve {None}."""
+  return base_produtos_IMP.busca_por_id(id)
