@@ -49,3 +49,5 @@ def bloco_de_produto(produto):
   formato HTML."""
   return gera_html_elem_IMP.bloco_de_produto(produto)
 
+def formulario_login():
+  return gera_html_elem_IMP.formulario_login()
