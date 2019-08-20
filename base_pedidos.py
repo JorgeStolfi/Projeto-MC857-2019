@@ -12,7 +12,7 @@ import base_pedidos_IMP.py
 
 def busca_por_usuario(usr):
     '''
-    Devolve uma lista de objetos da classe {Pedido} associados ao usuário {usr} na base. Se não houver nenhum pedido associado a esse usuário, devolve {None}.
+    Devolve uma lista de objetos da classe {Pedido} associados ao usuário {usr} na base de dados. Se não houver nenhum pedido associado a esse usuário, devolve {None}.
     '''
     return  base_pedidos_IMP.busca_pedidos_usuario(usr)
 
