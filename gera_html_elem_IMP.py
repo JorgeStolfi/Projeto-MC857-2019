@@ -6,6 +6,8 @@
 
 # Interfaces importadas por esta implementação:
 from datetime import datetime, timezone
+import gera_html_form
+import gera_html_botao
 
 #Funções exportadas por este módulo:
 
@@ -33,7 +35,7 @@ def rodape():
 def menu_geral():
   return \
     "<nav>\n" + \
-    "  " + geta_html_form.busca() + "\n" + \
+    "  " + gera_html_form.busca() + "\n" + \
     "  " + gera_html_botao.teste_de_popup("Clique Aqui") + "\n" + \
     "  " + gera_html_botao.teste_de_popup("Não, Clique Aqui!") + "\n" + \
     "  " + gera_html_botao.teste_de_popup("Não Clique Aqui") + "\n" + \

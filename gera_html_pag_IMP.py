@@ -5,7 +5,6 @@
 
 # Interfaces importadas por este módulo:
 import gera_html_elem, gera_html_form, gera_html_botao
-from utils import page_loader
 
 # Outras interfaces usadas por este módulo:
 from datetime import datetime, timezone
@@ -44,7 +43,70 @@ def login():
   return cabecalho + formulario + rodape
 
 def formulario_login():
-  return page_loader.load_page('login')
+  css = """body {
+              font-family: Arial, Helvetica, sans-serif;
+              margin: auto;
+          }
+          form {
+              border: 3px solid #f1f1f1;
+              padding: 16px;
+              width: 640px;
+              align-self: center;
+              position: center;
+              margin: 64px auto;
+          }
+          input[type=text], input[type=password] {
+              width: 100%;
+              padding: 12px 20px;
+              margin: 8px 0;
+              display: inline-block;
+              border: 1px solid #ccc;
+              box-sizing: border-box;
+          }
+          button {
+              background-color: #4CAF50;
+              color: white;
+              padding: 14px 20px;
+              margin: 8px 0;
+              border: none;
+              cursor: pointer;
+              width: 100%;
+          }
+          button:hover {
+              opacity: 0.8;
+          }
+          label {
+              cursor:pointer;
+          }
+          .container {
+              padding: 16px;
+          }
+          span.psw {
+              float: right;
+              padding-top: 4px;
+          }"""
+  html = """<body class="body">
+            <style>%s</style>
+            <form id='login-form' action="" method='post'>
+                <div class="container">
+                    <label for="username"><b>Usuário/E-mail</b></label>
+                    <input type="text" placeholder="Entre com o usuário ou e-mail" name="username" required>
+                </div>
+                <div class="container">
+                    <label for="senha"><b>Senha</b></label>
+                    <input type="password" placeholder="Entre com a senha" name="senha" required>
+                </div>
+                <div class="container">
+                    <label>
+                        <input type="checkbox" checked="checked" name="lembrar">Lembrar de mim</input>
+                    </label>
+                    <button type='submit'>Entrar</button>
+                    <span class="psw"><a href="#">Esqueceu a senha?</a></span>
+                </div>
+            </form>
+        </body>""" % css
+
+  return html
 
 def produtos(lista):
   todos_prods = []
