@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-# Last edited on 2019-08-19 23:53:13 by stolfilocal
+# Last edited on 2019-08-20 01:32:22 by stolfilocal
 
 # Implementação do módulo {gera_html_form}.
 
@@ -56,8 +56,27 @@ def cadastrar_usuario():
     "  font-size:" + tam_fonte + ";\n" + \
     "  padding: 5px;\n" + \
     "\">\n" + \
-    "  <form action=\"insert\" method=\"post\">\n" + \
-    "    " + gera_html_botao.subm_cadastrar() + "\n" + \
+    "  <form action=\"cadastrar\" method=\"post\">" + \
+    "    <div>" + \
+    "	<label>Nome:</label>" + \
+    "	<input type=\"text\" id=\"nome\" name=\"nome\"/>" + \
+    "    </div>" + \
+    "    <div>" + \
+    "	<label>E-mail:</label>" + \
+    "	<input type=\"email\" id=\"email\" name=\"email\"/>" + \
+    "    </div>" + \
+    "    <div>" + \
+    "	<label>CPF::</label>" + \
+    "	<input type=\"text\" id=\"cpf\" name=\"cpf\"/>" + \
+    "    </div>" + \
+    "    <div>" + \
+    "	<label>Telefone:</label>" + \
+    "	<input type=\"text\" id=\"telefone\" name=\"telefone\"/>" + \
+    "    </div>" + \
+    "    <div>" + \
+    "	<label>Senha:</label>" + \
+    "	<input type=\"text\" id=\"senha\" name=\"senha\"/>" + \
+    "    </div>" + gera_html_botao.subm_cadastrar("Cadastrar") + \
     "  </form>\n" + \
     "</span>"
     
