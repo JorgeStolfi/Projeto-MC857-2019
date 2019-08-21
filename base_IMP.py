@@ -6,11 +6,19 @@
 
 # Funcao para criar e executar queries
 
-# import mysql.connector as mariadb
+import mysql.connector as mariadb
 
 def conecta():
-  print ("Database conectada")
+  mariadb_connection = mariadb.connect(user='usuario', password='senha',
+  database='banco_de_dados')
+  cursor = mariadb_connection.cursor()
+  return cursor
 
 def executa_query(query):
-  """Devolve o resultado da query executada. Se não houver algo que satisfaz essa busca, devolve {None}."""
-  print ("query: " + query)
+    try:
+      cursor = conecta()
+      resultado = cursor.execute(query))
+      cursor.close()
+      return resultado
+    except mariadb.Error as error:
+      return None
