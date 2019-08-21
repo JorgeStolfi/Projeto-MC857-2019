@@ -1,56 +1,45 @@
 # Funções para gerenciar o banco de usuários.
 
 # Implementação desta interface:
-
-
 #Funções exportadas desta interface:
 import base_usuarios_IMP
 
-#Connect to dabase
-def connect_to_users_database(database_name, user_name, password):
-    '''
-    Tries to connect to database
-    '''
-    database_reference = base_usuarios_IMP.connect_to_users_database(database_name, user_name, password)
+#Conectar ao banco de dados
+'''
+    Tenta conectar-se ao banco de dados
+'''
+referencia_ao_banco = base_usuarios_IMP.conecta_ao_banco(nome_do_banco, nome_de_usuario, senha)
 
-    if database_reference is None:
-        console.log("Error Trying to connect to database")
-    return database_reference
+if referencia_ao_banco is None:
+  console.log("Erro ao tentar conectar-se ao banco de dados")
+return referencia_ao_banco
 
-def create_user(db_reference, name, age, email, password, address, gender, phone_number):
+def busca_id(referencia_ao_banco, id):
     '''
-    Creates a new user
+    Recupera usuários através de seus id's
     '''
-    return base_usuarios_IMP.create_user(name, age, email, password, address, gender, phone_number)
+    return base_usuarios_IMP.busca_id(id)
 
-def retrieve_user_by_id(db_reference, id):
+def busca_email(referencia_ao_banco, email):
     '''
-    Retrieve user by id
+    Recupera o usuário através de seu endereco de email
     '''
-    return base_usuarios_IMP.retrieve_user_by_id(id)
+    return base_usuarios_IMP.busca_email(email)
 
-def retrieve_user_by_email(db_reference, email):
+def deleta(referencia_ao_banco, id):
     '''
-    Retrieve user by email
+    Deleta o usuáro através de seu id
     '''
-    return base_usuarios_IMP.retrieve_user_by_email(email)
+    return base_usuarios_IMP.deleta(id)
 
-def update_user(db_reference, user_id, updates):
+def executa_query(referencia_ao_banco, sql_query):
     '''
-    Update user with the content of updates parameters.
-    The updates parameter must be a list of tuples in which the first element of each tuple is the field name and the second element is the new field value.
-    Ex: updates = [("name", "Victor"), ("age", 30)]
+    Executa uma query que está indicada através da variável sql_query
     '''
-    return base_usuarios_IMP.retrieve_user_by_email(user_id, updates)
+    return base_usuarios_IMP.executa_query(sql_query)
 
-def delete_user(db_reference, user_id):
+def atualiza(bd_referencia, usr):
     '''
-    Delete user by id
+    Atualiza usuario com as propriedades de usr
     '''
-    return base_usuarios_IMP.delete_user(user_id)
-
-def execute_custom_query(db_reference, sql_query):
-    '''
-    Executes custom SQL query
-    '''
-    return base_usuarios_IMP.execute_custom_query(sql_query)
+    return base_usuarios_IMP.atualiza(bd_referencia, usr)

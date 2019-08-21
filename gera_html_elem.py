@@ -43,9 +43,15 @@ def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
   Cada parâmetro de estilo pode ser {None} para indicar o defô."""
   return gera_html_elem_IMP.bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo)
 
-def bloco_de_produto(produto):
-  """A funcao recebe o parâmetro {produto}, da classe Produto, e recupera
+def bloco_de_produto(prod):
+  """A funcao recebe o parâmetro {prod}, da classe Produto, e recupera
   a partir dele nome, descrição e imagem do produto correspondente em
   formato HTML."""
-  return gera_html_elem_IMP.bloco_de_produto(produto)
+  return gera_html_elem_IMP.bloco_de_produto(prod)
 
+def formulario_login(altura, largura, margem, acolchoamento, margem_entradas):
+  return gera_html_elem_IMP.formulario_login(altura,
+                                             largura,
+                                             margem,
+                                             acolchoamento,
+                                             margem_entradas)

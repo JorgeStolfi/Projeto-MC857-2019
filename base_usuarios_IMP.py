@@ -1,71 +1,61 @@
-#This class is used to simulate the behavior of a database reference
-class DatabaseReference:
-    def __init__(self, dbname, username, password):
-        self.__dbname = dbname
-        self.__username = username
-        self.__password = password
+#Essa classe é usada para simular o comportamento de uma referência de um banco de dados.
+import base
+class BancoReferencia:
+    def __init__(self, nome_banco, nome_usuario, senha):
+        self.__nome_banco = nome_banco
+        self.__nome_usuario = nome_usuario
+        self.__senha = senha
 
-    def connect(self):
+    def conexao(self):
         '''
-        It will always connect
+        Nesse caso vai sempre conectar
         '''
         return True
 
-    def execute_query(self, query):
-        console.log("This is a query response")
+    def executa_busca(self, busca):
+        console.log("Resultado da busca")
         return
 
 #Connect to dabase
-def connect_to_users_database(database_name, user_name, password):
+
+
+def acrescenta(bd_referencia, usr):
     '''
-    Tries to connect to database
+    Acrescenta um novo usuario
     '''
 
-    database_reference = DatabaseReference("dbname", "user", "pass")
-    database_reference.connect()
-    return database_reference
-
-def create_user(db_reference, name, age, email, password, address, gender, phone_number):
-    '''
-    Creates a new user
-    '''
-
-    console.log(f"User {name} created")
+    console.log(f"Usuario {usr.name} created")
     return True
 
-def retrieve_user_by_id(db_reference, id):
+def busca_id(bd_referencia, id):
     '''
-    Retrieve user by id
+    Devolve usuario numa busca por id
     '''
-    console.log(f"User {id} retrieved")
+    sql=("SElECT nome,sobrenome,nascDt,senha,email,cpf,endereco,telefone FROM usuarios WHERE id = " + id)
+    base.executa_query(sql)
+    console.log(f"Usuario {id} devolvido")
     return True
 
-def retrieve_user_by_email(db_reference, email):
+def busca_email(bd_referencia, email):
     '''
-    Retrieve user by email
+    Retorna usuario por email se existente.
     '''
-    console.log(f"User {email} retrieved")
+    
+    sql=("SElECT nome,sobrenome,nascDt,senha,email,cpf,endereco,telefone FROM usuarios WHERE email = " + email)
+    base.executa_query(sql)
+    console.log(f"Usuario {email} devolvido")
     return True
 
-def update_user(db_reference, user_id, updates):
+def atualiza(bd_referencia, usr):
     '''
-    Update user with the content of updates parameters.
-    The updates parameter must be a list of tuples in which the first element of each tuple is the field name and the second element is the new field value.
-    Ex: updates = [("name", "Victor"), ("age", 30)]
+    Atualiza usuario com as propriedades de usr
     '''
-    console.log(f"User {user_id} updated")
+    console.log(f"Usuario {usr.id} updated")
     return True
 
-def delete_user(db_reference, user_id):
+def deleta(bd_referencia, usr_id):
     '''
-    Delete user by id
+    Deleta o usuario com id usr_id
     '''
-    console.log(f"User {user_id} deleted")
-    return True
-
-def execute_custom_query(db_reference, sql_query):
-    '''
-    Executes custom SQL query
-    '''
-    console.log(f"Custom query {sql_query} executed")
+    console.log(f"Usuario {usr_id} deletado")
     return True
