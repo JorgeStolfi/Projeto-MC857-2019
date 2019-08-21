@@ -1,26 +1,26 @@
 import requests
 
-#TODO: Importar usuário. Por causa de um erro nessa classe, a importação não foi feita
-#import usuario
-#from usuario import Usuario
-
-
 class Sessao_IMP:
-    def __self__(self):
-        self.sessao_aberta = False
 
     def aberta(self):
+        """Verifica se a sessão está aberta"""
         return self.sessao_aberta
 
     def login(self, usr):
+        """Faz o login do usuário"""
         self.sessao_aberta = True
+        self.usr = usr
 
     def logout(self):
+        """Faz o logout do usuario"""
         self.sessao_aberta = False
+        self.usr = None
+        
+    def obtem_usuario(self):
+        """Retorna o usuário logado na sessão"""
+        return self.usr
     
-    #TODO: Descomentar esse método quando a classe Usuario estiver corrigida
-    # def obtem_usuario(self):
-    #     if self.sessao_aberta:
-    #         return Usuario()
-    #     else:
-    #         return None
+    def cria(self):
+        """ Cria uma nova sessao """
+        self.sessao_aberta = False
+        return self
