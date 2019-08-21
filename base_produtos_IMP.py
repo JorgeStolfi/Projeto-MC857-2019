@@ -6,8 +6,10 @@
 
 import base
 
+# Pendente transformar o response em um objeto Produto e chamar a Página que gera a lista de produtos
+# Aguardando implementação da base de dados para saber como ẽ o retorno da função
 def busca_por_nome(nome):
-	query = 'select * from produtos where nome like "%' + nome '"'
+	query = 'select * from produtos where nome like "%' + nome '%"'
 	response = base.executa_query(query)
 	return response
 

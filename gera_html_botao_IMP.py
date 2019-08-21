@@ -83,21 +83,15 @@ def subm_busca():
 def subm_cadastrar():
   texto = "CADASTRAR"
   cor_fundo = "#fff888"
-  return \
-    "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
-    "  <input type=\"submit\" value=\"CADASTRAR\">" + \
-    "</span>"
+  return subm_botao_simples(texto, cor_fundo)
 
 def subm_login(login,senha):
+  texto = "ENTRAR"
   cor_fundo = "#fff888"
-  return \
-    "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
-    "  <input type=\"submit\" value=\"ENTRAR\">" + \
-    "</span>"
+  return subm_botao_simples(texto, cor_fundo)
 
 def subm_logout():
+  texto = "SAIR"
   cor_fundo = "#fff888"
-  return \
-    "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
-    "  <input type=\"submit\" value=\"SAIR\">" + \
-    "</span>"
+  return subm_botao_simples(texto, cor_fundo)
+
