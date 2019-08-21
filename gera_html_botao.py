@@ -16,6 +16,10 @@ def login():
   """Retorna fragmento de HTML5 que representa o botao de login"""
   return gera_html_botao_IMP.login()
 
+def logout():
+  """Retorna fragmento de HTML5 que representa o botao de logout"""
+  return gera_html_botao_IMP.logout()
+
 def cadastrar_usuario():
   """retorna botão que vai ser incluído no menu geral de todas as páginas, e pede ao servidor uma página com o formulário para cadastrar um novo usuário."""
   return gera_html_botao_IMP.cadastrar()
@@ -35,6 +39,10 @@ def subm_login(login,senha):
   """Retorna o botão para a submissão de login"""
   return gera_html_botao_IMP.subm_login()
 
+def subm_logout():
+  """Retorna o botão para a confirmação de logout"""
+  return gera_html_botao_IMP.subm_logout()
+  
 def subm_cadastrar(texto):
     """Gera apenas o o botão "cadastrar" que vai estar dentro de um <form>...</form>, dentro da página de cadastrar novo usuário
     """
