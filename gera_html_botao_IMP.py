@@ -61,12 +61,12 @@ def subm_busca():
   cor_fundo = "#fff888"
   return subm_botao_simples(texto, cor_fundo)
 
-def subm_cadastrar():
+def subm_cadastrar(texto,fam_fonte,tam_fonte,pad,haling,cor_texto,cor_fundo):
   texto = "CADASTRAR"
   cor_fundo = "#fff888"
   return \
-    "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
-    "  <input type=\"submit\" value=\"CADASTRAR\">" + \
+    "<span style=\"background-color:" + cor_fundo + ";text-align: " + haling + ";\">\n" + \
+    "  <input type=\"submit\" value=\"" + texto + "\">" + \
     "</span>"
 
 def subm_login(login,senha):
