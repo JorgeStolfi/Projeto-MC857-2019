@@ -28,11 +28,11 @@ def cria(c):
 
 def obtem_usuario(self):
     """ Esta função retorna um objeto do tipo { Usuario }. """
-    return self
+    return pedido_IMP.obtem_usuario(self)
 
 def obtem_status(self):
     """ Essa função retorna o status do pedido. Os status podem ser: """
     """ 1) 'incompleto': Quando o usuário jpa realizou a compra, porém o pagamento não foi efetuado. """
     """ 2) 'pagando': Quando a pagamento do produto já foi efetuado e aprovado, mas ainda não foi enviado. """
     """ 3) 'depachado': Quando o pedido estiver indo para o usuário com a transportadora. """
-    return self
+    return pedido_IMP.obtem_status(self)

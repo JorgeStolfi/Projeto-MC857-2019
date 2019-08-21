@@ -29,7 +29,7 @@ def comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo):
   CSS (por exemplo, '#ff8800')."""
   return gera_html_form_IMP.comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo)
 
-def login(login,senha):
+def login():
   """Retorna o botão para a submissão de login"""
   return gera_html_form_IMP.login()
 

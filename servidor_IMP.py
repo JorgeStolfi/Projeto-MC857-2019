@@ -9,6 +9,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib.parse, cgi
 import sys
 
+import base
+
 # Classe interna:
 
 class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
@@ -130,9 +132,11 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 # Comandos para rodar o servidor:
 
 def dispara():
+  base.conecta()
   host = '0.0.0.0' # Aceita pedidos de qualquer IP.
   porta = 8081 # Porta 8081 em vez de 80, para não precisar de acesso "root"
   endereco = (host,porta)
   objeto_servidor = HTTPServer(endereco, Processador_de_pedido_HTTP)
   print('disparando o servidor...')
   objeto_servidor.serve_forever()
+  
