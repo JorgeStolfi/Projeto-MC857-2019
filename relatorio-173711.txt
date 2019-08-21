@@ -1,0 +1,2 @@
+corrigido os problemas de interface de base_usuarios.py
+rascunho do módulo processa_comando_cadastro.py
