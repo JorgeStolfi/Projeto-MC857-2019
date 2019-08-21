@@ -26,6 +26,25 @@ def login():
     "  >" + "Login Button" + "</button>\n" + \
     "</span>"
 
+def logout():
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  cor_fundo = "#fff888"
+  return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "  background-color:" + cor_fundo + ";\n" + \
+    "  text-align: center;\n" + \
+    "\">\n" + \
+    "  <button\n" + \
+    "    type=\"button\"\n" + \
+    "    onclick=\"alert('" + "Logout" + "')\"\n" + \
+    "  >" + "Logout Button" + "</button>\n" + \
+    "</span>"
+
 def teste_de_popup(texto):
   fam_fonte = "Courier"
   tam_fonte = "18px"
@@ -74,4 +93,11 @@ def subm_login(login,senha):
   return \
     "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
     "  <input type=\"submit\" value=\"ENTRAR\">" + \
+    "</span>"
+
+def subm_logout():
+  cor_fundo = "#fff888"
+  return \
+    "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
+    "  <input type=\"submit\" value=\"SAIR\">" + \
     "</span>"
