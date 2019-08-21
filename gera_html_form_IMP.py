@@ -76,7 +76,30 @@ def cadastrar_usuario():
     "    <div>" + \
     "	<label>Senha:</label>" + \
     "	<input type=\"text\" id=\"senha\" name=\"senha\"/>" + \
-    "    </div>" + gera_html_botao.subm_cadastrar("Cadastrar") + \
+    "    </div>" + gera_html_botao.subm_cadastrar() + \
     "  </form>\n" + \
     "</span>"
+
+def login():
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  cor_cinza = "#fff888"
+  cor_fundo = "#fff888"
+  return \
+      "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form action=\"login\" method=\"post\">" + \
+    "   <label>E-mail:</label>" + \
+    "	<input type=\"email\" id=\"email\" name=\"email\"/>" + \
+    "   </div>" + \
+    "   <label>Senha:</label>" + \
+    "	<input type=\"text\" id=\"senha\" name=\"senha\"/>" + \
+    "   </div>" + gera_html_botao.login() + \
+    "  </form>\n" + \
+    "</span>"
+
     
