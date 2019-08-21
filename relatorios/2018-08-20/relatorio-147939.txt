@@ -7,4 +7,4 @@ Correções da interface carrinho.py, de acordo com issue aberta:
 - Em vários métodos, falta passar o argumento self para o método imlementador.
 - A função cria deve ser uma função da interface, não um método da classe; e sua implementação deve estar em carrinho_IMP.py, não na interface.
 
-Alteração dos métodos de processa_comando_http_IMP para utilizar o métodos do novos módulos
+Alteração dos métodos de processa_comando_http_IMP para utilizar o métodos dos novos módulos
