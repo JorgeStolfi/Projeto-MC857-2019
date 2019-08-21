@@ -1,5 +1,5 @@
 #Essa classe é usada para simular o comportamento de uma referência de um banco de dados.
-
+import base
 class BancoReferencia:
     def __init__(self, nome_banco, nome_usuario, senha):
         self.__nome_banco = nome_banco
@@ -17,14 +17,7 @@ class BancoReferencia:
         return
 
 #Connect to dabase
-def conecta_ao_banco(nome_banco, nome_usuario, senha):
-    '''
-    Tenta conectar ao banco
-    '''
 
-    referencia_banco = BancoReferencia(nome_banco, nome_usuario, senha)
-    referencia_banco.conexao()
-    return referencia_banco
 
 def acrescenta(bd_referencia, usr):
     '''
@@ -34,17 +27,22 @@ def acrescenta(bd_referencia, usr):
     console.log(f"Usuario {usr.name} created")
     return True
 
-def busca_por_id(bd_referencia, id):
+def busca_id(bd_referencia, id):
     '''
     Devolve usuario numa busca por id
     '''
+    sql=("SElECT nome,sobrenome,nascDt,senha,email,cpf,endereco,telefone FROM usuarios WHERE id = " + id)
+    base.executa_query(sql)
     console.log(f"Usuario {id} devolvido")
     return True
 
-def busca_por_email(bd_referencia, email):
+def busca_email(bd_referencia, email):
     '''
     Retorna usuario por email se existente.
     '''
+    
+    sql=("SElECT nome,sobrenome,nascDt,senha,email,cpf,endereco,telefone FROM usuarios WHERE email = " + email)
+    base.executa_query(sql)
     console.log(f"Usuario {email} devolvido")
     return True
 
