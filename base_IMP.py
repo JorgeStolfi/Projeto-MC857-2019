@@ -3,6 +3,7 @@
 # Implementação do módulo {base}
 
 import mysql
+# import mysql_bobo as mysql  # linha para teste
 
 class Base_IMP:
 
