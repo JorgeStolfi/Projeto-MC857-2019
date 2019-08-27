@@ -1,5 +1,4 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-20 01:36:51 by stolfilocal
 
 # Implementação do módulo {gera_html_pag}.
 

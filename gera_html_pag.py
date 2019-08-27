@@ -1,5 +1,4 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-13 00:32:21 by stolfilocal
 
 # Interface do módulo {gera_html_pag}.
 # As funções deste módulo retornam cadeias de caracteres que são 

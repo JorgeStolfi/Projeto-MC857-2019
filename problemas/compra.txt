@@ -1,0 +1,16 @@
+
+
+Problemas no módulo `compra`:
+
+Interface `compra.py`:
+
+* As descrições dos métodos `acrescenta_item`, `troca_qtd`, e `elimina_prod` estão no formato errado.  Devem dizer a informação necessaria com o mínimo de linhas e palavras.
+
+Implementação `compra_IMP.py`:
+
+* Os métodos e funções da implementação devem corresponder aos da interface
+* Os métodos e funções precisam ter uma implementação que execute sem dar erro.
+
+Teste `testes/compra_TST.py`
+
+* É preciso criar o programa `testes/compra_TST.py` que chama todos os métodos e funções da interface, pelo menos uma vez cada, sem dar erro.

@@ -1,5 +1,4 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-13 00:44:21 by stolfilocal
 
 # Funções para processar comandos HTTP (GET,POST, ou HEAD)
 # recebidos do usuário.  
@@ -26,14 +25,10 @@
 # Implementação desta interface:
 import processa_comando_http_IMP
 
-def comando_GET(dados):
-  """Esta função processa um comando HTTP 'GET' recebido pelo servidor."""
-  return processa_comando_http_IMP.comando_GET(dados)
-
-def comando_POST(dados):
-  """Esta função processa um comando HTTP 'POST' recebido pelo servidor."""
-  return processa_comando_http_IMP.comando_POST(dados)
-
-def comando_HEAD(dados):
-  """Esta função processa um comando HTTP 'HEAD' recebido pelo servidor."""
-  return processa_comando_http_IMPcomando_.HEAD(dados)
+def cria_objeto_servidor(host,porta):
+  """Devolve um objeto da classe {HTTPServer} que é usado pelo servidor HTTP
+  para processar comandos GET, POST, e HEAD recebidos dos usuários remotos
+  no {host} especificado (um string que é um endereço IP), pela porta especificada
+  (um inteiro, p.ex. 80 ou 8081).  Se {host} for '0.0.0.0', aceita comandos de qualquer
+  máquina."""
+  return processa_comando_http_IMP.cria_objeto_servidor(host,porta)

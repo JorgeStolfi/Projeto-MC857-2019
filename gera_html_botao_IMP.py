@@ -1,5 +1,4 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-19 23:30:22 by stolfilocal
 
 # Implementação do módulo {gera_html_botao}.
 

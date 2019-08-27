@@ -1,5 +1,4 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-19 20:49:50 by stolfilocal
 
 # Interface do módulo {gera_html_elem}.
 

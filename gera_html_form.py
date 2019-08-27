@@ -1,5 +1,4 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-19 23:52:35 by stolfilocal
 
 # Interface do módulo {gera_html_form}.
 

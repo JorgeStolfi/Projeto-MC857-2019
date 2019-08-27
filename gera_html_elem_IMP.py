@@ -1,7 +1,5 @@
 #! /usr/bin/python3
 
-# Last edited on 2019-08-19 23:47:25 by stolfilocal
-
 # Implementação do módulo {gera_html_elem}.
 
 # Interfaces importadas por esta implementação:

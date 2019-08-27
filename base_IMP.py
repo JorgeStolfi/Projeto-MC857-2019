@@ -1,24 +1,33 @@
 #!/usr/bin/python3
 
-#Guilherme Luis Domingues (guilhermeluisdomingues)
-#155619
-#Ultima Atualizacao: 20/08
+# Implementação do módulo {base}
 
-# Funcao para criar e executar queries
+import mysql
 
-import mysql.connector as mariadb
+class Base_IMP:
+
+  def __init__(self,con):
+    self.conexao = con
+
+  def executa_comando(self,cmd):
+      try:
+        cursor = self.conexao.cursor()
+        resultado = cursor.execute(cmd)
+        cursor.close()
+        return resultado
+      except mysql.Error as error:
+        return None
+
 
 def conecta():
-  mariadb_connection = mariadb.connect(user='usuario', password='senha',
-  database='banco_de_dados')
-  cursor = mariadb_connection.cursor()
-  return cursor
+  conexao = mysql.connect(user=uid, password=senha, database=(dir + "/mc857"))
+  base = Base_IMP(conexao)
+  return base
 
-def executa_query(query):
-    try:
-      cursor = conecta()
-      resultado = cursor.execute(query))
-      cursor.close()
-      return resultado
-    except mariadb.Error as error:
-      return None
+def identificador_de_indice(let,ind):
+  return "%s-%08d" % (let,ind)
+
+def indice_de_identificador(let,id):
+  assert id.len() == 10 and id[0:1] == let and id[1:1] == "-"
+  ind = int(id[3:])
+  return ind

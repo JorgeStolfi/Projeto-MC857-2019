@@ -6,9 +6,10 @@ class Usuario_IMP:
         self.nascDt = atrs.nascDt
         self.senha = atrs.senha
         self.email = atrs.email
-        self.cpf = atrs.cpf
+        self.CPF = atrs.CPF
         self.endereco = atrs.endereco
         self.telefone = atrs.telefone
+        
     def obtem_atributos(self):
         return self
 
@@ -33,8 +34,8 @@ def muda_atributos(self,alts):
         self.senha = alts.senha
     if alts.email is not None: 
         self.email = alts.email
-    if alts.cpf is not None:
-        self.cpf = alts.cpf
+    if alts.CPF is not None:
+        self.CPF = alts.CPF
     if alts.endereco is not None:
         self.endereco = alts.endereco
     if alts.telefone is not None:
@@ -43,9 +44,9 @@ def muda_atributos(self,alts):
 def obtem_atributos(self):
     """Retorna um dicionário Python com os atributos do usuário,
     exceto identificador."""
-    return {self.nome, self.sobrenome, self.nascDt, self.email, self.cpf, self.endereco, self.telefone}
+    return {self.nome, self.sobrenome, self.nascDt, self.email, self.CPF, self.endereco, self.telefone}
 
-def obtem_id(self):
+def obtem_identificador(self):
     """Devolve uma cadeia consistindo das letras 'U-' e 8 algarismos decimais,
     que identifica unicamente o usuário. Este identificador é 
     atribuído na criação do usuário e não pode ser alterado."""

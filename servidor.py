@@ -1,5 +1,4 @@
 #! /usr/bin/python3
-# Last edited on 2019-08-12 22:58:14 by stolfilocal
 
 # Servidor do projeto MC857.
 

@@ -1,0 +1,16 @@
+
+
+Problemas no módulo `sessao`:
+
+Interface:
+
+* As descrições dos métodos e das funções estão muito insuficientes.  Devem especificar os tipos e significados dos parâmetros (exceto `self`) e do resultado, e descrever exatamente o que o método faz, incluindo condições exigidas para chamada e casos especiais.  Por exemplo, a descrição do método `login` deve dizer que `usr` deve ser um objeto da classe `Usuario`, e que a sessão deve estar fechada na entrada, e estará aberta e associada ao usuário `usr` na saída.
+* O campo `sessao_aberta` nao deve ser visível na interface. Deve ser acessado apenas através do método `aberta`.
+
+Implementação:
+
+* Um método ou função documentado na interface não deve ser documentado novamente na implementação.
+* A classe deve ter um método `__init__(self)` que define `self.usr = None`.
+* O método `aberta` não precisa de um campo especial; deve devolver `self.usr != None`.
+* A função `cria` deve ser uma função, e não um método da classe.
+

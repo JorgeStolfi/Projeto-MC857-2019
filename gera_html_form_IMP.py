@@ -1,7 +1,5 @@
 #! /usr/bin/python3
 
-# Last edited on 2019-08-20 01:32:22 by stolfilocal
-
 # Implementação do módulo {gera_html_form}.
 
 # Interfaces importadas por esta implementação:
