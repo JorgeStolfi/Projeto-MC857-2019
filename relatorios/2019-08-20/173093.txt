@@ -1,0 +1,6 @@
+- Removi as pastas de css e html, assim como a função de carregar as paginas dos arquivos.
+
+- Parametrizei a pagina de login a fim de possibilitar que seja adequada ao local em que vai
+ser utilizada.
+
+- Verifiquei se o módulo gera_html_elem_IMP.py para ter certeza que tudo estava funcionando.

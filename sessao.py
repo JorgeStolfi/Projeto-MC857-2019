@@ -2,43 +2,44 @@
 
 # Classe de sessao do projeto MC857.
 
-import usuario
-from usuario import Usuario
-
-import sessao_IMP
 from sessao_IMP import Sessao_IMP
+import sessao_IMP
 
-class Sessao():
-  """Um objeto desta classe representa uma sessão de acesso ao 
-  servidor.  Cada sessão pertence a um único usuário. A sessão é criada 
-  e "aberta" quando o usuário faz login, e é "fechada" no logout. Um mesmo 
-  usuário pode ter várias sessões abertas ao mesmo tempo."""
+def cria():
+  """Cria um novo objeto da classe {Sessao}, inicialmente fechada e sem usuario."""
+  return sessao_IMP.cria()
+
+class Sessao(Sessao_IMP):
+  """Um objeto desta classe representa uma sessao de acesso ao
+  servidor.  Cada sessao pertence a um unico usuario. A sessao e criada
+  e "aberta" quando o usuario faz login, e e "fechada" no logout. Um mesmo
+  usuario pode ter varias sessoes abertas ao mesmo tempo."""
 
   def obtem_identificador(self):
     """Devolve uma cadeia no formato 'S-{NNNNNNNN}', onde 
-    {NNNNNNNN} é um número de 8 algarismos 
-    que identifica unicamente a sessão. Este identificador é 
-    atribuído na criação da sessão e não pode ser alterado."""
-    return sessao_IMP.obtem_identificador(self)
-
-  sessao_aberta = False
+    {NNNNNNNN} e um numero de 8 algarismos 
+    que identifica unicamente a sessao. Este identificador e 
+    atribuido na criacao da sessao e nao pode ser alterado."""
+    return Sessao_IMP.obtem_identificador(self)
 
   def login(self, usr):
-    """Faz o login do usuário"""
+    """Faz o login do usuario
+       Antes de chamar esta funcao e necessario realizar logout, caso alguem ja esteja logado
+       O parametro do usr deve ser um objeto do tipo Usuario
+       A funcao nao possue retorno"""
     Sessao_IMP.login(self, usr)
 
   def logout(self):
-    """Faz o logout do usuario"""
+    """Faz o logout do usuario
+       apos o logout todas as chamadas ao metodo 'aberta' retornara false
+    """
     Sessao_IMP.logout(self)
 
   def aberta(self):
-    """Verifica se a sessão está aberta"""        
+    """Retorna True se a sessao esta aberta, caso contrario False"""
     return Sessao_IMP.aberta(self)
 
   def obtem_usuario(self):
-    """Retorna o usuário logado na sessão"""
+    """Retorna o um objeto do tipo Usuario, para o usuario logado na sessao"""
     return Sessao_IMP.obtem_usuario(self)
 
-def cria():
-  """Cria um novo objeto da classe {Sessao}, inicialmente fechada e sem usuário."""
-  Sessao_IMP.cria()
