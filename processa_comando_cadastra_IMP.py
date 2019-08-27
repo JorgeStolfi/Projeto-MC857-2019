@@ -1,3 +1,6 @@
+#! /usr/bin/python3
+
+import gera_html_pag, base_usuarios
+
 def cadastrar_usuario():
-    pagina = '<html><header><title>This is title</title></header><body>Hello world</body></html>'
-    return pagina
+    return gera_html_pag.cadastrar_usuario()
