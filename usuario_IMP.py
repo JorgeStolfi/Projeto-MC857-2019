@@ -6,6 +6,7 @@ class Usuario_IMP:
     senha = ""
     email = ""
     CPF = ""
+    nascDt = ""
     endereco = ""
     telefone = ""
 
@@ -14,6 +15,7 @@ class Usuario_IMP:
         self.nome = atrs[nome]
         self.senha = atrs[senha]
         self.email = atrs[email]
+        self.nascDt = atrs[nascDt]
         self.CPF = atrs[CPF]
         self.endereco = atrs[endereco]
         self.telefone = atrs[telefone] 
@@ -23,7 +25,7 @@ class Usuario_IMP:
 
     def cria(self, atrs):
         
-        cpf_atual = atrs[CPF]
+        cpf_atual = atrs[]
         email_atual = atrs[email]
 
         # CPF ou email ja existe na base de usuarios
@@ -34,8 +36,10 @@ class Usuario_IMP:
             copia_atrs = copy.deepcopy(atrs)
             usr = Usuario_IMP(copia_atrs)
             # TODO verificar primeiro argumento da chamada {bas}
-            id = base_usuarios.acrescenta(usr)
-            set_id(id)
+            # id = base_usuarios.acrescenta(usr)
+            # Supor que volta id = 42
+            idt = 42
+            set_id(idt)
             
         return usr
 
@@ -62,10 +66,12 @@ class Usuario_IMP:
         
          copia_atrs = copy.deepcopy(atrs)
          # TODO Primeiro argumento Base ?
-         base_usuarios.atualiza(get_id(), self)
+         # base_usuarios.atualiza(get_id(), self)
+         # base de usuarios nao eh modificada
 
     def obtem_atributos(self):
-        return {self.nome, self.sobrenome, self.nascDt, self.email, self.CPF, self.endereco, self.telefone}
+        return {self.nome, self.nascDt, self.email, self.CPF, \ 
+        self.endereco, self.telefone}
 
     def obtem_identificador(self):
         return self.login
