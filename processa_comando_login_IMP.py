@@ -1,12 +1,7 @@
 #!/usr/bin/python3
 
-import base.py
-import 
+import gera_html_pag
 
-
-def conecta():
-    return base.conecta()
-
-def login(usuario,senha):
-    db=self.conecta()
+def processa():
+    return gera_html_pag.login()
     
