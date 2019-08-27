@@ -23,5 +23,5 @@ def desconecta(conexao_mysql):
   return processa_comando_login_IMP.desconecta(conexao_mysql)
 
 def login(usuario, senha):
-  """Conecta-se à base de dados, confere se as credenciais estão corretas e, caso estejam, conecta o usuário ao sistema. Ao fim, desconecta-se da base de dados"""
+  """Conecta-se à base de dados, confere se as credenciais{CPF e senha} estão corretas e, caso estejam, conecta o usuário ao sistema. Ao fim, desconecta-se da base de dados"""
   return processa_comando_login_IMP.login(usuario, senha)
