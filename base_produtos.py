@@ -20,7 +20,7 @@ def busca_por_palavra(bas,pal):
   de todos os produtos da base que tem a cadeia {pal} nas suas descrições
   (curta, média, e longa), em ordem arbitrária. Se não houver nenhum 
   produto que satisfaça essa busca, devolve uma lista vazia."""
-  return base_produtos_IMP.busca_por_pal(bas,pal)
+  return base_produtos_IMP.busca_por_palavra(bas,pal)
 
 def acrescenta(bas,prod):
   """Dado um objeto {prod} da classe {Produto}, acrescenta uma nova entrada
