@@ -21,7 +21,7 @@ def acrescenta(bas,ped):
   ignorado). Devolve o índice inteiro da compra na base."""
   return base_compras_IMP.acrescenta(ped)
 
- def atualiza(bas,ind,ped):
+def atualiza(bas,ind,ped):
   """Dado um objeto {ped} da classe {Compra}, atualiza
   a entrada de índice {ind} da base com os os atributos de {ped} 
   (menos o identificador, que é ignorado).  
