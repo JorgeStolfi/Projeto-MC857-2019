@@ -11,7 +11,6 @@ def busca():
   fam_fonte = "Courier"
   tam_fonte = "18px"
   cor_cinza = "#fff888"
-  cor_fundo = "#fff888"
   return \
     "<span style=\"\n" + \
     "  display: inline-block;\n" + \
@@ -27,7 +26,9 @@ def busca():
     "  </form>\n" + \
     "</span>"
 
-def comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo):
+def comprar(id_produto,qtd_produto):
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
   return \
     "<span style=\"\n" + \
     "  display: inline-block;\n" + \
@@ -45,8 +46,6 @@ def comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo):
 def cadastrar_usuario():
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  cor_cinza = "#fff888"
-  cor_fundo = "#fff888"
   return \
       "<span style=\"\n" + \
     "  display: inline-block;\n" + \
@@ -81,8 +80,6 @@ def cadastrar_usuario():
 def login():
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  cor_cinza = "#fff888"
-  cor_fundo = "#fff888"
   return \
       "<span style=\"\n" + \
     "  display: inline-block;\n" + \

@@ -15,18 +15,13 @@ def busca():
   """Retorna HTML de um formulario para busca textual no cadastro de produtos."""
   return gera_html_form_IMP.busca()
 
-def comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo):
-  """Retorna um botão que é um fragmento HTML com o texto 'COMPRAR'.
+def comprar(id_produto,qtd_produto):
+  """Retorna um fragmento HTML que contem o formulãrio de submissão de uma compra, juntamente com o botão comprar.
 
   Os parâmetros {id_produto} e {qtd_produto} especificam o id do produto
-  da qual se quer comprar e a quantidade de produtos desejados, respectivamente.
+  da qual se quer comprar e a quantidade de produtos desejados, respectivamente."""
 
-  Os parâmetros {fam_fonte} e {tam_fonte} especificam a família e o
-  tamanho do fonte a usar (por exemplo 'Helvetica','18px').
-
-  Os parâmetros {cor_texto} e {cor_fundo} devem ser cores aceitáveis no
-  CSS (por exemplo, '#ff8800')."""
-  return gera_html_form_IMP.comprar(id_produto,qtd_produto,fam_fonte,tam_fonte,cor_texto,cor_fundo)
+  return gera_html_form_IMP.comprar(id_produto,qtd_produto)
 
 def login():
   """Retorna o botão para a submissão de login"""
@@ -34,4 +29,4 @@ def login():
 
 def cadastrar_usuario():
     """Retorna o <form> para cadastro do usuario"""
-    return gera_html_form_IMP.cadastrar_usuario();
+    return gera_html_form_IMP.cadastrar_usuario()

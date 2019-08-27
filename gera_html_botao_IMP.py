@@ -79,7 +79,7 @@ def subm_busca():
   cor_fundo = "#fff888"
   return subm_botao_simples(texto, cor_fundo)
 
-def subm_cadastrar(texto,fam_fonte,tam_fonte,pad,haling,cor_texto,cor_fundo):
+def subm_cadastrar():
   texto = "CADASTRAR"
   cor_fundo = "#fff888"
   return subm_botao_simples(texto, cor_fundo)
