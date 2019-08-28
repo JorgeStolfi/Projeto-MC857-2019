@@ -18,10 +18,19 @@ class Base_IMP:
         return resultado
       except mysql.Error as error:
         return None
+  
+  def indice_inserido(self):
+      try:
+        cursor = self.conexao.cursor(buffered=True)
+        """Não há nome ainda para a base de sessões."""
+        last_inserted_query = """SELECT MAX(ind) FROM compras,produto,usuarios"""
+        resultado = cursor.execute(last_inserted_query)
+        return resultado
+      except mysql.Error as error:
+        return None
 
-
-def conecta():
-  conexao = mysql.connect(user=uid, password=senha, database=(dir + "/mc857"))
+def conecta(dir, uid, senha):
+  conexao = mysql.connector.connect(user=uid, password=senha, database=(dir + "/mc857"))
   base = Base_IMP(conexao)
   return base
 
