@@ -7,8 +7,8 @@ import base, base_produtos
 class Produto_IMP():
 
   def __init__(self,atrs):
-    self.atrs = atrs;
-    self.id = None;
+    self.atrs = atrs
+    self.id = None
 
   def obtem_identificador(self):
     """Devolve uma cadeia consistindo das letras 'P-' e 8 algarismos decimais,
@@ -30,8 +30,8 @@ class Produto_IMP():
     dos nomes de atributos do produto, e troca os valores desses atributos 
     pels valores correspondentes em {alts}."""
     for key in alts:
-        if key in dir(self):
-            setattr(self, key, alts[key])
+        if key in self.atrs: 
+          setattr(self, key, alts[key])
 
 def cria(atrs):
   sys.stderr.write("Criando objeto...\n")

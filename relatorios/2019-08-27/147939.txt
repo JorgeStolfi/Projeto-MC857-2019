@@ -1,0 +1,2 @@
+Foram realizados os testes do módulo de produto.
+Durante os testes, percebi que o método muda_atributos não estava alterando o atributo corretamente, portanto, fiz a correção.
