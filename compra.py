@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-# Este módulo define a classe {Compra}. 
+# Este módulo define a classe {Compra}.
 
 # Interfaces importadas por esta interface:
 import usuario; from usuario import Usuario
@@ -12,17 +12,17 @@ from compra_IMP import Compra_IMP
 # Funções exportadas por este módulo:
 
 class Compra(Compra_IMP):
-  """Um objeto desta classe representa e descreve um pedido de compra 
-  de um ou mais produtos em diversas quantidades, feito por um 
+  """Um objeto desta classe representa e descreve um pedido de compra
+  de um ou mais produtos em diversas quantidades, feito por um
   cliente da loja, que pode estar em várias etapas de execução.
-  
+
   Em particular, o pedido pode ainda estar sendo construído e alterado
   pelo usuário -- ou seja, pode ser um "carrinho de compras"."""
-  
+
   def obtem_identificador(self):
-    """Devolve uma cadeia no formato 'C-{NNNNNNNN}', onde 
-    {NNNNNNNN} é um número de 8 algarismos 
-    que identifica unicamente o pedido de compra. Este identificador é 
+    """Devolve uma cadeia no formato 'C-{NNNNNNNN}', onde
+    {NNNNNNNN} é um número de 8 algarismos
+    que identifica unicamente o pedido de compra. Este identificador é
     atribuído na criação do objeto e não pode ser alterado."""
     return Compra_IMP.obtem_identificador(self)
 
@@ -42,8 +42,8 @@ class Compra(Compra_IMP):
     return Compra_IMP.obtem_status(self)
 
   def lista_itens(self):
-    """Esta função devolve a lista dos produtos no pedido de compra. 
-    Retorna uma lista de itens; cada item é uma tupla  
+    """Esta função devolve a lista dos produtos no pedido de compra.
+    Retorna uma lista de itens; cada item é uma tupla
     {(prod, qt, prc)}, onde {prod} é o produto (um objeto da classe {Produto}),
     {qt} é a quantidade (um float), e {prc} é o preço total do item (um float).
     Os produtos são todos distintos."""
@@ -90,11 +90,11 @@ class Compra(Compra_IMP):
         prod : Produto
             Objeto produto que será removido do pedido compra
     """
-    return Compra_IMP.elimina_prod(self, prod)
+    return Compra_IMP.elimina_prod(prod)
 
-def cria(usr):
-  """Esta função cria um objeto da classe {Compra} que representa um novo pedido de
-  compra para o cliente {usr} (um objeto da classe {Usuario}), inicialmente vazio
-  (sem nenhum produto). O pedido é acrescentado à base de dados de compras, e 
-  recebe um identificador único."""
-  return compra_IMP.cria(usr)
+    def cria(usr):
+      """Esta função cria um objeto da classe {Compra} que representa um novo pedido de
+      compra para o cliente {usr} (um objeto da classe {Usuario}), inicialmente vazio
+      (sem nenhum produto). O pedido é acrescentado à base de dados de compras, e
+      recebe um identificador único."""
+      return Compra_IMP.cria(usr)
