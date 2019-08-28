@@ -1,21 +1,22 @@
-#!/usr/bin/python3
-
-#Implementação de {base_produtos.py}
-
 import sys
-import base
+
+Error = "Erro"
+
+def connect():
+    sys.stderr.write("Conectado com a base \n")
+
+def conecta():
+    sys.stderr.write("Conectado com a base \n")
 
 def busca_por_palavra(bas, pal):
   cmd = "SELECT " + pal + " FROM produto"
-  produtos_econtrados = bas.executa_comando(cmd)
-  print("Produtos encontrados: " + produtos_econtrados)
-  return produtos_econtrados
+  print("Produtos encontrados: " + cmd)
+  return cmd
 
 def busca_por_indice(bas, ind):
   cmd = "SELECT " + ind + " FROM produto"
-  produtos_econtrados = bas.executa_comando(cmd)
-  print("Produtos encontrados: "+produtos_econtrados)
-  return produtos_econtrados
+  print("Produtos encontrados: "+ cmd)
+  return cmd
 
 def acrescenta(bas,prod):
   sys.stderr.write("!! base_produtos_IMP.acrescenta: a implementar\n")

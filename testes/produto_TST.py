@@ -1,7 +1,15 @@
 #! /usr/bin/python3
 
 import sys
-import produto; from produto import Produto
+
+import produto
+from produto import Produto
+
+def valida_resultados(esperado, obtido):
+  if(esperado != obtido):
+    print("ERRO: o resultado " + str(obtido) + " é diferente do esperado " + str(esperado))  
+  else:
+    print("Sucesso")
 
 atrs = {
   'descr_curta': "Escovador de ouriço",
@@ -12,8 +20,23 @@ atrs = {
   
 prod = produto.cria(atrs)
 
-sys.stderr.write(prod.obtem_identificador() + "\n")
-sys.stderr.write(str(prod.calcula_preco(10)) + "\n")
-sys.stderr.write(str(prod.obtem_atributos()) + "\n")
+print("Testando metodo obter_identificador")
+obtido = prod.obtem_identificador()
+esperado = "P-00012345"
+valida_resultados(obtido, esperado)
+
+print("Testando metodo calcula_preco")
+obtido = prod.calcula_preco(10)
+esperado = 3.1415926
+valida_resultados(obtido, esperado)
+
+print("Testando metodo obtem_atributos")
+obtido =  prod.obtem_atributos()
+esperado = {"atrs": atrs, "id": "P-00012345"}
+valida_resultados(obtido, esperado)
+
+print("Testando metodo muda_atributos")
 prod.muda_atributos({'preco': 150.00})
-sys.stderr.write(str(prod.obtem_atributos()) + "\n")
+obtido = prod.obtem_atributos().get('preco')
+esperado = 150.00
+valida_resultados(obtido, esperado)

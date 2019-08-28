@@ -1,0 +1,5 @@
+- Arrumei a implementacao do modulo sessao_IMP
+- Consertei os problemas descritos anteriormente
+    - Comentando melhor a interface
+    - Adequei o metodo de sessao aberta
+    - removi os atributos desnecessarios

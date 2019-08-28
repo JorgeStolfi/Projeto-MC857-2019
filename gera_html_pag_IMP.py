@@ -50,3 +50,8 @@ def cadastrar_usuario(conteudo):
   conteudo_cadastro = gera_html_form.cadastrar_usuario()
   pagina = generica(conteudo_cadastro) 
   return pagina
+
+def lista_compra(comp):
+  conteudo_lista = gera_html_form.lista_compra(comp)
+  pagina = generica(conteudo_lista) 
+  return pagina
