@@ -1,0 +1,5 @@
+############ 27/AGO/2019 ############
+    Nesta aula foi realizada a criação da classe base_sessoes_IMP assim como a implementação dos métodos
+definidos na interface.
+    Além disso foi criado a classe de testes base_sessoes_TST e criado os métodos para testar todos os métodos
+implementados da interface base_sessoes.
