@@ -5,10 +5,6 @@
 from sessao_IMP import Sessao_IMP
 import sessao_IMP
 
-def cria():
-  """Cria um novo objeto da classe {Sessao}, inicialmente fechada e sem usuario."""
-  return sessao_IMP.cria()
-
 class Sessao(Sessao_IMP):
   """Um objeto desta classe representa uma sessao de acesso ao
   servidor.  Cada sessao pertence a um unico usuario. A sessao e criada
@@ -42,4 +38,9 @@ class Sessao(Sessao_IMP):
   def obtem_usuario(self):
     """Retorna o um objeto do tipo Usuario, para o usuario logado na sessao"""
     return Sessao_IMP.obtem_usuario(self)
+    
+# Construtor da classe:
 
+def cria(bas):
+  """Cria um novo objeto da classe {Sessao}, inicialmente fechada e sem usuario."""
+  return sessao_IMP.cria(bas)

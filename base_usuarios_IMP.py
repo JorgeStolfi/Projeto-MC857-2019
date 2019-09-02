@@ -2,27 +2,45 @@
 import base
 
 def busca_por_indice(bas,ind):
-    sql="SELECT nome,senha,email,CPF,endereco,CEP,telefone FROM usuarios WHERE ind = " + ind
-    resultado=base.executa_comando(sql)
+    cmd="SELECT nome,senha,email,CPF,endereco,CEP,telefone FROM usuarios WHERE ind = " + ind
+    resultado=bas.executa_comando(cmd)
     return resultado
 
 def busca_por_email(bas,em):
-    sql="SELECT nome,senha,CPF,endereco,CEP,telefone FROM usuarios WHERE email = " + em
-    resultado=base.executa_comando(sql)
+    cmd="SELECT nome,senha,CPF,endereco,CEP,telefone FROM usuarios WHERE email = " + em
+    resultado=bas.executa_comando(cmd)
     return resultado
 
 def busca_por_CPF(bas,CPF):
-    sql="SELECT nome,senha,email,endereco,CEP,telefone FROM usuarios WHERE CPF = " + CPF
-    resultado=base.executa_comando(sql)
+    cmd="SELECT nome,senha,email,endereco,CEP,telefone FROM usuarios WHERE CPF = " + CPF
+    resultado=bas.executa_comando(cmd)
     return resultado
 
 def acrescenta(bas,usr):
-    sql="INSERT INTO usuario (nome,senha,email,CPF,endereco,CEP,telefone) VALUES (" + usr.nome + ", " + usr.senha + ", " + usr.email + ", "
-                                                                                    + usr.CPF + ", " + usr.endereco + ", " + usr.CEP + ", " + usr.telefone ");"
-    base.executa_comando(sql)
+    atrs = usr.obtem_atributos();
+    nomes = "nome,senha,email,CPF,endereco,CEP,telefone"
+    valores = \
+      atrs["nome"] + ", " + \
+      atrs["senha"] + ", " + \
+      atrs["email"] + ", " + \
+      atrs["CPF"] + ", " + \
+      atrs["endereco"] + ", " + \
+      atrs["CEP"] + ", " + \
+      atrs["telefone"]
+    cmd="INSERT INTO usuarios (" + nomes + ") VALUES (" + valores + ");"
+    bas.executa_comando(cmd)
     indice_inteiro=base.indice_inserido()
     return indice_inteiro
 
 def atualiza(bas,ind,usr):
-    sql="UPDATE usuario SET nome = " + usr.nome + ", senha = " + usr.senha + ", email = " + usr.email + ", CPF = " + usr.CPF + ", endereco = "
-                                     + usr.endereco + ", CEP = " + usr.CEP + ", telefone = " + usr.telefone " WHERE ind = " + ind
+    atrs = usr.obtem_atributos();
+    pares = \
+      "nome = " + atrs["nome"] + ", " + \
+      "senha = " + atrs["senha"] + ", " + \
+      "email = " + atrs["email"] + ", " + \
+      "CPF = " + atrs["CPF"] + ", " + \
+      "endereco = " + atrs["endereco"] + ", " + \
+      "CEP = " + atrs["CEP"] + ", " + \
+      "telefone = " + atrs["telefone"]
+    cmd="UPDATE usuarios SET " + pares + " WHERE ind = " + ind
+    bas.executa_comando(cmd)

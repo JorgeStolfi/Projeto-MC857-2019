@@ -1,3 +1,5 @@
+#! /usr/in/python3
+
 import base_sessoes_IMP
 
 def valida_busca_por_indice(base):

@@ -17,7 +17,7 @@ def busca_por_indice(bas,ind):
   dado seu índice inteiro {ind} na base."""
   return base_sessoes_IMP.busca_por_indice(bas,ind)
 
-def acrescenta(sbas,es):
+def acrescenta(bas,ses):
   """Dado um objeto {ses} da classe {Sessao}, acrescenta uma nova entrada na base
   com os dados dessa sessão (menos o identificador, que é ignorado).  Devolve o 
   índice inteiro da sessão na base."""

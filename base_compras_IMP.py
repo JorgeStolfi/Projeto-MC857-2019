@@ -1,36 +1,39 @@
-import base.py
+#! /usr/bin/python3
 
-def busca_por_usuario(usr,abr):
-   query = "SELECT * FROM compras WHERE user_id = " + usr.id
-   usuario = base.executa_query(query)
-   return usuario
+import base
 
-def busca_por_id(compra_id):
-   query = "SELECT * FROM compras WHERE compra_id = " + compra_id
-   compra = base.executa_query(query)
-   return compra
+def busca_por_usuario(bas,usr,abr):
+   cmd = "SELECT * FROM compras WHERE user_id = " + usr.id
+   usr = bas.executa_comando(cmd)
+   return usr
 
-def busca_por_data(data):
-   query = "SELECT * FROM compras WHERE data = " + data
-   lista_compras = base.executa_query(query)
+def busca_por_id(bas,compra_id):
+   cmd = "SELECT * FROM compras WHERE compra_id = " + compra_id
+   cpr = bas.executa_comando(cmd)
+   return cpr
+
+def busca_por_data(bas,data):
+   cmd = "SELECT * FROM compras WHERE data = " + data
+   lista_compras = bas.executa_comando(cmd)
    return lista_compras
 
-def acrescenta(ped):
-   query = "INSERT INTO compras"
-   sucesso = base.executa_query(query)
+def acrescenta(bas,cpr):
+   cmd = "INSERT INTO compras"
+   sucesso = bas.executa_comando(cmd)
+   ind = bas.indice_inserido()
+   return ind
+
+def recupera(bas,cpr):
+   cmd = "SELECT * FROM compras WHERE id = " + cpr.id
+   cpr = bas.executa_comando(cmd)
+   return cpr
+
+def atualiza(bas,cpr):
+   cmd = "UPDATE compras"
+   sucesso = bas.executa_comando(cmd)
    return sucesso
 
-def recupera(ped):
-   query = "SELECT * FROM compras WHERE id = " + ped.id
-   compra = base.executa_query(query)
-   return compra
-
-def atualiza(ped):
-   query = "UPDATE compras"
-   sucesso = base.executa_query(query)
-   return sucesso
-
-def deleta(ped):
-   query = "DELETE FROM compras WHERE compra_id = " + ped
-   sucesso = base.executa_query(query)
+def deleta(bas,cpr):
+   cmd = "DELETE FROM compras WHERE compra_id = " + cpr
+   sucesso = bas.executa_comando(cmd)
    return sucesso

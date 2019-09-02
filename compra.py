@@ -32,7 +32,7 @@ class Compra(Compra_IMP):
     return Compra_IMP.obtem_usuario(self)
 
   def obtem_status(self):
-    """ Essa função retorna o status do pedido de compra, um string que, por enquanto, pode ser:
+    """Retorna o status do pedido de compra, um string que, por enquanto, pode ser:
        1) 'aberto': O cliente ainda está montando o pedido.
        2) 'pagando':  O cliente fechou o pedido, e a loja está aguardando o pagamento.
        3) 'pago': A loja já recebeu o pagamento e mandou para despacho.
@@ -42,10 +42,10 @@ class Compra(Compra_IMP):
     return Compra_IMP.obtem_status(self)
 
   def lista_itens(self):
-    """Esta função devolve a lista dos produtos no pedido de compra.
-    Retorna uma lista de itens; cada item é uma tupla
-    {(prod, qt, prc)}, onde {prod} é o produto (um objeto da classe {Produto}),
+    """Retorna uma cópia da lista de itens no pedido de compra.  Cada item é uma lista
+    {[prod, qt, prc]}, onde {prod} é o produto (um objeto da classe {Produto}),
     {qt} é a quantidade (um float), e {prc} é o preço total do item (um float).
+    
     Os produtos são todos distintos."""
     return Compra_IMP.lista_itens(self)
 
@@ -92,9 +92,9 @@ class Compra(Compra_IMP):
     """
     return Compra_IMP.elimina_prod(prod)
 
-    def cria(usr):
-      """Esta função cria um objeto da classe {Compra} que representa um novo pedido de
-      compra para o cliente {usr} (um objeto da classe {Usuario}), inicialmente vazio
-      (sem nenhum produto). O pedido é acrescentado à base de dados de compras, e
-      recebe um identificador único."""
-      return Compra_IMP.cria(usr)
+def cria(bas,usr):
+  """Esta função cria um objeto da classe {Compra} que representa um novo pedido de
+  compra para o cliente {usr} (um objeto da classe {Usuario}), inicialmente vazio
+  (sem nenhum produto). O pedido é acrescentado à tabela de compras da base {bas},
+  e recebe um identificador único."""
+  return compra_IMP.cria(bas,usr)

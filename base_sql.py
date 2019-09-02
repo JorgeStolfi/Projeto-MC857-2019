@@ -9,15 +9,31 @@ class Base(Base_IMP):
 
   """Um objeto desta classe representa uma base de dados no disco
   (possivelmente com espelho ou cache na memória) contendo quatro
-  tabelas separadas: 'usuario', 'produto', 'compra' e 'sessao'. O acesso
+  tabelas separadas: 'usuarios', 'produtos', 'compras' e 'sessoes'. O acesso
   à base é feito por meio de comandos SQL."""
 
   def executa_comando(self,cmd):
     """Recebe um string {cmd} que é um comando de consulta, acréscimo, ou
     alteração da base, codificado na linguagem SQL.
+    Devolve o resultado da execução do comando.  
     
-    Devolve o resultado da execução do comando. Se o comando falhar (por exemplo, se
-    não houver algo que satisfaça um comando de busca), devolve {None}.
+    No caso de um comando "SELECT", o resultado é uma lista de 
+    tuplas, uma para cada linha da tabela que
+    satisfez as condições da busca. Cada tupla contém os campos
+    especificados no comando. Por exmplo, se {cmd} é 
+    
+      "SELECT email,cpf FROM usuarios WHERE cep=13083-851"
+      
+    o resultado poderia ser
+    
+      [ ("zeca@gmail.com", "123.456.789-00"), 
+        ("juca@hotmail.com", "987.654,321-99"),
+        ... ]
+        
+    Se nenhuma entrada satisfizer os critérios, o resultado 
+    é uma lista vazia.
+    
+    No caso de um comando "INSERT" ou "UPDATE", o resultado é ???.
     
     Alterações e adições são automaticamente finalizadas ("commit")
     e não podem ser canceladas ("rollback")."""
@@ -29,6 +45,8 @@ class Base(Base_IMP):
     devolve o índice inteiro (chave) que foi atribuído ao item, e 
     o identifica na base de dados."""
     return Base_IMP.indice_inserido(self)
+    
+# CONSTRUTOR
 
 def conecta(dir,uid,senha):
   """Conecta com a base de dados no disco e devolve um objeto da classe
@@ -40,20 +58,3 @@ def conecta(dir,uid,senha):
   nesse caso a {senha} é ignorada."""
   return base_IMP.conecta(dir,uid,senha)
 
-# UTILITÁRIOS
-
-
-def identificador_de_indice(let,ind):
-  """Converte um índice inteiro {ind} em um string identificador da
-  forma "{X}-{NNNNNNNN}" onde {X} é a string {let} dada e {NNNNNNNN} é o
-  valor {ind} formatado em 8 algarismos decimais, com zeros à esquerda. Por exemplo,
-  `identificador_de_indice("U",20557)` devolve "U-00020557".
-
-  O índice {ind} deve estar em {0..99999999}. ({10^8-1})."""
-  return base_IMP.identificador_de_indice(let,ind)
-
-def indice_de_identificador(let,id):
-  """Dado um identificador de objeto {ident}, da forma "{X}-{NNNNNNNN}",
-  onde {X} deve ser a letra {let} dada, extrai o índice inteiro {NNNNNNNN} do 
-  mesmo. Por exemplo, `indice_de_identificador("U","U-00020557")` devolve o inteiro 20555."""
-  return base_IMP.indice_de_identificador(ident)

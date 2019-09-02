@@ -31,17 +31,19 @@ class Produto(Produto_IMP):
     exceto o identificador."""
     return Produto_IMP.obtem_atributos(self)
     
-  def muda_atributos(self,alts):
+  def muda_atributos(self,bas,alts):
     """Recebe um dicionário Python {alts} cujas chaves são um subconjunto
     dos nomes de atributos do produto, e troca os valores desses atributos 
-    pels valores correspondentes em {alts}.  Não retorna nenum resultado."""
-    Produto_IMP.muda_atributos(self,alts)
+    pels valores correspondentes em {alts}.  Também atualiza a entrada
+    correspondente da tabela de sessoes da base {bas}. 
+    Não retorna nenum resultado."""
+    Produto_IMP.muda_atributos(self,bas,alts)
     
 # Construtor da classe:
 
-def cria(atrs):
+def cria(bas,atrs):
   """Cria um novo produto com atributos especificados pelo dicionário Python {atrs}.
-  Acrescenta esse produto na base de dados de produtos, e define seu identificador 
+  Acrescenta esse produto na tabela de produtos da base {bas}, e define seu identificador 
   a partir do índice do produto nessa base."""
-  return produto_IMP.cria(atrs)
+  return produto_IMP.cria(bas,atrs)
 

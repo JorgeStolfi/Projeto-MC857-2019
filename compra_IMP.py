@@ -3,52 +3,59 @@
 # Implementação do módulo {compra}.
 
 # Interfaces importadas por esta interface:
+import base_compras
+import base
+import identificador
 
 # Implementações:
 
 class Compra_IMP:
-    def __init__(self, compra_id, items, cliente):
+    def __init__(self, compra_id, itens, cliente):
         self.compra_id = compra_id
-        self.items = items
+        self.itens = itens
         self.cliente = cliente
         self.status = 'aberto'
 
     ## TODO:
     def obtem_identificador(self):
-        return ''.join(random.choices(string.digits, k=8))
+        return self.compra_id
 
     def obtem_usuario(self):
-        """ Esta função retorna o cliente do pedido de compra
-        (um objeto da classe {Usuario})."""
-        return self.cliente
+         return self.cliente
 
     def obtem_status(self):
-        """ Essa função retorna o status do pedido de compra, um string que, por enquanto, pode ser:
-          1) 'aberto': O cliente ainda está montando o pedido.
-          2) 'pagando':  O cliente fechou o pedido, e a loja está aguardando o pagamento.
-          3) 'pago': A loja já recebeu o pagamento e mandou para despacho.
-          4) 'despachado': A loja já colocou o pedido no correio ou transportadora.
-          5) 'entregue': O pedido foi entregue ao cliente.
-        Outros estados podem ser acrescentados no futuro."""
         return self.status
 
     def lista_itens(self):
-        return self.items
+        return self.itens
 
     def calcula_total(self):
         total = 0
-        for _ , preco in self.items.items:
-            total += preco
+        for prod, qt, prc in self.itens:
+            total += prc
         return total
 
     def acrescenta_item(self, prod, qt):
-        self.items[prod] = qt
+        # !!! Deveria procurar se já existe {prod} !!!
+        prc = prod.calcula_preco(qt)
+        self.itens = self.itens + [ [ prod, qt, prc ] ]
 
     def troca_qtd(self, prod, qt):
-        self.items[prod] = qt
+        # Procura o produto na lista:
+        for item in self.itens:
+          if item[0] == prod:
+            item[1] = qt
+            item[2] = prod.calcula_preco(qt)
+            return
+        sys.stderr.write("** produto " + prod.obtem_identificador() + " nao encontrado em " + self.compra_id + "\n")
+        assert False
 
     def elimina_prod(self, prod):
-        self.items.pop(prod)
+        # !!! Deveria procurar o produto na lista de itens, e eliminar o item !!!
+        return
 
-    def cria(self, usr):
-        return Compra_IMP(self.obtem_identificador, {}, usr)
+def cria(bas, usr):
+    cpr = Compra_IMP(None,[],usr)
+    ind = base_compras.acrescenta(bas,cpr)
+    cpr.compra_id = identificador.de_indice("C",ind)
+    return cpr

@@ -1,5 +1,11 @@
+#! /usr/in/python3
+
 #Testes referentes a base_usuarios.py
 import base_usuarios.py
+import base
+
+# Conexao com a base de dados:
+bas = base.conecta()
 
 #Teste busca_por_indice
 resultado1 = busca_por_indice(bas, ind)

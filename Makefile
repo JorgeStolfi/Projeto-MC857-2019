@@ -1,7 +1,14 @@
-# Last edited on 2019-08-19 23:47:00 by stolfilocal
 
-all:
-	chmod a+x testa_html.py
-	mkdir -p out
-	./testa_html.py > out/teste.html
-	pluma --encoding=utf-8 out/teste.html
+.PHONY: todos_os_testes
+
+all: todos_os_testes
+
+# Roda todos os módulos de teste:
+todos_os_testes:
+	for ff in `cd testes && ls *_TST.py` ; do \
+	  module="$${ff%%_TST.py}" ; \
+          { echo "=== $${module} ===" ; \
+            ./testa.sh $${module} ; \
+            echo "==============================" ; \
+          } \
+        done

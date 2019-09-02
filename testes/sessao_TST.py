@@ -1,5 +1,8 @@
+#! /usr/bin/python3
+
 import sessao
 import usuario
+import base
 
 def valida_estado_sessao(s, usr, ab):
   """ Dado um objeto {s} da classe {Sessao}, verifica se os metodos {s.obtem_usuario} e {s.aberta()}
@@ -13,12 +16,13 @@ def valida_estado_sessao(s, usr, ab):
   else:
     print('O metodo aberta() retornou o resultado esperado')
     
+bas = base.conecta("DB",None,None)    
 
-s = sessao.cria()
+s = sessao.cria(bas)
 
 valida_estado_sessao(s, None, False)
 
-usr = usuario.cria({
+usr_atrs = {
   'nome':'',
   'sobrenome':'',
   'nascDt':'',
@@ -27,7 +31,8 @@ usr = usuario.cria({
   'CPF':'',
   'endereco':'',
   'telefone':''
-})
+}
+usr = usuario.cria(bas,usr_atrs)
 
 s.login(usr)
 valida_estado_sessao(s, usr, True)
