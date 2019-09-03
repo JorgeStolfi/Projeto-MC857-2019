@@ -1,25 +1,37 @@
-# Este módulo define a classe de objetos {Produto} que
+# Este módulo define a classe de objetos {ObjProduto} que
 # representa um produto do catálogo da loja virtual.
+# 
+# Nas funções abaixo, {bas} é um objeto da classe {Base_SQL}
+# que representa a base de dados da loja.
 
-# Implementação deste módulo e da classe {Produto}:
-import produto_IMP; from produto_IMP import Produto_IMP
+# Interfaces importadas por esta interface:
+import base_sql; from base_sql import Base_SQL
 
-class Produto(Produto_IMP):
+# Implementação deste módulo e da classe {ObjProduto}:
+import produto_IMP; from produto_IMP import ObjProduto_IMP
+
+class ObjProduto(ObjProduto_IMP):
   """Um objeto desta classe representa um produto da loja e armazena seus 
-  atributos.  Por enquanto:
+  atributos.  Por enquanto, eles são:
+  
     {descr_curta} {str} - descrição do produto em uma linha.
     {descr_media} {str} - descrição do produto em 4 linhas, com dimensões etc.
     {descr_longa} {str} - descrição completa do produto. 
     {unid} {str} - unidade ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
     {preco} {float} - preço unitário.
-  """
+    
+  O preço unitário é em reais, e é arredondado para centavos inteiros 
+  (a menos de erros de arredondamento do float).
+  
+  Mais atributos (imagens, estoque, volume, peso, descontos por atacado, etc.)
+  podem ser acrescentados no futuro."""
   
   def obtem_identificador(self):
     """Devolve uma cadeia no formato 'P-{NNNNNNNN}', onde 
     {NNNNNNNN} é um número de 8 algarismos 
     que identifica unicamente o produto. Este identificador é 
     atribuído na criação do produto e não pode ser alterado."""
-    return Produto_IMP.obtem_identificador(self)
+    return ObjProduto_IMP.obtem_identificador(self)
     
   def calcula_preco(self,qt):
     """Dada a quantidade {qt} a comprar (um float), calcula o preço a pagar.
@@ -27,23 +39,25 @@ class Produto(Produto_IMP):
     poderá haver desconto por atacado, etc.."""
     
   def obtem_atributos(self):
-    """Retorna um dicionário Python com os atributos do produto,
-    exceto o identificador."""
-    return Produto_IMP.obtem_atributos(self)
+    """Retorna um dicionário Python com os atributos do produto
+    (exceto o identificador)."""
+    return ObjProduto_IMP.obtem_atributos(self)
     
   def muda_atributos(self,bas,alts):
-    """Recebe um dicionário Python {alts} cujas chaves são um subconjunto
-    dos nomes de atributos do produto, e troca os valores desses atributos 
-    pels valores correspondentes em {alts}.  Também atualiza a entrada
+    """Recebe um dicionário {alts} cujas chaves são um subconjunto
+    dos nomes de atributos do produto (exceto o identificador);
+    e troca os valores desses atributos pels valores 
+    correspondentes em {alts}.  Também atualiza a entrada
     correspondente da tabela de sessoes da base {bas}. 
     Não retorna nenum resultado."""
-    Produto_IMP.muda_atributos(self,bas,alts)
+    ObjProduto_IMP.muda_atributos(self,bas,alts)
     
 # Construtor da classe:
 
 def cria(bas,atrs):
-  """Cria um novo produto com atributos especificados pelo dicionário Python {atrs}.
-  Acrescenta esse produto na tabela de produtos da base {bas}, e define seu identificador 
+  """Cria um novo objecto da classe {ObjProduto} com atributos especificados pelo 
+  dicionário {atrs} (que não deve incluir o identificador). Acrescenta esse 
+  produto à tabela de produtos da base {bas}, e define seu identificador 
   a partir do índice do produto nessa base."""
   return produto_IMP.cria(bas,atrs)
 

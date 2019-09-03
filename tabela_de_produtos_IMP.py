@@ -1,9 +1,7 @@
-#!/usr/bin/python3
-
-#Implementação de {base_produtos.py}
+#Implementação de {tabela_de_produtos.py}
 
 import sys
-import base
+import base_sql
 
 def busca_por_palavra(bas, pal):
   cmd = "SELECT " + pal + " FROM produtos"
@@ -18,9 +16,9 @@ def busca_por_indice(bas, ind):
   return produtos_econtrados
 
 def acrescenta(bas,prod):
-  sys.stderr.write("!! base_produtos_IMP.acrescenta: a implementar\n")
+  sys.stderr.write("!! tabela_de_produtos_IMP.acrescenta: a implementar\n")
   return 12345
   
 def atualiza(bas,ind,prod):
-  sys.stderr.write("!! base_produtos_IMP.atualiza: a implementar\n")
+  sys.stderr.write("!! tabela_de_produtos_IMP.atualiza: a implementar\n")
   return 12345

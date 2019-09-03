@@ -3,12 +3,12 @@
 import sys
 
 import produto
-import base
-import base_produtos as baspr
-from produto import Produto
+import base_sql
+import tabela_de_produtos as tabpr
+from produto import ObjProduto
 import identificador
 
-bas = base.conecta("DB",None,None)
+bas = base_sql.conecta("DB",None,None)
 
 def valida_resultados(esperado, obtido):
   if(esperado != obtido):
@@ -17,7 +17,7 @@ def valida_resultados(esperado, obtido):
     sys.stderr.write("Sucesso\n")
 
 # Cria um produto para teste. 
-# Isto testa {produto.cria()} e {base_produtos.acrescenta()}:
+# Isto testa {produto.cria()} e {tabela_de_produtos.acrescenta()}:
 atrs = {
   'descr_curta': "Escovador de ouriço",
   'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
@@ -26,7 +26,7 @@ atrs = {
   'unidade': '1 aparelho' }
 prod = produto.cria(bas,atrs)
 
-# Testa métodos da classe {Produto}:
+# Testa métodos da classe {ObjProduto}:
 sys.stderr.write("Testando metodo obter_identificador\n")
 obtido = prod.obtem_identificador()
 esperado = "P-00012345"
@@ -42,7 +42,7 @@ obtido =  prod.obtem_atributos()
 esperado = {"atrs": atrs, "id": "P-00012345"}
 valida_resultados(obtido, esperado)
 
-# Testa método {muda_atributos}. Também testa {base_produtos.atualiza}.
+# Testa método {muda_atributos}. Também testa {tabela_de_produtos.atualiza}.
 sys.stderr.write("Testando metodo muda_atributos\n")
 prod.muda_atributos(bas,{'preco': 150.00})
 obtido = prod.obtem_atributos().get('preco')
@@ -51,8 +51,8 @@ valida_resultados(obtido, esperado)
 
 # Testa busca de produtos por índice:
 ind = identificador.para_indice("P",prod.obtem_identificador())
-sys.stderr.write("Teste de busca_por_indice: " + str(baspr.busca_por_indice(bas, ind)) + "\n")
+sys.stderr.write("Teste de busca_por_indice: " + str(tabpr.busca_por_indice(bas, ind)) + "\n")
 
 # Testa busca de produtos por palavra:
 pal = "ouriço"
-sys.stderr.write("Teste de busca_por_palavra: " + str(baspr.busca_por_palavra(bas, pal)) + "\n")
+sys.stderr.write("Teste de busca_por_palavra: " + str(tabpr.busca_por_palavra(bas, pal)) + "\n")

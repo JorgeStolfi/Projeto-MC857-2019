@@ -1,24 +1,22 @@
-#! /usr/bin/python3
-
 # Implementação do módulo {compra}.
 
 # Interfaces importadas por esta interface:
-import base_compras
-import base
+import tabela_de_compras
+import base_sql
 import identificador
 
 # Implementações:
 
-class Compra_IMP:
-    def __init__(self, compra_id, itens, cliente):
-        self.compra_id = compra_id
+class ObjCompra_IMP:
+    def __init__(self, id_compra, itens, cliente):
+        self.id_compra = id_compra
         self.itens = itens
         self.cliente = cliente
         self.status = 'aberto'
 
     ## TODO:
     def obtem_identificador(self):
-        return self.compra_id
+        return self.id_compra
 
     def obtem_usuario(self):
          return self.cliente
@@ -47,7 +45,7 @@ class Compra_IMP:
             item[1] = qt
             item[2] = prod.calcula_preco(qt)
             return
-        sys.stderr.write("** produto " + prod.obtem_identificador() + " nao encontrado em " + self.compra_id + "\n")
+        sys.stderr.write("** produto " + prod.obtem_identificador() + " nao encontrado em " + self.id_compra + "\n")
         assert False
 
     def elimina_prod(self, prod):
@@ -55,7 +53,7 @@ class Compra_IMP:
         return
 
 def cria(bas, usr):
-    cpr = Compra_IMP(None,[],usr)
-    ind = base_compras.acrescenta(bas,cpr)
-    cpr.compra_id = identificador.de_indice("C",ind)
+    cpr = ObjCompra_IMP(None,[],usr)
+    idc = tabela_de_compras.acrescenta(bas,cpr)
+    cpr.id_compra = idc
     return cpr

@@ -1,8 +1,3 @@
-#!/usr/bin/python3
-
-
-#Última Atualização: 20/08
-
 #Funções que retornam a pagina de login do usuário 
 
 import processa_comando_login_IMP

@@ -1,10 +1,10 @@
-# Este módulo implementa a classe de objetos {Produto} que
+# Este módulo implementa a classe de objetos {ObjProduto} que
 # representa um produto do catálogo da loja virtual.
 
 import inspect, sys
-import base, base_produtos, identificador 
+import base_sql, tabela_de_produtos, identificador 
 
-class Produto_IMP():
+class ObjProduto_IMP():
 
   def __init__(self,atrs):
     self.atrs = atrs
@@ -24,14 +24,13 @@ class Produto_IMP():
     for key in alts:
       if key in self.atrs: 
         self.atrs[key] = alts[key]
-    ind = identificador.para_indice("P",self.id)
-    base_produtos.atualiza(bas,ind,self)
+    tabela_de_produtos.atualiza(bas,self.id_produto,alts)
 
 def cria(bas,atrs):
   sys.stderr.write("Criando objeto...\n")
-  prod = Produto_IMP(atrs.copy())
+  prod = ObjProduto_IMP(atrs.copy())
   sys.stderr.write("acrescentando na base...\n")
-  ind = base_produtos.acrescenta(bas,prod) 
+  pid = tabela_de_produtos.acrescenta(bas,prod) 
   sys.stderr.write("acrescentado, ind = %d\n" % ind)
-  prod.id = identificador.de_indice("P",ind)
+  prod.id_produto = pid
   return prod

@@ -1,14 +1,14 @@
 #! /usr/bin/python3
 
 import sys
-import compra; from compra import Compra
-import usuario; from usuario import Usuario
-import produto; from produto import Produto
-import base
-import base_compras
+import compra; from compra import ObjCompra
+import usuario; from usuario import ObjUsuario
+import produto; from produto import ObjProduto
+import base_sql
+import tabela_de_compras
 import identificador
 
-bas = base.conecta("DB",None,None)
+bas = base_sql.conecta("DB",None,None)
 
 usr_atrs = {
     "nome": "Alberto Nogueira",

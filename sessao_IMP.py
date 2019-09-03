@@ -1,12 +1,10 @@
-#! /usr/bin/python3
-
-import base
-import base_sessoes
+import base_sql
+import tabela_de_sessoes
 import identificador
 
-class Sessao_IMP:
+class ObjSessao_IMP:
     def __init__(self):
-        self.id = None
+        self.id_sessao = None
         self.usr = None
 
     def aberta(self):
@@ -22,10 +20,10 @@ class Sessao_IMP:
         return self.usr
 
     def obtem_identificador(self):
-        return self.id
+        return self.id_sessao
 
 def cria(bas):
-    ses = Sessao_IMP()
-    ind = base_sessoes.acrescenta(bas,ses)
-    ses.id = identificador.de_indice("S",ind)
+    ses = ObjSessao_IMP()
+    ids = tabela_de_sessoes.acrescenta(bas,ses)
+    ses.id_sessao = ids
     return ses

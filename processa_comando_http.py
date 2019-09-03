@@ -1,5 +1,3 @@
-#! /usr/bin/python3
-
 # Funções para processar comandos HTTP (GET,POST, ou HEAD)
 # recebidos do usuário.  
 

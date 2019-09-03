@@ -1,5 +1,3 @@
-#! /usr/bin/python3
-
 # Interfaces do projeto usadas por este módulo:
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib.parse, cgi

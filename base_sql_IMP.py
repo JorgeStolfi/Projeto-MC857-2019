@@ -1,14 +1,12 @@
-#!/usr/bin/python3
-
-# Implementação do módulo {base}
+# Implementação do módulo {base_sql}
 
 # import mysql.connector as sql
-import mysql_bobo as sql  # linha para teste
+import mysql_bobo as mysql  # linha para teste
 
-class Base_IMP:
+class Base_SQL_IMP:
 
   """Um objeto desta classe tem um atributo privado {conexao}
-  que é o objeto retornado por {sql.connect(...)}.  
+  que é o objeto retornado por {mysql.connect(...)}.  
   Or métodos deste objeto permitem acessar a base no disco."""
 
   def __init__(self,con):
@@ -31,7 +29,7 @@ class Base_IMP:
       return self.conexao.insert_id()
 
 def conecta(dir, uid, senha):
-  conexao = sql.connect(user=uid, password=senha, database=(dir + "/mc857"))
-  bas = Base_IMP(conexao)
+  conexao = mysql.connect(user=uid, password=senha, database=(dir + "/mc857"))
+  bas = Base_SQL_IMP(conexao)
   return bas
 

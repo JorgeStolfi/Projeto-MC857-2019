@@ -1,9 +1,9 @@
 #! /usr/bin/python3
 
 import sys
-import base; from base import Base
+import base_sql; from base_sql import Base_SQL
 
-bas = base.conecta("MC857",None,None)
+bas = base_sql.conecta("MC857",None,None)
 
 def testa_ex(cmd):
   sys.stderr.write("comando: " + cmd + "\n")

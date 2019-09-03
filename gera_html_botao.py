@@ -1,5 +1,3 @@
-#! /usr/bin/python3
-
 # Interface do módulo {gera_html_botao}.
 
 # As funções desta interface retornam cadeias de caracteres que são

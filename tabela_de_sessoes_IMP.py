@@ -1,6 +1,4 @@
-#! /usr/bin/python3
-
-import base
+import base_sql
 
 def busca_por_indice(bas,ind):
     cmd = "SELECT * FROM sessoes WHERE id=" +ind

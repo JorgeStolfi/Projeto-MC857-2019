@@ -1,11 +1,9 @@
-#!/usr/bin/python3
-
 # Funções para acesso primário à base de dados da loja. 
 
 # Implementacao desta interface:
-import base_IMP; from base_IMP import Base_IMP
+import base_sql_IMP; from base_sql_IMP import Base_SQL_IMP
 
-class Base(Base_IMP):
+class Base_SQL(Base_SQL_IMP):
 
   """Um objeto desta classe representa uma base de dados no disco
   (possivelmente com espelho ou cache na memória) contendo quatro
@@ -37,14 +35,14 @@ class Base(Base_IMP):
     
     Alterações e adições são automaticamente finalizadas ("commit")
     e não podem ser canceladas ("rollback")."""
-    return Base_IMP.executa_cmd(self,cmd)
+    return Base_SQL_IMP.executa_cmd(self,cmd)
 
   def indice_inserido(self):
     """Esta função pode ser chamada logo após inserir algum novo
     item (produto, compra, usuário, ou sessão) na base de de dados.  Ela 
     devolve o índice inteiro (chave) que foi atribuído ao item, e 
     o identifica na base de dados."""
-    return Base_IMP.indice_inserido(self)
+    return Base_SQL_IMP.indice_inserido(self)
     
 # CONSTRUTOR
 
@@ -56,5 +54,5 @@ def conecta(dir,uid,senha):
   A string {uid} é o nome do usuário Linux que tem acesso à base, e {senha}
   é a sua senha de login.  Se {uid} for {None}, tenta concectar usando o usuário corrente;
   nesse caso a {senha} é ignorada."""
-  return base_IMP.conecta(dir,uid,senha)
+  return base_sql_IMP.conecta(dir,uid,senha)
 

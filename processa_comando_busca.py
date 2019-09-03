@@ -1,5 +1,3 @@
-#! /usr/bin/python3
-
 #Funções para processar a busca
 
 # Implementação desta interface:

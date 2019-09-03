@@ -1,8 +1,8 @@
 #! /usr/bin/python3
 
-import usuario
-from usuario_IMP import Usuario_IMP
-import base
+import usuario; from usuario import ObjUsuario
+import usuario_IMP; from usuario_IMP import ObjUsuario_IMP
+import base_sql
 import sys
 import identificador
 
@@ -22,12 +22,12 @@ Estrategia de teste
     (b) sem elementos repetidos
 """
 
-bas = base.conecta("DB",None,None)
+bas = base_sql.conecta("DB",None,None)
 
 def mostra_usuario(nome,usr,atrs):
   """Imprime usuário {usr} e compara seus atributos com {atrs}."""
   sys.stderr.write(nome + " = " + str(usr) + "\n")
-  if type(usr) is Usuario_IMP:
+  if type(usr) is ObjUsuario_IMP:
     sys.stderr.write("  " + str(usr.obtem_atributos()) + "\n")
     sys.stderr.write("  " + str(usr.obtem_atributos() == usr_atrs) + "\n")
   
@@ -55,11 +55,11 @@ usr4_atrs = {"nome":"Muda Atributo", "senha":"4321", "CPF":"111111111", \
 usr4 = testa_cria_usuario("usr4",usr4_atrs)
 
 # Teste muda_atributos
-if type(usr2) is Usuario_IMP:
+if type(usr2) is ObjUsuario_IMP:
   usr2.muda_atributos(bas,usr2) # Não deveria mudar os atributos
   mostra_usuario("usr2",usr2,usr2_atrs)
 
-if type(usr2) is Usuario_IMP:
+if type(usr2) is ObjUsuario_IMP:
   usr2.muda_atributos(bas,usr4) # Deveria assumir os valores do usr4
   mostra_usuario("usr2",usr2,usr4_atrs)
 

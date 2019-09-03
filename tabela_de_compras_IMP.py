@@ -1,6 +1,11 @@
-#! /usr/bin/python3
+import base_sql
 
-import base
+def cria_tabela(bas,chaves):
+  cmd = "CREATE TABLE compras (" + \
+    "indice int(8) NOT NULL AUTO_INCREMENT,"
+    
+  for ch in chaves:
+    cmd = cmd + ch + " varchar(,"
 
 def busca_por_usuario(bas,usr,abr):
    cmd = "SELECT * FROM compras WHERE user_id = " + usr.id

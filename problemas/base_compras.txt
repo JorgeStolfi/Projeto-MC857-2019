@@ -1,5 +1,0 @@
-Problemas no módulo `base_compras`:
-
-Interface `base_compras.py`:
-
-* 

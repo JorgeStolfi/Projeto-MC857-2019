@@ -1,5 +1,3 @@
-#! /usr/bin/python3
-
 # Interface do módulo {gera_html_elem}.
 
 # As funções desta interface retornam cadeias de caracteres que são
@@ -43,7 +41,7 @@ def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
   return gera_html_elem_IMP.bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo)
 
 def bloco_de_produto(prod):
-  """A funcao recebe o parâmetro {prod}, da classe Produto, e recupera
+  """A funcao recebe o parâmetro {prod}, da classe {ObjProduto}, e recupera
   a partir dele nome, descrição e imagem do produto correspondente em
   formato HTML."""
   return gera_html_elem_IMP.bloco_de_produto(prod)
