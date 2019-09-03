@@ -1,0 +1,5 @@
+Validação da implementação sessao_IMP.py e dos seus respectivos testes testes/sessao_TST.py
+ -  Alterações realizadas em sessao_IMP.py:
+    -   Alteração do método de logout, adicionando o parâmetro bas e fazendo a atualização da seção no banco;
+    -   Remoção do método login, pois não existe na interface;
+    -   
