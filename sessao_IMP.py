@@ -21,8 +21,9 @@ class ObjSessao_IMP:
         tabela_de_sessoes.atualiza(bas, self.id_sessao, self)
         
 
-def cria(bas):
+def cria(bas,usr):
     ses = ObjSessao_IMP()
     ids = tabela_de_sessoes.acrescenta(bas,ses)
+    ses.usr = usr
     ses.id_sessao = ids
     return ses
