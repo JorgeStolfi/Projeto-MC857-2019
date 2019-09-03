@@ -7,23 +7,23 @@ class ObjSessao_IMP:
         self.id_sessao = None
         self.usr = None
 
-    def aberta(self):
-        return self.usr is not None
-
-    def login(self, usr):
-        self.usr = usr
-
-    def logout(self):
-        self.usr = None
-        
-    def obtem_usuario(self):
-        return self.usr
-
     def obtem_identificador(self):
         return self.id_sessao
 
-def cria(bas):
+    def aberta(self):
+        return self.usr is not None
+
+    def obtem_usuario(self):
+        return self.usr
+
+    def logout(self, bas):
+        self.usr = None
+        tabela_de_sessoes.atualiza(bas, self.id_sessao, self)
+        
+
+def cria(bas,usr):
     ses = ObjSessao_IMP()
     ids = tabela_de_sessoes.acrescenta(bas,ses)
+    ses.usr = usr
     ses.id_sessao = ids
     return ses

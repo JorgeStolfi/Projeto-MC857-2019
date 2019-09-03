@@ -18,10 +18,6 @@ def valida_estado_sessao(s, usr, ab):
     
 bas = base_sql.conecta("DB",None,None)    
 
-s = sessao.cria(bas)
-
-valida_estado_sessao(s, None, False)
-
 usr_atrs = {
   'nome':'',
   'sobrenome':'',
@@ -32,10 +28,11 @@ usr_atrs = {
   'endereco':'',
   'telefone':''
 }
-usr = usuario.cria(bas,usr_atrs)
 
-s.login(usr)
+usr = usuario.cria(bas,usr_atrs)
+s = sessao.cria(bas,usr)
+
 valida_estado_sessao(s, usr, True)
 
-s.logout()
+s.logout(bas)
 valida_estado_sessao(s, None, False)
