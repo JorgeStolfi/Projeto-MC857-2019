@@ -20,10 +20,12 @@ usr_atrs = {
     "telefone": "+55(19)9999-9999"
 }
 
-usr = usuario.cria(bas,usr_atrs)
+# usr = usuario.cria(bas,usr_atrs)
+""" Ignorando usuario a fim de teste """
+usr = None
 cpr = compra.cria(bas,usr)
 
-sys.stderr.write(cpr.obtem_identificador() + "\n")
+sys.stderr.write(str(cpr.obtem_identificador()) + "\n")
 sys.stderr.write(str(cpr.obtem_usuario()) + "\n")
 
 sys.stderr.write(str(cpr.obtem_status()) + "\n")
@@ -37,7 +39,10 @@ prod_atrs = {
   'preco': 120.00,
   'unidade': '1 aparelho' }
 
-prod = produto.cria(bas,prod_atrs)
+
+# prod = produto.cria(bas,prod_atrs)
+""" Criando objeto produto"""
+prod = ObjProduto(prod_atrs)      
 
 cpr.acrescenta_item(prod,3)
 
