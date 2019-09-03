@@ -1,0 +1,89 @@
+Testando a entrada
+Entrada executado
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Projeto MC857A 2019-2s</title>
+</head>
+<body style="bacground-color:'#eeeeee'">
+<h1>Projeto MC857A 2019-2s</h1><nav>
+  <span style="
+  display: inline-block;
+  font-family:Courier;
+  font-size:18px;
+  padding: 5px;
+">
+  <form action="search" method="post">
+    <span style="text-color:#fff888;text-align: left;">
+      <input type ="text" name="search_arg" placeholder="Buscar o que?">
+    </span>
+    <span style="background-color:#fff888;text-align: center;">
+  <input type="submit" value="BUSCAR"></span>
+  </form>
+</span>
+  <span style="
+  display: inline-block;
+  font-family:Courier;
+  font-size:18px;
+  padding: 5px;
+  background-color:#fff888;
+  text-align: center;
+">
+  <button
+    type="button"
+    onclick="alert('Clique Aqui')"
+  >Clique Aqui</button>
+</span>
+  <span style="
+  display: inline-block;
+  font-family:Courier;
+  font-size:18px;
+  padding: 5px;
+  background-color:#fff888;
+  text-align: center;
+">
+  <button
+    type="button"
+    onclick="alert('Não, Clique Aqui!')"
+  >Não, Clique Aqui!</button>
+</span>
+  <span style="
+  display: inline-block;
+  font-family:Courier;
+  font-size:18px;
+  padding: 5px;
+  background-color:#fff888;
+  text-align: center;
+">
+  <button
+    type="button"
+    onclick="alert('Não Clique Aqui')"
+  >Não Clique Aqui</button>
+</span>
+</nav><span style="
+  display: inline-block;
+  font-family:Courier;
+  font-size:18px;
+  padding:5px;
+  background-color:#fff844;
+  text-color:#000488;
+  text-align:center;
+"><hr/><i>DATA CORRENTE</i><br/><b>2019-09-03 23:18:37 +0000</b><br/>TUDO EM ORDEM NESTE SERVIDOR<hr/></span><small><p>
+Page created on 2019-09-03 23:18:37 +0000
+</p></small>
+</body>
+</html>
+
+
+
+***********************
+Testando produto
+Erro ao executar produto
+name 'ind' is not defined
+
+
+***********************
+Testando lista_de_produtos
+Erro ao executar lista_de_produtos
+name 'ind' is not defined
