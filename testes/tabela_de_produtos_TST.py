@@ -47,11 +47,17 @@ prod.muda_atributos(bas,{'preco': 150.00})
 obtido = prod.obtem_atributos().get('preco')
 esperado = 150.00
 valida_resultados(obtido, esperado)
+obtido = tbpr.busca_por_identificador(bas, prod.obtem_identificador())["preco"]
+esperado = prod.obtem_atributos()['preco']
+valida_resultados(obtido, esperado)
 
 # Testa busca de produtos por índice:
-ind = identificador.para_indice("P",prod.obtem_identificador())
-sys.stderr.write("Teste de busca_por_indice: " + str(tbpr.busca_por_indice(bas, ind)) + "\n")
+obtido = tbpr.busca_por_identificador(bas, prod.obtem_identificador())
+esperado = produto.obtem_atributos()
+valida_resultados(obtido, esperado)
 
 # Testa busca de produtos por palavra:
 pal = "ouriço"
-sys.stderr.write("Teste de busca_por_palavra: " + str(tbpr.busca_por_palavra(bas, pal)) + "\n")
+obtido = tbpr.busca_por_palavra(bas, pal)[0]
+esperado = prod.obtem_identificador()
+valida_resultados(obtido, esperado)
