@@ -38,32 +38,32 @@ def cria_tabela(bas):
   servidor é iniciado."""
   tabela_de_itens_de_compras_IMP.cria_tabela(bas)
 
-def acrescenta(bas,atrs):
+def acrescenta(bas, atrs):
   """Acrescenta uma nova linha na tabela de itens de compras
   da base {bas}, cujo conteúdo é o dicionário {atrs}, e devolve
   o identificador "I-{NNNNNNNN}" da mesma.
   O dicionário não deve conter o campo 'id_item'."""
-  return tabela_de_itens_de_compras_IMP.acrescenta(bas,atrs)
+  return tabela_de_itens_de_compras_IMP.acrescenta(bas, atrs)
 
-def busca_por_identificador(bas,id_item):
+def busca_por_identificador(bas, id_item):
   """Devolve um dicionário {atrs} com o conteúdo da linha 
   de identificador {id_item} da tabela de itens de compras da base {bas}.
   O dicionário não inclui o campo 'id_item'."""
-  return tabela_de_itens_de_compras_IMP.busca_por_identificador(bas,id_item)
+  return tabela_de_itens_de_compras_IMP.busca_por_identificador(bas, id_item)
 
-def busca_por_compra(bas,id_compra):
+def busca_por_compra(bas, id_compra):
   """Devolve uma lista com todos os identificadores "I-{NNNNNNNN}"
   dos itens cujo identificador de compra é 'id_compra'. 
   Se não houver nenum item satisfazendo a busca, devolve uma lista vazia."""
-  return tabela_de_itens_de_compras_IMP.busca_por_compra(bas,id_compra)
+  return tabela_de_itens_de_compras_IMP.busca_por_compra(bas, id_compra)
 
-def busca_por_produto(bas,id_produto):
+def busca_por_produto(bas, id_produto):
   """Devolve uma lista com todos os identificadores "I-{NNNNNNNN}"
   dos itens cujo identificador de produto é 'id_produto'. 
   Se não houver nenum item satisfazendo a busca, devolve uma lista vazia."""
-  return tabela_de_itens_de_compras_IMP.busca_por_produto(bas,id_produto)
+  return tabela_de_itens_de_compras_IMP.busca_por_produto(bas, id_produto)
 
-def atualiza(bas,id_item,atrs):
+def atualiza(bas, id_item, atrs):
   """Modifica alguns campos de uma linha da tabela de itens de compras da base {bas}.
   A linha é especificada pelo seu identificador {id_item}.  Não devolve nenhum resultado.
   
@@ -71,4 +71,4 @@ def atualiza(bas,id_item,atrs):
   subconjunto dos nomes dos campos da linha. Os valores desse campos na
   tabela são substituídos pelos valores em {atrs}.
   O dicionário {atrs} não deve ter a chave 'id_item'."""
-  tabela_de_itens_de_compras_IMP.atualiza(bas,id_item,atrs)
+  tabela_de_itens_de_compras_IMP.atualiza(bas, id_item, atrs)

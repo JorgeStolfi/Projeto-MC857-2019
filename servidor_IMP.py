@@ -10,7 +10,7 @@ import base_sql
 # Comandos para rodar o servidor:
 
 def dispara():
-  dir = "DB"
+  dir = "DB/MC857"
   usr = None
   senha = None
   bas = base_sql.conecta(dir,usr,senha)

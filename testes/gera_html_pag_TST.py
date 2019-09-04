@@ -31,7 +31,7 @@ f.write("Testando produto\n")
 
 #Criação do produto copiado do produto_TST
 try:
-    bas = base_sql.conecta("DB",None,None)
+    bas = base_sql.conecta("DB/MC857",None,None)
 
     atrs = {
     'descr_curta': "Escovador de ouriço",
@@ -52,7 +52,7 @@ except Exception as e:
 f.write("\n\n\n***********************\n")
 f.write("Testando lista_de_produtos\n")
 try:
-    bas = base_sql.conecta("DB",None,None)
+    bas = base_sql.conecta("DB/MC857",None,None)
 
     atrs = {
     'descr_curta': "Escovador de ouriço",

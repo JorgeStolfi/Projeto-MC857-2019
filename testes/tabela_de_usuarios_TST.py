@@ -7,7 +7,7 @@ import identificador
 import sys
 
 # Conexao com a base de dados:
-bas = base_sql.conecta("DB",None,None)
+bas = base_sql.conecta("DB/MC857",None,None)
 
 sys.stderr.write("Testando tabela_de_usuarios.py ...\n")
 

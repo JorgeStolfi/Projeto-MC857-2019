@@ -7,7 +7,7 @@ import base_sql
 import tabela_de_produtos as tbpr
 from produto import ObjProduto
 
-bas = base_sql.conecta("DB",None,None)
+bas = base_sql.conecta("DB/MC857",None,None)
 
 def valida_resultados(esperado, obtido):
   if(esperado != obtido):

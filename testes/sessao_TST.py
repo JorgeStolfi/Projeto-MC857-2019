@@ -16,7 +16,7 @@ def valida_estado_sessao(s, usr, ab):
   else:
     print('O metodo aberta() retornou o resultado esperado')
     
-bas = base_sql.conecta("DB",None,None)    
+bas = base_sql.conecta("DB/MC857",None,None)    
 
 usr_atrs = {
   'nome':'',

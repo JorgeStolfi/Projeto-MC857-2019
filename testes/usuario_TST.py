@@ -22,7 +22,7 @@ Estrategia de teste
     (b) sem elementos repetidos
 """
 
-bas = base_sql.conecta("DB",None,None)
+bas = base_sql.conecta("DB/MC857",None,None)
 
 def mostra_usuario(nome,usr,atrs):
   """Imprime usuário {usr} e compara seus atributos com {atrs}."""

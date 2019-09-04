@@ -8,7 +8,7 @@ import base_sql
 import tabela_de_compras
 import identificador
 
-bas = base_sql.conecta("DB",None,None)
+bas = base_sql.conecta("DB/MC857",None,None)
 
 usr_atrs = {
     "nome": "Alberto Nogueira",

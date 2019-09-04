@@ -43,33 +43,11 @@ def acrescenta(bas,atrs):
   O dicionário não deve conter o campo 'id_compra'."""
   return tabela_de_compras_IMP.acrescenta(bas,atrs)
 
- def recupera(bas,cpr):
-    """Devolve um dicionário {atrs} com o conteúdo da linha de identificador {cpr.id} da tabela de compras da base {bas}.
-    O dicionário não inclui o campo 'id'.
-    """
-    return tabela_de_compras_IMP.recupera(bas, cpr)
-
-def atualiza(bas,cpr):
-   """Atuliza uma compra com id {cpr.id} na tabela de compras da base {bas}. E retorna status de Sucesso ou falha.
-   """
-   return tabela_de_compras_IMP.atualiza(bas, cpr)
-
-def deleta(bas,cpr):
-   """Deleta uma compra com id {cpr.id} na tabela de compras da base {bas}. E retorna status de Sucesso ou falha.
-   """
-   return tabela_de_compras_IMP.deleta(bas, cpr)
-
 def busca_por_identificador(bas,id_compra):
   """Devolve um dicionário {atrs} com o conteúdo da linha
   de identificador {id_compra} da tabela de compras da base {bas}.
   O dicionário não inclui o campo 'id_compra'."""
-  return tabela_de_compras_IMP.busca_por_identificador(bas,id)
-
-def busca_por_data(bas,data):
-  """Devolve um array de dicionários {atrs} com os conteúdo da linhas
-  de data {data} da tabela de compras da base {bas}.
-  O dicionário não inclui o campo 'data'."""
-  return tabela_de_compras_IMP.busca_por_data(bas,data)
+  return tabela_de_compras_IMP.busca_por_identificador(bas,id_compra)
 
 def atualiza(bas,id_compra,atrs):
   """Modifica alguns campos de uma linha da tabela de compras da base {bas}.
@@ -80,8 +58,3 @@ def atualiza(bas,id_compra,atrs):
   subconjunto dos nomes dos campos da linha (excluindo 'id_compra').
   Os valores desses campos na tabela são substituídos pelos valores em {atrs}."""
   tabela_de_compras_IMP.atualiza(bas,id_compra,atrs)
-
-def busca_por_usuario(bas,usr):
-    """Devolve uma lista de compras (array de dicionários python) nas quais o comprador é representado por {usr}
-    """
-    return tabela_de_compras_IMP.busca_por_usuario(bas, usr)
