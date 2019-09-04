@@ -24,3 +24,17 @@ def atualiza(bas,ind,ses):
       "sessao_aberta=" + str(ses.aberta())
     cmd = "UPDATE sessoes SET " + pares +  " WHERE id=" + str(ind)
     bas.executa_comando(cmd)
+
+def cria_tabela(bas):
+    cmd = "CREATE TABLE sessoes (" + \
+          "id_sessao varchar(255)" + \
+          "id_usuario varchar(255)" + \
+          "aberta boolean" + \
+          ");"
+    sessao = bas.executa_comando(cmd)
+    return sessao
+
+def busca_por_identificador(bas, id_sessao):
+    cmd = "SELECT * FROM sessoes WHERE id = " + id_sessao
+    sessao = bas.executa_comando(cmd)
+    return sessao
