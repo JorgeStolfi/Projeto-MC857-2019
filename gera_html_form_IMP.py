@@ -18,7 +18,7 @@ def busca():
     "\">\n" + \
     "  <form action=\"search\" method=\"post\">\n" + \
     "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
-    "      <input type =\"text\" name=\"search_arg\" placeholder=\"Buscar o que?\">\n" + \
+    "      <input type =\"text\" name=\"search_arg\" id=\"search_arg\" placeholder=\"Buscar o que?\">\n" + \
     "    </span>\n" + \
     "    " + gera_html_botao.subm_busca() + "\n" + \
     "  </form>\n" + \
@@ -35,8 +35,8 @@ def comprar(id_produto,qtd_produto):
     "  padding: 5px;\n" + \
     "\">\n" + \
     "  <form action=\"buy\" method=\"post\">\n" + \
-    "    <input type =\"hidden\" name=\"id_produto\" value=\"" + id_produto + "\">\n" + \
-    "    <input type =\"hidden\" name=\"qtd_produto\" value=\"" + qtd_produto + "\">\n" + \
+    "    <input type =\"hidden\" name=\"id_produto\" id=\"id_produto\" value=\"" + id_produto + "\">\n" + \
+    "    <input type =\"hidden\" name=\"qtd_produto\" id=\"qtd_produto\" value=\"" + qtd_produto + "\">\n" + \
     "    " + gera_html_botao.subm_comprar() + "\n" + \
     "  </form>\n" + \
     "</span>"
@@ -53,15 +53,15 @@ def cadastrar_usuario():
     "\">\n" + \
     "  <form action=\"cadastrar\" method=\"post\">" + \
     "    <div>" + \
-    "	<label>Nome:</label>" + \
+    "	<label>Nome: <span style=\"color:red;\"></span></label>" + \
     "	<input type=\"text\" id=\"nome\" name=\"nome\"/>" + \
     "    </div>" + \
     "    <div>" + \
-    "	<label>E-mail:</label>" + \
+    "	<label>E-mail: <span style=\"color:red;\"></span></label>" + \
     "	<input type=\"email\" id=\"email\" name=\"email\"/>" + \
     "    </div>" + \
     "    <div>" + \
-    "	<label>CPF::</label>" + \
+    "	<label>CPF:: <span style=\"color:red;\"></span></label>" + \
     "	<input type=\"text\" id=\"cpf\" name=\"cpf\"/>" + \
     "    </div>" + \
     "    <div>" + \
@@ -69,7 +69,7 @@ def cadastrar_usuario():
     "	<input type=\"text\" id=\"telefone\" name=\"telefone\"/>" + \
     "    </div>" + \
     "    <div>" + \
-    "	<label>Senha:</label>" + \
+    "	<label>Senha: <span style=\"color:red;\"></span></label>" + \
     "	<input type=\"text\" id=\"senha\" name=\"senha\"/>" + \
     "    </div>" + gera_html_botao.subm_cadastrar() + \
     "  </form>\n" + \
