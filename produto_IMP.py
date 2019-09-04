@@ -24,13 +24,13 @@ class ObjProduto_IMP():
     for key in alts:
       if key in self.atrs: 
         self.atrs[key] = alts[key]
-    tabela_de_produtos.atualiza(bas,self.id_produto,alts)
+    tabela_de_produtos.atualiza(bas,self.id,alts)
 
 def cria(bas,atrs):
   sys.stderr.write("Criando objeto...\n")
   prod = ObjProduto_IMP(atrs.copy())
   sys.stderr.write("acrescentando na base...\n")
-  pid = tabela_de_produtos.acrescenta(bas,prod) 
-  sys.stderr.write("acrescentado, ind = %d\n" % ind)
-  prod.id_produto = pid
+  pid = tabela_de_produtos.acrescenta(bas,prod.obtem_atributos()) 
+  sys.stderr.write("acrescentado, ind = %s\n" % pid)
+  prod.id = pid
   return prod

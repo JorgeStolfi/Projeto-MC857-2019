@@ -1,6 +1,7 @@
 #Implementação de {tabela_de_produtos.py}
 
 import sys
+import identificador
 import base_sql
 
 def cria_tabela(bas):
@@ -9,7 +10,7 @@ def cria_tabela(bas):
     " descr_curta varchar(12) NOT NULL," + \
     " descr_media varchar(30) NOT NULL," + \
     " descr_longa varchar(60) NOT NULL," + \
-    " unid char(60) NOT NULL," + \
+    " unidade char(60) NOT NULL," + \
     " preco float(20) NOT NULL," + \
     " PRIMARY KEY indice" + \
     ")"
@@ -46,23 +47,24 @@ def busca_por_identificador(bas, ind_produto):
     return atrs
   
   produto = produtos_econtrados[0]
+  sys.stderr.write(str(produto) + "\n")
 
   atrs["descr_curta"] = produto[0]
   atrs["descr_media"] = produto[1]
   atrs["descr_longa"] = produto[2]
-  atrs["unid"] = produto[3]
+  atrs["unidade"] = produto[3]
   atrs["preco"] = produto[4]
 
   return atrs
 
 def acrescenta(bas,atrs):
-  nomes = "descr_curta,descr_media,descr_longa,unid,preco"
+  nomes = "descr_curta,descr_media,descr_longa,unidade,preco"
   valores = \
     atrs["descr_curta"] + ", " + \
     atrs["descr_media"] + ", " + \
     atrs["descr_longa"] + ", " + \
-    atrs["unid"] + ", " + \
-    atrs["preco"]
+    atrs["unidade"] + ", " + \
+    str(atrs["preco"])
   cmd = "INSERT INTO produtos (" + nomes + ") VALUES (" + valores + ");"
   bas.executa_comando(cmd)
   ind = bas.indice_inserido()
@@ -72,9 +74,9 @@ def acrescenta(bas,atrs):
 def atualiza(bas,ind_produto,atrs):
   ind = identificador.para_indice("P", ind_produto)
   pares = ""
-  for ch in ('descr_curta', 'descr_media', 'descr_longa', 'unid', 'preco'):
+  for ch in ('descr_curta', 'descr_media', 'descr_longa', 'unidade', 'preco'):
       if ch in atrs:
         if pares != "": pares = pares + ", "
-        pares = pares + ch + " = " + atrs[ch]
+        pares = pares + ch + " = " + str(atrs[ch])
   cmd="UPDATE produtos SET " + pares + " WHERE indice = " + str(ind)
   bas.executa_comando(cmd)
