@@ -40,7 +40,7 @@ def submit_busca():
   """Retorna HTML do botão <submit> para uso em formulario de busca."""
   return gera_html_botao_IMP.subm_busca()
   
-def submit_cadastra():
+def submit_cadastrar():
   """Gera apenas o o botão "cadastrar" que vai estar dentro de um <form>...</form>, dentro da página de cadastrar novo usuário"""
   return gera_html_botao_IMP.subm_cadastrar()
 
@@ -51,4 +51,5 @@ def submit_login():
 def submit_logout():
   """Retorna o botão para a confirmação de logout"""
   return gera_html_botao_IMP.subm_logout()
+
 

@@ -44,7 +44,7 @@ def login():
   rodape = gera_html_elem.rodape()
   return cabecalho + formulario + rodape
 
-def cadastrar_usuario(conteudo):
+def cadastrar_usuario():
   conteudo_cadastro = gera_html_form.cadastrar_usuario()
   pagina = generica(conteudo_cadastro) 
   return pagina

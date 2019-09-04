@@ -5,4 +5,4 @@
 
 modulo="$1"; shift  # 
 
-export PYTHONPATH=".:testes:/usr/lib/python3.6/site-packages/sos/plugins" ; testes/${modulo}_TST.py > testes/saida/${modulo}.txt
+export PYTHONPATH=".:testes:/usr/lib/python3.6/site-packages/sos/plugins" ; testes/${modulo}_TST.py > testes/saida/${modulo}.html
