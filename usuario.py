@@ -50,7 +50,7 @@ class ObjUsuario(ObjUsuario_IMP):
     
 # Construtor da classe:
 
-def cria(usrtb,atrs):
+def cria(bas,atrs):
   """Cria um novo objeto da classe {ObjUsuario}, com atributos especificados 
   pelo dicionário Python {atrs}.  Insere o mesmo na tabela de usuários
   da base de dados {bas}, e define seu identificador a partir do 
@@ -60,4 +60,3 @@ def cria(usrtb,atrs):
   distintos dos mesmos atributos de todos os usuários já inseridos na 
   tabela de usuários."""
   return usuario_IMP.cria(bas,atrs)
-  
