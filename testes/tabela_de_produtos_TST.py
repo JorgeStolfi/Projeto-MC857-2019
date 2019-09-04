@@ -47,8 +47,8 @@ prod.muda_atributos(bas,{'preco': 150.00})
 obtido = prod.obtem_atributos().get('preco')
 esperado = 150.00
 valida_resultados(obtido, esperado)
-obtido = tbpr.busca_por_identificador(bas, prod.obtem_identificador())["preco"]
-esperado = prod.obtem_atributos()['preco']
+obtido = tbpr.busca_por_identificador(bas, prod.obtem_identificador()).get('preco')
+esperado = prod.obtem_atributos().get('preco')
 valida_resultados(obtido, esperado)
 
 # Testa busca de produtos por índice:
