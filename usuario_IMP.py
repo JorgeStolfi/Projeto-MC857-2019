@@ -11,14 +11,14 @@ class ObjUsuario_IMP:
     return self.atrs
 
   def muda_atributos(self, alts):
-    # !!! Deveria verificar se 'CPF' está sendo alterado e reclamar. !!!
+    if "CPF" in alts:
+        return "**erro: CPF não pode ser alterado"
     
     # Verifica se novo email ja existe na base de usuarios:
     if 'email' in alts and self.atrs['email'] != alts['email']:
        res = tabela_de_usuarios.busca_por_email(alts['email'])
        if res != None and res.obtem_identificador() != self.obtem_identificador():
-         # !!! Deveria devolver um string com mesnagem de erro ou algo assim !!!
-         return 
+         return "**erro: email já está sendo utilizado"
 
     if "nome" in alts:
        self.alts["nome"] = alts["nome"]
@@ -32,10 +32,6 @@ class ObjUsuario_IMP:
        self.alts["endereco"] = alts["endereco"]
     if "telefone" in alts:
        self.alts["telefone"] = alts["telefone"]
-    
-    # TODO Primeiro argumento Base_SQL ?
-    # tabela_de_usuarios.atualiza(get_id(), self)
-    # base de usuarios nao eh modificada
 
   def obtem_atributos(self):
     atrs = self.atrs.copy()
@@ -69,4 +65,3 @@ def cria(bas, atrs):
   set_id(uid)
 
   return usr
-

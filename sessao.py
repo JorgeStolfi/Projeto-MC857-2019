@@ -38,7 +38,7 @@ class ObjSessao(ObjSessao_IMP):
     return ObjSessao_IMP.aberta(self)
 
   def obtem_usuario(self):
-    """Retorna o um objeto do tipo Usuario, para o usuario logado na sessao"""
+    """Retorna um objeto do tipo Usuario, para o usuario logado na sessao"""
     return ObjSessao_IMP.obtem_usuario(self)
 
   def logout(self,bas):
