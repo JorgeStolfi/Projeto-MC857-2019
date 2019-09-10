@@ -1,9 +1,19 @@
+# Implementação do módulo {processa_comando_http}.
+
 # Interfaces do projeto usadas por este módulo:
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib.parse, cgi
 import sys
 
-import gera_html_pag, gera_html_elem, processa_comando_compra, processa_comando_login, processa_comando_busca, processa_comando_cadastra
+import base_sql
+import gera_html_pag, gera_html_elem
+import comando_botao_entrar 
+import comando_botao_cadastrar 
+import comando_botao_sair 
+import comando_subm_ver_produto
+import comando_subm_comprar_produto
+import comando_subm_buscar_produtos
+import comando_subm_cadastrar
 
 # Outras interfaces usadas por este módulo:
 import json, sys, re
@@ -18,78 +28,131 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
   onde {hstr} é uma página em formato HTML, ou {None} em 
   caso de erro."""
   
+  # CAMPOS E MÉTODOS HERDADOS
+  
+  # Versao da classe, passada no dicionário {dados} aos métodos abaixo:
   server_version = "MC857"
-    """Versao da classe, passada aos métodos abaixo."""
-
+    
   def do_GET(self):
     """Este método é chamado pela classe {BaseHTTPRequestHandler} 
     ao receber um pedido 'GET'."""
-    dados = self.extrai_dados('GET')
-    pagina = processa_comando_http.comando_GET(dados)
-    self.devolve(pagina)
+    return self.do_geral('GET')
+    
 
   def do_POST(self):
     """Este método é chamado pela classe {BaseHTTPRequestHandler}
     ao receber um pedido 'POST'."""
-    dados = self.extrai_dados('POST')
-    pagina = processa_comando_http.comando_POST(dados)
-    self.devolve(pagina)
+    return self.do_geral('POST')
 
   def do_HEAD(self):
     """Este método é chamado pela classe {BaseHTTPRequestHandler}
     ao receber um pedido 'HEAD'."""
-    dados = self.extrai_dados('HEAD')
-    pagina = processa_comando_http.comando_HEAD(dados)
+    return self.do_geral('HEAD')
+    
+  # CAMPOS E MÉTODOS INTERNOS
+  
+  # Conexao com a base de dados (nula por enquanto)
+  bas = None
+  
+  def do_geral(self,tipo):
+    # Processa um comando HHTP do {tipo} indicado ('GET','POST', ou 'HEAD').
+    
+    # Extrai os dados do comando HTTP na forma de um dicionário:
+    dados = self.extrai_dados(tipo)
+    
+    # Conecta com a base de dados, se necessário:
+    if self.bas == None:
+      self.bas = base_sql.conecta("DB/MC857",None,None)
+      
+    # Determina a sessao à qual este comando se refere:
+    sessao = self.obtem_sessao(dados)
+    
+    # Processa o comando e constrói a página HTML de resposta:
+    pagina = processa_comando(tipo,self.bas,sessao,dados)
+    
+    # Envia a página ao browser do usuário:
     self.devolve(pagina)
     
-  # Método interno, usado pelos métodos acima:
-
+  def obtem_sessao(self,dados):
+    """Determina a sessão à qual o comando HTTP se refere, ou {None}
+    se o usuário não está logado."""
+    # !!! Usar cookies !!!
+    return None
+    
   def extrai_dados(self,tipo):
     """Retorna todos os campos de um pedido do tipo {tipo} ('GET','POST', ou 'HEAD')
     na forma de um dicionário Python {dados}.  
     
     O valor do campo {dados['request_type']} é o {tipo} dado. Os demais 
     campos são extraídos do {self} conforme especificado 
-    na classe {BaseHTTPRequestHandler}. 
+    na classe {BaseHTTPRequestHandler}, com as seguintes adições:
     
-    Os itens do preâmbulo {self.headers} são retornados na forma de um 
-    sub-dicionário que é o valor do campo {dados['headers']}.""" 
+     'headers': o valor é um sub-dicionário que é uma cópia
+       de {self.headers}, contendo os itens do preâmbulo do pedido HTTP 
+       ('contents-type', etc.).
+     
+     'real_path': valor de {urlparse.urlparse(self.path).path}.
+       No caso de 'GET', é a sub-cadeia do URL entre o último '/'
+       e o '?'.  No caso de 'POST', é o atributo 'action' do <form>,
+       com '/' na frente.
+
+     'query':  o valor de {urlparse.urlparse(self.path).query}.
+       no caso de 'GET', é a cadeia que segue o '?', possivelmente
+       com códigos URL; por exemplo, 'foo=bar&bar=%28FOO%29&foo=qux'
+
+     'query_data': o valor é um sub-dicionário com os argumentos de 
+       'query' destrinchados e com códigos URL convertidos
+       para caracters Unicode.  Os valores são listas, para indicar
+       repetição. Por exemplo, o 'query' acima viraria
+       {'foo': ['bar','qux'], 'bar': ['(FOO)']}.  No caso de 'POST',
+       é um dicionário vazio.
+       
+     'form_data': no caso de um comando 'POST',
+       o valor é um sub-dicionário com os campos do formulário 
+       submetido. No caso de 'GET', é um dicionário vazio.
+    """ 
     
     assert(self.command == tipo)
 
     dados = {}.copy() # Novo dicionário.
+    
+    # Campos originais do {BaseHTTPRequestHandler}
     dados['command'] = self.command
     dados['request_version'] = self.request_version
     dados['client_address'] = self.client_address
     dados['client_address_string'] = self.address_string()
-    dados['path'] = self.path
-    
-    parsed_path = urllib.parse.urlparse(self.path)
-    dados['real_path'] = parsed_path.path
-    dados['query'] =  parsed_path.query
-    
+
     dados['date_time'] = self.log_date_time_string()
-    
     dados['server_version'] = self.server_version
     dados['sys_version'] = self.sys_version
     dados['protocol_version'] = self.protocol_version
     
-    dados['headers'] = self.extrai_headers()
+    dados['path'] = self.path # Por exemplo "/busca?
     
-    dados['form_data'] = self.extrai_formulario()
+    # Campos adicionados por este módulo:
+    parsed_path = urllib.parse.urlparse(self.path)
+    dados['real_path'] = parsed_path.path
+    dados['query'] =  parsed_path.query
+    
+    dados['headers'] = self.extrai_cabecalhos_http()
+    
+    dados['query_data'] = urllib.parse.parse_qs(dados['query'])
+    
+    dados['form_data'] = self.extrai_dados_de_formulario()
     
     return dados
     
-  def extrai_headers(self):
-    """Converte o campo {self.headers} em um dicionario Python."""
+  def extrai_cabecalhos_http(self):
+    """Converte o campo {self.headers} em um dicionario Python, limpando
+    brancos supérfluos."""
     hds = {}.copy(); # Novo dicionario.
     for name, value in self.headers.items():
        hds[name] = value.rstrip()
     return hds
     
-  def extrai_formulario(self):
-    """Se o comando é 'POST', extrai os dados do formulário
-    na forma de um dicionário Python."""
+  def extrai_dados_de_formulario(self):
+    """Se o comando é 'POST', extrai os dados do formulário, dos
+    campos {self.rfile} e {self,headers}, na forma de um dicionário Python."""
     ffs = {}.copy(); # Novo dicionário.
     if self.command == 'POST':
       formulario = cgi.FieldStorage(
@@ -106,7 +169,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
           # Valor do item não é um arquivo:  
           ffs[chave] = item.value
     return ffs
-    
+     
   def devolve(self,pagina):
     """Manda para o usuário a {pagina} dada, que deve ser um string
     com o conteúdo da página em HTMP5.0.  
@@ -129,40 +192,51 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     self.end_headers()
     self.wfile.write(conteudo.encode('utf-8'))
 
-def comando_GET(dados):
+def processa_comando(tipo, bas, sessao, dados):
   """Esta função processa um comando HTTP 'GET' recebido pelo servidor, com as
   informações convertidas em um dicionario {dados}."""
   print(dados)
-  if dados['path'] == '':
-    return gera_html_pag.entrada()
-
-  elif dados['path'] == '/login':
-    return processa_comando_login.processa()
-  elif dados['path'] == '/cadastro':
-    return processa_comando_cadastra.processa()
-  elif dados['path'] == '/produto':
-    return processa_comando_busca.processa(dados['query'])
-  elif dados['path'] == '/produtos':
-    return processa_comando_busca.processa(dados['query'])
-  elif dados['path'] == '/compra':
-    return processa_comando_compra.processa()
+  if tipo == 'GET':
+    # Comando causado por acesso inicial ou botão simples:
+    if dados['real_path'] == '':
+      # Acesso sem comando: mostra página de entrada.
+      return gera_html_pag.entrada(bas,sessao,dados['query_data'])
+    elif dados['real_path'] == '/botao_cadastrar':
+      # Usuário apertou o botão "Cadastrar" do menu principal:
+      return comando_botao_cadastrar.processa(bas,sessao,dados['query_data'])
+    elif dados['real_path'] == '/botao_entrar':
+      # Usuário apertou o botão "Entrar" (login) do menu principal:
+      return comando_botao_entrar.processa(bas,sessao,dados['query_data'])
+    elif dados['real_path'] == '/botao_sair':
+      # Usuário apertou o botão "Sair" (logout) do menu principal:
+      return comando_botao_sair.processa(bas,sessao,dados['query_data'])
+    else:
+      # Comando não identificado:
+      return mostra_comando(dados)
+  elif tipo == 'POST':
+    # Comando causado por botão do tipo "submit" dentro de um <form>...</form>:
+    if dados['real_path'] == '/subm_cadastrar':
+      # Usuário preencheu o formulário de cadastrar novo usuário e apertou "Cadastrar":
+      return comando_subm_cadastrar.processa(bas,sessao,dados['form_data'])      
+    elif dados['real_path'] == '/subm_buscar_produtos':
+      # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
+      return comando_subm_buscar_produtos.processa(bas,sessao,dados['form_data'])
+    elif dados['real_path'] == '/subm_ver_produto':
+      # Usuário apertou o botão "Comprar" numa descrição curta do produto:
+      return comando_subm_ver_produto.processa(bas,sessao,dados['form_data'])      
+    elif dados['real_path'] == '/subm_comprar_produto':
+      # Usuário preencheu a quantidade desejada na página de um produto e apertou o botão "Comprar":
+      return comando_subm_comprar_produto.processa(bas,sessao,dados['form_data'])      
+    else:   
+      # Comando não identificado
+      return mostra_comando(dados)
+  elif tipo == 'HEAD':
+    # Comando emitido por proxy server:
+    return mostra_comando(dados)
   else:
+    # Tipo inválido:
     return mostra_comando(dados)
-
-def comando_POST(dados):
-  """Esta função processa um comando HTTP 'POST' recebido pelo servidor, com as
-  informações convertidas em um dicionario {dados}."""
-  print(dados)
-  if dados['path'] == '/search':
-      return processa_comando_busca.processa(dados['query'])      
-  else:    
-    return mostra_comando(dados)
-
-def comando_HEAD(dados):
-  """Esta função processa um comando HTTP 'HEAD' recebido pelo servidor, com as
-  informações convertidas em um dicionario {dados}."""
-  return mostra_comando(dados)
-  
+    
 def mostra_comando(dados):
   """Esta função de depuração devolve um string que é uma página HTML5 que mostra o conteúdo
   do dicionário {dados}."""

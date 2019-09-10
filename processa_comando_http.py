@@ -1,24 +1,5 @@
-# Funções para processar comandos HTTP (GET,POST, ou HEAD)
+# Este módulo processa comandos HTTP (GET,POST, ou HEAD)
 # recebidos do usuário.  
-
-# Estas funções devem devolver um {string} que é
-# uma página HTML5 completa; ou {None} para indicar que
-# o pedido é inválido.  O argumento {dados}
-# é um dicionário que contém os dados extraídos
-# do pedido pela classe {BaseHTTPRequestHandler}.
-
-# De modo geral, o valor de {dados['Xxx']} é o valor
-# do atributo {self.Xxx} conforme descrito em {BaseHTTPRequestHandler}.
-# Campos especiais: 
-#
-#  'real_path': valor de {urlparse.urlparse(self.path).path}.
-#
-#  'query':  valor de {urlparse.urlparse(self.path).query}.
-#
-#  'headers': o valor é um sub-dicionário {self.headers}
-#    com os itens do preâmbulo do pedido HTTP 
-#    ('contents-type', etc.).
-
 
 # Implementação desta interface:
 import processa_comando_http_IMP

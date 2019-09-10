@@ -11,12 +11,22 @@
 # criar uma página HTML5 com a resposta aproriada, e 
 # envia a mesma de volta para o usuário.
 
-# Implementação desta interface:
-import servidor_IMP
+# Interfaces do projeto usadas por este programa:
+import processa_comando_http
+import base_sql
 
 def dispara():
   """Esta função inicia a execução do servidor."""
-  servidor_IMP.dispara()
+  dir = "DB/MC857"
+  usr = None
+  senha = None
+  bas = base_sql.conecta(dir,usr,senha)
+  host = '0.0.0.0' # Aceita pedidos de qualquer IP.
+  porta = 8081 # Porta 8081 em vez de 80, para não precisar de acesso "root"
+  objeto_servidor = processa_comando_http.cria_objeto_servidor(host,porta)
+  print('disparando o servidor...')
+  objeto_servidor.serve_forever()
 
 # Programa principal do servidor:
 dispara()
+ 

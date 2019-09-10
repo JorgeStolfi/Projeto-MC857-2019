@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Implementação do módulo {gera_html_botao}.
 
 #####Funções <button>#####
@@ -31,7 +29,7 @@ def logout():
   cor_fundo = "#fff888"
   return botao_simples(texto,cor_fundo)
 
-def cadastra():
+def cadastrar():
   texto = "Cadastrar"
   cor_fundo = "#fff888"
   return botao_simples(texto,cor_fundo)
@@ -53,7 +51,7 @@ def submit_busca():
   cor_fundo = "#fff888"
   return botao_submit(texto, cor_fundo)
 
-def submit_cadastra():
+def submit_cadastrar():
   texto = "Cadastrar"
   cor_fundo = "#fff888"
   return botao_submit(texto, cor_fundo)

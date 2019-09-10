@@ -20,7 +20,7 @@ def busca():
     "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
     "      <input type =\"text\" name=\"search_arg\" id=\"search_arg\" placeholder=\"Buscar o que?\">\n" + \
     "    </span>\n" + \
-    "    " + gera_html_botao.subm_busca() + "\n" + \
+    "    " + gera_html_botao.submit_busca() + "\n" + \
     "  </form>\n" + \
     "</span>"
 
@@ -37,7 +37,7 @@ def comprar(id_produto,qtd_produto):
     "  <form action=\"buy\" method=\"post\">\n" + \
     "    <input type =\"hidden\" name=\"id_produto\" id=\"id_produto\" value=\"" + id_produto + "\">\n" + \
     "    <input type =\"hidden\" name=\"qtd_produto\" id=\"qtd_produto\" value=\"" + qtd_produto + "\">\n" + \
-    "    " + gera_html_botao.subm_comprar() + "\n" + \
+    "    " + gera_html_botao.submit_comprar() + "\n" + \
     "  </form>\n" + \
     "</span>"
 
@@ -71,7 +71,7 @@ def cadastrar_usuario():
     "    <div>" + \
     "	<label>Senha: <span style=\"color:red;\"></span></label>" + \
     "	<input type=\"text\" id=\"senha\" name=\"senha\"/>" + \
-    "    </div>" + gera_html_botao.subm_cadastrar() + \
+    "    </div>" + gera_html_botao.submit_cadastrar() + \
     "  </form>\n" + \
     "</span>"
 

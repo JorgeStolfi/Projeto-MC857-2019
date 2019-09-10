@@ -32,9 +32,9 @@ def menu_geral():
   return \
     "<nav>\n" + \
     "  " + gera_html_form.busca() + "\n" + \
-    "  " + gera_html_botao.teste_de_popup("Clique Aqui") + "\n" + \
-    "  " + gera_html_botao.teste_de_popup("Não, Clique Aqui!") + "\n" + \
-    "  " + gera_html_botao.teste_de_popup("Não Clique Aqui") + "\n" + \
+    "  " + gera_html_botao.login() + "\n" + \
+    "  " + gera_html_botao.logout() + "\n" + \
+    "  " + gera_html_botao.cadastrar() + "\n" + \
     "</nav>"
 
 def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):

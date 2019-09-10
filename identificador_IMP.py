@@ -1,4 +1,4 @@
-# Implementação do módulo {identificador}
+# Implementação do módulo {identificador}.
 
 def de_indice(let,ind):
   assert type(let) is str and len(let) == 1

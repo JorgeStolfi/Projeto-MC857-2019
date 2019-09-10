@@ -1,4 +1,4 @@
-# Implementação do módulo {compra}.
+# Implementação do módulo {compra} e da classe {ObjCompra}.
 
 # Interfaces importadas por esta interface:
 import tabela_de_compras
@@ -72,7 +72,108 @@ class ObjCompra_IMP:
         assert False
 
 def cria(bas, usr):
-    cpr = ObjCompra_IMP(None,[],usr)
-    idc = tabela_de_compras.acrescenta(bas,cpr)
-    cpr.id_compra = idc
+    atrs = { 
+      'id_usuario': usr.obtem_identificador(),
+      'status': "aberto"
+    }
+    ind = tabela_de_compras.acrescenta(bas,atrs)
+    id_compra = identificador.de_indice("C", ind)
+    cpr = ObjCompra_IMP(id_compra,[],usr)
     return cpr
+# ======================================================================
+# Implementação do módulo {tabela_de_compras}.
+
+import base_sql
+import identificador
+import sys # Para depuração.
+
+
+class Obj_Tabela_De_Compras_IMP:
+  
+  def __init__(self,bas):
+    # Base de dados:
+    self.bas = bas
+    # Nomes e tipos das colunas (menos 'indice'):
+    self.colunas = (
+      ('id_usuario', 'char(10) NOT NULL'),
+      ('status', 'varchar(10) NOT NULL'),
+    )
+    campos = "indice integer NOT NULL PRIMARY KEY"
+    for c in self.colunas:
+      campos = campos + ", " + c[0] + " " + c[1]
+    self.bas.executa_comando_CREATE_TABLE("compras", campos);
+
+  def busca_por_identificador(self,compra_id):
+    ind = identificador.para_indice("U", id_compra)
+    cond = "indice = " + str(ind)
+    col_nomes = ( c[0] for c in self.colunas )
+    res = self.bas.executa_comando_SELECT("compras", cond, col_nomes)
+    sys.stderr.write("res = " + str(res) + "\n")
+    if res == None or len(res) == 0:
+      return None
+    else:
+      assert len(res) == 1
+      col_vals = res[0]
+      assert len(col_vals) == len(col_nomes)
+      atrs = dict(zip(col_nomes, col_vals))
+      return atrs
+
+    res = bas.executa_comando_SELECT("compras", 'indice', ind, ('id_usuario','status'))
+    return res
+
+  def acrescenta(self,atrs):
+    ind = self.bas.executa_comando_INSERT("compras",atrs)
+    return ind
+
+  def atualiza(self, id_compra, atrs):
+    ind = identificador.para_indice("C", id_compra)
+    res = self.bas.executa_comando_UPDATE("produtos", ind, atrs)
+    return
+
+
+def cria_tabela(bas):
+  return Obj_Tabela_De_Compras_IMP(bas)
+
+# ======================================================================
+# Implementação do módulo {tabela_de_itens_de_compras}.
+
+import base_sql
+import identificador
+import sys # Para depuração.
+
+
+class Obj_Tabela_De_Usuarios_IMP:
+  
+  def __init__(self,bas):
+    # Base de dados:
+    self.bas = bas
+    # Nomes e tipos das colunas (menos 'indice'):
+    self.colunas = (
+      ('id_compra', 'char(10) NOT NULL'),
+      ('id_produto', 'char(10) NOT NULL'),
+      ('qt', 'float NOT NULL'),
+      ('preco', 'float NOT NULL'),
+    )
+    campos = "indice integer NOT NULL PRIMARY KEY"
+    for c in self.colunas:
+      campos = campos + ", " + c[0] + " " + c[1]
+    self.bas.executa_comando_CREATE_TABLE("itens_de_compras", campos);
+
+  def acrescenta(self, atrs):
+     ind = self.bas.executa_comando_INSERT("itens_de_compras", atrs)
+     return   identificador.de_indice("I", ind)
+
+  def busca_por_compra(self, id_compra):
+     res = self.bas.executa_comando_SELECT("itens_de_compras", "id_compra = '" + id_compra + "'", ('id_produto','qt','preco'))
+     return cpr
+
+  def busca_por_produto(self, id_produto):
+     res = self.bas.executa_comando_SELECT("itens_de_compras", "id_produto = '" + id_produto + "'", ('id_compra','qt','preco'))
+     return cpr
+
+  def atualiza(self, id_item, atrs):
+     res = self.bas.executa_comando_UPDATE("itens_de_compras", "indice = " + str(ind), atrs);
+     return
+
+def cria_tabela(bas):
+  return Obj_Tabela_De_Usuarios_IMP(bas)

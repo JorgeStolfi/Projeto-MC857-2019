@@ -6,101 +6,69 @@
 
 #Interfaces utilizados por este teste
 import sys
-from os import path
-sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+import tabela_de_produtos as tb_prod
+import tabela_de_usuarios as tb_usr
 import gera_html_pag
 import base_sql
 import produto
 from produto import ObjProduto
 
+# Cria alguns produtos:
 
-f = open("saida/gera_html_pag_TST.txt", "w+")
+sys.stderr.write("Conectando com base de dados...\n")
+bas = base_sql.conecta("DB/MC857",None,None)
 
-f.write("Testando a entrada\n")
-try:
-    entrada = gera_html_pag.entrada()
+sys.stderr.write("Criando tabela de usuarios...\n")
+res = tb_usr.cria_tabela(bas)
+sys.stderr.write("Resultado = " + str(res) + "\n")
 
-    f.write("Entrada executado\n")
-    f.write(entrada)
-except Exception as e:
-    f.write("Erro ao executar entrada\n")
-    f.write(str(e))
+sys.stderr.write("Criando tabela de produtos...\n")
+res = tb_prod.cria_tabela(bas)
+sys.stderr.write("Resultado = " + str(res) + "\n")
 
-f.write("\n\n\n***********************\n")
-f.write("Testando produto\n")
+atrs_prod1 = {
+  'descr_curta': "Escovador de ouriço",
+  'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
+  'descr_longa': "Fabricante: Ouricex SA\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nDimensões: 300 x 200 x 3000 mm",
+  'preco': 120.00,
+  'unidade': '1 aparelho'
+}
+prod1 = produto.cria(bas,atrs_prod1)
 
-#Criação do produto copiado do produto_TST
-try:
-    bas = base_sql.conecta("DB/MC857",None,None)
+atrs_prod2 = {
+  'descr_curta': "Ferroada",
+  'descr_media': "Espada élfica fabricada na cidade de Gondolin.",
+  'descr_longa': "Fabricante: Gondolin Ferreiros SA\nOrigem: Gondolin\Dono Original: Bilbo\n",
+  'preco': 2000.00,
+  'unidade': '1 espada' 
+}
+prod2 = produto.cria(bas,atrs_prod2)
 
-    atrs = {
-    'descr_curta': "Escovador de ouriço",
-    'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
-    'descr_longa': "Fabricante: Ouricex SA\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nDimensões: 300 x 200 x 3000 mm",
-    'preco': 120.00,
-    'unidade': '1 aparelho' }
-    prod = produto.cria(bas,atrs)
+# Testes das funções de {gera_html_pag}:
 
-    html_produto = gera_html_pag.produto(prod)
+def testa(nome,funcao,*args):
+  """Testa {funcao(*args)}, grava resultado 
+  em "testes/saida/gera_html_pag.{nome}.html"."""
+  
+  prefixo = "saida/gera_html_pag"
+  f = open(prefixo + "." + nome + '.html', 'w')
+  try:
+    res = funcao(*args)
+    f.write(res)
+  except Exteption as ex:
+    msg = "testa(" + nome + "): ** erro = " + str(e) + "\n"
+    sys.stderr.write(msg)
+    f.write(msg)
+  f.close()
 
-    f.write("Produto executado\n")
-    f.write(html_produto)
-except Exception as e:
-    f.write("Erro ao executar produto\n")
-    f.write(str(e))
+testa("entrada", gera_html_pag.entrada)
 
-f.write("\n\n\n***********************\n")
-f.write("Testando lista_de_produtos\n")
-try:
-    bas = base_sql.conecta("DB/MC857",None,None)
+testa("produto", gera_html_pag.produto,prod1)
 
-    atrs = {
-    'descr_curta': "Escovador de ouriço",
-    'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
-    'descr_longa': "Fabricante: Ouricex SA\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nDimensões: 300 x 200 x 3000 mm",
-    'preco': 120.00,
-    'unidade': '1 aparelho' }
-    prod1 = produto.cria(bas,atrs)
-    atrs = {
-    'descr_curta': "Ferroada",
-    'descr_media': "Espada élfica fabricada na cidade de Gondolin.",
-    'descr_longa': "Fabricante: Gondolin Ferreiros SA\nOrigem: Gondolin\Dono Original: Bilbo\n",
-    'preco': 2000.00,
-    'unidade': '1 espada' }
-    prod1 = produto.cria(bas,atrs)
-    prods = []
-    prods.append(prod1)
-    prods.append(prod2)
-    
-    html_produtos = gera_html_pag.lista_de_produtos(prods)
-    f.write("lista_de_produtos executado\n")
-    f.write(html_produtos)
-except Exception as e:
-    f.write("Erro ao executar lista_de_produtos\n")
-    f.write(str(e))
+testa("lista_de_produtos", gera_html_pag.lista_de_produtos, [ prod1, prod2 ])
 
-f.write("\n\n\n***********************\n")
-f.write("Testando cadastrar_usuario\n")
-try:
-    cadastrar_usuario = gera_html_pag.cadastrar_usuario()
+testa("cadastrar_usuario", gera_html_pag.cadastrar_usuario)
 
-    f.write("cadastrar_usuario executado\n")
-    f.write(cadastrar_usuario)
-except Exception as e:
-    f.write("Erro ao executar cadastrar_usuario\n")
-    f.write(str(e))
+conteudo = "Teste do método genérico"
 
-f.write("\n\n\n***********************\n")
-f.write("Testando generica\n")
-try:
-    conteudo = "Teste do método genérico"
-    generica = gera_html_pag.generica(conteudo)
-
-    f.write("generica executado\n")
-    f.write(generica)
-except Exception as e:
-    f.write("Erro ao executar generica\n")
-    f.write(str(e))
-
-
-f.close()
+testa("generica", gera_html_pag.generica, conteudo)
