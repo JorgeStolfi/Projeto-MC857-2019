@@ -46,6 +46,12 @@ def bloco_de_produto(prod):
   formato HTML."""
   return gera_html_elem_IMP.bloco_de_produto(prod)
 
+def informacao_usuario(usr):
+  """ A função recebe o parâmetro {usr}, da classe {ObjUsuario}, e recupera
+  a partir dele nome, email, CPF, endereco, CEP, telefone do usuario
+  correspondente em formato HTML."""
+  return gera_html_elem_IMP.informacao_usuario(usr)
+
 def formulario_login(altura, largura, margem, acolchoamento, margem_entradas):
   return gera_html_elem_IMP.formulario_login(altura,
                                              largura,
