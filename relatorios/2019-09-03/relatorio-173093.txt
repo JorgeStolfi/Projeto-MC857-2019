@@ -1,0 +1,1 @@
+Adaptei o modulo produto_IMP para ficar de acordo com o padrao utilizado no modulo usuario_IMP.

@@ -1,105 +1,105 @@
 # Imlementação do módulo {produto} e da classe {ObjProduto}.
 
-import inspect, sys
-import base_sql, tabela_de_produtos, identificador 
+import tabela_generica
+import sys
+
+# VARIÁVEIS GLOBAIS DO MÓDULO
+
+# Nome da tabela na base de dados.
+nome_tb = "produtos"
+
+# Dicionário que mapeia identificadores para os objetos {ObjProdutos} na memória.
+# Todo objeto dessa classe que é criado é acrescentado a esse dicionário,
+# a fim de garantir a unicidadde dos objetos.
+cache = {}.copy()
+
+colunas = \
+  (
+    ( 'descr_curta', type("foo"), 'TEXT NOT NULL',  10, 80), # Descricao curta do produto.
+    ( 'descr_media', type("foo"), 'TEXT NOT NULL',  8,  250), # Descricao media do produto.
+    ( 'descr_longa', type("foo"), 'TEXT NOT NULL',  10, 500), # Descricao longa do produto.
+    ( 'unidade',     type("foo"), 'TEXT NOT NULL',  0,  1000), # numero de unidades disponiveis no estoque
+    ( 'preco',       type(float), 'FLOAT NOT NULL', 1,  10**10), # preco do produto em reais
+  )
+  # Descrição das colunas da tabela na base de dados.
+
+def inicializa():
+  global cache, nome_tb, colunas
+  # Cria a tabela:
+  res = tabela_generica.cria_tabela(nome_tb, colunas)
+  if res != None:
+    sys.stderr.write("produto_IMP.inicializa: **erro " + str(res) + "\n")
+    assert False
 
 class ObjProduto_IMP():
+  def __init__(self, identificador, atrs):
+    self.atributos = atrs.copy()
+    self.identificador = identificador
 
-  def __init__(self,atrs):
-    self.atrs = atrs
-    self.id = None
+def obtem_identificador(prod):
+  global cache, nome_tb, colunas
+  return prod.identificador
 
-  def obtem_identificador(self):
-    return self.id
-
-  def obtem_atributos(self):
-    atrs = self.atrs.copy()
-    return atrs
-
-  def calcula_preco(self,qt):
-    return 3.1415926
+def obtem_atributos(prod):
+  global cache, nome_tb, colunas
+  return prod.atributos.copy()
   
-  def muda_atributos(self,bas,alts):
-    for key in alts:
-      if key in self.atrs: 
-        self.atrs[key] = alts[key]
-    tabela_de_produtos.atualiza(bas,self.id,alts)
+def muda_atributos(prod, alts):
+  global cache, nome_tb, colunas
+  res = tabela_generica.atualiza(nome_tb, cache, "U", colunas, cria_obj, muda_obj, prod.identificador, alts)
+  if res != prod:
+    sys.stderr.write("produto_IMP.muda_atributos: **erro " + str(res) + "\n")
+    assert False
+  return
 
-def cria(bas,atrs):
-  sys.stderr.write("Criando objeto...\n")
-  prod = ObjProduto_IMP(atrs.copy())
-  sys.stderr.write("acrescentando na base...\n")
-  pid = tabela_de_produtos.acrescenta(bas,prod.obtem_atributos()) 
-  sys.stderr.write("acrescentado, ind = %s\n" % pid)
-  prod.id = pid
+def cria_obj(id_prod, atrs):
+  global cache, nome_tb, colunas
+  sys.stderr.write("produto_IMP.cria_obj(" + id_prod + ", " + str(atrs) + ") ...\n")
+  prod = ObjProduto_IMP(id_prod, atrs)
+  sys.stderr.write("  prod = " + str(prod) + "\n")
   return prod
 
-# ======================================================================
+def muda_obj(prod, alts):
+  global cache, nome_tb, colunas
+  sys.stderr.write("produto_IMP.muda_obj\n")
+  sys.stderr.write("  prod antes = " + str(prod) + "\n")
+  sys.stderr.write("  alts = " + str(alts) + "\n")
 
-#Implementação do módulo {tabela_de_produtos}.
+  if len(alts) > len(prod.atributos):
+    return "**erro: numero excessivo de atributos a alterar"
 
-import sys
-import identificador
-import base_sql
+  for chave, val in alts.items():
+    if not chave in prod.atributos:
+      return "**erro: chave '" + chave + "' inválida"
+    val_velho = prod.atributos[chave]
+    if not type(val_velho) is type(val):
+      return "**erro: tipo do campo '" + chave + "' incorreto"
+    prod.atributos[chave] = val
 
-class Obj_Tabela_De_Produtos_IMP:
-  
-  def __init__(self,bas):
-    # Base de dados:
-    self.bas = bas
-    # Nomes e tipos das colunas (menos 'indice'):
-    self.colunas = (
-      ('descr_curta', 'varchar(60) NOT NULL'),
-      ('descr_media', 'varchar(128) NOT NULL'),
-      ('descr_longa', 'text NOT NULL'),
-      ('unidade', 'char(60) NOT NULL'),
-      ('preco', 'float(20) NOT NULL'),
-    )
-    campos = "indice integer NOT NULL PRIMARY KEY," + \
-    for c in self.colunas:
-      campos = campos + ", " + c[0] + " " + c[1]
-    self.bas.executa_comando_CREATE_TABLE("produtos", campos)
+  sys.stderr.write("  prod = " + str(prod) + "\n")
+  return prod
 
-  def busca_por_palavra(bas, pal):
-    curta = "descr_curta LIKE '%" + pal + "%'"
-    media = "descr_media LIKE '%" + pal + "%'"
-    longa = "descr_longa LIKE '%" + pal + "%'"
-    cond = \
-      curta + " OR " + \
-      media + " OR " + \
-      longa
-    indices_econtrados = self.bas.executa_comando_SELECT("produtos", cond, ['indice'])
-    print("Produtos encontrados: " + str(indices_econtrados))
-    ids = [].copy()
-    for ind in indices_econtrados:
-      ids.push(identificador.de_indice("P", ind[0]))
-    return ids
+def cria(atrs):
+  global cache, nome_tb, colunas
+  sys.stderr.write("produto_IMP.cria(" + str(atrs) + ") ...\n")
+  # Insere na base de dados e obtém o índice na mesma:
+  prod = tabela_generica.acrescenta(nome_tb, cache, "U", colunas, cria_obj, atrs)
+  if not type(prod) is ObjProduto_IMP:
+    sys.stderr.write("produto_IMP.cria: ** erro: " + str(prod) + "\n")
+    assert False
+  return prod
 
-  def busca_por_identificador(bas, ind_produto):
-    ind = identificador.para_indice("P", ind_produto)
-    cond = "indice = " + str(ind)
-    col_nomes = ( c[0] for c in self.colunas )
-    res = self.bas.executa_comando_SELECT("produtos", cond, col_nomes)
-    print("Produtos encontrados: " + str(res))
-    if res == None or len(res) == 0:
-      return None
-    else:
-      assert len(res) == 1
-      col_vals = res[0]
-      assert len(col_vals) == len(col_nomes)
-      atrs = dict(zip(col_nomes, col_vals))
-      return atrs
+def campos():
+  global cache, nome_tb, colunas
+  return colunas
 
-  def acrescenta(bas, atrs):
-    ind = self.bas.executa_comando_INSERT("produtos", atrs)
-    id_produto = identificador.de_indice("P", ind)
-    return id_produto
+def busca_por_palavra_chave(palavras_chave):
+  # Implementar um busca por like/semelhanca no modulo de tabelas
+  # e realizar a busca das palavras chaves em cada campo
+  # do produto
+  pass
 
-  def atualiza(bas, id_produto, atrs):
-    ind = identificador.para_indice("P", id_produto)
-    cond = "indice = " + str(ind)
-    self.bas.executa_comando_UPDATE("produtos", cond, atrs)
-
-def cria_tabela(bas):
-  return Obj_Tabela_De_Produtos_IMP(bas)
-
+def busca_por_identificador(id_produto):
+  global cache, nome_tb, colunas
+  prod = tabela_generica.busca_por_identificador(nome_tb, cache, "U", colunas, cria_obj, id_produto)
+  return prod
