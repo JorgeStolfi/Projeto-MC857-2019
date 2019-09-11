@@ -47,7 +47,7 @@ prod1_atrs = {
   'descr_curta': "Escovador de ouriço",
   'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
   'descr_longa': "Fabricante: Ouricex SA\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nDimensões: 300 x 200 x 3000 mm",
-  'preco': 120.00,
+  'preco': float("120.00"),
   'unidade': '1 aparelho'
 }
 uid1 = "P-0000000"
@@ -82,12 +82,6 @@ prod1_alts = {
 prod1_a.muda_atributos(prod1_a, prod1_alts)
 prod1_b = produto.busca_por_identificador(uid1)
 prod1_b_atrs = prod1_a_atrs
-
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {produto.busca_por_indice}:\n")
-
-ind = identificador.para_indice("P",produto.obtem_identificador())
-sys.stderr.write("Teste de busca_por_indice: " + str(tabela_de_produtos.busca_por_indice(bas, ind)) + "\n")
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {produto.busca_por_palavra}:\n")
