@@ -1,0 +1,2 @@
+comando_subm_ver_compras.py- processa a acao do usuario que consiste em pedir para ver a lista de pedidos de compras do usuário, em qualquer estado.
+tambẽm realizei a correção de arquivos de testes ignorados
