@@ -93,11 +93,9 @@ def campos():
   global cache, nome_tb, colunas
   return colunas
 
-def busca_por_palavra_chave(palavras_chave):
-  # Implementar um busca por like/semelhanca no modulo de tabelas
-  # e realizar a busca das palavras chaves em cada campo
-  # do produto
-  pass
+def busca_por_palavras_chave(palavras_chave):
+  produtos =  tabela_generica.busca_por_semelhanca(nome_tb, cache, "U", colunas, colunas, palavras_chave)
+  return produtos
 
 def busca_por_identificador(id_produto):
   global cache, nome_tb, colunas

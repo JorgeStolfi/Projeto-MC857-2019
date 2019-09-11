@@ -96,6 +96,10 @@ def busca_por_campo(nome_tb, cache, let, cols, chave, valor):
   satisfizer o critério da busca, devolve uma lista vazia."""
   return tabela_generica_IMP.busca_por_campo(nome_tb, cache, let, cols, chave, valor)
 
+def busca_por_semelhanca(nome_tb, cache, let, cols, chaves, valores):
+  #@TODO documentar interface
+  return tabela_generica_IMP.busca_por_semelhanca(nome_tb, cache, let, cols, chaves, valores)
+
 def atualiza(nome_tb, cache, let, cols, cria_obj, muda_obj, ident, alts):
   """Procura na tabela {nome_tb} e no seu {cache}
   um objeto {obj} com o identificador {ident}, que deve ter a forma 
