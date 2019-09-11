@@ -8,15 +8,17 @@ import sys
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
 
-nome_tb = "compras"
-  # Nome da tabela na base de dados.
+nome_tb_compras = "compras"
+nome_tb_itens = "itens_de_compras"
+
+  # Nome das tabelas na base de dados.
 
 cache = {}.copy()
   # Dicionário que mapeia identificadores para os objetos {ObjUsuario} na memória.
   # Todo objeto dessa classe que é criado é acrescentado a esse dicionário,
   # a fim de garantir a unicidadde dos objetos.
 
-colunas = \
+colunas_compras = \
   (
     ( 'status',      type("foo"), 'TEXT NOT NULL', , 10 ), # status da compra. Pode ser 'aberto', 'pagando', 'pago', 'despachado' ou 'entregue'.
     ( 'cliente',     type("foo"), 'TEXT NOT NULL', , 14 ), # CPF do cliente que realizou a compra.
@@ -24,70 +26,105 @@ colunas = \
   )
   # Descrição das colunas da tabela na base de dados.
 
+colunas_itens = \
+  (
+    ( 'id_compra', type("char"), ' NOT NULL', 10 , 10 ), # id da compra.
+    ( 'id_produto', type("char"), ' NOT NULL', 10 , 10 ), # id do produto referente.
+    ( 'qt', type("float"), ' NOT NULL', 0 , 999999 ), # quantidade do produto referente.
+    ( 'preco', type("float"), ' NOT NULL', 0 , 9999999 ), # preco do produto referente.
+    
+  )
+  # Descrição das colunas da tabela na base de dados.
+
+
 # Implementações:
+
+def inicializa():
+  global cache, nome_tb, colunas
+  # Cria a tabela de compras:
+  res = tabela_generica.cria_tabela(nome_tb_compras, colunas_compras)
+  if res != None:
+    sys.stderr.write("usuario_IMP.inicializa: **erro " + str(res) + "\n")
+    assert False
+  # Cria a tabela de intens de compras:
+  res = tabela_generica.cria_tabela(nome_tb_itens, colunas_itens)
+  if res != None:
+    sys.stderr.write("usuario_IMP.inicializa: **erro " + str(res) + "\n")
+    assert False
 
 class ObjCompra_IMP:
     def __init__(self, id_compra, itens, cliente):
         self.id_compra = id_compra
         self.itens = itens
-        self.cliente = cliente
-        self.status = 'aberto'
+        self.atributos = {"usr":cliente,"status":"aberto"}
 
-    ## TODO:
-    def obtem_identificador(self):
-        return self.id_compra
+def obtem_identificador(compra):
+    return compra.id_compra
 
-    def obtem_usuario(self):
-         return self.cliente
+def obtem_usuario(compra):
+    return compra.atributos["cliente"]
 
-    def obtem_status(self):
-        return self.status
+def obtem_status(compra):
+    return compra.atributos["status"]
 
-    def lista_itens(self):
-        return self.itens
+def lista_itens(compra):
+    return compra.itens
 
-    def calcula_total(self):
-        total = 0
-        for prod, qt, prc in self.itens:
-            total += prc
-        return total
+def calcula_total(compra):
+    total = 0
+    for prod, qt, prc in compra.itens:
+        total += prc
+    return total
 
-    def acrescenta_item(self, prod, qt):
-        # Procura o produto na lista:
-        for item in self.itens:
-            if item[0] == prod:
-                item[1] = qt
-                item[2] = prod.calcula_preco(qt)
-                sys.stderr.write("** produto " + str(prod) + " teve sua quantidade acrescentada em " + str(self.id_compra) + "\n")
-                return
-
-        # Caso nao exista, adiciona produto a compra:
-        prc = prod.calcula_preco(qt)
-        self.itens = self.itens + [ [ prod, qt, prc ] ]
-        sys.stderr.write("** produto " + str(prod) + " foi acrescentado em " + str(self.id_compra) + "\n")
-
-    def troca_qtd(self, prod, qt):
-        # Procura o produto na lista:
-        for item in self.itens:
-          if item[0] == prod:
+def acrescenta_item(compra, prod, qt):
+    # Procura o produto na lista:
+    for item in compra.itens:
+        if item[0] == prod:
             item[1] = qt
             item[2] = prod.calcula_preco(qt)
-            sys.stderr.write("** produto " + str(prod) + " na compra " + str(self.id_compra) + " teve sua quantidade trocada para " + str(qt) + "\n")
+            sys.stderr.write("** produto " + str(prod) + " teve sua quantidade acrescentada em " + str(compra.id_compra) + "\n")
             return
-        
-        sys.stderr.write("** produto " + prod.obtem_identificador() + " nao encontrado em " + str(self.id_compra) + "\n")
+
+    # Caso nao exista, adiciona produto a compra:
+    prc = prod.calcula_preco(qt)
+    compra.itens = compra.itens + [ [ prod, qt, prc ] ]
+    sys.stderr.write("** produto " + str(prod) + " foi acrescentado em " + str(compra.id_compra) + "\n")
+    
+    cache_bobo = {}.copy()
+    
+    res = tabela_generica.acrescenta(nome_tb_itens, cache_bobo, "I", colunas_itens, cria_obj_bobo, {"compra":id_compra, "prod":produto.obtem_identificador(prod),"qt":qt, "preco":prc})
+    
+    if res != None
+        sys.stderr.write("** Erro: "+str(res)+"\n")
         assert False
 
-    def elimina_prod(self, prod):
-        # !!! Deveria procurar o produto na lista de itens, e eliminar o item !!!
-        for item in self.itens:
-            if item[0] == prod:
-                self.itens.remove(item)
-                sys.stderr.write("** produto " + str(prod) + " eliminado de " + str(self.id_compra) + "\n")
-                return
-        
-        sys.stderr.write("** produto " + prod.obtem_identificador() + " nao encontrado em " + str(self.id_compra) + "\n")
-        assert False
+    return 
+
+def cria_obj_bobo(id, atrs):
+    return None
+
+def troca_qtd(compra, prod, qt):
+    # Procura o produto na lista:
+    for item in compra.itens:
+        if item[0] == prod:
+        item[1] = qt
+        item[2] = prod.calcula_preco(qt)
+        sys.stderr.write("** produto " + str(prod) + " na compra " + str(compra.id_compra) + " teve sua quantidade trocada para " + str(qt) + "\n")
+        return
+    
+    sys.stderr.write("** produto " + prod.obtem_identificador() + " nao encontrado em " + str(compra.id_compra) + "\n")
+    assert False
+
+def elimina_prod(compra, prod):
+    # !!! Deveria procurar o produto na lista de itens, e eliminar o item !!!
+    for item in compra.itens:
+        if item[0] == prod:
+            compra.itens.remove(item)
+            sys.stderr.write("** produto " + str(prod) + " eliminado de " + str(compra.id_compra) + "\n")
+            return
+    
+    sys.stderr.write("** produto " + prod.obtem_identificador() + " nao encontrado em " + str(self.id_compra) + "\n")
+    assert False
 
 def cria(bas, usr):
     atrs = { 
