@@ -1,10 +1,28 @@
 # Implementação do módulo {compra} e da classe {ObjCompra}.
 
-# Interfaces importadas por esta interface:
+# Para diagnóstico:
 import tabela_de_compras
 import base_sql
 import identificador
 import sys
+
+# VARIÁVEIS GLOBAIS DO MÓDULO
+
+nome_tb = "compras"
+  # Nome da tabela na base de dados.
+
+cache = {}.copy()
+  # Dicionário que mapeia identificadores para os objetos {ObjUsuario} na memória.
+  # Todo objeto dessa classe que é criado é acrescentado a esse dicionário,
+  # a fim de garantir a unicidadde dos objetos.
+
+colunas = \
+  (
+    ( 'status',      type("foo"), 'TEXT NOT NULL', , 10 ), # status da compra. Pode ser 'aberto', 'pagando', 'pago', 'despachado' ou 'entregue'.
+    ( 'cliente',     type("foo"), 'TEXT NOT NULL', , 14 ), # CPF do cliente que realizou a compra.
+    ( 'lista_itens', type("foo"), 'TEXT NOT NULL', ,    ), # chave para tabela contendo a lista de itens da compra
+  )
+  # Descrição das colunas da tabela na base de dados.
 
 # Implementações:
 
@@ -80,13 +98,25 @@ def cria(bas, usr):
     id_compra = identificador.de_indice("C", ind)
     cpr = ObjCompra_IMP(id_compra,[],usr)
     return cpr
+
+
+
 # ======================================================================
 # Implementação do módulo {tabela_de_compras}.
 
+# Para diagnóstico:
 import base_sql
 import identificador
-import sys # Para depuração.
+import sys 
 
+colunas = \
+  (
+    ( 'id_usuario', type("int"), ' NOT NULL', , 10 ), # id do usuario que realizou a compra.
+    ( 'status', type("foo"), 'TEXT NOT NULL', , 10 ), # status da compra. Pode ser 'aberto', 'pagando', 'pago', 'despachado' ou 'entregue'.
+  )
+  # Descrição das colunas da tabela na base de dados.
+
+# Implementações:
 
 class Obj_Tabela_De_Compras_IMP:
   
@@ -137,10 +167,22 @@ def cria_tabela(bas):
 # ======================================================================
 # Implementação do módulo {tabela_de_itens_de_compras}.
 
+# Para diagnóstico:
 import base_sql
 import identificador
-import sys # Para depuração.
+import sys 
 
+colunas = \
+  (
+    ( 'id_compra', type("char"), ' NOT NULL', , 10 ), # id da compra.
+    ( 'id_produto', type("char"), ' NOT NULL', , 10 ), # id do produto referente.
+    ( 'qt', type("float"), ' NOT NULL', , 10 ), # quantidade do produto referente.
+    ( 'preco', type("float"), ' NOT NULL', , 10 ), # preco do produto referente.
+    
+  )
+  # Descrição das colunas da tabela na base de dados.
+
+# Implementações:
 
 class Obj_Tabela_De_Usuarios_IMP:
   
