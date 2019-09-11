@@ -128,4 +128,13 @@ def limpa_tabela(nome_tb, cols):
     return res
   assert res == None
   
-  
+def busca_por_semelhanca(nome_tb, cache, let, cols, chaves, valores):
+  cond = ""
+  total_de_chaves = len(chaves)
+  for key in chaves:
+    index_chave = chaves.index(key)
+    for value in valores:
+      cond += (key + "LIKE '%" + value + "%'")
+      if (total_de_chaves - index_chave) != 1:
+        cond += " OR "
+  base_sql.executa_comando_SELECT(nome_tb, cond, cols)
