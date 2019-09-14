@@ -12,7 +12,8 @@ import compra; from compra import ObjCompra
 import usuario; from usuario import ObjUsuario
 
 sys.stderr.write("Conectando com base de dados...\n")
-bas = base_sql.conecta("DB/MC857",None,None)
+res = base_sql.conecta("DB/MC857",None,None)
+assert res == None
 
 # COPIADO DO COMPRA_TST
 usr = {

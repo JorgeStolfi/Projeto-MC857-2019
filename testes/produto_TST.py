@@ -75,11 +75,11 @@ mostra_produto("prod1_a", prod1_a, uid1, prod1_a_atrs)
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {produto.muda_atributos}:\n")
 
-prod1_alts = {
+prod1_mods = {
   'descr_curta': "Escovador de ouriço 2.0 Power Blaster",
   'preco': 1200.00,
 }
-prod1_a.muda_atributos(prod1_a, prod1_alts)
+prod1_a.muda_atributos(prod1_a, prod1_mods)
 prod1_b = produto.busca_por_identificador(uid1)
 prod1_b_atrs = prod1_a_atrs
 

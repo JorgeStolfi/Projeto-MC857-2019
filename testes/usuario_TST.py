@@ -12,18 +12,16 @@ sys.stderr.write("Conectando com base de dados...\n")
 base_sql.conecta("DB/MC857",None,None)
 
 # ----------------------------------------------------------------------
-sys.stderr.write("Inicializando módulo {usuario}:\n")
+sys.stderr.write("Inicializando módulo {usuario}, limpando tabela:\n")
 usuario.inicializa()
-
 colunas = usuario.campos()
-
-sys.stderr.write("Limpando a tabela \"usuarios\":\n")
 res = tabela_generica.limpa_tabela("usuarios", colunas)
-sys.stderr.write("  res = " + str(str) + "\n")
+sys.stderr.write("  res(limpa) = " + str(res) + "\n")
 
 # ----------------------------------------------------------------------
 def mostra_usuario(rotulo,usr,id,atrs):
   """Imprime usuário {usr} e compara seus atributos com {id,atrs}."""
+  sys.stderr.write("%s\n" % ("-" * 70))
   sys.stderr.write(rotulo + " = \n")
   if usr == None:
     sys.stderr.write("None\n")
@@ -34,6 +32,7 @@ def mostra_usuario(rotulo,usr,id,atrs):
       id_confere = (usuario.obtem_identificador(usr) == id)
       atrs_conferem = (usuario.obtem_atributos(usr) == atrs)
       sys.stderr.write("  CONFERE: " + str(id_confere) + ", " + str(atrs_conferem) + "\n")
+  sys.stderr.write("%s\n" % ("-" * 70))
  
 def testa_cria_usuario(rotulo,id,atrs):
   """Testa criação de usuário com atributos com {atrs}. Retorna o usuário."""
@@ -68,18 +67,16 @@ uid2 = "U-00000001"
 usr2 = testa_cria_usuario("usr2",uid2,usr2_atrs)
 
 usr3_atrs = {
-  "nome":"Muda Atributo", 
-  "senha":"4321002134", 
+  "nome": "Juca Terceiro", 
+  "senha": "4321002134", 
   "email": "muda@gmail.com", 
-  "CPF":"111.111.111-11", \
+  "CPF": "111.111.111-11", \
   "endereco": "Rua Zero, 0000\nVila Zero\nCampinas, SP", \
   "CEP": "13083-999", 
   "telefone": "+55(19)9 9999-9999"
 }
 uid3 = "U-00000002"
 usr3 = testa_cria_usuario("usr3",uid3,usr3_atrs)
-
-
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {usuario.busca_por_identificador}:\n")
@@ -104,14 +101,14 @@ mostra_usuario("usr1_b",usr1_b,uid1,usr1_atrs)
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {usuario.muda_atributos}:\n")
 
-usr1_alts = {
+usr1_mods = {
   "nome": "Josegrosso de Souza",
   "email": "grosso@hotmail.com"
 }
-usuario.muda_atributos(usr1,usr1_alts)
+usuario.muda_atributos(usr1,usr1_mods)
 usr1_c = usuario.busca_por_identificador(uid1)
 usr1_c_atrs = usr1_atrs
-for k, v in usr1_alts.items():
+for k, v in usr1_mods.items():
   usr1_c_atrs[k] = v
 mostra_usuario("usr1_c",usr1_c,uid1,usr1_c_atrs)
 
@@ -120,8 +117,10 @@ if type(usr2) is ObjUsuario_IMP:
   mostra_usuario("usr2",usr2,uid2,usr2_atrs)
 
 if type(usr2) is ObjUsuario_IMP:
-  usuario.muda_atributos(usr2,usr3_atrs) # Deveria assumir os valores do usr3
-  mostra_usuario("usr2",usr2,uid3,usr3_atrs)
+  usr3_m_atrs = usr3_atrs.copy()
+  usr3_m_atrs['CPF'] = usr2_atrs['CPF'] # Não pode alterar CPF.
+  usuario.muda_atributos(usr2,usr3_m_atrs) # Deveria assumir os valores do usr3
+  mostra_usuario("usr2",usr2,uid2,usr3_m_atrs)
 
 
 #! /usr/bin/python3

@@ -12,7 +12,8 @@ import usuario; from usuario import ObjUsuario
 # Cria produto e usuario para testes:
 
 sys.stderr.write("Conectando com base de dados...\n")
-bas = base_sql.conecta("DB/MC857",None,None)
+res = base_sql.conecta("DB/MC857",None,None)
+assert res == None
 
 sys.stderr.write("Criando tabela de usuarios...\n")
 res = tb_usr.cria_tabela(bas)

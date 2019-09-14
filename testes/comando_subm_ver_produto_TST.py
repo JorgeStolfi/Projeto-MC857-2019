@@ -13,7 +13,8 @@ import tabela_de_produtos
 import identificador
 
 sys.stderr.write("Conectando com base de dados...\n")
-bas = base_sql.conecta("DB/MC857",None,None)
+res = base_sql.conecta("DB/MC857",None,None)
+assert res == None
 
 sys.stderr.write("Criando tabela de produtos...\n")
 res = tabela_de_produtos.cria_tabela(bas)

@@ -34,7 +34,7 @@ def mostra_lista_ids(rotulo, res):
   if type(res) is list or type(res) is tuple:
     for ident in res:
       sys.stderr.write("  " + str(ident) + "\n")
-      obj = tabela_generica.busca_por_identificador(nome_tb, cache, let, cols, cria_obj, ident)
+      obj = tabela_generica.busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident)
       mostra_obj("  ", obj, ident, None)
   else:
     sys.stderr.write("  **erro: resultado não é lista ou tupla\n")
@@ -45,28 +45,38 @@ def mostra_lista_ids(rotulo, res):
 # ----------------------------------------------------------------------
 
 sys.stderr.write("Conectando com base de dados...\n")
-bas = base_sql.conecta("DB/MC857", None, None)
+res = base_sql.conecta("DB/MC857", None, None)
+assert res == None
 
 # ----------------------------------------------------------------------
 
 class ObjBobo:
+  # Classe para teste.  Por enquanto, os campos do objeto
+  # são no formato SQL mesmo ({int}, {float}, e {str}) , para
+  # não precisar de conversão.
+  
   id = None
   atrs = None
   
   def __init__(self, id, atrs):
     self.id = id
-    self.atrs = atrs
+    self.atrs = atrs.copy()
     
-def cria_obj(id, atrs):
-  sys.stderr.write("Criando ObjBobo(" + id + ", " + str(atrs) + ")\n")
-  return ObjBobo(id, atrs)
-  
-def muda_obj(obj, alts):
-  sys.stderr.write("Alterando ObjBobo, id = " + obj.id + " alts = " + str(alts) + "\n")
-  assert len(alts) <= len(obj.atrs)
-  for k, v in alts.items():
-    assert k in obj.atrs
-    obj.atrs[k] = v
+
+def def_obj(obj, id, atrs_SQL):
+  """Cria ou altera o obejto da classe {ObjBobo}."""
+  if obj == None:
+    sys.stderr.write("  criando ObjBobo, id =" + id + ", atrs_SQL = " + str(atrs_SQL) + ")\n")
+    obj = ObjBobo(id, atrs_SQL)
+  else:
+    mods_SQL = atrs_SQL
+    sys.stderr.write("  alterando ObjBobo, obj = " + str(obj) + " mods_SQL = " + str(mods_SQL) + "\n")
+    assert obj.id == id
+    assert len(mods_SQL) <= len(obj.atrs)
+    for k, v in mods_SQL.items():
+      assert k in obj.atrs
+      obj.atrs[k] = v
+  return obj
     
 cols = (
   ('nome',   type("foo"), 'TEXT',     3,   60),
@@ -96,7 +106,7 @@ atrs1 = {
   "pernas": 4
 }
 id1 = "X-00000001"
-obj1 = tabela_generica.acrescenta(nome_tb, cache, let, cols, cria_obj, atrs1)
+obj1 = tabela_generica.acrescenta(nome_tb, cache, let, cols, def_obj, atrs1)
 mostra_obj("obj1", obj1, id1, atrs1)
 
 atrs2 = {
@@ -106,13 +116,13 @@ atrs2 = {
   "pernas": 2
 }
 id2 = "X-00000002"
-obj2 = tabela_generica.acrescenta(nome_tb, cache, let, cols, cria_obj, atrs2)
+obj2 = tabela_generica.acrescenta(nome_tb, cache, let, cols, def_obj, atrs2)
 mostra_obj("obj2", obj2, id2, atrs2)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {tabela_generica.busca_por_identificador}:\n")
 
-obj1_a = tabela_generica.busca_por_identificador(nome_tb, cache, let, cols, cria_obj, id1)
+obj1_a = tabela_generica.busca_por_identificador(nome_tb, cache, let, cols, def_obj, id1)
 mostra_obj("obj1_a", obj1_a, id1, atrs1)
 
 # ----------------------------------------------------------------------
@@ -133,8 +143,8 @@ alts1 = {
   "nome": "Josegrosso de Souza",
   "email": "grosso@hotmail.com"
 }
-tabela_generica.atualiza(nome_tb, cache, let, cols, cria_obj, muda_obj, id1, alts1)
-obj1_c = tabela_generica.busca_por_identificador(nome_tb, cache, let, cols, cria_obj, id1)
+tabela_generica.atualiza(nome_tb, cache, let, cols, def_obj, id1, alts1)
+obj1_c = tabela_generica.busca_por_identificador(nome_tb, cache, let, cols, def_obj, id1)
 for k, v in alts1.items():
   atrs1[k] = v
 mostra_obj("obj1_c", obj1_c, id1, atrs1)

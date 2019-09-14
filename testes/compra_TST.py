@@ -10,7 +10,8 @@ import identificador
 
 #inicializa banco de dados
 sys.stderr.write("Conectando com base de dados...\n")
-bas = base_sql.conecta("DB/MC857",None,None)
+res = base_sql.conecta("DB/MC857",None,None)
+assert res == None
 
 #inicializa modulo compra
 compra.inicializa()
@@ -84,12 +85,12 @@ cpr_id = cpr2_atrs["id_produto"]
 cpr2_p = compra.busca_por_produro(cpr_id)
 mostra_compra("cpr2_p",cpr2_p,cid2,cpr2_atrs)
 
-cpr1_alts = {
+cpr1_mods = {
     "qt" : "2348",
     "preco" : "3.50"
     }
 
-compra.muda_atributos(cpr1,cpr1_alts)
+compra.muda_atributos(cpr1,cpr1_mods)
 cpr1_a = compra.busca_por_compra(cid1)
 cpr1_a_atrs
 for k,v in cpr1_atrs
