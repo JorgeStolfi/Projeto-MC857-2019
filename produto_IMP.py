@@ -8,6 +8,9 @@ import sys
 # Nome da tabela na base de dados.
 nome_tb = "produtos"
 
+letra_tb = "P"
+  # Prefixo dos identificadores de produtos.
+
 # Dicionário que mapeia identificadores para os objetos {ObjProdutos} na memória.
 # Todo objeto dessa classe que é criado é acrescentado a esse dicionário,
 # a fim de garantir a unicidadde dos objetos.
@@ -44,46 +47,20 @@ def obtem_atributos(prod):
   global cache, nome_tb, colunas
   return prod.atributos.copy()
   
-def muda_atributos(prod, alts):
+def muda_atributos(prod, mods):
   global cache, nome_tb, colunas
-  res = tabela_generica.atualiza(nome_tb, cache, "U", colunas, cria_obj, muda_obj, prod.identificador, alts)
+  res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, prod.identificador, mods)
   if res != prod:
     sys.stderr.write("produto_IMP.muda_atributos: **erro " + str(res) + "\n")
     assert False
   return
 
-def cria_obj(id_prod, atrs):
-  global cache, nome_tb, colunas
-  sys.stderr.write("produto_IMP.cria_obj(" + id_prod + ", " + str(atrs) + ") ...\n")
-  prod = ObjProduto_IMP(id_prod, atrs)
-  sys.stderr.write("  prod = " + str(prod) + "\n")
-  return prod
-
-def muda_obj(prod, alts):
-  global cache, nome_tb, colunas
-  sys.stderr.write("produto_IMP.muda_obj\n")
-  sys.stderr.write("  prod antes = " + str(prod) + "\n")
-  sys.stderr.write("  alts = " + str(alts) + "\n")
-
-  if len(alts) > len(prod.atributos):
-    return "**erro: numero excessivo de atributos a alterar"
-
-  for chave, val in alts.items():
-    if not chave in prod.atributos:
-      return "**erro: chave '" + chave + "' inválida"
-    val_velho = prod.atributos[chave]
-    if not type(val_velho) is type(val):
-      return "**erro: tipo do campo '" + chave + "' incorreto"
-    prod.atributos[chave] = val
-
-  sys.stderr.write("  prod = " + str(prod) + "\n")
-  return prod
-
 def cria(atrs):
   global cache, nome_tb, colunas
   sys.stderr.write("produto_IMP.cria(" + str(atrs) + ") ...\n")
   # Insere na base de dados e obtém o índice na mesma:
-  prod = tabela_generica.acrescenta(nome_tb, cache, "U", colunas, cria_obj, atrs)
+  atrs_SQL = ???(atrs)
+  prod = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
   if not type(prod) is ObjProduto_IMP:
     sys.stderr.write("produto_IMP.cria: ** erro: " + str(prod) + "\n")
     assert False
@@ -94,10 +71,46 @@ def campos():
   return colunas
 
 def busca_por_palavras_chave(palavras_chave):
-  produtos =  tabela_generica.busca_por_semelhanca(nome_tb, cache, "U", colunas, colunas, palavras_chave)
+  produtos =  tabela_generica.busca_por_semelhanca(nome_tb, cache, letra_tb, colunas, def_obj, palavras_chave)
   return produtos
 
 def busca_por_identificador(id_produto):
   global cache, nome_tb, colunas
-  prod = tabela_generica.busca_por_identificador(nome_tb, cache, "U", colunas, cria_obj, id_produto)
+  prod = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_produto)
   return prod
+
+# FUNÇÕES INTERNAS
+
+def def_obj(obj, ident, atrs_SQL):
+  """Se {obj} for {None}, cria um novo objeto da classe {ObjSessao} com
+  identificador {ident} e atributos {atrs_SQL}, tais como extraidos
+  da tabela de sessoes. O objeto *não* é inserido na base de dados. 
+  
+  Se {obj} não é {None}, deve ser um objeto da classe {ObjSessao}; nesse
+  caso a função altera os atributos de {obj} conforme especificado em
+  {atrs_SQL}.
+  
+  Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
+  equivalentes na memória."""
+  global cache, nome_tb, colunas
+  sys.stderr.write("produto_IMP.def_obj(" + str(obj) + ", " + ident + ", " + str(atrs_SQL) + ") ...\n")
+  if obj == None:
+    atrs_mem = ???(atrs_SQL)
+    sys.stderr.write("  criando objeto, atrs_mem = " + str(atrs) + "\n")
+    obj = ObjProduto_IMP(ident, atrs)
+  else
+    assert obj.id == ident
+    mods_mem = ???(atrs_SQL)
+    sys.stderr.write("  modificando objeto, mods_mem = " + str(atrs) + "\n")
+    if len(mods) > len(obj.atributos):
+      return "**erro: numero excessivo de atributos a alterar"
+    for chave, val in mods.items():
+      if not chave in obj.atributos:
+        return "**erro: chave '" + chave + "' inválida"
+      val_velho = obj.atributos[chave]
+      if not type(val_velho) is type(val):
+        return "**erro: tipo do campo '" + chave + "' incorreto"
+      obj.atributos[chave] = val
+  sys.stderr.write("  obj = " + str(obj) + "\n")
+  return obj
+

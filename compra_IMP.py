@@ -92,7 +92,7 @@ def acrescenta_item(compra, prod, qt):
     
     cache_bobo = {}.copy()
     
-    res = tabela_generica.acrescenta(nome_tb_itens, cache_bobo, "I", colunas_itens, cria_obj_bobo, {"compra":id_compra, "prod":produto.obtem_identificador(prod),"qt":qt, "preco":prc})
+    res = tabela_generica.acrescenta(nome_tb_itens, cache_bobo, "I", colunas_itens, def_obj_bobo, {"compra":id_compra, "prod":produto.obtem_identificador(prod),"qt":qt, "preco":prc})
     
     if res != None
         sys.stderr.write("** Erro: "+str(res)+"\n")
@@ -100,7 +100,7 @@ def acrescenta_item(compra, prod, qt):
 
     return 
 
-def cria_obj_bobo(id, atrs):
+def def_obj_bobo(id, obj, atrs_SQL):
     return None
 
 def troca_qtd(compra, prod, qt):
@@ -157,9 +157,7 @@ colunas = \
 
 class Obj_Tabela_De_Compras_IMP:
   
-  def __init__(self,bas):
-    # Base de dados:
-    self.bas = bas
+  def __init__(self):
     # Nomes e tipos das colunas (menos 'indice'):
     self.colunas = (
       ('id_usuario', 'char(10) NOT NULL'),
@@ -223,9 +221,7 @@ colunas = \
 
 class Obj_Tabela_De_Usuarios_IMP:
   
-  def __init__(self,bas):
-    # Base de dados:
-    self.bas = bas
+  def __init__(self):
     # Nomes e tipos das colunas (menos 'indice'):
     self.colunas = (
       ('id_compra', 'char(10) NOT NULL'),

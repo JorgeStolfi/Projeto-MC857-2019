@@ -14,7 +14,7 @@ def inicializa():
   """Inicializa o modulo, criando a tabela de sessões na base de dados.
   Deve ser chamada apenas uma vez no ínicio da execução do servidor.
   Não retorna nenhum valor."""
-  usuario_IMP.inicializa()
+  sessao_IMP.inicializa()
 
 class ObjSessao(ObjSessao_IMP):
   """Um objeto desta classe representa uma sessao de acesso ao
@@ -51,45 +51,45 @@ def cria(usr):
   Retorna o objeto criado."""
   return sessao_IMP.cria(usr)
 
-def obtem_identificador(sessao):
-	"""Devolve o identificador 'S-{NNNNNNNN}' da sessão."""
-    return sessao_IMP.obtem_identificador(sessao)
+def obtem_identificador(ses):
+  """Devolve o identificador 'S-{NNNNNNNN}' da sessão."""
+  return sessao_IMP.obtem_identificador(ses)
 
-def obtem_usuario(sessao):
-    """Retorna o objeto da classe {ObjUsuario} correspondente ao usuario que
-    fez login na sessao.  Equivale a {self.obtem_atributos()['usr']}. """
-    return sessao_IMP.obtem_usuario(sessao)
+def obtem_usuario(ses):
+  """Retorna o objeto da classe {ObjUsuario} correspondente ao usuario que
+  fez login na sessao {ses}.  Equivale a {sessao.obtem_atributos(ses)['usr']}. """
+  return sessao_IMP.obtem_usuario(ses)
+
+def aberta(ses):
+  """Retorna o estado da sessão {ses}: {True} se a sessao ainda esta aberta, 
+  {False} se o usuário deu logout.  Equivale a {sessao.obtem_atributos(ses)['aberta']}."""
+  return sessao_IMP.aberta(ses)
+
+def obtem_atributos(ses):
+  """Retorna um dicionário Python que é uma cópia dos atributos da sessão {ses},
+  exceto identificador."""
+  return sessao_IMP.obtem_atributos(ses)
+
+def muda_atributos(ses, mods):
+  """Recebe um dicionário Python {mods} cujas chaves são um subconjunto
+  dos nomes de atributos da sessão (exceto o identificador). Troca os 
+  valores desses atributos no objeto {ses} da classe {ObjSessao}
+  pelos valores correspondentes em {mods}.  Também altera esses 
+  campos na base de dados. """
+  sessao_IMP.muda_atributos(ses, mods)
+
+def logout(ses):
+  """Registra o logout do usuário na sessão {ses}, mudando o atributo 'aberta'
+  permanentemente para {False}. Também altera esse campo na base de dados.
+  Em caso de sucesso, retorna o próprio objeto."""
+  return sessao_IMP.logout(ses)
 
 def busca_por_identificador(id_sessao):
-    """Devolve um dicionário {atrs} com o conteúdo da linha 
-    de identificador {id_sessao} da tabela de sessões da base {bas}.
-    O dicionário não inclui o campo 'id_sessao'."""
-    return sessao_IMP.busca_por_identificador(id_sessao)
+  """Localiza uma sessao com identificador {id_sessao} (uma string da forma
+  "S-{NNNNNNNN}"), e devolve a mesma na forma de um objeto da classe {ObjSessao}.
+  Se tal sessão não existe, devolve {None}."""
+  return sessao_IMP.busca_por_identificador(id_sessao)
 
-def aberta(sessao):
-    """Retorna o estado da sessão: {True} se a sessao ainda esta aberta, 
-    {False} se o usuário deu logout.  Equivale a {self.obtem_atributos()['aberta']}."""
-    return sessao_IMP.aberta(sessao)
-
-def obtem_atributos(sessao):
-    """Retorna um dicionário Python que é uma cópia dos atributos da sessão,
-    exceto identificador."""
-    return sessao_IMP.obtem_atributos(sessao)
-    
-def muda_atributos(sessao, alts):
-    """Recebe um dicionário Python {alts} cujas chaves são um subconjunto
-    dos nomes de atributos da sessão (exceto o identificador), e troca os 
-    valores desses atributos pelos valores correspondentes em {alts}.  
-    Também altera esses campos na base de dados.
-    """
-    sessao_IMP.muda_atributos(sessao, alts)
-    
-def logout(sessao):
-    """Registra o logout do usuário na sessão, mudando o atributo 'aberta'
-    permanentemente para {False}. Também altera esse campo na base de dados.
-    Em caso de sucesso, retorna o próprio objeto."""
-    return sessao_IMP.logout(sessao)
-    
 def campos():
   """Retorna uma seqüência de tuplas que descrevem os nomes e propriedades
   dos atributos de um {ObjSessao}, menos o identificador.  O resultado é adequado 

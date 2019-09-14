@@ -51,19 +51,12 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     
   # CAMPOS E MÉTODOS INTERNOS
   
-  # Conexao com a base de dados (nula por enquanto)
-  bas = None
-  
   def do_geral(self,tipo):
     # Processa um comando HHTP do {tipo} indicado ('GET','POST', ou 'HEAD').
     
     # Extrai os dados do comando HTTP na forma de um dicionário:
     dados = self.extrai_dados(tipo)
     
-    # Conecta com a base de dados, se necessário:
-    if self.bas == None:
-      self.bas = base_sql.conecta("DB/MC857",None,None)
-      
     # Determina a sessao à qual este comando se refere:
     sessao = self.obtem_sessao(dados)
     

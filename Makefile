@@ -49,9 +49,12 @@ todos_os_testes:
           } ; \
         done
 
+# MODULO := identificador
+# MODULO := conversao_sql
 # MODULO := base_sql
 # MODULO := tabela_generica
 MODULO := usuario
+# MODULO := sessao 
 teste_unico:
 	@echo "=== ${MODULO} ==="
 	./testa.sh ${MODULO}

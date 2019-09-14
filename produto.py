@@ -37,13 +37,13 @@ def obtem_atributos(self):
   exceto o identificador."""
   return produto_IMP.obtem_atributos(self)
   
-def muda_atributos(self,alts):
-  """Recebe um dicionário {alts} cujas chaves são um subconjunto
+def muda_atributos(self,mods):
+  """Recebe um dicionário {mods} cujas chaves são um subconjunto
   dos nomes de atributos do produto (exceto o identificador);
   e troca os valores desses atributos pels valores 
-  correspondentes em {alts}. Também altera esses campos na base de dados.
+  correspondentes em {mods}. Também altera esses campos na base de dados.
   Em caso de sucesso, retorna o próprio objeto."""
-  produto_IMP.muda_atributos(self,alts)
+  produto_IMP.muda_atributos(self,mods)
   
 def calcula_preco(self,qt):
   """Dada a quantidade {qt} a comprar (um float), calcula o preço a pagar.

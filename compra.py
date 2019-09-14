@@ -81,15 +81,15 @@ def obtem_atributos(compra):
   compra, exceto identificador."""
   return compra_IMP.obtem_atributos(compra)
 
-def muda_atributos(compra, alts):
+def muda_atributos(compra, mods):
   """Modifica alguns atributos do objeto {compra} da classe {ObjCompra},
   registrando as alterações na base de dados.  
 
-  O parâmetro {alts} deve ser um dicionário cujas chaves são um
+  O parâmetro {mods} deve ser um dicionário cujas chaves são um
   subconjunto das chaves dos atributos da compra (excluindo o identificador).
   Os valores atuais desses atributos são substituídos pelos valores 
-  correspondentes em {alts}."""
-  return compra_IMP.muda_atributos(compra, alts)
+  correspondentes em {mods}."""
+  return compra_IMP.muda_atributos(compra, mods)
 
 def calcula_total(compra):
   """ Retorna um float que é o preco total do pedido de compra, ou seja a

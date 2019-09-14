@@ -6,8 +6,8 @@ import usuario_IMP; from usuario_IMP import ObjUsuario_IMP
 
 def inicializa():
   """Inicializa o modulo, criando a tabela de usuários na base de dados.
-  Deve ser chamada apenas uma vez no ínicio da execução do servidor.
-  Não retorna nenhum valor."""
+  Não retorna nenhum valor. Deve ser chamada apenas uma vez no ínicio da
+  execução do servidor."""
   usuario_IMP.inicializa()
 
 class ObjUsuario(ObjUsuario_IMP):
@@ -57,25 +57,30 @@ def obtem_atributos(usr):
   exceto identificador."""
   return usuario_IMP.obtem_atributos(usr)
 
-def muda_atributos(usr, alts):
+def muda_atributos(usr, mods):
   """Modifica alguns atributos do objeto {usr} da classe {ObjUsuario},
   registrando as alterações na base de dados.  
 
-  O parâmetro {alts} deve ser um dicionário cujas chaves são um
+  O parâmetro {mods} deve ser um dicionário cujas chaves são um
   subconjunto das chaves dos atributos do usuário (excluindo o identificador).
   Os valores atuais desses atributos são substituídos pelos valores 
-  correspondentes em {alts}.
+  correspondentes em {mods}.
 
-  O atributo 'CPF'não pode ser alterado; se o dicionário {alts} incluir o campo 'CPF',
+  O atributo 'CPF'não pode ser alterado; se o dicionário {mods} incluir o campo 'CPF',
   o valor deve ser o CPF atual. Se o atributo 'email' for alterado,
   não pode existir nenum outro usuário na tabela com mesmo email."""
-  usuario_IMP.muda_atributos(usr, alts)
+  usuario_IMP.muda_atributos(usr, mods)
 
 def busca_por_identificador(id_usuario):
   """Localiza um usuario com identificador {id_usuario} (uma string da forma
   "U-{NNNNNNNN}"), e devolve o mesmo na forma de um objeto da classe {Obj_Usuario}.
   Se tal usuário não existe, devolve {None}."""
   return usuario_IMP.busca_por_identificador(id_usuario)
+
+def busca_por_indice(ind):
+  """Mesma que {busca_por_identificador}, mas quer o índice  inteiro {ind} da linha da tabela,
+  em vez do identificador do objeto."""
+  return usuario_IMP.busca_por_indice(ind)
 
 def busca_por_email(em):
   """Localiza um usuário cujo endereço de email é {em} (um string da forma
@@ -94,3 +99,12 @@ def campos():
   dos atributos de um {ObjUsuario}, menos o identificador.  O resultado é adequado 
   para o parâmetro {cols} das funções do módulo {tabela_generica}."""
   return usuario_IMP.campos()
+
+def limpa_tabela():
+  """Apaga todas as linhas da tabela de usuários na base de dados,
+  reinicializando o contador de linhas em 0. Não retorna nenhum valor. 
+  
+  Esta função deve ser chamada apenas uma vez no ínicio da execução do servidor,
+  antes de criar, buscar, ou atterar qualquer usuário.  Caso contrário,
+  os objetos {ObjUsuario} na memória ficarão inconsistentes com a base."""
+  usuario_IMP.limpa_tabela()

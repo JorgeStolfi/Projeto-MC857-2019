@@ -13,6 +13,9 @@ cache = {}.copy()
   # Dicionário que mapeia identificadores para os objetos {ObjUsuario} na memória.
   # Todo objeto dessa classe que é criado é acrescentado a esse dicionário,
   # a fim de garantir a unicidadde dos objetos.
+  
+letra_tb = "U"
+  # Prefixo dos identificadores de usuários
 
 colunas = \
   (
@@ -26,32 +29,43 @@ colunas = \
   )
   # Descrição das colunas da tabela na base de dados.
 
-def inicializa():
-  global cache, nome_tb, colunas
-  # Cria a tabela:
-  res = tabela_generica.cria_tabela(nome_tb, colunas)
-  if res != None:
-    sys.stderr.write("usuario_IMP.inicializa: **erro " + str(res) + "\n")
-    assert False
+# Definição interna da classe {ObjUsuario}:
 
 class ObjUsuario_IMP:
 
   def __init__(self, id_usuario, atrs):
     global cache, nome_tb, colunas
-    self.identificador = id_usuario
-    self.atributos = atrs.copy()
+    self.id_usuario = id_usuario
+    self.atrs = atrs.copy()
+
+# Implementação das funções:
+
+def inicializa():
+  global cache, nome_tb, colunas
+  tabela_generica.cria_tabela(nome_tb, colunas)
+  
+def limpa_tabela():
+  global cache, nome_tb, colunas
+  tabela_generica.limpa_tabela(nome_tb, colunas)
 
 def obtem_identificador(usr):
   global cache, nome_tb, colunas
-  return usr.identificador
+  return usr.id_usuario
+
+def obtem_indice(usr):
+  global cache, nome_tb, colunas
+  return identificador.para_indice(letra_tb, usr.id_usuario)
 
 def obtem_atributos(usr):
   global cache, nome_tb, colunas
-  return usr.atributos.copy()
+  return usr.atrs.copy()
 
-def muda_atributos(usr, alts):
+def muda_atributos(usr, mods):
   global cache, nome_tb, colunas
-  res = tabela_generica.atualiza(nome_tb, cache, "U", colunas, cria_obj, muda_obj, usr.identificador, alts)
+  # Converte valores de formato memória para formato SQL.
+  # Por enquanto os campos não precisam de conversão:
+  mods_SQL = mods.copy()
+  res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, usr.id_usuario, mods_SQL)
   if res != usr:
     sys.stderr.write("usuario_IMP.muda_atributos: **erro " + str(res) + "\n")
     assert False
@@ -60,7 +74,7 @@ def muda_atributos(usr, alts):
 def cria(atrs):
   global cache, nome_tb, colunas
   sys.stderr.write("usuario_IMP.cria(" + str(atrs) + ") ...\n")
-  # Atributo 'CPF' não pode ser alterado:
+  
   # Verifica unicidade de CPF e email:
   for chave in ('CPF', 'email'):
     # Exige atributo {chave} único:
@@ -77,16 +91,24 @@ def cria(atrs):
         sys.stderr.write("usuario_IMP.cria: ** erro: atributo '" + chave + "' já existe: " + id_bus + "\n");
         assert False
 
+  # Converte atibutos para formato SQL.
+  # Por enquanto não precisa conversão:
+  atrs_SQL = atrs.copy()
   # Insere na base de dados e obtém o índice na mesma:
-  usr = tabela_generica.acrescenta(nome_tb, cache, "U", colunas, cria_obj, atrs)
+  usr = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
   if not type(usr) is ObjUsuario_IMP:
-    sys.stderr.write("usuario_IMP.cria: ** erro: " + str(usr) + "\n");
+    sys.stderr.write("usuario_IMP.cria: ** erro: tipo de objeto errado" + str(usr) + "\n");
     assert False
   return usr
 
 def busca_por_identificador(id_usuario):
   global cache, nome_tb, colunas
-  usr = tabela_generica.busca_por_identificador(nome_tb, cache, "U", colunas, cria_obj, id_usuario)
+  usr = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_usuario)
+  return usr
+
+def busca_por_indice(ind):
+  global cache, nome_tb, colunas
+  usr = tabela_generica.busca_por_indice(nome_tb, cache, letra_tb, colunas, def_obj, ind)
   return usr
 
 def busca_por_email(em):
@@ -103,44 +125,50 @@ def campos():
 
 # FUNÇÕES INTERNAS
 
-def cria_obj(id_usuario, atrs):
-  """Cria um novo objeto da classe {ObjUsuario} com dado identificador e atributos.
-  Não coloca na base de dados."""
+def def_obj(obj, ident, atrs_SQL):
+  """Se {obj} for {None}, cria um novo objeto da classe {ObjUsuario} com
+  identificador {ident} e atributos {atrs_SQL}, tais como extraidos
+  da tabela de sessoes. O objeto *não* é inserido na base de dados. 
+  
+  Se {obj} não é {None}, deve ser um objeto da classe {ObjUsuario}; nesse
+  caso a função altera os atributos de {obj} conforme especificado em
+  {atrs_SQL}.
+  
+  Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
+  equivalentes na memória."""
   global cache, nome_tb, colunas
-  sys.stderr.write("usuario_IMP.cria_obj(" + id_usuario + ", " + str(atrs) + ") ...\n")
-  usr = ObjUsuario_IMP(id_usuario, atrs)
-  sys.stderr.write("  usr = " + str(usr) + "\n")
-  return usr
-     
-def muda_obj(usr, alts):
-  """Modifica os atributos do objeto {obj} da classe {ObjUsuario} segundo 
-  consta do dicionário {alts}. Não modifica a linha correspondente da 
-  base de dados."""
-  global cache, nome_tb, colunas
-  sys.stderr.write("usuario_IMP.muda_obj\n")
-  sys.stderr.write("  usr antes = " + str(usr) + "\n")
-  sys.stderr.write("  alts = " + str(alts) + "\n")
-  
-  if 'CPF' in alts:
-    CPF_velho = usr.atributos['CPF']
-    CPF_novo = alts['CPF']
-    if CPF_novo != CPF_velho:
-      return "**erro: CPF não pode ser alterado"
-
-  if len(alts) > len(usr.atributos):
-    return "**erro: numero excessivo de atributos a alterar"
-  
-  for chave, val in alts.items():
-    if not chave in usr.atributos:
-      return "**erro: chave '" + chave + "' inválida"
-    # !!! Deveria testar se o valor {val} tem o tipo correto.
-    # val_velho = usr.atributos[chave]
-    # if not type(val_velho) is type(val):
-    #   return "**erro: tipo do campo '" + chave + "' incorreto"
-    usr.atributos[chave] = val
-  
-  sys.stderr.write("  usr = " + str(usr) + "\n")
-  return usr
+  sys.stderr.write("usuario_IMP.def_obj(" + str(obj) + ", " + ident + ", " + str(atrs_SQL) + ") ...\n")
+  if obj == None:
+    # Converte atributos para formato na memória.
+    # Por enquanto não precisa de conversão:
+    atrs_mem = atrs_SQL.copy()
+    sys.stderr.write("  criando objeto, atrs_mem = " + str(atrs_mem) + "\n")
+    obj = ObjUsuario_IMP(ident, atrs_mem)
+  else:
+    assert obj.id_usuario == ident
+    # Converte atributos para formato na memória.
+    # Por enquanto não precisa de conversão:
+    mods_mem = atrs_SQL.copy()
+    sys.stderr.write("  modificando objeto, mods_mem = " + str(mods_mem) + "\n")
+    if len(mods_mem) > len(obj.atrs):
+      return "**erro: numero excessivo de atributos a alterar"
+    # O campo 'CPF' não pode ser alterado.
+    if 'CPF' in mods_mem:
+      CPF_velho = obj.atrs['CPF']
+      CPF_novo = mods_mem['CPF']
+      if CPF_novo != CPF_velho:
+        sys.stderr.write("usuario_IMP.def_obj: **erro: CPF não pode ser alterado\n")
+        assert False
+    # Modifica:
+    for chave, val in mods_mem.items():
+      if not chave in obj.atrs:
+        return "**erro: chave '" + chave + "' inválida"
+      val_velho = obj.atrs[chave]
+      if not type(val_velho) is type(val):
+        return "**erro: tipo do campo '" + chave + "' incorreto"
+      obj.atrs[chave] = val
+  sys.stderr.write("  obj = " + str(obj) + "\n")
+  return obj
 
 def busca_por_campo_unico(chave, val):
   """Função interna: procura usuário cujo atributo {chave}
@@ -148,7 +176,7 @@ def busca_por_campo_unico(chave, val):
   encontrar, devolve o identificador desse usuário,
   senão devolve {None}"""
   global cache, nome_tb, colunas
-  res = tabela_generica.busca_por_campo(nome_tb, cache, "U", colunas, chave, val)
+  res = tabela_generica.busca_por_campo(nome_tb, cache, letra_tb, colunas, chave, val)
   if res == None:
     # Não achou ninguém?
     return None
@@ -165,3 +193,4 @@ def busca_por_campo_unico(chave, val):
       assert False
     id_usuario = res[0];
     return id_usuario
+
