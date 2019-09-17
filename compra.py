@@ -106,7 +106,10 @@ class ObjCompra(ObjCompra_IMP):
     com produto {prod}.  Se o produto não aparece na lista,
     não faz nada e devolve {False}; caso contrário devolve {True}."""
     return ObjCompra_IMP.elimina_prod(self,prod)
-    
+  
+  def fecha_compra(self):
+    """Fecha um pedido de compra após o usuário já ter conferido se o pedido está correto"""
+    return ObjCompra_IMP.fecha_compra(self)
 # Construtor da classe:
 
 def cria(usr):

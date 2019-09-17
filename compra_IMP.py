@@ -25,6 +25,19 @@ class ObjCompra_IMP:
     def obtem_status(self):
         return self.status
 
+    def troca_status(self):
+        if self.obtem_identificador == 'aberto':
+          self.status = 'pagando'
+        else: 
+          if self.obtem_identificador == 'pagando':
+            self.status = 'pago'
+          else:
+            if self.obtem_identificador == 'pago':
+              self.status = 'despachado'
+            else:
+              self.obtem_identificador == 'despachado':
+              self.status = 'entregue'
+
     def lista_itens(self):
         return self.itens
 
@@ -70,6 +83,16 @@ class ObjCompra_IMP:
         
         sys.stderr.write("** produto " + prod.obtem_identificador() + " nao encontrado em " + str(self.id_compra) + "\n")
         assert False
+    
+    def fecha_compra(self):
+      # Fecha uma dada compra, alterando seu status para pagando e salvando a 
+      # alteração de status no banco
+      self.troca_status
+      id = self.obtem_identificador
+      status = self.obtem_status
+      atrs = {'status': status}
+      Obj_Tabela_De_Compras_IMP.atualiza(self,id, atrs )
+        
 
 def cria(bas, usr):
     atrs = { 
