@@ -1,0 +1,1 @@
+Consertei o modulo servidor.py para que fosse possível acessar a pagina inicial.
