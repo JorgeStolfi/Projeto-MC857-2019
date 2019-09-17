@@ -4,7 +4,7 @@ import gera_html_pag
 import produto
 import compra
 
-def processa(ss, args):
+def processa(ses, args):
   id_produto = args['id_produto']
   id_compra = args['id_compra']
  
