@@ -19,7 +19,7 @@ class ObjUsuario(ObjUsuario_IMP):
     'senha'    senha do usuário.
     'email'    endereço de email
     'CPF'      número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
-    'RG'       número RG ("[0-9]{8-15}"), apenas digitos, o padrao do RG varia por estado
+    'RG'       número RG ("{EE}[0-9]{8-15}"), EE identificador do estado e.g. SP
     'endereco' endereço completo, em 3 linhas (menos CEP).
     'CEP'      código de endereçamento postal completo ("{NNNNN}-{LLL}").
     'telefone' telefone completo com DDI e DDD ("+{XX}({YY}){MMMM}-{NNNN}").
@@ -102,8 +102,8 @@ def busca_por_CPF(CPF):
 
 def busca_por_RG(RG)
   """Localiza um usuário cujo número RG é {RG} (um string no formato
-  [0-9]{8-15}) e devolve o identificador do mesmo (não um objeto)
-  ou {None} se não existir tal usuário."""
+  {EE}[0-9]{8-15}, EE identificador do estado e.g. SP) e devolve o 
+  identificador do mesmo (não um objeto) ou {None} se não existir tal usuário."""
   return usuario_IMP.busca_por_CPF(CPF)
 
 def campos():
