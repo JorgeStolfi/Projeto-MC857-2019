@@ -14,30 +14,31 @@ def inicializa(limpa):
 class ObjUsuario(ObjUsuario_IMP):
   """Um objeto desta classe representa um usuário da loja e
   armazena seus atributos.  Por enquanto, são:
-  
+
     'nome'     nome completo do usuário.
     'senha'    senha do usuário.
     'email'    endereço de email
     'CPF'      número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
+    'RG'       número RG ("[0-9]{8-15}"), apenas digitos, o padrao do RG varia por estado
     'endereco' endereço completo, em 3 linhas (menos CEP).
     'CEP'      código de endereçamento postal completo ("{NNNNN}-{LLL}").
     'telefone' telefone completo com DDI e DDD ("+{XX}({YY}){MMMM}-{NNNN}").
-    
+
   Outros atributos (nascimento, preferências, etc.) poderão ser acrescentados no futuro.
-  
+
   Cada usuário do sistema -- cliente ou funcionário, ativo ou bloqueado
   -- é representado por uma linha na tabela "usuarios" da base SQL em
   disco. Apenas algumas dessas linhas são representadas também na memória por objetos
-  da classe {ObjUsuario}. 
-  
+  da classe {ObjUsuario}.
+
   Cada linha da tabela tem um índice inteiro (chave primária) distinto, que é atribuído
-  quando a linha é criada.  Neste sistema, esse índice é manipulado na forma de 
+  quando a linha é criada.  Neste sistema, esse índice é manipulado na forma de
   um identificador de usuário, uma string da forma "U-{NNNNNNNN}"
   onde {NNNNNNNN} é o índice formatado em 8 algarismos.
-  
+
   Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
   atributos do usuário (menos o identificador), como definido por {usuario.campos()}.
-  
+
   Os campos 'CPF' e 'email' de todos os usuários
   devem ser distintos.  Todos os campos podem ser alterados,
   exceto o índice (e identificador) e o CPF."""
@@ -64,11 +65,11 @@ def obtem_atributos(usr):
 
 def muda_atributos(usr, mods):
   """Modifica alguns atributos do objeto {usr} da classe {ObjUsuario},
-  registrando as alterações na base de dados. Não devolve nenhum resultado. 
+  registrando as alterações na base de dados. Não devolve nenhum resultado.
 
   O parâmetro {mods} deve ser um dicionário cujas chaves são um
   subconjunto das chaves dos atributos do usuário (excluindo o identificador).
-  Os valores atuais desses atributos são substituídos pelos valores 
+  Os valores atuais desses atributos são substituídos pelos valores
   correspondentes em {mods}.
 
   O atributo 'CPF'não pode ser alterado; se o dicionário {mods} incluir o campo 'CPF',
@@ -99,8 +100,14 @@ def busca_por_CPF(CPF):
   ou {None} se não existir tal usuário."""
   return usuario_IMP.busca_por_CPF(CPF)
 
+def busca_por_RG(RG)
+  """Localiza um usuário cujo número RG é {RG} (um string no formato
+  [0-9]{8-15}) e devolve o identificador do mesmo (não um objeto)
+  ou {None} se não existir tal usuário."""
+  return usuario_IMP.busca_por_CPF(CPF)
+
 def campos():
   """Retorna uma seqüência de tuplas que descrevem os nomes e propriedades
-  dos atributos de um {ObjUsuario}, menos o identificador.  O resultado é adequado 
+  dos atributos de um {ObjUsuario}, menos o identificador.  O resultado é adequado
   para o parâmetro {cols} das funções do módulo {tabela_generica}."""
   return usuario_IMP.campos()
