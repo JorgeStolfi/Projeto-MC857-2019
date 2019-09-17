@@ -53,3 +53,8 @@ def lista_compra(comp):
   conteudo_lista = gera_html_form.lista_compra(comp)
   pagina = generica(conteudo_lista) 
   return pagina
+
+def mostra_usuario(usr):
+  conteudo_usuario = gera_html_elem.informacao_usuario(usr)
+  pagina = generica(conteudo_usuario)
+  return pagina

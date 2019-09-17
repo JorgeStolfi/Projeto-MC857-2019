@@ -5,17 +5,15 @@
 MODULOS := \
   base_sql \
   identificador \
-   \
-  tabela_de_usuarios \
-  tabela_de_produtos \
-  tabela_de_sessoes \
-  tabela_de_compras \
-  tabela_de_itens_de_compras \
+  tabela_generica \
+  conversao_sql \
    \
   usuario \
   produto \
   sessao \
   compra \
+   \
+  tabelas \
    \
   gera_html_elem \
    \
@@ -37,22 +35,21 @@ MODULOS := \
 
 
 # O que "make" deve fazer:
-# all: todos_os_testes
-all: teste_unico
+all: todos_os_testes
+# all: teste_unico
 
 # Roda todos os módulos de teste:
 todos_os_testes:
 	for modulo in ${MODULOS} ; do \
-	  { echo "=== $${modulo} ===" ; \
-            ./testa.sh $${modulo} ; \
-            echo "==============================" ; \
-          } ; \
+	  { ./testa.sh $${modulo} ; echo "" ; } ; \
         done
 
+# MODULO := identificador
+# MODULO := conversao_sql
 # MODULO := base_sql
 # MODULO := tabela_generica
-MODULO := usuario
+# MODULO := usuario
+# MODULO := sessao 
+MODULO := produto
 teste_unico:
-	@echo "=== ${MODULO} ==="
 	./testa.sh ${MODULO}
-	@echo "=============================="

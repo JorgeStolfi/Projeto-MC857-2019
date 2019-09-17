@@ -36,11 +36,11 @@ def conecta(dir, uid, senha):
     sys.stderr.write("base_sql_IMP.conecta: ** erro = \"" + str(msg) + "\"\n")
     return msg
 
-def executa_comando_CREATE_TABLE(nome_tb, colunas):
+def executa_comando_CREATE_TABLE(nome_tb, descr_cols):
   global conexao
   try:
     cursor = conexao.cursor()
-    cmd = "CREATE TABLE IF NOT EXISTS " + nome_tb + "( " + colunas + " )"
+    cmd = "CREATE TABLE IF NOT EXISTS " + nome_tb + "( " + descr_cols + " )"
     cursor.execute(cmd)
     return None
   except sqlite3.Error as msg:
@@ -90,10 +90,10 @@ def executa_comando_UPDATE(nome_tb, cond, atrs):
     sys.stderr.write("BASE_SQL_IMP.executa_comando_UPDATE: ** erro = \"" + str(msg) + "\"\n")
     return msg
 
-def executa_comando_SELECT(nome_tb, cond, colunas):
+def executa_comando_SELECT(nome_tb, cond, nomes_cols):
   global conexao
   cols = ""
-  for cn in colunas:
+  for cn in nomes_cols:
     # Acrescenta "{cn} à lista de nomes de colunas:
     if cols != "": cols = cols + ","
     cols = cols + cn
@@ -111,9 +111,9 @@ def executa_comando_SELECT(nome_tb, cond, colunas):
     sys.stderr.write("  cmd = \"" + str(cmd) + "\"\n")
     return msg
 
-def executa_comando_DELETE(nome_tb, nome_col, val_col):
+def executa_comando_DELETE(nome_tb, cond):
   global conexao
-  cmd = "DELETE FROM " + nome_tb + " WHERE " + nome_col + " = " + codifica_valor(val_col)
+  cmd = "DELETE FROM " + nome_tb + " WHERE " + cond
   try:
     cursor = conexao.cursor()
     cursor.execute(cmd)

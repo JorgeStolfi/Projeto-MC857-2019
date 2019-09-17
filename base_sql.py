@@ -58,17 +58,17 @@ def executa_comando_UPDATE(nome_tb, cond, atrs):
   "salario > 2000".  Retorna {None} em caso de sucesso."""
   return base_sql_IMP.executa_comando_UPDATE(nome_tb, cond, atrs)
 
-def executa_comando_SELECT(nome_tb, cond, colunas):
+def executa_comando_SELECT(nome_tb, cond, nomes_cols):
   """Enumera as linhas da tabela {nome_tb} que satisfazem a condição
   SQL {cond}.
 
-  O argumento {colunas} é uma tupla ou lista de strings, que devem
+  O argumento {nomes_cols} é uma tupla ou lista de strings, que devem
   ser nomes de colunas da tabela.
 
   Em caso de sucesso, o resultado é uma lista de tuplas, uma para cada linha da tabela
   que satisfez a condição de busca. Cada tupla contém os valores
   das colunas especificados no comando. Por exmplo, se {cond}
-  é "cep = '13083-851'" e {colunas} é ('email','cpf'),
+  é "cep = '13083-851'" e {nomes_cols} é ('email','cpf'),
   o resultado poderia ser
 
     [ ("zeca@gmail.com", "123.456.789-00"), 
@@ -77,12 +77,12 @@ def executa_comando_SELECT(nome_tb, cond, colunas):
 
   Se nenhuma entrada satisfizer a condição {cond}, o resultado 
   é uma lista vazia."""
-  return base_sql_IMP.executa_comando_SELECT(nome_tb, cond, colunas)
+  return base_sql_IMP.executa_comando_SELECT(nome_tb, cond, nomes_cols)
 
-def executa_comando_DELETE(nome_tb, nome_col, val_col):
-  """Eliminas as linhas da tabela {nome_tb} nas quais a coluna {nome_col}
-  tem valor {val_col}. Retorna {None} em caso de sucesso."""
-  return base_sql_IMP.executa_comando_DELETE(nome_tb, nome_col, val_col)
+def executa_comando_DELETE(nome_tb, cond):
+  """Eliminas as linhas da tabela {nome_tb} que satisfazem a condição
+  SQL {cond}. Retorna {None} em caso de sucesso."""
+  return base_sql_IMP.executa_comando_DELETE(nome_tb, cond)
 
 def executa_comando_DROP_TABLE(nome_tb):
   """Apaga a tabela {nome_tb} usando o comando SQL 'DROP TABLE IF EXISTS'.

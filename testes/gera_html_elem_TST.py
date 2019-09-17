@@ -4,15 +4,14 @@
 import sys
 import gera_html_elem
 
-import tabela_de_produtos as tb_prod
-import tabela_de_usuarios as tb_usr
-import produto; from produto import ObjProduto
-import usuario; from usuario import ObjUsuario
+import produto
+import usuario
 
 # Cria produto e usuario para testes:
 
 sys.stderr.write("Conectando com base de dados...\n")
-bas = base_sql.conecta("DB/MC857",None,None)
+res = base_sql.conecta("DB/MC857",None,None)
+assert res == None
 
 sys.stderr.write("Criando tabela de usuarios...\n")
 res = tb_usr.cria_tabela(bas)

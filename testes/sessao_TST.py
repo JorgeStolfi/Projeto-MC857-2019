@@ -1,124 +1,94 @@
 #! /usr/bin/python3
 
 import base_sql
-import tabela_de_sessoes
-import tabela_de_usuarios
+import tabela_generica
 import sessao
 import usuario
+import identificador
+import utils_testes
 import sys
 
+# ----------------------------------------------------------------------
 sys.stderr.write("Conectando com base de dados...\n")
-bas = base_sql.conecta("DB/MC857",None,None)
+base_sql.conecta("DB/MC857",None,None)
 
-sys.stderr.write("Criando tabela de sessões...\n")
-res = tabela_de_sessoes.cria_tabela(bas)
-sys.stderr.write("Resultado = " + str(res) + "\n")
+# ----------------------------------------------------------------------
+sys.stderr.write("Inicializando módulo {usuario}, limpando tabela:\n")
+usuario.inicializa(True)
 
-sys.stderr.write("Criando tabela de usuários...\n")
-res = tabela_de_usuarios.cria_tabela(bas)
-sys.stderr.write("Resultado = " + str(res) + "\n")
+sys.stderr.write("Inicializando módulo {sessao}, limpando tabela:\n")
+sessao.inicializa(True)
 
-def valida_estado_sessao(s, usr, ab):
-  """ Dado um objeto {s} da classe {ObjSessao}, verifica se os metodos {s.obtem_usuario} e {s.aberta()}
-  esta retornando os resultados esperados {usr,ab}."""
-  if s.obtem_usuario() != usr:
-    print('O metodo obtem_usuario() deveria ter retornado ' + str(usr) + ', mas retornou ' + str(s.obtem_usuario()))
-  else:
-    print('O metodo obtem_usuario() retornou o resultado esperado')
-  if s.aberta() != ab:
-    print('O metodo aberta(ObjSessao) deveria ter retornado ' + str(ab) + ', mas retornou ' + str(s.aberta()))
-  else:
-    print('O metodo aberta() retornou o resultado esperado')
-    
-bas = base_sql.conecta("DB/MC857",None,None)    
-
-usr_atrs = {
-  'nome':'',
-  'sobrenome':'',
-  'nascDt':'',
-  'senha':'',
-  'email':'',
-  'CPF':'',
-  'endereco':'',
-  'telefone':''
+# ----------------------------------------------------------------------
+# Cria um usuário para teste:
+usr1_atrs = {
+  "nome": "José Primeiro", 
+  "senha": "123456789", 
+  "email": "primeiro@gmail.com", 
+  "CPF": "123.456.789-00", 
+  "endereco": "Rua Senador Corrupto, 123\nVila Buracão\nCampinas, SP", 
+  "CEP": "13083-418", 
+  "telefone": "+55(19)9 9876-5432"
 }
 
-usr = usuario.cria(bas,usr_atrs)
-s = sessao.cria(bas,usr)
+usr1 = usuario.cria(usr1_atrs)
 
-valida_estado_sessao(s, usr, True)
+# ----------------------------------------------------------------------
+# Funções de teste:
 
-s.logout(bas)
-valida_estado_sessao(s, None, False)
-# ======================================================================
-#! /usr/bin/python3
+ok_global = True # Vira {False} se um teste falha.
 
-import tabela_de_sessoes as tb_ses
-import tabela_de_usuarios as tb_usr
-import sessao; from sessao import ObjSessao
-import usuario; from usuario import ObjUsuario
+def verifica_sessao(rotulo, ses, indice, ident, usr, abrt):
+  """Testes básicos de consistência do objeto {ses} da classe {ObjSessao}, dados {indice},
+  {ident} e {atrs} esperados."""
+  global ok_global
+  atrs = { 'usr': usr, 'abrt': abrt }
+  ok = utils_teste.verifica_objeto(rotulo, sessao, sessao.ObjSessao, usr, indice, ident, atrs)
+  
+  if ses != None and type(ses) is sessao.ObjSessao:
+    
+    sys.stderr.write("testando {obtem_usuario()}:\n")
+    usr1 = sessao.obtem_usuario(ses)
+    if usr1 != usr:
+      sys.stderr.write("  **erro: retornou " + str(usr1) + ", deveria ter retornado " + str(usr) + "\n")
+      ok = False
+      
+    sys.stderr.write("testando {aberta()}:\n")
+    abrt11 = sessao.aberta(ses)
+    if abrt1 != abrt:
+      sys.stderr.write("  **erro: retornou " + str(abrt1) + ", deveria ter retornado " + str(abrt) + "\n")
+      ok = False
+  
+  ok_global = ok_global and ok
+  return
 
-sys.stderr.write("Conectando com base de dados...\n")
-bas = base_sql.conecta("DB/MC857",None,None)
+# ----------------------------------------------------------------------
+sys.stderr.write("testando {sessao.cria}:\n")
+s1 = sessao.cria(usr1)
+sindice1 = 1
+sident1 = "S-00000001"
+verifica_sessao("s1", s1, sindice1, sident1, usr1, True)
 
-sys.stderr.write("Criando tabela de usuarios...\n")
-res = tb_usr.cria_tabela(bas)
-sys.stderr.write("Resultado = " + str(res) + "\n")
+s2 = sessao.cria(usr1)
+sindice2 = 2
+sident2 = "S-00000002"
+verifica_sessao("s2", s2, sindice2, sident2, usr1, True)
 
-sys.stderr.write("Criando tabela de sessões...\n")
-res = tb_ses.cria_tabela(bas)
-sys.stderr.write("Resultado = " + str(res) + "\n")
+s3 = sessao.cria(usr1)
+sindice3 = 3
+sident3 = "S-00000003"
+verifica_sessao("s3", s3, sindice3, sident3, usr1, True)
 
-def valida_acrescenta(bas):
-    ultimo = bas.indice_inserido()
-    ses = sessao.cria(bas)
-    novo = tb_ses.acrescenta(ses)
-    if novo <= ultimo:
-        print("O ID inserido esta incorreto")
-        return False
-    else:
-        print("A entrada inserida está correta")
-        return True
+sessao.logout(s1)
+verifica_sessao("logout s1", s1, sindice1, sident1, usr1, False)
 
-def valida_atualiza(bas):
-    ult_id = bas.indice_inserido()
-    ult_ses = tb_ses.busca_por_identificador(ult_id)
-    if ult_ses.aberta() == True:
-        ult_ses.logout()
-    else:
-        usr = usuario.cria(bas)
-        ult_ses.login(usr)
-    nova_aberta = ult_ses.aberta()
-    bas.atualiza(ult_ses)
+# ----------------------------------------------------------------------
+# Veredito final:
 
-    res = bas.busca_por_identificador(ult_id)
-    if res.aberta() != nova_aberta:
-        print("O resultado esta errado")
-        return False
-    else:
-        print("O resultado está correto")
-        return True
-
-def valida_cria_tabela(bas):
-    cmd = "SELECT * FROM sessao"
-    if bas.executa_comando_SELECT("sessoes","indice = 0",('indice'))):
-        print("Tabela existe")
-        return True
-    else:
-        print("Tabela nao existe")
-        return False
-
-def valida_busca_por_identificador(bas, id_sessao):
-    ses = sessao.cria(bas)
-    id_sessao = tb_ses.acrescenta(bas, ses)
-    res = tb_ses.busca_por_identificador(id_sessao)
-    if ses != res:
-        print("O resultado esperado era " + str(ses) + " mas foi retornado " + str(res))
-        return False
-    else:
-        print("Foi retornado o resultado esperado")
-        return True
-
-valida_busca_por_identificador(bas)
-valida_acrescenta(bas)
-valida_atualiza(bas)
+if ok_global:
+  # Terminou OK:
+  sys.stderr.write("Teste terminou sem detectar erro\n")
+else:
+  # Termina com erro:
+  sys.stderr.write("**erro - teste falhou\n")
+  assert False

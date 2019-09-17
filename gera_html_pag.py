@@ -29,6 +29,10 @@ def cadastrar_usuario():
   """Retorna uma página de cadastro de usuário que contém os campos do objeto usuário e um botão para submeter o cadastro."""
   return gera_html_pag_IMP.cadastrar_usuario()
 
+def mostra_usuario(usr):
+  """Retorna uma página que contém as informações do usuário que acabou de ser cadastrado"""
+  return gera_html_pag_IMP.mostra_usuario(usr)
+
 # Utilitários
 
 def generica(conteudo):

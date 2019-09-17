@@ -4,11 +4,12 @@
 # Implementação deste módulo e da classe {ObjUsuario}:
 import usuario_IMP; from usuario_IMP import ObjUsuario_IMP
 
-def inicializa():
+def inicializa(limpa):
   """Inicializa o modulo, criando a tabela de usuários na base de dados.
-  Deve ser chamada apenas uma vez no ínicio da execução do servidor.
-  Não retorna nenhum valor."""
-  usuario_IMP.inicializa()
+  Não retorna nenhum valor. Deve ser chamada apenas uma vez no ínicio da
+  execução do servidor.  Se o parâmetro booleano {limpa} for {True},
+  apaga todas as linhas da tabela SQL, resetando o contador em 0."""
+  usuario_IMP.inicializa(limpa)
 
 class ObjUsuario(ObjUsuario_IMP):
   """Um objeto desta classe representa um usuário da loja e
@@ -52,30 +53,39 @@ def obtem_identificador(usr):
   """Devolve o identificador 'U-{NNNNNNNN}' do usuario."""
   return usuario_IMP.obtem_identificador(usr)
 
+def obtem_indice(usr):
+  """Devolve o índice inteiro do usuario na tabela de usuários."""
+  return usuario_IMP.obtem_indice(usr)
+
 def obtem_atributos(usr):
   """Retorna um dicionário Python que é uma cópia dos atributos do usuário,
   exceto identificador."""
   return usuario_IMP.obtem_atributos(usr)
 
-def muda_atributos(usr, alts):
+def muda_atributos(usr, mods):
   """Modifica alguns atributos do objeto {usr} da classe {ObjUsuario},
-  registrando as alterações na base de dados.  
+  registrando as alterações na base de dados. Não devolve nenhum resultado. 
 
-  O parâmetro {alts} deve ser um dicionário cujas chaves são um
+  O parâmetro {mods} deve ser um dicionário cujas chaves são um
   subconjunto das chaves dos atributos do usuário (excluindo o identificador).
   Os valores atuais desses atributos são substituídos pelos valores 
-  correspondentes em {alts}.
+  correspondentes em {mods}.
 
-  O atributo 'CPF'não pode ser alterado; se o dicionário {alts} incluir o campo 'CPF',
+  O atributo 'CPF'não pode ser alterado; se o dicionário {mods} incluir o campo 'CPF',
   o valor deve ser o CPF atual. Se o atributo 'email' for alterado,
   não pode existir nenum outro usuário na tabela com mesmo email."""
-  usuario_IMP.muda_atributos(usr, alts)
+  usuario_IMP.muda_atributos(usr, mods)
 
 def busca_por_identificador(id_usuario):
   """Localiza um usuario com identificador {id_usuario} (uma string da forma
   "U-{NNNNNNNN}"), e devolve o mesmo na forma de um objeto da classe {Obj_Usuario}.
   Se tal usuário não existe, devolve {None}."""
   return usuario_IMP.busca_por_identificador(id_usuario)
+
+def busca_por_indice(ind):
+  """Mesma que {busca_por_identificador}, mas quer o índice  inteiro {ind} da linha da tabela,
+  em vez do identificador do objeto."""
+  return usuario_IMP.busca_por_indice(ind)
 
 def busca_por_email(em):
   """Localiza um usuário cujo endereço de email é {em} (um string da forma

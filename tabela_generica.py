@@ -27,52 +27,98 @@
 #   {let} é a letra de prefixo dos identificadores da tabela (p. ex. "U").
 #
 #   {cols} é uma seqüência de tuplas que descrevem os campos da tabela,
-#     menos o índice da linha.
+#     menos o índice da linha (vide descrição em {cria_tabela}).
 #
-#   {cria_obj} é uma função que constrói um objeto da classe correta, dados seu
-#     identificador {id} e um dicionário Python {atrs} que define os valores de seus
-#     demais atributos.
+#   {atrs_SQL} é um dicionário Python com os atributos do objeto, menos o identificador, tal como 
+#     representados na base de dados SQL.
 #
-# Cada tupla da seqüência {cols} tem os seguintes elementos: 
-#  
-#   A chave do atributo (um string, por exemplo 'nome' ou 'telefone'),
-#  
-#   O tipo Python (por exemplo, {<class 'int'>})
-#  
-#   O tipo SQL usado para armazenar o atributo na base
-#     (por exemplo, 'INTEGER' ou 'TEXT NOT NULL').
-#      
-#   Limites minimo e máximo para o campo. Se for texto,
-#     os limites referem-se ao comprimento. Se for numérico,
-#     referem-se ao valor.
+#   {def_obj} é uma função que é chamada pelas funções abaixo para
+#     construir ou modificar objetos na memória, dados seus atributos na
+#     base de dados. Ela recebe parâmetros {(obj,ident,atrs_SQL)} onde
+#     {obj} é {None} ou um objeto da classe associaada à tabela
+#     ({ObjUsuario}, {Objproduto}, etc.); {ident} é um identificador de
+#     objetos dessa classe ("U-{NNNNNNNN}", "P-{NNNNNNNN}", etc.); e
+#     {atrs_SQL} é um dicionário que associa nomes de colunas a seus
+#     valores.
 #
-# Em caso de erro, as funções abaixo devolvem um string
-# que descreve o mesmo, em vez do valor indicado.
+#     Se {obj} for {None}, a função {def_obj} deve criar um novo objeto
+#     da classe correta, com identificador {ident} e atributos
+#     {atrs_SQL}. Neste caso, {atrs_SQL} deve ter todas as 
+#     colunas da tabela.  Senão, {def_obj} deve alterar os campos do objeto {obj}
+#     dado; neste caso, {atrs_SQL} pode ter apenas um subconjuto das colunas
+#     da tabela.
+#     
+#     Nos dois casos, a função {def_obj} precisa converter
+#     os valores em {atrs_SQL} do formato SQL para o formato na memória
+#     como especificado em {cols}, e devolver o objeto criado ou modificado.
+# 
+#     A função {def_obj} é chamada quando a entrada do objeto {obj}
+#     no cache está inconsistente com sua linha na base de dados.
+#     Portanto, a função {def_obj} não deve tentar fazer buscas na 
+#     tabela {nome_tb}, nem acessar essa linha dessa tabela.
+#     Ela pode porém chamar {busca_por_identificador} para 
+#     converter identificadores em objetos.
+#
+# Em caso de erro, as funções abaixo abortam com mensagem de erro.
 
 # Implementação da interface:
 import tabela_generica_IMP
 
 def cria_tabela(nome_tb, cols):
   """Cria a tabela {nome_tb} dentro da base de dados,
-  com as colunas descritas em {cols}.  Retorna {None} 
-  em caso de sucesso.
+  com as colunas descritas em {cols}.  Não retorna nenhum resultado.
   
+  O parâmetro {cols} é uma seqüência de tuplas. Cada tupla 
+  descreve uma coluna da tabela (exceto o índice), e
+  tem os seguintes elementos: 
+   
+    [0] A chave do atributo (um string, por exemplo 'nome' ou 'telefone'),
+   
+    [1] O tipo Python (por exemplo, {type(int)})
+   
+    [2] O tipo SQL usado para armazenar o atributo na base
+        (por exemplo, 'INTEGER' ou 'TEXT').
+       
+    [3] Um booleano que diz se a coluna pode ser {NULL} na 
+      tabela SQL.
+       
+    [4],[5] Limites minimo e máximo para o campo. Se for texto,
+        os limites referem-se ao comprimento. Se for numérico,
+        referem-se ao valor.
+        
+  Certos valores de atributos na memória exigem conversão para poderem ser
+  armazenados ou recueperados da base em disco.  Por exemplo, um atributo
+  que tem tipo {bool} na memória é gravado na base como um valor de tipo SQL
+  'INTEGER', que é 0 se {False}, 1 se {True}.  Se o valor de um atributo na
+  memória é um objeto {obj} (por exemplo, o atributo 'usr' de uma sessão, que é
+  um {ObjUsuario}), a coluna correspondente na base de dados terá tipo 
+  SQL 'INTEGER', e o valor será o índice do objeto {obj} na sua 
+  respectiva tabela.
+  
+  Se o tipo de um atributo na memória é lista, tupla, ou dicionário,
+  esse atributi não pode ser armazenado numa coluna da base SQL.
+  Nesse caso o item [2] da descrição acima deve ser {None}, e os 
+  itens [3], [4], e [5] são irrelevantes.
+      
   Esta função deveria ser chamada apenas uma vez em cada 
   inicialização do servidor, depois de chamar {base_sql.conecta}."""
   return tabela_generica_IMP.cria_tabela(nome_tb, cols)
 
-def acrescenta(nome_tb, cache, let, cols, cria_obj, atrs):
-  """Acrescenta mais um objeto {obj} com atributos {atrs} na tabela {nome_tb} 
-  da base {bas}, e também no seu {cache}.  O identificador {id} 
-  do objeto será "{let}-{ind}", onde {ind} é o índice da linha 
-  correspondente na tabela, formatado 
-  em 8 dígitos.  O objeto será criado pela chamada {cria_obj(id,atrs)}.
-  Os campos de {atrs} devem ser consistentes com o parâmetro {cols}.
+def acrescenta(nome_tb, cache, let, cols, def_obj, atrs_SQL):
+  """Acrescenta mais um objeto {obj} com atributos {atrs_SQL} na tabela {nome_tb} 
+  da base {bas}, e também no seu {cache}. Cada valor de {atrs_SQL} 
+  deve ser consistente com os tipo SQL especificado no parâmetro {cols}.
+  Devolve o objeto criado {obj}. 
   
-  Em caso de sucesso, devolve o objeto criado {obj}."""
-  return tabela_generica_IMP.acrescenta(nome_tb, cache, let, cols, cria_obj, atrs)
+  O identificador {id} do objeto será "{let}-{ind}", onde {ind} é o
+  índice da linha correspondente na tabela, formatado em 8 dígitos. 
+  
+  A função chamará {obj=def_obj(None,id,atrs_SQL)} para criar o objeto
+  {obj} na memória, depois de acrescentar a linha no banco de dados mas
+  antes de atualizar o cache."""
+  return tabela_generica_IMP.acrescenta(nome_tb, cache, let, cols, def_obj, atrs_SQL)
 
-def busca_por_identificador(nome_tb, cache, let, cols, cria_obj, ident):
+def busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident):
   """Procura na tabela {nome_tb} e no seu {cache}
   um objeto com o identificador {ident}, que deve ter a forma 
   "{let}-{ind}" onde {ind} é o índice na tabela. 
@@ -80,40 +126,53 @@ def busca_por_identificador(nome_tb, cache, let, cols, cria_obj, ident):
   Mais precisamente, se já existir um objeto {obj} com identificador {ident}
   no dicionario {cache}, pega esse objeto.  Caso contrário
   extrai da tabela {nome_tb} a linha com índice {ind},
-  cria um {obj} objeto com {cria_obj(ident,atrs)} onde {atrs} são as colunas
-  dessa linha, e armazena {obj} no cache.  Nos dois casos, devolve o 
+  cria um {obj} objeto com {obj=def_obj(None,ident,atrs_SQL)} onde {atrs_SQL} é
+  o conteúdo dessa linha, e armazena {obj} no cache.  Nos dois casos, devolve o 
   objeto {obj}.  Se não existir a linha {ind} na tabela, devolve {None}."""
-  return tabela_generica_IMP.busca_por_identificador(nome_tb, cache, let, cols, cria_obj, ident)
+  return tabela_generica_IMP.busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident)
 
-def busca_por_campo(nome_tb, cache, let, cols, chave, valor):
-  """Procura na tabela {nome_tb} e no seu {cache}
-  objetos que tem o valor {val} na coluna de nome {chave}.
-  A {chave} deve ser o nome de uma coluna da tabela, como
-  definido em {cols}.
+def busca_por_indice(nome_tb, cache, let, cols, def_obj, ind):
+  """Mesmo que {busca_por_identificador}, mas quer o indice inteiro {ind} da linha da tabela,
+  em vez do identificador do objeto."""
+  return tabela_generica_IMP.busca_por_indice(nome_tb, cache, let, cols, def_obj, ind)
+
+def busca_por_campo(nome_tb, let, cols, chave, valor):
+  """Procura na tabela {nome_tb} objetos que tem o valor {val}
+  na coluna de nome {chave}.  A {chave} deve ser o nome de uma
+  coluna da tabela, como definido em {cols}.
   
-  Devolve uma lista com os identificadores dos objetos
+  Devolve uma lista com os *identificadores* dos objetos
   encontrados (não os objetos em si). Se nenhuma linha
   satisfizer o critério da busca, devolve uma lista vazia."""
-  return tabela_generica_IMP.busca_por_campo(nome_tb, cache, let, cols, chave, valor)
+  return tabela_generica_IMP.busca_por_campo(nome_tb, let, cols, chave, valor)
 
-def atualiza(nome_tb, cache, let, cols, cria_obj, muda_obj, ident, alts):
+def busca_por_semelhanca(nome_tb, cache, let, cols, chaves, valores):
+  #@TODO documentar interface
+  return tabela_generica_IMP.busca_por_semelhanca(nome_tb, let, cols, chaves, valores)
+
+def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
   """Procura na tabela {nome_tb} e no seu {cache}
   um objeto {obj} com o identificador {ident}, que deve ter a forma 
   "{let}-{ind}" onde {ind} é o índice na tabela.  O objeto 
   deve existir.  Se o objeto não estiver no {cache}, cria o mesmo
-  com {cria_obj(ident,atrs)} onde {atrs} são os campos atuais da linha da tabela.
-  Modifica os atributos desse objeto usando a função {muda_obj(obj,alts)}
-  atualizando a linha correspondente da tabela.  Devolve o objeto 
-  {obj} em caso de sucesso. 
+  com {obj=def_obj(None,ident,atrs_SQL)} onde {atrs_SQL} são os campos 
+  atuais da linha da tabela. 
   
-  Especificamente, para cada chave no dicionário {alts}, substitui 
-  o valor corrente desse atributo em {obj} pelo valor
-  associado em {alts}.  As chaves de {alts} devem ser um 
-  subconjuto dos nomes das colunas da tabela, como 
-  definido em {cols}."""
-  return tabela_generica_IMP.atualiza(nome_tb, cache, let, cols, cria_obj, muda_obj, ident, alts)
+  Em qualquer caso, para cada entada {chv:val_novo} no dicionário
+  {mods_SQL}, esta função substitui o valor corrente da coluna {chv}
+  dessa linha por {val_novo}. As chaves de {mods_SQL} devem ser um
+  subconjuto dos nomes das colunas da tabela, como definido em {cols}.
+  Em seguida modifica os campos do objeto {obj} na memória chamando
+  {def_obj(obj,ident,mods_SQL)}.
+  
+  Devolve o objeto {obj}."""
+  return tabela_generica_IMP.atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL)
 
 def limpa_tabela(nome_tb, cols):
   """Apaga todas as entradas da tabela {nome_tb}, e reinicializa o
-  contador de linhas em 0.  Retorna {None} em caso de sucesso."""
-  return tabela_generica_IMP.limpa_tabela(nome_tb, cols)
+  contador de linhas em 0.  Não retorna nenhum resultado.
+  Esta função deve ser chamada apenas no início da execução, 
+  logo depois de {base_sql.conecta}, pois invalida o cache e 
+  todos os objetos na memória que representam linhas desta tabela."""
+  tabela_generica_IMP.limpa_tabela(nome_tb, cols)
+
