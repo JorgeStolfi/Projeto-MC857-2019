@@ -1,0 +1,1 @@
+Realizando a atividade do RA 092844, que é adicionar um novo atributo em produto.

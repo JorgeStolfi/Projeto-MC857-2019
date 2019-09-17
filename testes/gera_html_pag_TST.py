@@ -32,6 +32,7 @@ atrs_prod1 = {
   'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
   'descr_longa': "Fabricante: Ouricex SA\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nDimensões: 300 x 200 x 3000 mm",
   'preco': 120.00,
+  'estoque': 500,
   'unidade': '1 aparelho'
 }
 prod1 = produto.cria(bas,atrs_prod1)
@@ -41,6 +42,7 @@ atrs_prod2 = {
   'descr_media': "Espada élfica fabricada na cidade de Gondolin.",
   'descr_longa': "Fabricante: Gondolin Ferreiros SA\nOrigem: Gondolin\Dono Original: Bilbo\n",
   'preco': 2000.00,
+  'estoque': 500,
   'unidade': '1 espada' 
 }
 prod2 = produto.cria(bas,atrs_prod2)
