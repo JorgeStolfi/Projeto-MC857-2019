@@ -5,23 +5,24 @@
 # que representa o cliente.
 
 # Interfaces importadas por esta interface:
-import usuario; from usuario import ObjUsuario
+import usuario
 
 # Implementaçao deste módulo:
 import sessao_IMP; from sessao_IMP import ObjSessao_IMP
 
-def inicializa():
+def inicializa(limpa):
   """Inicializa o modulo, criando a tabela de sessões na base de dados.
   Deve ser chamada apenas uma vez no ínicio da execução do servidor.
-  Não retorna nenhum valor."""
-  sessao_IMP.inicializa()
+  Não retorna nenhum valor.  Se o parâmetro booleano {limpa} for {True},
+  apaga todas as linhas da tabela SQL, resetando o contador em 0."""
+  sessao_IMP.inicializa(limpa)
 
 class ObjSessao(ObjSessao_IMP):
   """Um objeto desta classe representa uma sessao de acesso ao
   servidor.  Os atributos deste objeto, por enquanto, são:
   
     'usr' {ObjUsuario} - o usuário que fez login na sessão.
-    'aberta' {bool} - estado da sessao.
+    'abrt' {bool} - estado da sessao.
     
   Outros atributos (data, cookie, IP, etc.) poderão ser acrescentados no futuro.
   
@@ -29,9 +30,10 @@ class ObjSessao(ObjSessao_IMP):
   usuário pode ter várias sessoes abertas ao mesmo tempo. A sessao é criada
   e "aberta" quando o usuario faz login, e e "fechada" no logout.
 
-   Cada sessão do sistema -- aberta ou fechada -- é representada por uma linha na tabela "sessoes" da base SQL em
-  disco. Apenas algumas dessas linhas são representadas também na memória por objetos
-  da classe {ObjSessao}. 
+  Cada sessão do sistema -- aberta ou fechada -- é representada por uma
+  linha na tabela "sessoes" da base SQL em disco. Apenas algumas dessas
+  linhas são representadas também na memória por objetos da classe
+  {ObjSessao}.
   
   Cada linha da tabela tem um índice inteiro (chave primária) distinto, que é atribuído
   quando a linha é criada.  Neste sistema, esse índice é manipulado na forma de 
@@ -39,10 +41,8 @@ class ObjSessao(ObjSessao_IMP):
   onde {NNNNNNNN} é o índice formatado em 8 algarismos.
   
   Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
-  atributos da sessão (menos o identificador), como definido por {sessão.campos()}.
-  """
-# Construtor da classe:
-
+  atributos da sessão (menos o identificador), como definido por {sessão.campos()}."""
+ 
 def cria(usr):
   """Cria um novo objeto da classe {ObjSessao}, associada ao usuário {usr},
   inicialmente aberta.  Também acrescenta a sessão à base de dados.  Em caso de
@@ -52,8 +52,12 @@ def cria(usr):
   return sessao_IMP.cria(usr)
 
 def obtem_identificador(ses):
-  """Devolve o identificador 'S-{NNNNNNNN}' da sessão."""
+  """Devolve o identificador 'S-{NNNNNNNN}' da sessão {ses}."""
   return sessao_IMP.obtem_identificador(ses)
+
+def obtem_indice(ses):
+  """Devolve o índice inteiro da sessão {ses} na tabela de sessões da base de dados."""
+  return sessao_IMP.obtem_indice(ses)
 
 def obtem_usuario(ses):
   """Retorna o objeto da classe {ObjUsuario} correspondente ao usuario que
@@ -62,7 +66,7 @@ def obtem_usuario(ses):
 
 def aberta(ses):
   """Retorna o estado da sessão {ses}: {True} se a sessao ainda esta aberta, 
-  {False} se o usuário deu logout.  Equivale a {sessao.obtem_atributos(ses)['aberta']}."""
+  {False} se o usuário deu logout.  Equivale a {sessao.obtem_atributos(ses)['abrt']}."""
   return sessao_IMP.aberta(ses)
 
 def obtem_atributos(ses):
@@ -79,7 +83,7 @@ def muda_atributos(ses, mods):
   sessao_IMP.muda_atributos(ses, mods)
 
 def logout(ses):
-  """Registra o logout do usuário na sessão {ses}, mudando o atributo 'aberta'
+  """Registra o logout do usuário na sessão {ses}, mudando o atributo 'abrt'
   permanentemente para {False}. Também altera esse campo na base de dados.
   Em caso de sucesso, retorna o próprio objeto."""
   return sessao_IMP.logout(ses)
@@ -90,9 +94,13 @@ def busca_por_identificador(id_sessao):
   Se tal sessão não existe, devolve {None}."""
   return sessao_IMP.busca_por_identificador(id_sessao)
 
+def busca_por_indice(ind):
+  """Localiza uma sessao com indice inteiro {ind} na tabela de sessões.
+  Se tal sessão não existe, devolve {None}."""
+  return sessao_IMP.busca_por_indice(ind)
+
 def campos():
   """Retorna uma seqüência de tuplas que descrevem os nomes e propriedades
   dos atributos de um {ObjSessao}, menos o identificador.  O resultado é adequado 
   para o parâmetro {cols} das funções do módulo {tabela_generica}."""
   return sessao_IMP.campos()
-

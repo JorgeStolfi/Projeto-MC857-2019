@@ -4,11 +4,12 @@
 # Implementação deste módulo e da classe {ObjUsuario}:
 import usuario_IMP; from usuario_IMP import ObjUsuario_IMP
 
-def inicializa():
+def inicializa(limpa):
   """Inicializa o modulo, criando a tabela de usuários na base de dados.
   Não retorna nenhum valor. Deve ser chamada apenas uma vez no ínicio da
-  execução do servidor."""
-  usuario_IMP.inicializa()
+  execução do servidor.  Se o parâmetro booleano {limpa} for {True},
+  apaga todas as linhas da tabela SQL, resetando o contador em 0."""
+  usuario_IMP.inicializa(limpa)
 
 class ObjUsuario(ObjUsuario_IMP):
   """Um objeto desta classe representa um usuário da loja e
@@ -52,6 +53,10 @@ def obtem_identificador(usr):
   """Devolve o identificador 'U-{NNNNNNNN}' do usuario."""
   return usuario_IMP.obtem_identificador(usr)
 
+def obtem_indice(usr):
+  """Devolve o índice inteiro do usuario na tabela de usuários."""
+  return usuario_IMP.obtem_indice(usr)
+
 def obtem_atributos(usr):
   """Retorna um dicionário Python que é uma cópia dos atributos do usuário,
   exceto identificador."""
@@ -59,7 +64,7 @@ def obtem_atributos(usr):
 
 def muda_atributos(usr, mods):
   """Modifica alguns atributos do objeto {usr} da classe {ObjUsuario},
-  registrando as alterações na base de dados.  
+  registrando as alterações na base de dados. Não devolve nenhum resultado. 
 
   O parâmetro {mods} deve ser um dicionário cujas chaves são um
   subconjunto das chaves dos atributos do usuário (excluindo o identificador).
@@ -99,12 +104,3 @@ def campos():
   dos atributos de um {ObjUsuario}, menos o identificador.  O resultado é adequado 
   para o parâmetro {cols} das funções do módulo {tabela_generica}."""
   return usuario_IMP.campos()
-
-def limpa_tabela():
-  """Apaga todas as linhas da tabela de usuários na base de dados,
-  reinicializando o contador de linhas em 0. Não retorna nenhum valor. 
-  
-  Esta função deve ser chamada apenas uma vez no ínicio da execução do servidor,
-  antes de criar, buscar, ou atterar qualquer usuário.  Caso contrário,
-  os objetos {ObjUsuario} na memória ficarão inconsistentes com a base."""
-  usuario_IMP.limpa_tabela()

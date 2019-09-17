@@ -15,7 +15,8 @@ def constroi_colunas_SQL(cols):
   for cp in cols:
     chave = cp[0]
     tipo_SQL = cp[2]
-    colunas = colunas + ", " + chave + " " + tipo_SQL
+    nulo_ok = cp[3]
+    colunas = colunas + ", " + chave + " " + tipo_SQL + (' NOT NULL' if not nulo_ok else '')
   return colunas
 
 # IMPLEMENTAÇÕES
@@ -75,8 +76,8 @@ def busca_por_identificador_e_indice(nome_tb, cache, let, cols, def_obj, ident, 
     cache[ident] = obj
     return obj
 
-def busca_por_campo(nome_tb, cache, let, cols, chave, valor):
-  # Converte {valor} para string na libuagem SQL:
+def busca_por_campo(nome_tb, let, cols, chave, valor):
+  # Converte {valor} para string na linguagem SQL:
   valor = base_sql.codifica_valor(valor)
 
   # Supõe que o cache é um subconjuto da base em disco, então procura só na última:
@@ -88,7 +89,7 @@ def busca_por_campo(nome_tb, cache, let, cols, chave, valor):
     assert False
   return identificador.de_lista_de_indices(let, res)
 
-def busca_por_semelhanca(nome_tb, cache, let, cols, chaves, valores):
+def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   cond = ""
   total_de_chaves = len(chaves)
   for key in chaves:

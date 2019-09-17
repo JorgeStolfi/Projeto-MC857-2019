@@ -77,9 +77,12 @@ def cria_tabela(nome_tb, cols):
     [1] O tipo Python (por exemplo, {type(int)})
    
     [2] O tipo SQL usado para armazenar o atributo na base
-        (por exemplo, 'INTEGER' ou 'TEXT NOT NULL').
+        (por exemplo, 'INTEGER' ou 'TEXT').
        
-    [3],[4] Limites minimo e máximo para o campo. Se for texto,
+    [3] Um booleano que diz se a coluna pode ser {NULL} na 
+      tabela SQL.
+       
+    [4],[5] Limites minimo e máximo para o campo. Se for texto,
         os limites referem-se ao comprimento. Se for numérico,
         referem-se ao valor.
         
@@ -91,6 +94,11 @@ def cria_tabela(nome_tb, cols):
   um {ObjUsuario}), a coluna correspondente na base de dados terá tipo 
   SQL 'INTEGER', e o valor será o índice do objeto {obj} na sua 
   respectiva tabela.
+  
+  Se o tipo de um atributo na memória é lista, tupla, ou dicionário,
+  esse atributi não pode ser armazenado numa coluna da base SQL.
+  Nesse caso o item [2] da descrição acima deve ser {None}, e os 
+  itens [3], [4], e [5] são irrelevantes.
       
   Esta função deveria ser chamada apenas uma vez em cada 
   inicialização do servidor, depois de chamar {base_sql.conecta}."""
@@ -128,20 +136,19 @@ def busca_por_indice(nome_tb, cache, let, cols, def_obj, ind):
   em vez do identificador do objeto."""
   return tabela_generica_IMP.busca_por_indice(nome_tb, cache, let, cols, def_obj, ind)
 
-def busca_por_campo(nome_tb, cache, let, cols, chave, valor):
-  """Procura na tabela {nome_tb} e no seu {cache}
-  objetos que tem o valor {val} na coluna de nome {chave}.
-  A {chave} deve ser o nome de uma coluna da tabela, como
-  definido em {cols}.
+def busca_por_campo(nome_tb, let, cols, chave, valor):
+  """Procura na tabela {nome_tb} objetos que tem o valor {val}
+  na coluna de nome {chave}.  A {chave} deve ser o nome de uma
+  coluna da tabela, como definido em {cols}.
   
   Devolve uma lista com os *identificadores* dos objetos
   encontrados (não os objetos em si). Se nenhuma linha
   satisfizer o critério da busca, devolve uma lista vazia."""
-  return tabela_generica_IMP.busca_por_campo(nome_tb, cache, let, cols, chave, valor)
+  return tabela_generica_IMP.busca_por_campo(nome_tb, let, cols, chave, valor)
 
 def busca_por_semelhanca(nome_tb, cache, let, cols, chaves, valores):
   #@TODO documentar interface
-  return tabela_generica_IMP.busca_por_semelhanca(nome_tb, cache, let, cols, chaves, valores)
+  return tabela_generica_IMP.busca_por_semelhanca(nome_tb, let, cols, chaves, valores)
 
 def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
   """Procura na tabela {nome_tb} e no seu {cache}

@@ -2,84 +2,105 @@
 # Para diagnóstico:
 import sys
 import tabela_generica
+import tabelas
+import usuario
+import conversao_sql
+import identificador
+import sessao
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
-
-nome_tb = "sessoes"
-  # Nome da tabela na base de dados.
-  
-letra_tb = "S"
-  # Prefixo comum dos identificadores de sessao.
-
+ 
 cache = {}.copy()
   # Dicionário que mapeia identificadores para os objetos {ObjSessao} na memória.
   # Todo objeto dessa classe que é criado é acrescentado a esse dicionário,
-  # a fim de garantir a unicidadde dos objetos.
+  # a fim de garantir a unicidade dos objetos.
 
-colunas =  \
-  (
-    ( "id_usuario", type("foo"), 'TEXT NOT NULL',  10,  10  ), # Identificador do usuário, "U-{NNNNNNNN}".
-    ( "aberta",     type(False), 'INT NOT NULL',    0.   1  )  # Estado da sessao (aberta?). 
-  )
+nome_tb = "sessoes"
+  # Nome da tabela na base de dados.
+ 
+letra_tb = "S"
+  # Prefixo comum dos identificadores de sessao.
+
+colunas = None
   # Descrição das colunas da tabela na base de dados.
 
-def inicializa():
-  global cache, nome_tb, colunas
-  tabela_generica.cria_tabela(nome_tb, colunas)
+# Definição interna da classe {ObjUsuario}:
 
 class ObjSessao_IMP:
   def __init__(self, id_sessao, atrs):
+    global cache, nome_tb, letra_tb, colunas
     self.id_sessao = id_sessao
     self.atrs = atrs.copy()
 
+# Implementações:
+
+def inicializa(limpa):
+  global cache, nome_tb, letra_tb, colunas
+  colunas = \
+    ( ( "usr",   usuario.ObjUsuario,  'INTEGER', False, 0,  99999999  ), # Objeto/índice do usuário.
+      ( "abrt",  type(False),         'INTEGER', False, 0,         1  )  # Estado da sessao (1 = aberta). 
+    )
+  if limpa:
+    tabela_generica.limpa_tabela(nome_tb, colunas)
+  else:
+    tabela_generica.cria_tabela(nome_tb, colunas)
+ 
 def cria(usr):
-  global cache, nome_tb, colunas
+  global cache, nome_tb, letra_tb, colunas
   # Insere na base de dados e obtém o índice na mesma:
-  atrs = {'id_usuario': usuario.obtem_identificador(usr), 'aberta': False}
-  atrs_SQL = ???(atrs)
+  atrs_SQL = {'usr': usuario.obtem_indice(usr), 'abrt': 1}
   ses = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
-  if not type(ses) is ObjSessao_IMP:
+  if not type(ses) is sessao.ObjSessao:
     sys.stderr.write("sessao_IMP.cria: ** erro: " + str(ses) + "\n");
     assert False
   return ses
 
 def obtem_identificador(ses):
-  global cache, nome_tb, colunas
+  global cache, nome_tb, letra_tb, colunas
   return ses.id_sessao
 
+def obtem_indice(ses):
+  global cache, nome_tb, letra_tb, colunas
+  return identificador.para_indice(letra_tb, ses.id_sessao)
+
+def obtem_atributos(ses):
+  global cache, nome_tb, letra_tb, colunas
+  return ses.atrs.copy()
+
 def obtem_usuario(ses):
-  global cache, nome_tb, colunas
+  global cache, nome_tb, letra_tb, colunas
   return ses.atrs['usr']
 
 def aberta(ses):
-  global cache, nome_tb, colunas
-  return ses.atrs['ab']
-
-def obtem_atributos(ses):
-  global cache, nome_tb, colunas
-  return ses.atrs.copy()
+  global cache, nome_tb, letra_tb, colunas
+  return ses.atrs['abrt']
 
 def busca_por_identificador(id_sessao):
-  global cache, nome_tb, colunas
+  global cache, nome_tb, letra_tb, colunas
   ses = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_sessao)
   return ses
 
+def busca_por_indice(ind):
+  global cache, nome_tb, letra_tb, colunas
+  ses = tabela_generica.busca_por_indice(nome_tb, cache, letra_tb, colunas, def_obj, ind)
+  return ses
+
 def muda_atributos(ses, mods):
-  global cache, nome_tb, colunas
-  mods_SQL = ???(mods)
-  res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, ses.id_sessao, mods)
+  global cache, nome_tb, letra_tb, colunas
+  mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice);
+  res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, ses.id_sessao, mods_SQL)
   if res != ses:
     sys.stderr.write("sessao_IMP.muda_atributos: **erro " + str(res) + "\n")
     assert False
   return
 
 def logout(ses):
-  global cache, nome_tb, colunas
-  mods = { 'aberta': False }
+  global cache, nome_tb, letra_tb, colunas
+  mods = { 'abrt': False }
   muda_atributos(ses, mods)
 
 def campos():
-  global cache, nome_tb, colunas
+  global cache, nome_tb, letra_tb, colunas
   return colunas
 
 # FUNÇÕES INTERNAS
@@ -95,25 +116,31 @@ def def_obj(obj, ident, atrs_SQL):
   
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
   equivalentes na memória."""
-  global cache, nome_tb, colunas
+  global cache, nome_tb, letra_tb, colunas
   sys.stderr.write("produto_IMP.def_obj(" + str(obj) + ", " + ident + ", " + str(atrs_SQL) + ") ...\n")
   if obj == None:
-    atrs_mem = ???(atrs_SQL)
-    sys.stderr.write("  criando objeto, atrs_mem = " + str(atrs) + "\n")
-    obj = ObjSessao_IMP(ident, atrs_mem)
-  else
-    assert obj.id == ident
-    mods_mem = ???(atrs_SQL)
-    sys.stderr.write("  modificando objeto, mods_mem = " + str(atrs) + "\n")
-    if len(mods) > len(obj.atributos):
-      return "**erro: numero excessivo de atributos a alterar"
-    for chave, val in mods.items():
-      if not chave in obj.atributos:
-        return "**erro: chave '" + chave + "' inválida"
-      val_velho = obj.atributos[chave]
+    atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
+    sys.stderr.write("  criando objeto, atrs_mem = " + str(atrs_mem) + "\n")
+    obj = sessao.ObjSessao(ident, atrs_mem)
+  else:
+    assert obj.id_sessao == ident
+    mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
+    sys.stderr.write("  modificando objeto, mods_mem = " + str(mods_mem) + "\n")
+    if len(mods_mem) > len(obj.atrs):
+      sys.stderr.write("  **erro: numero excessivo de atributos a alterar\n")
+      assert False
+    for chave, val in mods_mem.items():
+      if not chave in obj.atrs:
+        sys.stderr.write("  **erro: chave '" + chave + "' inválida\n")
+        assert False
+      val_velho = obj.atrs[chave]
       if not type(val_velho) is type(val):
-        return "**erro: tipo do campo '" + chave + "' incorreto"
-      obj.atributos[chave] = val
+        sys.stderr.write("  **erro: tipo do campo '" + chave + "' incorreto\n")
+        assert False
+      if chave == 'usr' and val != val_velho:
+        sys.stderr.write("  **erro: campo '" + chave + "' não pode ser alterado\n")
+        assert False
+      obj.atrs[chave] = val
   sys.stderr.write("  obj = " + str(obj) + "\n")
   return obj
 
