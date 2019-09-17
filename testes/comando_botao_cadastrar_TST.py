@@ -1,12 +1,6 @@
 #! /usr/bin/python3
 
-# Este programa pode ser usado para testar funções que
-# escrevem formulários HTML5.
+import tabela_generica
 
-# Interfaces usadas por este script:
-import processa_comando_cadastra as cadastra 
-import sys
-html = cadastra.cadastrar_usuario()
-html = html + "\n" # In case the fragment does not end with newline.
-
-sys.stdout.buffer.write(html.encode('utf-8'))
+def testa_comando_cadastrar(conteudo_cadastro):
+  return tabela_generica.busca_por_semelhanca("usuarios", conteudo_cadastro)
