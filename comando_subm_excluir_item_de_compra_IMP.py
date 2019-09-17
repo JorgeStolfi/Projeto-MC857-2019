@@ -3,11 +3,20 @@
 import gera_html_pag
 import produto
 import compra
-import tabela_de_produtos
 
-def processa(bas, sessao, args):
+def processa(ss, args):
   id_produto = args['id_produto']
-  compra = args['compra']
-  prod = tabela_de_produtos.busca_por_identificador(bas, id_produto)
-  compra.elimina_prod(prod)
-  return gera_html_pag.lista_compra(compra)
+  id_compra = args['id_compra']
+ 
+  #verifica se os ids de compra e produto recebidos existem.
+  #caso existam, elimina-se o produto da compra
+  if (id_produto!=None and id_compra!=None):
+  	prod = produto.busca_por_identificador(id_produto)
+  	cpr = compra.busca_por_identificador(id_compra)
+  	
+  	compra.elimina_prod(cpr,prod)
+
+	return gera_html_pag.lista_compra(cpr)
+
+  else:
+  	return None

@@ -3,8 +3,8 @@
 
 import comando_subm_excluir_item_de_compra_IMP
 
-def processa(bas, sessao, args):
-    """Esta função espera o identificador do produto "P-{NNNNNNNN}"
-    em {args['id_produto']} e a compra que este está atrelado
+def processa(ss, args):
+    """Esta função recebe o identificador do produto "P-{NNNNNNNN}"
+    em {args['id_produto']} e o identificador de compra {args['id_compra']} associado. Aleḿ disso, reve a sessao {ss}.
     Devolve uma página HTML com o carrinho de compras atualizado."""
-    return comando_subm_excluir_item_de_compra_IMP.processa(bas, sessao, args)
+    return comando_subm_excluir_item_de_compra_IMP.processa(ss, args)
