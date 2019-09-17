@@ -5,7 +5,7 @@ import base_sql
 
 base_sql.conecta("DB/MC857",None,None)
 nome_tb = "testabela"
-colunas = \
+descr_cols = \
   "indice integer PRIMARY KEY," + \
   "nome varchar(40) NOT NULL," + \
   "cpf char(14) NOT NULL," + \
@@ -35,7 +35,7 @@ def do_various_tests(rotulo):
   sys.stderr.write("  resultado: " + str(res) + "\n\n")
 
   sys.stderr.write("  testando DELETE:\n")
-  res = base_sql.executa_comando_DELETE(nome_tb, 'nome', 'juca')
+  res = base_sql.executa_comando_DELETE(nome_tb, "nome =  'juca'")
   sys.stderr.write("  resultado: " + str(res) + "\n\n")
 
   sys.stderr.write("  testando SELECT:\n")
@@ -51,7 +51,7 @@ def do_various_tests(rotulo):
   sys.stderr.write("%s\n" % ("-" * 70))
   
 sys.stderr.write("testando CREATE_TABLE:\n")
-res = base_sql.executa_comando_CREATE_TABLE (nome_tb, colunas)
+res = base_sql.executa_comando_CREATE_TABLE (nome_tb, descr_cols)
 sys.stderr.write("resultado: " + str(res) + "\n\n")
 
 do_various_tests("testes com tabela existente")

@@ -4,10 +4,8 @@
 import sys
 import gera_html_elem
 
-import tabela_de_produtos as tb_prod
-import tabela_de_usuarios as tb_usr
-import produto; from produto import ObjProduto
-import usuario; from usuario import ObjUsuario
+import produto
+import usuario
 
 # Cria produto e usuario para testes:
 

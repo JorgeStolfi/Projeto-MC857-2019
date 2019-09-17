@@ -1,11 +1,11 @@
 #! /usr/bin/python3
 
-import usuario; from usuario import ObjUsuario
-import usuario_IMP; from usuario_IMP import ObjUsuario_IMP
+import usuario
 import tabela_generica
 import base_sql
-import sys
 import identificador
+import utils_testes
+import sys
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Conectando com base de dados...\n")
@@ -13,35 +13,48 @@ base_sql.conecta("DB/MC857",None,None)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Inicializando módulo {usuario}, limpando tabela:\n")
-usuario.inicializa()
-colunas = usuario.campos()
-res = tabela_generica.limpa_tabela("usuarios", colunas)
-sys.stderr.write("  res(limpa) = " + str(res) + "\n")
+usuario.inicializa(True)
 
 # ----------------------------------------------------------------------
-def mostra_usuario(rotulo,usr,id,atrs):
-  """Imprime usuário {usr} e compara seus atributos com {id,atrs}."""
-  sys.stderr.write("%s\n" % ("-" * 70))
-  sys.stderr.write(rotulo + " = \n")
-  if usr == None:
-    sys.stderr.write("None\n")
-  elif type(usr) is ObjUsuario_IMP:
-    sys.stderr.write("  id = " + str(usuario.obtem_identificador(usr)) + "\n")
-    sys.stderr.write("  atrs = " + str(usuario.obtem_atributos(usr)) + "\n")
-    if atrs != None:
-      id_confere = (usuario.obtem_identificador(usr) == id)
-      atrs_conferem = (usuario.obtem_atributos(usr) == atrs)
-      sys.stderr.write("  CONFERE: " + str(id_confere) + ", " + str(atrs_conferem) + "\n")
-  sys.stderr.write("%s\n" % ("-" * 70))
+# Funções de teste:
+
+ok_global = True # Vira {False} se um teste falha.
+
+def verifica_usuario(rotulo,usr,indice,ident,atrs):
+  """Testes básicos de consistência do objeto {usr} da classe {ObjUsuario}, dados {indice},
+  {ident} e {atrs} esperados."""
+  global ok_global
+  ok = utils_testes.verifica_objeto(rotulo, usuario, usuario.ObjUsuario, usr, indice, ident, atrs)
+
+  if usr != None and type(usr) is usuario.ObjUsuario:
+    
+    # ----------------------------------------------------------------------
+    sys.stderr.write("testando {busca_por_email()}:\n")
+    em1 = atrs['email']
+    ident1 = usuario.busca_por_email(em1)
+    if ident1 != ident:
+      sys.stderr.write("  **erro: retornou " + str(ident1) + ", deveria ter retornado " + str(ident) + "\n")
+      ok = False
+
+    # ----------------------------------------------------------------------
+    sys.stderr.write("testando {busca_por_CPF()}:\n")
+    CPF1 = atrs['CPF']
+    ident1 = usuario.busca_por_CPF(CPF1)
+    if ident1 != ident:
+      sys.stderr.write("  **erro: retornou " + str(ident1) + ", deveria ter retornado " + str(ident) + "\n")
+      ok = False
+
+  ok_global = ok_global and ok
+  return
  
-def testa_cria_usuario(rotulo,id,atrs):
+def testa_cria_usuario(rotulo,indice,ident,atrs):
   """Testa criação de usuário com atributos com {atrs}. Retorna o usuário."""
   usr = usuario.cria(atrs)
-  mostra_usuario(rotulo,usr,id,atrs)
+  verifica_usuario(rotulo,usr,indice,ident,atrs)
   return usr
  
 # ----------------------------------------------------------------------
-sys.stderr.write("testando {usuario.acrescenta}:\n")
+sys.stderr.write("testando {usuario.cria}:\n")
 usr1_atrs = {
   "nome": "José Primeiro", 
   "senha": "123456789", 
@@ -51,8 +64,9 @@ usr1_atrs = {
   "CEP": "13083-418", 
   "telefone": "+55(19)9 9876-5432"
 }
-uid1 = "U-00000000"
-usr1 = testa_cria_usuario("usr1",uid1,usr1_atrs)
+uindice1 = 1
+uident1 = "U-00000001"
+usr1 = testa_cria_usuario("usr1",uindice1,uident1,usr1_atrs)
 
 usr2_atrs = {
   "nome": "João Segundo", 
@@ -63,8 +77,9 @@ usr2_atrs = {
   "CEP": "13083-007", 
   "telefone": "+55(19)9 9898-1212"
 }
-uid2 = "U-00000001"
-usr2 = testa_cria_usuario("usr2",uid2,usr2_atrs)
+uindice2 = 2
+uident2 = "U-00000002"
+usr2 = testa_cria_usuario("usr2",uindice2,uident2,usr2_atrs)
 
 usr3_atrs = {
   "nome": "Juca Terceiro", 
@@ -75,28 +90,9 @@ usr3_atrs = {
   "CEP": "13083-999", 
   "telefone": "+55(19)9 9999-9999"
 }
-uid3 = "U-00000002"
-usr3 = testa_cria_usuario("usr3",uid3,usr3_atrs)
-
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {usuario.busca_por_identificador}:\n")
-
-usr1_a = usuario.busca_por_identificador(uid1)
-mostra_usuario("usr1_a",usr1_a,uid1,usr1_atrs)
-
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {usuario.busca_por_email}:\n")
-
-em2 = usr2_atrs['email']
-usr2_a = usuario.busca_por_email(em2)
-mostra_usuario("usr2_a",usr2_a,uid2,usr2_atrs)
-
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {usuario.busca_por_CPF}:\n")
-
-CPF1 = "123.456.789-00"
-usr1_b = usuario.busca_por_CPF(CPF1)
-mostra_usuario("usr1_b",usr1_b,uid1,usr1_atrs)
+uindice3 = 3
+uident3 = "U-00000003"
+usr3 = testa_cria_usuario("usr3",uindice3,uident3,usr3_atrs)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {usuario.muda_atributos}:\n")
@@ -106,21 +102,29 @@ usr1_mods = {
   "email": "grosso@hotmail.com"
 }
 usuario.muda_atributos(usr1,usr1_mods)
-usr1_c = usuario.busca_por_identificador(uid1)
-usr1_c_atrs = usr1_atrs
+usr1_d_atrs = usr1_atrs
 for k, v in usr1_mods.items():
-  usr1_c_atrs[k] = v
-mostra_usuario("usr1_c",usr1_c,uid1,usr1_c_atrs)
+  usr1_d_atrs[k] = v
+verifica_usuario("usr1_d",usr1,uindice1,uident1,usr1_d_atrs)
 
-if type(usr2) is ObjUsuario_IMP:
+if type(usr2) is usuario.ObjUsuario:
   usuario.muda_atributos(usr2,usr2_atrs) # Não deveria mudar os atributos
-  mostra_usuario("usr2",usr2,uid2,usr2_atrs)
+  verifica_usuario("usr2",usr2,uindice2,uident2,usr2_atrs)
 
-if type(usr2) is ObjUsuario_IMP:
-  usr3_m_atrs = usr3_atrs.copy()
-  usr3_m_atrs['CPF'] = usr2_atrs['CPF'] # Não pode alterar CPF.
-  usuario.muda_atributos(usr2,usr3_m_atrs) # Deveria assumir os valores do usr3
-  mostra_usuario("usr2",usr2,uid2,usr3_m_atrs)
+if type(usr2) is usuario.ObjUsuario:
+  usr2_m_atrs = usr3_atrs.copy()
+  usr2_m_atrs['CPF'] = usr2_atrs['CPF'] # Não pode alterar CPF.
+  usr2_m_atrs['email'] = usr2_atrs['email'] # Vamos manter email.
+  usuario.muda_atributos(usr2,usr2_m_atrs) # Deveria assumir os valores do usr3
+  verifica_usuario("usr2_m",usr2,uindice2,uident2,usr2_m_atrs)
 
+# ----------------------------------------------------------------------
+# Veredito final:
 
-#! /usr/bin/python3
+if ok_global:
+  # Terminou OK:
+  sys.stderr.write("Teste terminou sem detectar erro\n")
+else:
+  # Termina com erro:
+  sys.stderr.write("**erro - teste falhou\n")
+  assert False

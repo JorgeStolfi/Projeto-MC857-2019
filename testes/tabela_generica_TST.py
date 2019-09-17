@@ -129,11 +129,11 @@ mostra_obj("obj1_a", obj1_a, id1, atrs1)
 sys.stderr.write("testando {tabela_generica.busca_por_campo}:\n")
 
 em2 = atrs2['email']
-res = tabela_generica.busca_por_campo(nome_tb, cache, let, cols, 'email', em2) 
+res = tabela_generica.busca_por_campo(nome_tb, let, cols, 'email', em2) 
 mostra_lista_ids("email = " + em2, res)
 
 CPF1 = "123.456.789-00"
-res = tabela_generica.busca_por_campo(nome_tb, cache, let, cols, 'CPF', CPF1)
+res = tabela_generica.busca_por_campo(nome_tb, let, cols, 'CPF', CPF1)
 mostra_lista_ids("CPF = " + CPF1, res)
 
 # ----------------------------------------------------------------------

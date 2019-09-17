@@ -1,7 +1,9 @@
+#! /usr/bin/python3
 # Teste do módulo {tabelas}
 
 import base_sql
 import tabelas
+import sys
 
 # ----------------------------------------------------------------------
 
@@ -14,4 +16,4 @@ assert res == None
 sys.stderr.write("Abrindo as tabelas...\n")
 tabelas.inicializa_todas(False)
 
-!!! Testar obtem_indice, obtem_obj
+# !!! Testar obtem_indice, obtem_obj

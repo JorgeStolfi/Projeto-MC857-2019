@@ -1,76 +1,86 @@
 #! /usr/bin/python3
 
-import produto; from produto import ObjProduto
-import produto_IMP; from produto_IMP import ObjProduto_IMP
+import produto
 import tabela_generica
 import base_sql
-import sys
 import identificador
+import utils_testes
+import sys
+
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Conectando com base de dados...\n")
 base_sql.conecta("DB/MC857",None,None)
 
 # ----------------------------------------------------------------------
-sys.stderr.write("Inicializando módulo {produto}: \n")
-produto.inicializa()
-
-colunas = produto.campos()
-
-sys.stderr.write("Limpando a tabela \"produtos\":\n")
-res = tabela_generica.limpa_tabela("produtos", colunas)
-sys.stderr.write("  res = " + str(res) + "\n")
+sys.stderr.write("Inicializando módulo {produto}, limpando tabela: \n")
+produto.inicializa(True)
 
 # ----------------------------------------------------------------------
-def mostra_produto(rotulo, prod, id, atrs):
-  """Imprime produto {prod} e compara seus atributos com {id,atrs}."""
-  sys.stderr.write(rotulo + " = \n")
-  if prod == None:
-    sys.stderr.write("None\n")
-  elif type(prod) is ObjProduto_IMP:
-    sys.stderr.write("  id = " + str(produto.obtem_identificador(prod)) + "\n")
-    sys.stderr.write("  atrs = " + str(produto.obtem_atributos(prod)) + "\n")
-    if atrs != None:
-      id_confere = (produto.obtem_identificador(prod) == id)
-      atrs_conferem = (produto.obtem_atributos(prod) == atrs)
-      sys.stderr.write("  CONFERE: " + str(id_confere) + ", " + str(atrs_conferem) + "\n")
+# Funções de teste:
 
-def testa_cria_produto(rotulo, id, atrs):
+ok_global = True # Vira {False} se um teste falha.
+
+def verifica_produto(rotulo, prod, indice, ident, atrs):
+  """Testes básicos de consistência do obleto {prod} da classe {produto.ObjProduto}, dados {indice},
+  {ident} e {atrs} esperados."""
+  global ok_global
+  ok = utils_testes.verifica_objeto(rotulo, produto, produto.ObjProduto, prod, indice, ident, atrs)
+  ok_global = ok_global and ok
+  return
+
+def testa_cria_produto(rotulo, indice, ident, atrs):
   """Testa criação de produto com atributos com {atrs}. Retorna o produto."""
   prod = produto.cria(atrs)
-  mostra_produto(rotulo, prod, id, atrs)
+  verifica_produto(rotulo, prod, indice, ident, atrs)
   return prod
 
 # ----------------------------------------------------------------------
-sys.stderr.write("testando {produto.acrescenta}:\n")
+sys.stderr.write("testando {produto.cria}:\n")
+
 prod1_atrs = {
   'descr_curta': "Escovador de ouriço",
   'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
-  'descr_longa': "Fabricante: Ouricex SA\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nDimensões: 300 x 200 x 3000 mm",
-  'preco': float("120.00"),
+  'descr_longa': "Fabricante: Ouricex LTD\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nAcessórios: cabo de força de 50 m, 10 pentes finos, 10 pentes grossos, valise em ABS\nDimensões: 300 x 200 x 3000 mm",
+  'preco': float(120.50),
   'unidade': '1 aparelho'
 }
-uid1 = "P-0000000"
-prod = testa_cria_produto("prod1", uid1, prod1_atrs)
+pindice1 = 1
+pident1 = "P-00000001"
+prod1 = testa_cria_produto("prod1", pindice1, pident1, prod1_atrs)
 
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {produto.obtem_identificador}:\n")
+prod2_atrs = {
+  'descr_curta': "Furadeira telepática",
+  'descr_media': "Duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
+  'descr_longa': "Fabricante: Ferramentas Tres Dedos SA\nOrigem: Brasil\nModelo: FT7T\nTensão: insuportável\nPotência: 700 W\nMaterial: Alumínio, policarbonato, chiclete.\nAcessórios: 1 acoplador para guarda-chuvas, 1 jogo de 5 pedais, cabo de força de 2 m.\nDimensões: 150 x 400 x 250 mm",
+  'preco': float(420.00),
+  'unidade': 'caixa de 2'
+}
+pindice2 = 2
+pident2 = "P-00000002"
+prod2 = testa_cria_produto("prod2", pindice2, pident2, prod2_atrs)
 
-prod1_a = produto.busca_por_identificador(uid1)
-mostra_produto("prod1_a", prod1_a, uid1, prod1_atrs)
-
+prod3_atrs = {
+  'descr_curta': "Luva com 8 dedos",
+  'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
+  'descr_longa': "Fabricante: United Trash Inc.\nOrigem: USA\nModelo: 8-EB\nNormas: ANSI 2345, ABNT 2019-857\nMaterial: Camurça artificial 1 mm, lã de aço.\nTamanho: G\nPeso: 120 g",
+  'preco': float(19.95),
+  'unidade': '1 unidade'
+}
+pindice3 = 3
+pident3 = "P-00000003"
+prod3 = testa_cria_produto("prod3", pindice3, pident3, prod3_atrs)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {produto.calcula_preco}:\n")
 
-prod1_a_preco = produto.calcula_preco()
-mostra_produto("prod1_a", prod1_a, uid1, prod1_atrs)
-
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {produto.obtem_atributos}:\n")
-
-prod1_a_atrs =  produto.obtem_atributos()
-mostra_produto("prod1_a", prod1_a, uid1, prod1_a_atrs)
+prod1_qt = 10.0
+prod1_preco_un = prod1_atrs['preco']
+prod1_preco_tot_esp = prod1_qt * prod1_preco_un
+prod1_preco_tot_cmp = produto.calcula_preco(prod1, 10)
+if prod1_preco_tot_cmp != prod1_preco_tot_esp:
+  sys.stderr.write("  **erro: resultado foi " + str(prod1_preco_tot_cmp) + " deveria ser " + str(prod1_preco_tot_esp) + "\n")
+  ok_global = False
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {produto.muda_atributos}:\n")
@@ -79,15 +89,31 @@ prod1_mods = {
   'descr_curta': "Escovador de ouriço 2.0 Power Blaster",
   'preco': 1200.00,
 }
-prod1_a.muda_atributos(prod1_a, prod1_mods)
-prod1_b = produto.busca_por_identificador(uid1)
+produto.muda_atributos(prod1, prod1_mods)
+prod1_b = produto.busca_por_identificador(pident1)
 prod1_b_atrs = prod1_a_atrs
+for k, v in prod1_mods.items():
+  prod1_b_atrs[k] = v
+verifica_usuario("prod1_b",prod1,pindice1,pident1,prod1_b_atrs)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {produto.busca_por_palavra}:\n")
 
-palavra = "ouriço"
-prod2_a = produto.busca_por_palavra(palavra)
-prod2_a_atrs = produto.obtem_atributos()
+palavra = "de força"
+plist5 = produto.busca_por_palavra(palavra)
+sys.stderr.write("  resultado = " + str(plist5) + "\n")
+if not type(plist5) is list or len(plist5) != 2:
+  sys.stderr.write("  **erro: resultado foi " + str(plist5) + " deveria ser " + str([ pident1, pident2 ]) + "\n")
+  ok_global = False
 
-mostra_produto("prod2_a", prod2_a, uid1, prod2_a_atrs)
+
+# ----------------------------------------------------------------------
+# Veredito final:
+
+if ok_global:
+  # Terminou OK:
+  sys.stderr.write("Teste terminou sem detectar erro\n")
+else:
+  # Termina com erro:
+  sys.stderr.write("**erro - teste falhou\n")
+  assert False
