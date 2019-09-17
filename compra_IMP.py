@@ -6,6 +6,7 @@ import identificador
 import compra
 import usuario
 import sys # Para diagnóstico.
+import produto
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
 
@@ -54,7 +55,7 @@ def inicializa(limpa):
   colunas_compras = \
     ( ( 'status',  type("foo"),         'TEXT',    False,    4,   10 ), # status da compra: 'aberto', 'pagando', 'pago', etc..
       ( 'cliente', usuario.ObjUsuario,  'INTEGER', False,   14,   14 ), # Objeto/índice do cliente que realizou a compra.
-      ( 'itens',   type([1,2]),         None,      None,  None, None ), # Lista dos itens da compra.
+      #( 'itens',   type([1,2]),         None,      None,  None, None ), # Lista dos itens da compra.
     )
   colunas_itens = \
     ( ( 'compra',  compra.ObjCompra,   'INTEGER', False, 10,         10 ), # Objeto/índice da compra.

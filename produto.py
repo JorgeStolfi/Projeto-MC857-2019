@@ -89,12 +89,12 @@ def busca_por_indice(ind):
   em vez do identificador do objeto."""
   return produto_IMP.busca_por_indice(ind)
 
-def busca_por_palavra(prod, pal):
+def busca_por_palavra(pal):
   """Devolve uma lista com todos os identificadores "P-{NNNNNNNN}"
   dos produtos que contém a palavra {pal} nos seus 
   campos 'descr_curta' ou 'descr_media'.  Se não houver nenhum item 
   satisfazendo a busca, devolve uma lista vazia."""
-  return produto_IMP.busca_por_palavra(prod,pal)
+  return produto_IMP.busca_por_palavra(pal)
 
 def campos():
   """Retorna uma seqüência de tuplas que descrevem os nomes e propriedades
