@@ -59,6 +59,10 @@ def obtem_indice(ses):
   """Devolve o índice inteiro da sessão {ses} na tabela de sessões da base de dados."""
   return sessao_IMP.obtem_indice(ses)
 
+def obtem_cookie(ses):
+  """Devolve o cookie da sessão {ses} """
+  return sessao_IMP.obtem_cookie(ses)
+
 def obtem_usuario(ses):
   """Retorna o objeto da classe {ObjUsuario} correspondente ao usuario que
   fez login na sessao {ses}.  Equivale a {sessao.obtem_atributos(ses)['usr']}. """
