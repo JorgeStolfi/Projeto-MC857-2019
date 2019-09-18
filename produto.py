@@ -19,6 +19,7 @@ class ObjProduto(ObjProduto_IMP):
     {descr_longa} {str} - descrição completa do produto. 
     {unid} {str} - unidade de venda ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
     {preco} {float} - preço unitário.
+    {estoque} {integer} - estoque do produto.
     
   O preço unitário é em reais, e é arredondado para centavos inteiros 
   (a menos de erros de arredondamento do float).
