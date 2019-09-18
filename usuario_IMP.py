@@ -17,7 +17,7 @@ cache = {}.copy()
   # Dicionário que mapeia identificadores para os objetos {ObjUsuario} na memória.
   # Todo objeto dessa classe que é criado é acrescentado a esse dicionário,
   # a fim de garantir a unicidadde dos objetos.
-  
+
 letra_tb = "U"
   # Prefixo dos identificadores de usuários
 
@@ -27,6 +27,7 @@ colunas = \
     ( 'senha',    type("foo"), 'TEXT', False,   8,  24  ), # Senha de login.
     ( 'email',    type("foo"), 'TEXT', False,   6,  60  ), # Endereço de email
     ( 'CPF',      type("foo"), 'TEXT', False,  14,  14  ), # Número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
+    ( 'RG',       type("foo"), 'TEXT', False,   8,  15  ), # Número RG ("[0-9]{8-15}")
     ( 'endereco', type("foo"), 'TEXT', False,  30, 180  ), # Endereço completo, em 3 linhas (menos CEP).
     ( 'CEP',      type("foo"), 'TEXT', False,   9,   9  ), # Código de endereçamento postal completo ("{NNNNN}-{LLL}").
     ( 'telefone', type("foo"), 'TEXT', False,  15,  20  ), # Telefone completo com DDI e DDD ("+{XXX}({YYY}){MMMMM}-{NNNN}").
@@ -54,8 +55,8 @@ def inicializa(limpa):
 def cria(atrs):
   global cache, nome_tb, letra_tb, colunas
   sys.stderr.write("usuario_IMP.cria(" + str(atrs) + ") ...\n")
-  
-  # Verifica unicidade de CPF e email:
+
+  # Verifica unicidade de CPF:
   for chave in ('CPF', 'email'):
     # Exige atributo {chave} único:
     if chave not in atrs:
@@ -120,6 +121,10 @@ def busca_por_CPF(CPF):
   global cache, nome_tb, letra_tb, colunas
   return busca_por_campo_unico('CPF', CPF)
 
+def busca_por_RG(RG):
+  global cache, nome_tb, letra_tb, colunas
+  return busca_por_campo_unico('RG', RG)
+
 def campos():
   global cache, nome_tb, letra_tb, colunas
   return colunas
@@ -129,12 +134,12 @@ def campos():
 def def_obj(obj, id_usuario, atrs_SQL):
   """Se {obj} for {None}, cria um novo objeto da classe {ObjUsuario} com
   identificador {id_usuario} e atributos {atrs_SQL}, tais como extraidos
-  da tabela de sessoes. O objeto *não* é inserido na base de dados. 
-  
+  da tabela de sessoes. O objeto *não* é inserido na base de dados.
+
   Se {obj} não é {None}, deve ser um objeto da classe {ObjUsuario}; nesse
   caso a função altera os atributos de {obj} conforme especificado em
   {atrs_SQL}.
-  
+
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
   equivalentes na memória."""
   global cache, nome_tb, letra_tb, colunas
@@ -196,4 +201,3 @@ def busca_por_campo_unico(chave, val):
       assert False
     id_usuario = res[0];
     return id_usuario
-
