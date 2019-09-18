@@ -23,11 +23,13 @@ letra_tb = "P"
 
 colunas = \
   (
-    ( 'descr_curta', type("foo"), 'TEXT',  False,   10,         80 ), # Descricao curta do produto.
-    ( 'descr_media', type("foo"), 'TEXT',  False,    8,        250 ), # Descricao media do produto.
-    ( 'descr_longa', type("foo"), 'TEXT',  False,   10,        500 ), # Descricao longa do produto.
-    ( 'unidade',     type("foo"), 'TEXT',  False,    1,         20 ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
-    ( 'preco',       type(10.5),  'FLOAT', False,    1,  999999.99 ), # Preco unitário do produto em reais.
+    ( 'descr_curta', type("foo"), 'TEXT',    False,   10,         80 ), # Descricao curta do produto.
+    ( 'descr_media', type("foo"), 'TEXT',    False,    8,        250 ), # Descricao media do produto.
+    ( 'descr_longa', type("foo"), 'TEXT',    False,   10,        500 ), # Descricao longa do produto.
+    ( 'unidade',     type("foo"), 'TEXT',    False,    1,         20 ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
+    ( 'preco',       type(10.5),  'FLOAT',   False,    1,  999999.99 ), # Preco unitário do produto em reais.
+    ( 'estoque',     type(10),    'INTEGER', False,    0,   99999999 )  # Estoque do produto  
+
   )
   # Descrição das colunas da tabela na base de dados.
 

@@ -1,0 +1,2 @@
+criação do  comando_subm_entrar
+processa a acao do usuario que consiste apertar botão "entrar" (login) no formulário que pede username e senha

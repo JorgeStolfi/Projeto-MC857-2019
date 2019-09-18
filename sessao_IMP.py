@@ -31,6 +31,7 @@ class ObjSessao_IMP:
     global cache, nome_tb, letra_tb, colunas
     self.id_sessao = id_sessao
     self.atrs = atrs.copy()
+    self.cookie = set_cookie()
 
 # Implementações:
 
@@ -38,7 +39,8 @@ def inicializa(limpa):
   global cache, nome_tb, letra_tb, colunas
   colunas = \
     ( ( "usr",   usuario.ObjUsuario,  'INTEGER', False, 0,  99999999  ), # Objeto/índice do usuário.
-      ( "abrt",  type(False),         'INTEGER', False, 0,         1  )  # Estado da sessao (1 = aberta). 
+      ( "abrt",  type(False),         'INTEGER', False, 0,         1  ),  # Estado da sessao (1 = aberta).
+      ( "cookie"), char[],  'TEXT',False,0,100) #Cookie da sessao
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
@@ -70,6 +72,10 @@ def obtem_atributos(ses):
 def obtem_usuario(ses):
   global cache, nome_tb, letra_tb, colunas
   return ses.atrs['usr']
+
+def obtem_cookie():
+  global cache, nome_tb, letra_tb, colunas
+  return ses.cookie
 
 def aberta(ses):
   global cache, nome_tb, letra_tb, colunas
@@ -104,6 +110,8 @@ def campos():
   return colunas
 
 # FUNÇÕES INTERNAS
+def set_cookies():
+  return secrets.token_urlsafe(32)
 
 def def_obj(obj, ident, atrs_SQL):
   """Se {obj} for {None}, cria um novo objeto da classe {ObjSessao} com

@@ -6,6 +6,7 @@ import identificador
 import compra
 import usuario
 import sys # Para diagnóstico.
+import produto
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
 
@@ -54,7 +55,7 @@ def inicializa(limpa):
   colunas_compras = \
     ( ( 'status',  type("foo"),         'TEXT',    False,    4,   10 ), # status da compra: 'aberto', 'pagando', 'pago', etc..
       ( 'cliente', usuario.ObjUsuario,  'INTEGER', False,   14,   14 ), # Objeto/índice do cliente que realizou a compra.
-      ( 'itens',   type([1,2]),         None,      None,  None, None ), # Lista dos itens da compra.
+      #( 'itens',   type([1,2]),         None,      None,  None, None ), # Lista dos itens da compra.
     )
   colunas_itens = \
     ( ( 'compra',  compra.ObjCompra,   'INTEGER', False, 10,         10 ), # Objeto/índice da compra.
@@ -88,6 +89,10 @@ def cria(usr):
 def obtem_identificador(cpr):
   global cache, nome_tb_compras, letra_tb_compras, colunas_compras, letra_tb_itens, colunas_itens
   return cpr.id_compra
+
+def obtem_indice(cpr):
+  global cache, nome_tb_compras, letra_tb_compras, colunas_compras, letra_tb_itens, colunas_itens
+  return identificador.para_indice(letra_tb_compras, prod.id_compra)
 
 def obtem_usuario(cpr):
   global cache, nome_tb_compras, letra_tb_compras, colunas_compras, letra_tb_itens, colunas_itens
@@ -161,6 +166,15 @@ def elimina_prod(cpr, prod):
     assert False 
   qt_novo = 0.0
   atualiza_lista_de_itens(cpr, prod, qt_velho, qt_novo)
+  
+def fecha_compra(cpr):
+  global cache, nome_tb_compras, letra_tb_compras, colunas_compras, letra_tb_itens, colunas_itens
+  status = obtem_status(cpr)
+  if status == 'aberto':
+    cpr.status = 'pagando'
+    mods = {'status': cpr.status}
+    muda_atributos(cpr,mods)
+  
 
 # FUNÇÕES INTERNAS
 

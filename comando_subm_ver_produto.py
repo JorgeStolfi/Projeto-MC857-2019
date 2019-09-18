@@ -4,7 +4,7 @@
 
 import comando_subm_ver_produto_IMP
 
-def processa(bas, sessao, args):
+def processa(ses, args):
     """Esta função espera o identificador do produto "P-{NNNNNNNN}"
     em {args['id_produto']}, e opcionalmente a quantidade
     desejada em {args['quantidade']} (na forma de um string).
@@ -12,4 +12,4 @@ def processa(bas, sessao, args):
     Devolve uma página HTML com a descrição detalhada desse
     produto, um campo para preencher a quantidade, e um 
     botão para "Comprar" (isto é, adicionar ao carrinho)."""
-    return comando_subm_ver_produto_IMP.processa(bas, sessao, args)
+    return comando_subm_ver_produto_IMP.processa(ses, args)
