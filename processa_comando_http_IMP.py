@@ -61,7 +61,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     sessao = self.obtem_sessao(dados)
     
     # Processa o comando e constrói a página HTML de resposta:
-    pagina = processa_comando(tipo,self.bas,sessao,dados)
+    pagina = processa_comando(tipo,sessao,dados)
     
     # Envia a página ao browser do usuário:
     self.devolve(pagina)
@@ -185,7 +185,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     self.end_headers()
     self.wfile.write(conteudo.encode('utf-8'))
 
-def processa_comando(tipo, bas, sessao, dados):
+def processa_comando(tipo, sessao, dados):
   """Esta função processa um comando HTTP 'GET' recebido pelo servidor, com as
   informações convertidas em um dicionario {dados}."""
   print(dados)
@@ -193,16 +193,16 @@ def processa_comando(tipo, bas, sessao, dados):
     # Comando causado por acesso inicial ou botão simples:
     if dados['real_path'] == '':
       # Acesso sem comando: mostra página de entrada.
-      return gera_html_pag.entrada(bas,sessao,dados['query_data'])
+      return gera_html_pag.entrada(sessao,dados['query_data'])
     elif dados['real_path'] == '/botao_cadastrar':
       # Usuário apertou o botão "Cadastrar" do menu principal:
-      return comando_botao_cadastrar.processa(bas,sessao,dados['query_data'])
+      return comando_botao_cadastrar.processa(sessao,dados['query_data'])
     elif dados['real_path'] == '/botao_entrar':
       # Usuário apertou o botão "Entrar" (login) do menu principal:
-      return comando_botao_entrar.processa(bas,sessao,dados['query_data'])
+      return comando_botao_entrar.processa(sessao,dados['query_data'])
     elif dados['real_path'] == '/botao_sair':
       # Usuário apertou o botão "Sair" (logout) do menu principal:
-      return comando_botao_sair.processa(bas,sessao,dados['query_data'])
+      return comando_botao_sair.processa(sessao,dados['query_data'])
     else:
       # Comando não identificado:
       return mostra_comando(dados)
@@ -210,16 +210,16 @@ def processa_comando(tipo, bas, sessao, dados):
     # Comando causado por botão do tipo "submit" dentro de um <form>...</form>:
     if dados['real_path'] == '/subm_cadastrar':
       # Usuário preencheu o formulário de cadastrar novo usuário e apertou "Cadastrar":
-      return comando_subm_cadastrar.processa(bas,sessao,dados['form_data'])      
+      return comando_subm_cadastrar.processa(sessao,dados['form_data'])      
     elif dados['real_path'] == '/subm_buscar_produtos':
       # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
-      return comando_subm_buscar_produtos.processa(bas,sessao,dados['form_data'])
+      return comando_subm_buscar_produtos.processa(sessao,dados['form_data'])
     elif dados['real_path'] == '/subm_ver_produto':
       # Usuário apertou o botão "Comprar" numa descrição curta do produto:
-      return comando_subm_ver_produto.processa(bas,sessao,dados['form_data'])      
+      return comando_subm_ver_produto.processa(sessao,dados['form_data'])      
     elif dados['real_path'] == '/subm_comprar_produto':
       # Usuário preencheu a quantidade desejada na página de um produto e apertou o botão "Comprar":
-      return comando_subm_comprar_produto.processa(bas,sessao,dados['form_data'])      
+      return comando_subm_comprar_produto.processa(sessao,dados['form_data'])      
     else:   
       # Comando não identificado
       return mostra_comando(dados)

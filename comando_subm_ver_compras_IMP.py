@@ -1,8 +1,9 @@
 # Implementação do módulo {comando_subm_ver_compras}.
 
-import tabela_de_usuarios
+import usuario
+import sessao
 
-def processa(bas, id_usuario):
-  lista = tabela_de_usuarios.busca_compras(bas, id_usuario)
- 
+def processa(ses, args):
+  id_usuario = sessao.obtem_usuario(ses)
+  lista = usuario.busca_por_identificador(id_usuario)
   return lista
