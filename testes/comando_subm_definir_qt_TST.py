@@ -4,6 +4,7 @@
 
 import comando_subm_definir_qt
 import sys
+import produto; from produto import ObjProduto
 
 prod_atrs = {
   'descr_curta': "Tenis nike",
@@ -16,7 +17,7 @@ prod_atrs = {
 
 # prod = produto.cria(bas,prod_atrs)
 """ Criando objeto produto"""
-prod = ObjProduto(prod_atrs)
+prod = produto.cria(prod_atrs)
 
 # TODO usar id_produto valido
 args_tabela = {
