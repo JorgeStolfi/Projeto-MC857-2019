@@ -1,10 +1,14 @@
 # Implementação do módulo {comando_botao_sair}.
 
 import gera_html_pag
+import sessao
 
-def processa(sessao):
-  do {
-      objeto_sessao = sessao.logout()
-  while(sessao.aberta())
-  return gera_html_pag.entrada()
+def processa(ses, args):
+  
+  if(ses == None):
+    pagina = gera_html_pag.generica("Erro, essa sessao nao existe!")
+  else:
+    sessao.logout(ses)
+    pagina = gera_html_pag.entrada()
     
+  return pagina

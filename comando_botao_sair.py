@@ -3,7 +3,7 @@
 import comando_botao_sair_IMP
 import sessao
 
-def processa(sessao):
+def processa(ses, args):
   """Encerra a {sessao} dada e retorna o HTML da página de entrada"""
-  return comando_botao_sair_IMP.processa(sessao)
+  return comando_botao_sair_IMP.processa(ses, args)
 
