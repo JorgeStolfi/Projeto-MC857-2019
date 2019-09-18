@@ -1,0 +1,2 @@
+############ 17/SET/2019 ############
+Foi corrigido o método processa da implementação da classe comando_subm_definir_qt.

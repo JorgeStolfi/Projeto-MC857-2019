@@ -4,10 +4,10 @@ import gera_html_pag
 import produto
 import tabela_generica
 
-def processa(bas, sessao, args):
+def processa(ses, args):
   id_produto = args['id_produto']
   # Considerando prod como objeto da classe Produto
-  prod = tabela_generica.busca_por_identificador(bas, id_produto)
+  prod = produto.busca_por_identificador(id_produto)
   atrs_produto = prod.obtem_atributos()
   if ('quantidade' in args) and ('quantidade' in atrs_produto):
     # No maximo a maior quantidade disponivel para o produto
