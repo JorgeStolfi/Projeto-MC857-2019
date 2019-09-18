@@ -2,8 +2,8 @@
 
 import comando_subm_ver_compras_IMP
 
-def processa(bas, id_usuario):
+def processa(ses, args):
     """Esta função espera o identificador do usuario que faz a requisição.
     Devolve a lista de pedidos que o usuário já realizou"""
     
-    return comando_subm_ver_compras_IMP.processa(bas, id_usuario)
+    return comando_subm_ver_compras_IMP.processa(ses, args)
