@@ -157,3 +157,8 @@ def campos():
   O resultado é adequado para o parâmetro {cols} das funções do módulo
   {tabela_generica}."""
   return compra_IMP.campos()
+
+def fecha_compra(cpr):
+  """Muda o status de uma certa compra de 'aberto' para 'pagando' e salva o novo
+  status da compra no banco de dados."""
+  return compra_IMP.fecha_compra(cpr)
