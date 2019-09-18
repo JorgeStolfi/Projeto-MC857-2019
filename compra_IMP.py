@@ -90,6 +90,10 @@ def obtem_identificador(cpr):
   global cache, nome_tb_compras, letra_tb_compras, colunas_compras, letra_tb_itens, colunas_itens
   return cpr.id_compra
 
+def obtem_indice(cpr):
+  global cache, nome_tb_compras, letra_tb_compras, colunas_compras, letra_tb_itens, colunas_itens
+  return identificador.para_indice(letra_tb_compras, prod.id_compra)
+
 def obtem_usuario(cpr):
   global cache, nome_tb_compras, letra_tb_compras, colunas_compras, letra_tb_itens, colunas_itens
   return cpr.atrs['cliente']
@@ -162,6 +166,15 @@ def elimina_prod(cpr, prod):
     assert False 
   qt_novo = 0.0
   atualiza_lista_de_itens(cpr, prod, qt_velho, qt_novo)
+  
+def fecha_compra(cpr):
+  global cache, nome_tb_compras, letra_tb_compras, colunas_compras, letra_tb_itens, colunas_itens
+  status = obtem_status(cpr)
+  if status == 'aberto':
+    cpr.status = 'pagando'
+    mods = {'status': cpr.status}
+    muda_atributos(cpr,mods)
+  
 
 # FUNÇÕES INTERNAS
 
