@@ -32,6 +32,7 @@ prod_atrs = {
   'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
   'descr_longa': "Fabricante: Ouricex SA\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nDimensões: 300 x 200 x 3000 mm",
   'preco': 120.00,
+  'estoque': 500,
 'unidade': '1 aparelho' }
 
 prod = ObjProduto(prod_atrs)      
