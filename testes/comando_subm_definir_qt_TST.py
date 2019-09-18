@@ -12,6 +12,7 @@ prod_atrs = {
   'descr_longa': "Fabricante: Nike SA\nOrigem: China\nModelo: NKX\nDimensões: 300 x 200 x 100 mm",
   'preco': 300.00,
   'unidade': '1 tenis',
+  'estoque': 500,
   'quantidade': "50" }
 
 # prod = produto.cria(bas,prod_atrs)

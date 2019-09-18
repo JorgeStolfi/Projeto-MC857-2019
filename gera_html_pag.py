@@ -9,7 +9,7 @@ import gera_html_pag_IMP
 
 # Funções exportadas por este módulo:
 
-def entrada():
+def entrada(sessao, dados):
   """Retorna a página de entrada do projeto."""
   return gera_html_pag_IMP.entrada()
 
