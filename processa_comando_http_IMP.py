@@ -1,23 +1,25 @@
 # Implementação do módulo {processa_comando_http}.
 
+import cgi
+# Outras interfaces usadas por este módulo:
+import json
+import re
+import sys
+import urllib.parse
 # Interfaces do projeto usadas por este módulo:
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import urllib.parse, cgi
-import sys
 
 import base_sql
-import gera_html_pag, gera_html_elem
-import comando_botao_entrar 
-import comando_botao_cadastrar 
-import comando_botao_sair 
-import comando_subm_ver_produto
-import comando_subm_comprar_produto
+import comando_botao_cadastrar
+import comando_botao_entrar
+import comando_botao_sair
 import comando_subm_buscar_produtos
-import comando_subm_entrar 
 import comando_subm_cadastrar
-
-# Outras interfaces usadas por este módulo:
-import json, sys, re
+import comando_subm_comprar_produto
+import comando_subm_entrar
+import comando_subm_ver_produto
+import gera_html_elem
+import gera_html_pag
 
 # Classe interna:
 
@@ -279,7 +281,7 @@ def mostra_comando(dados):
   dados_lin = re.sub(r'\},','  \},',dados_lin)
   tipo = dados['command']
   texto = "<hr/>Metodo %s chamado com dados:<br/>%s<hr/>" % (tipo, dados_lin);
-  conteudo = gera_html_elem.bloco_texto(texto,"Courier","18px","normal","5px","left",None,cor_fundo)
+  conteudo = gera_html_elem.bloco_texto(texto,"none","Courier","18px","normal","5px","left",None,cor_fundo)
   pagina = gera_html_pag.generica(conteudo)
   return pagina
 
