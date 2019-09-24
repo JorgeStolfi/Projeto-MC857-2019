@@ -13,6 +13,13 @@ def generica(conteudo):
   roda = gera_html_elem.rodape()
   return cabe + "\n" + menu + "\n" + conteudo + "\n" + roda
 
+def carrinho():
+  cabe = gera_html_elem.cabecalho("Projeto MC857A 2019-2s")
+  menu = gera_html_elem.menu_geral()
+  roda = gera_html_elem.rodape()
+  carrinho = "<b> Carrinho </b>"
+  return cabe + "\n" + menu + "\n" + carrinho + "\n" + roda
+
 def entrada_da_loja():
   now = datetime.now(timezone.utc)
   data = now.strftime("%Y-%m-%d %H:%M:%S %z")
