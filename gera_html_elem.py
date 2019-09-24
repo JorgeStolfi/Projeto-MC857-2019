@@ -95,3 +95,7 @@ def bloco_de_produto(prod, qt, detalhe):
   e o preço para essa quantidade.  Se {qt} for {None},
   mostra apenas o preço unitário, sem a quantidade."""
   return gera_html_elem_IMP.bloco_de_produto(prod, qt, detalhe)
+
+def bloco_de_compra(compra):
+  """Devolve um fragmento HTML que decreve a compra {compra}, um objeto da classe {ObjCompra}."""
+  return gera_html_elem_IMP.bloco_de_compra(compra)
