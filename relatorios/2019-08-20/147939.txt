@@ -1,0 +1,10 @@
+############ 20/AGO/2019 ############
+Correções da interface carrinho.py, de acordo com issue aberta:
+- A documentação de cada método ou função deve ser um string """...""", não um comentário #
+- A documentação de uma função ou método deve descrever precisamente o tipo e significado de cada parâmetro e do resultado.
+- A descrição de pega_itens está incorreta.
+- Falta o comando return nos métodos que devolvem um resultado.
+- Em vários métodos, falta passar o argumento self para o método imlementador.
+- A função cria deve ser uma função da interface, não um método da classe; e sua implementação deve estar em carrinho_IMP.py, não na interface.
+
+Alteração dos métodos de processa_comando_http_IMP para utilizar o métodos dos novos módulos
