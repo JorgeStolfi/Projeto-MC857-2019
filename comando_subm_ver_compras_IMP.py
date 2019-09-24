@@ -4,6 +4,6 @@ import usuario
 import sessao
 
 def processa(ses, args):
-  id_usuario = sessao.obtem_usuario(ses)
-  lista = usuario.busca_por_identificador(id_usuario)
-  return lista
+  id_compra = args['id_compra']
+  comp = compra.busca_por_identificador(id_compra)
+  return gera_html_elem.bloco_de_compra(comp)
