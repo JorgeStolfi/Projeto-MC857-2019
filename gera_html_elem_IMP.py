@@ -111,7 +111,6 @@ def bloco_de_produto(prod, qt, detalhe):
     return bloco_final
 
   def bloco_de_compra(comp):
-    id_compra = compra.obtem_identificador(comp)
     lista_de_itens = compra.obtem_itens(comp)
     
     estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;"
