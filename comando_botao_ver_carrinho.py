@@ -2,6 +2,9 @@
 
 import comando_botao_ver_carrinho_IMP
 
+# !!! Falta programa de teste deste módulo !!!
+# !!! Implementação incompleta !!!
+
 def processa(ses, args):
   """Este módulo processa o acionamento pelo usuário do botão "Ver Carrinho" do menu principal.
   Retorna uma página HTML contendo o carrinho usuário."""
