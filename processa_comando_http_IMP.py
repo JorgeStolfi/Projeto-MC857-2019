@@ -279,7 +279,7 @@ def mostra_comando(dados):
   dados_lin = re.sub(r'\},','  \},',dados_lin)
   tipo = dados['command']
   texto = "<hr/>Metodo %s chamado com dados:<br/>%s<hr/>" % (tipo, dados_lin);
-  conteudo = gera_html_elem.bloco_texto(texto,"Courier","18px","normal","5px","left",None,cor_fundo)
+  conteudo = gera_html_elem.bloco_texto(texto, None,"Courier","18px","normal","5px","left",None,cor_fundo)
   pagina = gera_html_pag.generica(conteudo)
   return pagina
 
