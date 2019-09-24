@@ -3,11 +3,15 @@
 import gera_html_pag
 import compra
 import produto
+import sessao
+import sys
 
 def processa(ses, args):
+  sys.stderr.write("comando_subm_comprar_produto: args = " + str(args) + "\n")
   id_produto = args['id_produto']
-  prod = tabela_de_produtos.busca_por_identificador(bas, id_produto)
+  prod = produto.busca_por_identificador(id_produto)
   quantidade = float(args['quantidade'])
-  carrinho = sessao.obtem_carrinho()
-  carrinho.acrescenta_item(prod, quantidade)
-  return gera_html_pag.lista_compra(carrinho)
+  # carrinho = sessao.obtem_carrinho(ses)
+  carrinho = compra.busca_por_identificador("C-00000001") # !!! Temporário enquanto {sessao.obtem_carrinho} não existe.
+  compra.acrescenta_item(carrinho, prod, quantidade)
+  return gera_html_pag.mostra_compra(carrinho)

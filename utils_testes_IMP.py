@@ -1,6 +1,15 @@
 # Implementação do módulo {utils_testes}.
 
 import sys
+import inspect
+
+def erro_prog(mens):
+  fr = inspect.stack()[2]
+  sys.stderr.write("  File %s, line %d, in %s: ** erro: %s\n" % (fr[1],fr[2],fr[3],mens))
+  assert False
+
+def mostra(ind,mens):
+  sys.stderr.write("%*s%s\n" % (ind,'',mens))
 
 def verifica_objeto(titulo, modulo, tipo, obj, indice, ident, atrs): 
   sys.stderr.write("%s\n" % ("-" * 70))

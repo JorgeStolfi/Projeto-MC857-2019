@@ -94,20 +94,26 @@ prod1_mods = {
 }
 produto.muda_atributos(prod1, prod1_mods)
 prod1_b = produto.busca_por_identificador(pident1)
-prod1_b_atrs = prod1_a_atrs
+prod1_b_atrs = prod1_atrs
 for k, v in prod1_mods.items():
   prod1_b_atrs[k] = v
-verifica_usuario("prod1_b",prod1,pindice1,pident1,prod1_b_atrs)
+verifica_produto("prod1_b",prod1,pindice1,pident1,prod1_b_atrs)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {produto.busca_por_palavra}:\n")
 
 palavra = "de força"
-plist5 = produto.busca_por_palavra(palavra)
-sys.stderr.write("  resultado = " + str(plist5) + "\n")
-if not type(plist5) is list or len(plist5) != 2:
-  sys.stderr.write("  **erro: resultado foi " + str(plist5) + " deveria ser " + str([ pident1, pident2 ]) + "\n")
+plist5_cmp = produto.busca_por_palavra(palavra)
+sys.stderr.write("  resultado = " + str(plist5_cmp) + "\n")
+if not type(plist5_cmp) is list:
+  sys.stderr.write("  **erro: resultado " + str(plist5_cmp) + " deveria ser lista\n")
   ok_global = False
+else:
+  plist5_cmp = sorted(plist5_cmp)
+  plist5_esp = [pident1, pident2]
+  if plist5_cmp != plist5_esp:
+    sys.stderr.write("  **erro: resultado foi " + str(plist5_cmp) + " deveria ser " + str(plist5_esp) + "\n")
+    ok_global = False
 
 
 # ----------------------------------------------------------------------

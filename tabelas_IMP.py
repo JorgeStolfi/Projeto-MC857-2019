@@ -14,6 +14,12 @@ def inicializa_todas(limpa):
   produto.inicializa(limpa)
   compra.inicializa(limpa)
 
+def cria_todos_os_testes():
+  usuario.cria_testes()
+  sessao.cria_testes()
+  produto.cria_testes()
+  compra.cria_testes()
+
 def obj_para_indice(obj, tipo):
   assert obj != None and type(obj) is tipo
   if tipo is usuario.ObjUsuario:

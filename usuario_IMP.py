@@ -7,6 +7,7 @@ import conversao_sql
 import identificador
 import tabelas
 import sys # Para diagnóstico.
+from utils_testes import erro_prog, mostra
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
 
@@ -23,14 +24,14 @@ letra_tb = "U"
 
 colunas = \
   (
-    ( 'nome',     type("foo"), 'TEXT', False,   1,  60  ), # Nome completo.
-    ( 'senha',    type("foo"), 'TEXT', False,   8,  24  ), # Senha de login.
-    ( 'email',    type("foo"), 'TEXT', False,   6,  60  ), # Endereço de email
-    ( 'CPF',      type("foo"), 'TEXT', False,  14,  14  ), # Número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
-    ( 'RG',       type("foo"), 'TEXT', False,   8,  15  ), # Número RG ("[0-9]{8-15}")
-    ( 'endereco', type("foo"), 'TEXT', False,  30, 180  ), # Endereço completo, em 3 linhas (menos CEP).
-    ( 'CEP',      type("foo"), 'TEXT', False,   9,   9  ), # Código de endereçamento postal completo ("{NNNNN}-{LLL}").
-    ( 'telefone', type("foo"), 'TEXT', False,  15,  20  ), # Telefone completo com DDI e DDD ("+{XXX}({YYY}){MMMMM}-{NNNN}").
+    ( 'nome',      type("foo"), 'TEXT', False,   1,  60  ), # Nome completo.
+    ( 'senha',     type("foo"), 'TEXT', False,   8,  24  ), # Senha de login.
+    ( 'email',     type("foo"), 'TEXT', False,   6,  60  ), # Endereço de email
+    ( 'CPF',       type("foo"), 'TEXT', False,  14,  14  ), # Número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
+    ( 'endereco',  type("foo"), 'TEXT', False,  30, 180  ), # Endereço completo, em 3 linhas (menos CEP).
+    ( 'CEP',       type("foo"), 'TEXT', False,   9,   9  ), # Código de endereçamento postal completo ("{NNNNN}-{LLL}").
+    ( 'telefone',  type("foo"), 'TEXT', False,  15,  20  ), # Telefone completo com DDI e DDD ("+{XXX}({YYY}){MMMMM}-{NNNN}").
+    ( 'documento', type("foo"), 'TEXT', True,    6,  24  ), # Número do documento de identidade (RG, pasaporte, etc.)
   )
   # Descrição das colunas da tabela na base de dados.
 
@@ -54,14 +55,13 @@ def inicializa(limpa):
 
 def cria(atrs):
   global cache, nome_tb, letra_tb, colunas
-  sys.stderr.write("usuario_IMP.cria(" + str(atrs) + ") ...\n")
+  mostra(0,"usuario_IMP.cria(" + str(atrs) + ") ...")
 
   # Verifica unicidade de CPF:
   for chave in ('CPF', 'email'):
     # Exige atributo {chave} único:
     if chave not in atrs:
-      sys.stderr.write("usuario_IMP.cria: ** erro: falta atributo '" + chave + "'\n")
-      assert False
+      erro_prog("falta atributo '" + chave + "'")
     else:
       val = atrs[chave]
       if chave == 'CPF':
@@ -69,16 +69,14 @@ def cria(atrs):
       elif chave == 'email':
         id_bus = busca_por_email(val)
       if id_bus != None:
-        sys.stderr.write("usuario_IMP.cria: ** erro: atributo '" + chave + "' já existe: " + id_bus + "\n");
-        assert False
+        erro_prog("atributo '" + chave + "' já existe: " + id_bus + "")
 
   # Converte atibutos para formato SQL.
   mods_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, tabelas.obj_para_indice)
   # Insere na base de dados e obtém o índice na mesma:
   usr = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, mods_SQL)
   if not type(usr) is usuario.ObjUsuario:
-    sys.stderr.write("usuario_IMP.cria: ** erro: tipo de objeto errado" + str(usr) + "\n");
-    assert False
+    erro_prog("tipo de objeto errado" + str(usr) + "")
   return usr
 
 def obtem_identificador(usr):
@@ -99,8 +97,7 @@ def muda_atributos(usr, mods):
   mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice)
   res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, usr.id_usuario, mods_SQL)
   if res != usr:
-    sys.stderr.write("usuario_IMP.muda_atributos: **erro " + str(res) + "\n")
-    assert False
+    erro_prog(" acesso à tabela falhou res = " + str(res) + "")
   return
 
 def busca_por_identificador(id_usuario):
@@ -121,13 +118,51 @@ def busca_por_CPF(CPF):
   global cache, nome_tb, letra_tb, colunas
   return busca_por_campo_unico('CPF', CPF)
 
-def busca_por_RG(RG):
-  global cache, nome_tb, letra_tb, colunas
-  return busca_por_campo_unico('RG', RG)
-
 def campos():
   global cache, nome_tb, letra_tb, colunas
   return colunas
+
+def cria_testes():
+  global cache, nome_tb, letra_tb, colunas
+  inicializa(True)
+  lista_atrs = \
+    [ 
+      {
+        'nome': "José Primeiro", 
+        'senha': "123456789", 
+        'email': "primeiro@gmail.com", 
+        'CPF': "123.456.789-00", 
+        'endereco': "Rua Senador Corrupto, 123\nVila Buracão\nCampinas, SP", 
+        'CEP': "13083-418", 
+        'telefone': "+55(19)9 9876-5432",
+        'documento': "1.234.567-9 SSP-SP"
+      },
+      {
+        'nome': "João Segundo", 
+        'senha': "987654321", 
+        'email': "segundo@ic.unicamp.br", 
+        'CPF': "987.654.321-99", 
+        'endereco': "Avenida dos Semáforos, 1003\nJardim Pelado\nCampinas, SP", 
+        'CEP': "13083-007", 
+        'telefone': "+55(19)9 9898-1212",
+        'documento': 'CD98765-43 PF'
+      
+      },
+      {
+        'nome': "Juca Terceiro", 
+        'senha': "4321002134", 
+        'email': "muda@gmail.com", 
+        'CPF': "111.111.111-11", \
+        'endereco': "Rua Zero, 0000\nVila Zero\nCampinas, SP", \
+        'CEP': "13083-999", 
+        'telefone': "+55(19)9 9999-9999",
+        'documento': None
+      }
+    ]
+  for atrs in lista_atrs:
+    usr = cria(atrs)
+    assert usr != None and type(usr) is usuario.ObjUsuario
+  return
 
 # FUNÇÕES INTERNAS
 
@@ -143,38 +178,39 @@ def def_obj(obj, id_usuario, atrs_SQL):
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
   equivalentes na memória."""
   global cache, nome_tb, letra_tb, colunas
-  sys.stderr.write("usuario_IMP.def_obj(" + str(obj) + ", " + id_usuario + ", " + str(atrs_SQL) + ") ...\n")
+  mostra(0,"usuario_IMP.def_obj(" + str(obj) + ", " + id_usuario + ", " + str(atrs_SQL) + ") ...")
   if obj == None:
     # Converte atributos para formato na memória.
     atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.obj_para_indice)
-    sys.stderr.write("  criando objeto, atrs_mem = " + str(atrs_mem) + "\n")
+    mostra(2,"criando objeto, atrs_mem = " + str(atrs_mem) + "")
+    if len(atrs_mem) != len(colunas):
+      erro_prog("numero de atributos = " + str(len(atrs_mem)) + " devia ser " + str(len(colunas)) + "")
     obj = usuario.ObjUsuario(id_usuario, atrs_mem)
+    
   else:
     assert obj.id_usuario == id_usuario
     # Converte atributos para formato na memória.
     mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.obj_para_indice)
-    sys.stderr.write("  modificando objeto, mods_mem = " + str(mods_mem) + "\n")
-    if len(mods_mem) > len(obj.atrs):
-      sys.stderr.write("usuario_IMP.def_obj:  **erro: numero excessivo de atributos a alterar\n")
-      assert False
+    mostra(2,"modificando objeto, mods_mem = " + str(mods_mem) + "")
+    if len(mods_mem) > len(colunas):
+      erro_prog("numero de atributos a alterar = " + str(len(mods_mem)) + " excessivo")
+    
     # O campo 'CPF' não pode ser alterado.
     if 'CPF' in mods_mem:
       CPF_velho = obj.atrs['CPF']
       CPF_novo = mods_mem['CPF']
       if CPF_novo != CPF_velho:
-        sys.stderr.write("usuario_IMP.def_obj:  **erro: CPF não pode ser alterado\n")
-        assert False
+        erro_prog("CPF não pode ser alterado")
+    
     # Modifica:
     for chave, val in mods_mem.items():
       if not chave in obj.atrs:
-        sys.stderr.write("usuario_IMP.def_obj:  **erro: chave '" + chave + "' inválida\n")
-        assert False
+        erro_prog("chave '" + chave + "' inválida")
       val_velho = obj.atrs[chave]
-      if not type(val_velho) is type(val):
-        sys.stderr.write("usuario_IMP.def_obj:  *erro: tipo do campo '" + chave + "' incorreto\n")
-        assert False
+      if val != None and val_velho != None and (not type(val_velho) is type(val)):
+        erro_prog("tipo do campo '" + chave + "' incorreto")
       obj.atrs[chave] = val
-  sys.stderr.write("  obj = " + str(obj) + "\n")
+  mostra(2,"obj = " + str(obj) + "")
   return obj
 
 def busca_por_campo_unico(chave, val):
@@ -192,12 +228,9 @@ def busca_por_campo_unico(chave, val):
     return None
   elif type(res) is str:
     # Deu erro:
-    sys.stderr.write(res + "\n")
-    assert False
+    erro_prog("busca na tabela falhou, res = " + res)
   else:
     if len(res) != 1:
-      sys.stderr.write("usuario_IMP.busca_por_campo_unico: **erro: campo '" + chave + "' val = '" + str(val) + "' duplicado\n")
-      sys.stderr.write(" res = " + str(res) + "\n")
-      assert False
+      erro_prog("campo '" + chave + "' val = '" + str(val) + "' duplicado - res = " + str(res))
     id_usuario = res[0];
     return id_usuario

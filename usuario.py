@@ -7,23 +7,26 @@ import usuario_IMP; from usuario_IMP import ObjUsuario_IMP
 def inicializa(limpa):
   """Inicializa o modulo, criando a tabela de usuários na base de dados.
   Não retorna nenhum valor. Deve ser chamada apenas uma vez no ínicio da
-  execução do servidor.  Se o parâmetro booleano {limpa} for {True},
-  apaga todas as linhas da tabela SQL, resetando o contador em 0."""
+  execução do servidor, depois de chamar {base_sql.conecta}. 
+  Se o parâmetro booleano {limpa} for {True}, apaga todas as linhas da tabela
+  SQL, resetando o contador em 0."""
   usuario_IMP.inicializa(limpa)
 
 class ObjUsuario(ObjUsuario_IMP):
   """Um objeto desta classe representa um usuário da loja e
   armazena seus atributos.  Por enquanto, são:
 
-    'nome'     nome completo do usuário.
-    'senha'    senha do usuário.
-    'email'    endereço de email
-    'CPF'      número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
-    'RG'       número RG ("{EE}[0-9]{8-15}"), EE identificador do estado e.g. SP
-    'endereco' endereço completo, em 3 linhas (menos CEP).
-    'CEP'      código de endereçamento postal completo ("{NNNNN}-{LLL}").
-    'telefone' telefone completo com DDI e DDD ("+{XX}({YY}){MMMM}-{NNNN}").
-
+    'nome'      nome completo do usuário.
+    'senha'     senha do usuário.
+    'email'     endereço de email
+    'CPF'       número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
+    'endereco'  endereço completo, em 3 linhas (menos CEP).
+    'CEP'       código de endereçamento postal completo ("{NNNNN}-{LLL}").
+    'telefone'  telefone completo com DDI e DDD ("+{XX}({YY}){MMMM}-{NNNN}").
+    'documento' número do documento de identidade (RG, passaporte, etc.).
+    
+  O 'documento' é opcional.  Os demais atributos são obrigatórios.
+    
   Outros atributos (nascimento, preferências, etc.) poderão ser acrescentados no futuro.
 
   Cada usuário do sistema -- cliente ou funcionário, ativo ou bloqueado
@@ -100,14 +103,16 @@ def busca_por_CPF(CPF):
   ou {None} se não existir tal usuário."""
   return usuario_IMP.busca_por_CPF(CPF)
 
-def busca_por_RG(RG)
-  """Localiza um usuário cujo número RG é {RG} (um string no formato
-  {EE}[0-9]{8-15}, EE identificador do estado e.g. SP) e devolve o 
-  identificador do mesmo (não um objeto) ou {None} se não existir tal usuário."""
-  return usuario_IMP.busca_por_CPF(CPF)
-
 def campos():
   """Retorna uma seqüência de tuplas que descrevem os nomes e propriedades
   dos atributos de um {ObjUsuario}, menos o identificador.  O resultado é adequado
   para o parâmetro {cols} das funções do módulo {tabela_generica}."""
   return usuario_IMP.campos()
+
+def cria_testes():
+  """Limpa a tabela de usuários com {inicializa(True)}, e cria três usuários
+  para fins de teste, incluindo-os na tabela.  Não devolve nenhum resultado.
+  
+  Deve ser chamada apenas uma vez no ínicio da execução do programa, 
+  depois de chamar {base_sql.conecta}.""" 
+  usuario_IMP.cria_testes()

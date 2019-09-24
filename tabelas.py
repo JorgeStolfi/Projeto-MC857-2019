@@ -41,3 +41,8 @@ def indice_para_obj(indice, tipo):
   objeto dessa classe com esse índice.  Se não existir
   tal linha, devolve {None}."""
   return tabelas_IMP.indice_para_obj(indice, tipo)
+
+def cria_todos_os_testes():
+  """Limpa todas as tabelas com {inicializa_todas(True)}, e cria três 
+  objetos de cada classe, incluindo-os nas respectivas tabelas.  Não devolve nenhum resultado.""" 
+  tabelas_IMP.cria_todos_os_testes()

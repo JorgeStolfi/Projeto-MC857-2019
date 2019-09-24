@@ -2,9 +2,9 @@
 # representa um pedido de compra (em particular, um carrinho de
 # compras).
 # 
-# Nas funções abaixo, o parãmetro {prod} é um objeto
-# da classe {ObjProduto}; {usr} é um objeto da classe {ObjUsuario};
-# e {qt} é um float não-negativo, a quantidade do produto a comprar.
+# Nas funções abaixo, o parâmetro {prod} é um objeto
+# da classe {ObjProduto}, e {qt} e um {float} que especifica uma
+# quantidade desse produto.
 
 # Interfaces importadas por esta interface:
 import usuario
@@ -15,9 +15,10 @@ import compra_IMP; from compra_IMP import ObjCompra_IMP
 
 def inicializa(limpa):
   """Inicializa o modulo, criando a tabela de compras na base de dados.
-  Deve ser chamada apenas uma vez no ínicio da execução do servidor.
-  Não retorna nenhum valor.  Se o parâmetro booleano {limpa} for {True},
-  apaga todas as linhas da tabela SQL, resetando o contador em 0."""
+  Deve ser chamada apenas uma vez no ínicio da execução do servidor, 
+  depois de chamar {base_sql.conecta}. Não retorna nenhum valor.  
+  Se o parâmetro booleano {limpa} for {True}, apaga todas as linhas da tabela
+  SQL, resetando o contador em 0."""
   compra_IMP.inicializa(limpa)
 
 class ObjCompra(ObjCompra_IMP):
@@ -58,12 +59,13 @@ class ObjCompra(ObjCompra_IMP):
   um identificador de compra, uma string da forma "C-{NNNNNNNN}"
   onde {NNNNNNNN} é o índice formatado em 8 algarismos."""
 
-def cria(atrs):
-  """Cria um novo objeto da classe {ObjCompra}, com os atributos especificados
-  pelo dicionário Python {atrs}, acrescentando-o à tabéla de compras da base de dados.
-  Atribui um identificador único à compra, derivado do seu índice na tabela.
+def cria(cliente):
+  """Cria um novo objeto da classe {ObjCompra} para o usuário {cliente}
+  (um objeto da classe {ObjUsuario}), acrescentando-o à tabela de compras da base de dados.
+  O status será inicialmente 'aberto'.  Atribui um identificador único à compra,
+  derivado do seu índice na tabela.
   Retorna o objeto criado."""
-  return compra_IMP.cria(atrs)
+  return compra_IMP.cria(cliente)
 
 def obtem_identificador(cpr):
   """Devolve o identificador 'C-{NNNNNNNN}' da compra {cpr}."""
@@ -106,11 +108,22 @@ def muda_atributos(cpr, mods):
 def obtem_quantidade(cpr, prod):
   """Retorna a quantidade atual do produto {prod} no pedido de
   compras {cpr}.  Se o produto não está no pedido, devolve zero."""
+  return compra_IMP.obtem_quantidade(cpr, prod)
+
+def obtem_preco(cpr, prod):
+  """Retorna o preco total do produto {prod} no pedido de
+  compras {cpr}.  Se o produto não está no pedido, devolve zero."""
+  return compra_IMP.obtem_preco(cpr, prod)
 
 def calcula_total(cpr):
   """ Retorna um float que é o preco total do pedido de compra, ou seja a
   soma dos campos {qt} nos elementos da lista de itens."""
   return compra_IMP.calcula_total(cpr)
+
+def fecha_compra(cpr):
+  """Muda o status de uma certa compra de 'aberto' para 'pagando' e salva o novo
+  status da compra no banco de dados."""
+  return compra_IMP.fecha_compra(cpr)
     
 def acrescenta_item(cpr, prod, qt):
   """Acrescenta um novo item no pedido de cpr, consistindo da quantidade 
@@ -130,20 +143,27 @@ def troca_quantidade(cpr, prod, qt):
   
   Se {qt} for zero, elimina o produto {prod} da lista. 
   Se o produto {prod} não está na lista, acrescenta-o com 
-  quantidade {qt}. Também recalcula o preço do item"""
+  quantidade {qt}, e recalcula o preço do item.  Se 
+  o produto já está na lista com a mesma quantidade {qt},
+  não faz nada."""
   compra_IMP.troca_quantidade(cpr, prod, qt)
 
-def elimina_prod(cpr, prod):
+def elimina_produto(cpr, prod):
   """Modifica a lista de itens da compra, eliminando a entrada
   com produto {prod}. Também elimina a linha correspondente da tabela de itens_de_compras.
   O produto deve estar na lista. Não retorna nenhum resultado."""
-  compra_IMP.elimina_prod(cpr,prod)
+  compra_IMP.elimina_produto(cpr, prod)
 
 def busca_por_identificador(id_compra):
   """Localiza uma compra com identificador {id_compra} (uma string da forma
   'C-{NNNNNNNN}'), e devolve a mesma na forma de um objeto da classe {ObjCompra}.
   Se tal compra não existe, devolve {None}."""
   return compra_IMP.busca_por_identificador(id_compra)
+
+def busca_por_indice(ind):
+  """Mesma que {busca_por_identificador}, mas quer o índice  inteiro {ind} da linha da tabela,
+  em vez do identificador do objeto."""
+  return compra_IMP.busca_por_indice(ind)
 
 def busca_por_produto(id_produto):
   """Localiza algumas compras cujo produto é {id_produto} 
@@ -158,7 +178,12 @@ def campos():
   {tabela_generica}."""
   return compra_IMP.campos()
 
-def fecha_compra(cpr):
-  """Muda o status de uma certa compra de 'aberto' para 'pagando' e salva o novo
-  status da compra no banco de dados."""
-  return compra_IMP.fecha_compra(cpr)
+def cria_testes():
+  """Limpa a tabela de compras com {inicializa(True)}, e cria três pedidos de compra
+  para fins de teste, incluindo-os na tabela.  Os pedidos estarão inicialmente
+  com status 'aberto'. Não devolve nenhum resultado.
+  
+  Deve ser chamada apenas uma vez no ínicio da execução do programa, 
+  depois de chamar {base_sql.conecta}.  Supõe que as tabelas de usuários
+  e de produtos já foram inicializadas, e cada uma tem pelo menos três entradas.""" 
+  compra_IMP.cria_testes()

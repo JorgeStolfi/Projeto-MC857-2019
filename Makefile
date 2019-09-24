@@ -35,8 +35,9 @@ MODULOS := \
 
 
 # O que "make" deve fazer:
-all: todos_os_testes
+# all: todos_os_testes
 # all: teste_unico
+all: roda_servidor
 
 # Roda todos os módulos de teste:
 todos_os_testes:
@@ -49,7 +50,13 @@ todos_os_testes:
 # MODULO := base_sql
 # MODULO := tabela_generica
 # MODULO := usuario
+# MODULO := produto
 # MODULO := sessao 
-MODULO := produto
+# MODULO := compra
+
 teste_unico:
 	./testa.sh ${MODULO}
+
+roda_servidor:
+	./cria_base_de_teste.py
+	( ./servidor.py & sleep 1000 )

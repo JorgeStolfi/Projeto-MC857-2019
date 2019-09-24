@@ -1,6 +1,7 @@
 # Implementação do módulo {base_sql}.
 
 import sqlite3, sys
+from utils_testes import erro_prog, mostra
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
 
@@ -12,28 +13,30 @@ conexao = None
 
 def codifica_valor(val):
   # !!! Deveria proteger caracteres especiais em {val}, como ';'. !!!
-  if type (val) is int:
+  if val == None:
+    return "NULL"
+  elif type (val) is int:
     return str(val)
   elif type(val) is str:
     return "'" + val + "'"
   elif type(val) is float:
     return ("%.2f" % val)
   else:
-    assert False # Should raise an exception instead.
+    erro_prog("valor " + str(val) + " tipo = " + str(type(val)) + " invalido")
     return None
 
 def conecta(dir, uid, senha):
   # Ignora {uid} e {senha} por enquanto.
   global conexao
   if conexao != None: 
-    sys.stderr.write("base_sql_IM.conecta: !! Já conectada\n")
+    mostra(4,"base_sql_IM.conecta: !! Já conectada")
     return None
   try:
     conexao = sqlite3.connect(dir)
-    sys.stderr.write("base_sql_IMP.conecta: base {sqlite3}, versao = " + sqlite3.version + "\n")
+    mostra(4,"base_sql_IMP.conecta: base {sqlite3}, versao = " + sqlite3.version)
     return None
   except sqlite3.Error as msg:
-    sys.stderr.write("base_sql_IMP.conecta: ** erro = \"" + str(msg) + "\"\n")
+    mostra(4,"base_sql_IMP.conecta: ** erro = \"" + str(msg) + "\"")
     return msg
 
 def executa_comando_CREATE_TABLE(nome_tb, descr_cols):
@@ -44,7 +47,7 @@ def executa_comando_CREATE_TABLE(nome_tb, descr_cols):
     cursor.execute(cmd)
     return None
   except sqlite3.Error as msg:
-    sys.stderr.write("Base_SQL_IMP.executa_comando_CREATE_TABLE: ** erro = \"" + str(msg) + "\"\n")
+    mostra(4,"Base_SQL_IMP.executa_comando_CREATE_TABLE: ** erro = \"" + str(msg) + "\"")
     return msg
 
 def executa_comando_INSERT(nome_tb, atrs):
@@ -60,13 +63,14 @@ def executa_comando_INSERT(nome_tb, atrs):
     if valores != "": valores = valores + ","
     valores = valores + val
   cmd = "INSERT INTO " + nome_tb + " ( " + chaves + " ) VALUES (" + valores + ")"
+  mostra(4,"BASE_SQL_IMP.executa_comando_INSERT: cmd = \"" + str(cmd) + "\"")
   try:
     cursor = conexao.cursor()
     cursor.execute(cmd)
     conexao.commit()
     return cursor.lastrowid
   except sqlite3.Error as msg:
-    sys.stderr.write("BASE_SQL_IMP.executa_comando_INSERT: ** erro = \"" + str(msg) + "\"\n")
+    mostra(4,"BASE_SQL_IMP.executa_comando_INSERT: ** erro = \"" + str(msg) + "\"")
     return msg
 
 def executa_comando_UPDATE(nome_tb, cond, atrs):
@@ -77,17 +81,15 @@ def executa_comando_UPDATE(nome_tb, cond, atrs):
     # Acrescenta "{ch} = {val}" à lista de alterações de colunas:
     if pares != "": pares = pares + ","
     pares = pares + ch + " = " + val
-  sys.stderr.write("BASE_SQL_IMP.executa_comando_UPDATE: cond = \"" + str(cond) + "\"\n")
-  sys.stderr.write("BASE_SQL_IMP.executa_comando_UPDATE: pares = \"" + str(pares) + "\"\n")
   cmd = "UPDATE " + nome_tb + " SET " + pares + " WHERE " + cond
-  sys.stderr.write("BASE_SQL_IMP.executa_comando_UPDATE: cmd = \"" + str(cmd) + "\"\n")
+  mostra(4,"BASE_SQL_IMP.executa_comando_UPDATE: cmd = \"" + str(cmd) + "\"")
   try:
     cursor = conexao.cursor()
     cursor.execute(cmd)
     conexao.commit()
     return None
   except sqlite3.Error as msg:
-    sys.stderr.write("BASE_SQL_IMP.executa_comando_UPDATE: ** erro = \"" + str(msg) + "\"\n")
+    mostra(4,"BASE_SQL_IMP.executa_comando_UPDATE: ** erro = \"" + str(msg) + "\"")
     return msg
 
 def executa_comando_SELECT(nome_tb, cond, nomes_cols):
@@ -99,21 +101,23 @@ def executa_comando_SELECT(nome_tb, cond, nomes_cols):
     cols = cols + cn
 
   cmd = "SELECT " + cols + " FROM " + nome_tb + " WHERE " + cond
+  mostra(4,"BASE_SQL_IMP.executa_comando_SELECT: cmd = \"" + str(cmd) + "\"")
   try:
     cursor = conexao.cursor()
     iterador = cursor.execute(cmd)
     res = cursor.fetchall() # Converte o iterador em lista.
     cursor.close()
-    sys.stderr.write("BASE_SQL_IMP.executa_comando_SELECT: len(res) = " + str(len(res)) + "\n")
+    mostra(4,"BASE_SQL_IMP.executa_comando_SELECT: len(res) = " + str(len(res)))
     return res
   except sqlite3.Error as msg:
-    sys.stderr.write("BASE_SQL_IMP.executa_comando_SELECT: ** erro = \"" + str(msg) + "\"\n")
-    sys.stderr.write("  cmd = \"" + str(cmd) + "\"\n")
+    mostra(4,"BASE_SQL_IMP.executa_comando_SELECT: ** erro = \"" + str(msg) + "\"")
+    mostra(4,"  cmd = \"" + str(cmd) + "\"")
     return msg
 
 def executa_comando_DELETE(nome_tb, cond):
   global conexao
   cmd = "DELETE FROM " + nome_tb + " WHERE " + cond
+  mostra(4,"BASE_SQL_IMP.executa_comando_DELETE: cmd = \"" + str(cmd) + "\"")
   try:
     cursor = conexao.cursor()
     cursor.execute(cmd)
@@ -121,12 +125,13 @@ def executa_comando_DELETE(nome_tb, cond):
     cursor.close()
     return None
   except sqlite3.Error as msg:
-    sys.stderr.write("BASE_SQL_IMP.executa_comando_DELETE: ** erro = \"" + str(msg) + "\"\n")
+    mostra(4,"BASE_SQL_IMP.executa_comando_DELETE: ** erro = \"" + str(msg) + "\"")
     return msg
 
 def executa_comando_DROP_TABLE(nome_tb):
   global conexao
   cmd = "DROP TABLE IF EXISTS " + nome_tb
+  mostra(4,"BASE_SQL_IMP.executa_comando_DROP_TABLE: cmd = \"" + str(cmd) + "\"")
   try:
     cursor = conexao.cursor()
     cursor.execute(cmd)
@@ -134,7 +139,7 @@ def executa_comando_DROP_TABLE(nome_tb):
     cursor.close()
     return None
   except sqlite3.Error as msg:
-    sys.stderr.write("BASE_SQL_IMP.executa_comando_DROP_TABLE: ** erro = \"" + str(msg) + "\"\n")
+    mostra(4,"BASE_SQL_IMP.executa_comando_DROP_TABLE: ** erro = \"" + str(msg) + "\"")
     return msg
     
 

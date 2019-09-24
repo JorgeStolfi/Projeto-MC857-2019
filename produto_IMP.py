@@ -24,8 +24,8 @@ letra_tb = "P"
 colunas = \
   (
     ( 'descr_curta', type("foo"), 'TEXT',    False,   10,         80 ), # Descricao curta do produto.
-    ( 'descr_media', type("foo"), 'TEXT',    False,    8,        250 ), # Descricao media do produto.
-    ( 'descr_longa', type("foo"), 'TEXT',    False,   10,        500 ), # Descricao longa do produto.
+    ( 'descr_media', type("foo"), 'TEXT',    False,   10,        250 ), # Descricao media do produto.
+    ( 'descr_longa', type("foo"), 'TEXT',    False,   10,       3000 ), # Descricao longa do produto.
     ( 'unidade',     type("foo"), 'TEXT',    False,    1,         20 ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
     ( 'preco',       type(10.5),  'FLOAT',   False,    1,  999999.99 ), # Preco unitário do produto em reais.
     ( 'estoque',     type(10),    'INTEGER', False,    0,   99999999 )  # Estoque do produto  
@@ -37,7 +37,7 @@ colunas = \
 
 class ObjProduto_IMP():
   def __init__(self, id_produto, atrs):
-    self.atributos = atrs.copy()
+    self.atrs = atrs.copy()
     self.id_produto = id_produto
 
 # Implementação das funções:
@@ -73,8 +73,12 @@ def obtem_indice(prod):
 
 def obtem_atributos(prod):
   global cache, nome_tb, letra_tb, colunas
-  return prod.atributos.copy()
+  return prod.atrs.copy()
   
+def calcula_preco(prod, qt):
+  # Por enquanto, sem descontos por atacado:
+  return prod.atrs['preco'] * qt
+
 def muda_atributos(prod, mods):
   global cache, nome_tb, letra_tb, colunas
   # Converte valores de formato memória para formato SQL.
@@ -99,13 +103,48 @@ def busca_por_indice(ind):
 
 def busca_por_palavra(pal):
   chaves = ('descr_curta', 'descr_media')
-  valores = (pal, pal)
+  valores = (pal,)
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
   return produtos
 
 def campos():
   global cache, nome_tb, letra_tb, colunas
   return colunas
+
+def cria_testes():
+  global cache, nome_tb, letra_tb, colunas
+  inicializa(True)
+  lista_atrs = \
+    [ 
+      {
+        'descr_curta': "Escovador de ouriço",
+        'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
+        'descr_longa': "Fabricante: Ouricex LTD<br/>\nOrigem: Cochinchina<br/>\nModelo: EO-22<br/>\nTensão: 110-230 V<br/>\nPotência: 1500 W<br/>\nAcessórios: cabo de força de 50 m, 10 pentes finos, 10 pentes grossos, valise em ABS<br/>\nDimensões: 300 x 200 x 3000 mm",
+        'preco': float(120.50),
+        'estoque': 500,
+        'unidade': '1 aparelho'
+      },
+      {
+        'descr_curta': "Furadeira telepática (x 2)",
+        'descr_media': "Kit com duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
+        'descr_longa': "Fabricante: Ferramentas Tres Dedos SA<br/>\nOrigem: Brasil<br/>\nModelo: FT7T<br/>\nTensão: insuportável<br/>\nPotência: 700 W<br/>\nMaterial: Alumínio, policarbonato, chiclete.<br/>\nAcessórios: 1 acoplador para guarda-chuvas, 1 jogo de 5 pedais, cabo de força de 2 m.<br/>\nDimensões: 150 x 400 x 250 mm",
+        'preco': float(420.00),
+        'estoque': 500,
+        'unidade': 'caixa de 2'
+      },
+      {
+        'descr_curta': "Luva com 8 dedos",
+        'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
+        'descr_longa': "Fabricante: United Trash Inc.<br/>\nOrigem: USA<br/>\nModelo: 8-EB<br/>\nNormas: ANSI 2345, ABNT 2019-857<br/>\nMaterial: Camurça artificial 1 mm, lã de aço.<br/>\nTamanho: G<br/>\nPeso: 120 g",
+        'preco': float(19.95),
+        'estoque': 500,
+        'unidade': '1 unidade'
+      }
+    ]
+  for atrs in lista_atrs:
+    prod = cria(atrs)
+    assert prod != None and type(prod) is produto.ObjProduto
+  return
 
 # FUNÇÕES INTERNAS
 

@@ -9,21 +9,25 @@ import gera_html_pag_IMP
 
 # Funções exportadas por este módulo:
 
-def entrada(sessao, dados):
-  """Retorna a página de entrada do projeto."""
-  return gera_html_pag_IMP.entrada()
+def entrada_da_loja(sessao, dados):
+  """Retorna a página de entrada da loja (homepage)."""
+  return gera_html_pag_IMP.entrada_da_loja()
 
-def produto(prod):
-  """Retorna uma página com os elementos referentes ao produto passado como parâmetro, como nome, categoria, preço, quantidade disponíve"""
-  return gera_html_pag_IMP.produto(prod)
+def mostra_produto(prod, qt):
+  """Retorna uma página com descrição detalhada do produto {prod}.
+  Se {qt} não for {None}, mostra a quantidade {qt}
+  e o preço para essa quantidade.  Se {qt} for {None},
+  mostra o preço unitário, sem a quantidade."""
+  return gera_html_pag_IMP.mostra_produto(prod, qt)
   
-def lista_de_produtos(lista):
-  """Retorna uma página contendo todos os produtos de determinado tipo do site."""
-  return gera_html_pag_IMP.produtos(lista)
+def lista_de_produtos(idents):
+  """Sasa uma lista {idents} de identificadores de produtos,
+  retorna uma página mostrando todos esses produtos."""
+  return gera_html_pag_IMP.lista_de_produtos(idents)
 
-def login():
-  """Retorna uma página contendo o fomulário de login. """
-  return gera_html_pag_IMP.login()
+def entrar():
+  """Retorna uma página contendo o fomulário de entrar. """
+  return gera_html_pag_IMP.entrar()
 
 def cadastrar_usuario():
   """Retorna uma página de cadastro de usuário que contém os campos do objeto usuário e um botão para submeter o cadastro."""
@@ -33,12 +37,12 @@ def mostra_usuario(usr):
   """Retorna uma página que contém as informações do usuário que acabou de ser cadastrado"""
   return gera_html_pag_IMP.mostra_usuario(usr)
 
+def mostra_compra(comp):
+  """Retorna uma página com a lista dos produtos no pedido de compra {comp}."""
+  return gera_html_pag_IMP.mostra_compra(comp)
+
 # Utilitários
 
 def generica(conteudo):
   """Retorna uma página com cabeçalho, menus, e rodapé padrões do projeto, e o {conteudo} dado (um {string} em formato HTML5)."""
   return gera_html_pag_IMP.generica(conteudo)
-
-def lista_compra(comp):
-  """Retorna uma página com a lista dos produtos escolhidos pelo usuário para revisão antes de finalizar a compra"""
-  return gera_html_pag_IMP.compra(comp)

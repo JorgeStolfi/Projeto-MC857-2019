@@ -10,14 +10,29 @@ import sys # Para depuração.
 def constroi_colunas_SQL(cols):
   """Constrói a descrição SQL das colunas de uma tabela, 
   dada a lista de propriedades {cols} como fornecida
-  a {cria_tabela}."""
+  a {cria_tabela}.  Omite colunas com tipo SQL {None}."""
   colunas = "indice integer NOT NULL PRIMARY KEY"
   for cp in cols:
     chave = cp[0]
     tipo_SQL = cp[2]
-    nulo_ok = cp[3]
-    colunas = colunas + ", " + chave + " " + tipo_SQL + (' NOT NULL' if not nulo_ok else '')
+    if tipo_SQL != None:
+      # O campo é uma coluna da tabela.
+      nulo_ok = cp[3] # O valor da coluna pode ser NULL?
+      colunas = colunas + ", " + chave + " " + tipo_SQL + (' NOT NULL' if not nulo_ok else '')
   return colunas
+
+def extrai_nomes_de_colunas_SQL(cols):
+  """Extrai a lista dos nomes das colunas de uma tabela, 
+  dada a lista de propriedades {cols} como fornecida
+  a {cria_tabela}.  Omite colunas com tipo SQL {None}."""
+  nomes = [].copy()
+  for cp in cols:
+    chave = cp[0]
+    tipo_SQL = cp[2]
+    if tipo_SQL != None:
+      # O campo é uma coluna da tabela.
+      nomes.append(chave)
+  return nomes
 
 # IMPLEMENTAÇÕES
 
@@ -60,21 +75,24 @@ def busca_por_identificador_e_indice(nome_tb, cache, let, cols, def_obj, ident, 
   """Função interna: mesmo que {busca_por identificador}, mas exige o índice inteiro {ind}
   da linha da tabela, além do identificador {ident}."""
   cond = "indice = " + str(ind)
-  col_nomes = ( c[0] for c in cols )
+  col_nomes = extrai_nomes_de_colunas_SQL(cols)
   res = base_sql.executa_comando_SELECT(nome_tb, cond, col_nomes)
-  if res == None or len(res) == 0:
+  sys.stderr.write("busca_por_identificador_e_indice: res = " + str(res) + "\n")
+  if res == None:
     return None
-  else:
-    if len(res) > 1:
-      sys.stderr.write("**erro: SELECT com índice em '" + nome_tb + "' não é único\n")
-      sys.stderr.write("res = " + str(res) + "\n")
-      assert False
-    col_vals = res[0]
-    assert len(col_vals) == len(col_nomes)
-    atrs_SQL = dict(zip(col_nomes, col_vals))
-    obj = def_obj(None, ident, atrs_SQL)
-    cache[ident] = obj
-    return obj
+  res = list(res)
+  if len(res) == 0:
+    return None
+  elif len(res) > 1:
+    sys.stderr.write("**erro: SELECT com índice em '" + nome_tb + "' não é único\n")
+    sys.stderr.write("res = " + str(res) + "\n")
+    assert False
+  col_vals = list(res[0])
+  assert len(col_vals) == len(col_nomes)
+  atrs_SQL = dict(zip(col_nomes, col_vals))
+  obj = def_obj(None, ident, atrs_SQL)
+  cache[ident] = obj
+  return obj
 
 def busca_por_campo(nome_tb, let, cols, chave, valor):
   # Converte {valor} para string na linguagem SQL:
@@ -95,13 +113,14 @@ def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   for key in chaves:
     index_chave = chaves.index(key)
     for value in valores:
-      cond += (key + "LIKE '%" + value + "%'")
+      cond += (key + " LIKE '%" + value + "%' ")
       if (total_de_chaves - index_chave) != 1:
-        cond += " OR "
+        cond += "OR "
   res = base_sql.executa_comando_SELECT(nome_tb, cond, ['indice'])
   if res != None and type(res) is str:
     sys.stderr.write("usuario_IMP.busca_por_campo: **erro SELECT falhou " + str(res) + "\n")
     assert False
+  sys.stderr.write("busca_por_semelhanca: res = " + str(res) + "\n")
   return identificador.de_lista_de_indices(let, res)
 
 def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):

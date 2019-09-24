@@ -2,6 +2,6 @@
 
 import gera_html_pag
 
-def processa():
-    return gera_html_pag.login()
+def processa(ses, args):
+  return gera_html_pag.entrar()
     

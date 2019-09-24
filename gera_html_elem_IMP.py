@@ -4,6 +4,7 @@
 from datetime import datetime, timezone
 import gera_html_form
 import gera_html_botao
+import produto
 
 #Funções exportadas por este módulo:
 
@@ -15,7 +16,7 @@ def cabecalho(title):
     "<meta charset=\"UTF-8\"/>\n" + \
     "<title>" + title + "</title>\n" + \
     "</head>\n" + \
-    "<body style=\"bacground-color:'#eeeeee'\">\n" + \
+    "<body style=\"background-color:#eeeeee; text-indent: 0px\">\n" + \
     "<h1>" + title + "</h1>"
 
 def rodape():
@@ -31,92 +32,80 @@ def rodape():
 def menu_geral():
   return \
     "<nav>\n" + \
-    "  " + gera_html_form.busca() + "\n" + \
-    "  " + gera_html_botao.login() + "\n" + \
-    "  " + gera_html_botao.logout() + "\n" + \
-    "  " + gera_html_botao.cadastrar() + "\n" + \
+    "  " + gera_html_form.buscar_produtos() + "\n" + \
+    "  " + gera_html_botao.menu_entrar() + "\n" + \
+    "  " + gera_html_botao.menu_sair() + "\n" + \
+    "  " + gera_html_botao.menu_cadastrar() + "\n" + \
     "</nav>"
 
-def bloco_texto(texto,fam_fonte,tam_fonte,pad,halign,cor_texto,cor_fundo):
-  return \
-    "<span style=\"\n" + \
-    "  display: inline-block;\n" + \
-    ( "  font-family:" + fam_fonte + ";\n" if fam_fonte != None else "") + \
-    ( "  font-size:" + tam_fonte + ";\n" if tam_fonte != None else "") + \
-    ( "  padding:" + pad + ";\n" if pad != None else "") + \
-    ( "  background-color:" + cor_fundo + ";\n" if cor_fundo != None else "") + \
-    ( "  text-color:" + cor_texto + ";\n" if cor_texto != None else "") + \
-    ( "  text-align:" + halign + ";\n" if halign != None else "") + \
-    "\">" + texto + "</span>"
-
-def bloco_de_produto(prod):
-    bloco_final =  """ <img src="placeholder.jpg" alt="Produto teste" style="width:500px;height:600px;"> """ + bloco_texto("prod.nome" + ";\n" + "prod.desc", "Courier", "18px", "5px", "center", "#ff0000", "fff888")
-    return bloco_final
-
-def informacao_usuario(usr):
-    info_final = """ <h1> """ + usr.nome + """ </h1> <br> """ + usr.cpf + """ <br> """ + usr.email + """ <br> """ + usr.endereco + """ <br> """ + usr.cep + """ <br> """ + + usr.telefone + """ <br> """
-    return info_final
-
-def formulario_login(altura, largura, margem, acolchoamento, margem_entradas):
-  """ Retorna o html para o formulário de login base, com campos de usuário, senha e lembrar da sessão. """
-  css = """.formulario {
-              border: 3px solid #f1f1f1;
-              padding: """ + acolchoamento + """;
-              width: """ + largura + """;
-              height: """ + altura + """
-              align-self: center;
-              position: center;
-              margin: """ + margem + """ auto;
-          }
-          .entrada {
-              width: 100%;
-              padding: 12px 20px;
-              margin: """ + margem_entradas + """ 0;
-              display: inline-block;
-              border: 1px solid #ccc;
-              box-sizing: border-box;
-          }
-          .botao {
-              background-color: #4CAF50;
-              color: white;
-              padding: 14px 20px;
-              margin: 8px 0;
-              border: none;
-              cursor: pointer;
-              width: 100%;
-          }
-          .botao:hover {
-              opacity: 0.8;
-          }
-          .texto {
-              cursor:pointer;
-          }
-          .container {
-              padding: 4px;
-          }
-          .link {
-              float: right;
-              padding-top: 4px;
-          }"""
-  html = """<body class="body">
-            <style>%s</style>
-            <form id='login-form' class="formulario" action="" method='post'>
-                <div class="container">
-                    <label for="username"><b>Usuário/E-mail</b></label>
-                    <input type="text" class="entrada" placeholder="Entre com o usuário ou e-mail" name="username" required>
-                </div>
-                <div class="container">
-                    <label for="senha" class="texto"><b>Senha</b></label>
-                    <input type="password" class="entrada" placeholder="Entre com a senha" name="senha" required>
-                </div>
-                <div class="container">
-                    <label class="texto">
-                        <input type="checkbox" checked="checked" name="lembrar">Lembrar de mim</input>
-                    </label>
-                    <button type='submit' class="botao">Entrar</button>
-                    <span class="link"><a href="#">Esqueceu a senha?</a></span>
-                </div>
-            </form>
-        </body>""" % css
-
+def span(estilo, conteudo):
+  est = (" style=\"" + estilo + "\n\"" if estilo != "" else "")
+  html = "<span" + est + ">" + conteudo + "</span>"
   return html
+
+def div(estilo, conteudo):
+  est = (" style=\"" + estilo + "\n\"" if estilo != "" else "")
+  html = "<div" + est + ">" + conteudo + "</div>"
+  return html
+
+def paragrafo(estilo, conteudo):
+  est = (" style=\"" + estilo + "\n\"" if estilo != "" else "")
+  html = "<p" + est + ">" + conteudo + "</p>\n"
+  return html
+
+def bloco_texto(texto, disp, fam_fonte, tam_fonte, peso_fonte, pad, halign, cor_texto, cor_fundo):
+  estilo = \
+    ( "\n  display: " + disp + ";" if disp != None else "") + \
+    ( "\n  font-family:" + fam_fonte + ";" if fam_fonte != None else "") + \
+    ( "\n  font-weight:" + peso_fonte + ";" if peso_fonte != None else "") + \
+    ( "\n  font-size:" + tam_fonte + ";" if tam_fonte != None else "") + \
+    ( "\n  padding:" + pad + ";" if pad != None else "") + \
+    ( "\n  background-color:" + cor_fundo + ";" if cor_fundo != None else "") + \
+    ( "\n  color:" + cor_texto + ";" if cor_texto != None else "") + \
+    ( "\n  text-align:" + halign + ";" if halign != None else "")
+  return span(estilo, texto)
+
+def bloco_de_produto(prod, qt, detalhe):
+    id_produto = produto.obtem_identificador(prod)
+    atrs = produto.obtem_atributos(prod)
+    
+    # Monta o parágrafo de descrição
+    estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;"
+    
+    d_curta = atrs['descr_curta']
+    html_d_curta = paragrafo(estilo_parag, bloco_texto(d_curta, None, "Courier", "18px", "bold", "2px", "left", "#ff0000", "#88fff8"))
+    
+    d_media = atrs['descr_media']
+    html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#0000ff", "#fff888"))
+    
+    qt_inicial = (qt if qt != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
+    if detalhe:
+      d_longa = atrs['descr_longa']
+      html_d_longa = paragrafo(estilo_parag, bloco_texto(d_longa, None, "Courier", "14px", "normal", "0px", "left", "#0000ff", "#fff888"))
+      html_botao = gera_html_form.comprar_produto(id_produto, qt_inicial)
+    else:
+      html_d_longa = ""
+      html_botao = gera_html_form.ver_produto(id_produto, qt_inicial)
+
+    if qt == None:
+      # Preço unitário, sem campo de quantidade:
+      preco = atrs['preco']
+      html_qt = "" 
+    else:
+      preco = produto.calcula_preco(prod, qt)
+      html_qt = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "18px", "bold", "0px", "left", "#0000ff", "#fff888")
+
+    str_preco = ("R$%.2f" % preco)
+    html_preco = paragrafo(estilo_parag, bloco_texto(str_preco, None, "Courier", "20px", "bold", "2px", "left", "#000000", "#f8ff88"))
+    
+    html_descr = html_d_curta + html_d_media + html_d_longa + html_preco + html_qt + html_botao
+    bloco_descr = span("\n  display: inline-block;", html_descr)
+    
+    tam_imagem = (200 if detalhe else 80)
+    imagem = ("<img src=\"imagens/155951.png\" alt=\"" + id_produto + "\" style=\"float:left;height:%dpx;\"/>" % tam_imagem)
+    # imagem = "&bullet;"
+    imagem_click = "<a href=\"imagens/155951.png\" border=0px>" + imagem + "</a>"
+ 
+    bloco_final = \
+      span("\n  display: block;\n  background-color: #00ff00;", imagem_click + bloco_descr)
+    return bloco_final

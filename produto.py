@@ -4,11 +4,14 @@
 # Implementação deste módulo e da classe {ObjProduto}:
 import produto_IMP; from produto_IMP import ObjProduto_IMP
 
+# !!! Acrescentar um atributo 'imagem' que é o nome de um arquivo no diretório "imagens", p.ex. "156931.png" !!!
+
 def inicializa(limpa):
   """Inicializa o modulo, criando a tabela de usuários na base de dados.
-  Deve ser chamada apenas uma vez no ínicio da execução do servidor.
-  Não retorna nenhum valor.  Se o parâmetro booleano {limpa} for {True},
-  apaga todas as linhas da tabela SQL, resetando o contador em 0."""
+  Deve ser chamada apenas uma vez no ínicio da execução do servidor, 
+  depois de chamar {base_sql.conecta}. Não retorna nenhum valor.  
+  Se o parâmetro booleano {limpa} for {True}, apaga todas as linhas da tabela
+  SQL, resetando o contador em 0."""
   produto_IMP.inicializa(limpa)
 
 class ObjProduto(ObjProduto_IMP):
@@ -16,8 +19,9 @@ class ObjProduto(ObjProduto_IMP):
   atributos.  Por enquanto, eles são:
   
     {descr_curta} {str} - descrição do produto em uma linha.
+    {descr_media} {str} - descrição mais estensa do produto, em 1-3 linhas. 
     {descr_longa} {str} - descrição completa do produto. 
-    {unid} {str} - unidade de venda ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
+    {unidade} {str} - unidade de venda ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
     {preco} {float} - preço unitário.
     {estoque} {integer} - estoque do produto.
     
@@ -62,7 +66,13 @@ def obtem_atributos(prod):
   """Retorna um dicionário Python que é uma cópia dos atributos do produto,
   exceto o identificador."""
   return produto_IMP.obtem_atributos(prod)
-  
+    
+def calcula_preco(prod, qt):
+  """Dada a quantidade {qt} a comprar (um float), calcula o preço a pagar.
+  Em princípio o resultado é {qt} vezes o preço unitário, mas eventualmente
+  poderá haver desconto por atacado, etc.."""
+  return produto_IMP.calcula_preco(prod,qt)
+
 def muda_atributos(prod, mods):
   """Modifica alguns atributos do objeto {prod} da classe {ObjProduto},
   registrando as alterações na base de dados. Não devolve nenhum resultado.   
@@ -72,12 +82,6 @@ def muda_atributos(prod, mods):
   Os valores atuais desses atributos são substituídos pelos valores 
   correspondentes em {mods}."""
   produto_IMP.muda_atributos(prod, mods)
-  
-def calcula_preco(prod, qt):
-  """Dada a quantidade {qt} a comprar (um float), calcula o preço a pagar.
-  Em princípio o resultado é {qt} vezes o preço unitário, mas eventualmente
-  poderá haver desconto por atacado, etc.."""
-  return produto_IMP.calcula_preco(prod,qt)
 
 def busca_por_identificador(id_produto):
   """Localiza um produto com identificador {id_produto} (uma string da forma
@@ -103,3 +107,10 @@ def campos():
   para o parâmetro {cols} das funções do módulo {tabela_generica}."""
   return produto_IMP.campos()
 
+def cria_testes():
+  """Limpa a tabela de produtos com {inicializa(True)}, e cria três produtos
+  para fins de teste, incluindo-os na tabela. Não devolve nenhum resultado.
+  
+  Deve ser chamada apenas uma vez no ínicio da execução do programa, 
+  depois de chamar {base_sql.conecta}.""" 
+  produto_IMP.cria_testes()

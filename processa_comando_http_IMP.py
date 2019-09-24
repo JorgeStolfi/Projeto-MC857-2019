@@ -13,6 +13,7 @@ import comando_botao_sair
 import comando_subm_ver_produto
 import comando_subm_comprar_produto
 import comando_subm_buscar_produtos
+import comando_subm_entrar 
 import comando_subm_cadastrar
 
 # Outras interfaces usadas por este módulo:
@@ -24,9 +25,11 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
   """Classe necessária para usar `HTTPServer`.  Os métodos
   {do_GET}, {do_POST}, e {do_HEAD} desta classe são chamados pelo
   servidor para processar um pedido HTTP do usuário. 
-  Eles devem devolver a resposta por meio de {devolve(hstr)}
-  onde {hstr} é uma página em formato HTML, ou {None} em 
-  caso de erro."""
+  
+  Eles devem devolver a resposta por meio de {devolve_pagina(hstr)}
+  onde {hstr} é uma página em formato HTML (ou {None} em 
+  caso de erro), ou {devolve_imagem(himg)} onde {himg}
+  é uma imagem."""
   
   # CAMPOS E MÉTODOS HERDADOS
   
@@ -54,17 +57,32 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
   def do_geral(self,tipo):
     # Processa um comando HHTP do {tipo} indicado ('GET','POST', ou 'HEAD').
     
+    sys.stderr.write("processando um comando HTTP %s ...\n" % tipo)
+    
     # Extrai os dados do comando HTTP na forma de um dicionário:
     dados = self.extrai_dados(tipo)
     
-    # Determina a sessao à qual este comando se refere:
-    sessao = self.obtem_sessao(dados)
-    
-    # Processa o comando e constrói a página HTML de resposta:
-    pagina = processa_comando(tipo,sessao,dados)
-    
-    # Envia a página ao browser do usuário:
-    self.devolve(pagina)
+    if tipo == 'GET' and dados['real_path'][0:9] == '/imagens/':
+      # Pedido de uma imagem:
+      nome_imagem = dados['real_path'][1:]
+      with open(nome_imagem, 'rb') as arq:
+        imagem = arq.read()
+      self.devolve_imagem(imagem)
+    else:
+      # Pedido de uma página HTML:
+
+      # Determina a sessao à qual este comando se refere:
+      sessao = self.obtem_sessao(dados)
+
+      # Processa o comando e constrói a página HTML de resposta:
+      pagina = processa_comando(tipo,sessao,dados)
+      pag_debug = str(pagina)
+      if len(pag_debug) > 207:
+        pag_debug = pag_debug[0:100] + " [...] " + pag_debug[-100:]
+      sys.stderr.write("pagina = " + pag_debug + "\n")
+
+      # Envia a página ao browser do usuário:
+      self.devolve_pagina(pagina)
     
   def obtem_sessao(self,dados):
     """Determina a sessão à qual o comando HTTP se refere, ou {None}
@@ -86,8 +104,8 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
      
      'real_path': valor de {urlparse.urlparse(self.path).path}.
        No caso de 'GET', é a sub-cadeia do URL entre o último '/'
-       e o '?'.  No caso de 'POST', é o atributo 'action' do <form>,
-       com '/' na frente.
+       e o '?'.  No caso de 'POST', é o atributo 'action' do <form>
+       ou 'formaction' do botão tipo 'submit', com '/' na frente.
 
      'query':  o valor de {urlparse.urlparse(self.path).query}.
        no caso de 'GET', é a cadeia que segue o '?', possivelmente
@@ -163,9 +181,9 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
           ffs[chave] = item.value
     return ffs
      
-  def devolve(self,pagina):
+  def devolve_pagina(self,pagina):
     """Manda para o usuário a {pagina} dada, que deve ser um string
-    com o conteúdo da página em HTMP5.0.  
+    com o conteúdo da página em HTML 5.0.  
     
     Se {pagina} é {None}, devove código 404 com conteúdo 'text/plain',
     mensagem 'Não encontrado'. Se não devolve a página com código 200 e
@@ -184,40 +202,61 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     self.send_header('Content-type',tipo)
     self.end_headers()
     self.wfile.write(conteudo.encode('utf-8'))
+     
+  def devolve_imagem(self,imagem):
+    """Manda para o usuário a {imagem} dada, que deve ser um string
+    com o conteúdo de uma imagem PNG."""
+    
+    codigo = 200;  # No error.
+    tipo = 'image/PNG'
+    
+    self.send_response(codigo)
+    self.send_header('Content-type',tipo)
+    self.end_headers()
+    self.wfile.write(imagem)
 
 def processa_comando(tipo, sessao, dados):
-  """Esta função processa um comando HTTP 'GET' recebido pelo servidor, com as
-  informações convertidas em um dicionario {dados}."""
-  print(dados)
+  """Esta função processa um comando HTTP 'GET', 'POST', ou 'HEAD' recebido pelo 
+  servidor, com as informações convertidas em um dicionario {dados}."""
+  sys.stderr.write("dados = " + str(dados) + "\n")
+  
+  # !!! Completar a lista abaixo com todos os módulos {comando_*.py} que existem. !!!
   if tipo == 'GET':
     # Comando causado por acesso inicial ou botão simples:
     if dados['real_path'] == '':
       # Acesso sem comando: mostra página de entrada.
       return gera_html_pag.entrada(sessao,dados['query_data'])
-    elif dados['real_path'] == '/botao_cadastrar':
+    elif dados['real_path'] == '/menu_cadastrar':
       # Usuário apertou o botão "Cadastrar" do menu principal:
       return comando_botao_cadastrar.processa(sessao,dados['query_data'])
-    elif dados['real_path'] == '/botao_entrar':
+    elif dados['real_path'] == '/menu_entrar':
       # Usuário apertou o botão "Entrar" (login) do menu principal:
       return comando_botao_entrar.processa(sessao,dados['query_data'])
-    elif dados['real_path'] == '/botao_sair':
+    elif dados['real_path'] == '/menu_sair':
       # Usuário apertou o botão "Sair" (logout) do menu principal:
       return comando_botao_sair.processa(sessao,dados['query_data'])
+    elif dados['real_path'][0:9] == '/imagens/':
+      # Pedido de uma imagem:
+      arquivo = dados['real_path'][9:]
+      return 
     else:
       # Comando não identificado:
       return mostra_comando(dados)
   elif tipo == 'POST':
     # Comando causado por botão do tipo "submit" dentro de um <form>...</form>:
-    if dados['real_path'] == '/subm_cadastrar':
+    if dados['real_path'] == '/submit_entrar':
+      # Usuário preencheu o formulário de login apertou "Entrar":
+      return comando_subm_entrar.processa(sessao,dados['form_data'])      
+    elif dados['real_path'] == '/submit_cadastrar_usuario':
       # Usuário preencheu o formulário de cadastrar novo usuário e apertou "Cadastrar":
-      return comando_subm_cadastrar.processa(sessao,dados['form_data'])      
-    elif dados['real_path'] == '/subm_buscar_produtos':
+      return comando_subm_cadastrar_usuario.processa(sessao,dados['form_data'])      
+    elif dados['real_path'] == '/submit_buscar_produtos':
       # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
       return comando_subm_buscar_produtos.processa(sessao,dados['form_data'])
-    elif dados['real_path'] == '/subm_ver_produto':
-      # Usuário apertou o botão "Comprar" numa descrição curta do produto:
+    elif dados['real_path'] == '/submit_ver_produto':
+      # Usuário apertou o botão "Comprar" ou equivalente numa descrição curta do produto:
       return comando_subm_ver_produto.processa(sessao,dados['form_data'])      
-    elif dados['real_path'] == '/subm_comprar_produto':
+    elif dados['real_path'] == '/submit_comprar_produto':
       # Usuário preencheu a quantidade desejada na página de um produto e apertou o botão "Comprar":
       return comando_subm_comprar_produto.processa(sessao,dados['form_data'])      
     else:   
@@ -227,7 +266,7 @@ def processa_comando(tipo, sessao, dados):
     # Comando emitido por proxy server:
     return mostra_comando(dados)
   else:
-    # Tipo inválido:
+    # Tipo de comando inválido:
     return mostra_comando(dados)
     
 def mostra_comando(dados):
@@ -237,9 +276,10 @@ def mostra_comando(dados):
   dados_lin = json.dumps(dados,indent='&nbsp;&nbsp;',sort_keys=True,separators=(',<br/>',': '))
   dados_lin = re.sub(r'\[','[<br/>',dados_lin)
   dados_lin = re.sub(r'\{','{<br/>',dados_lin)
+  dados_lin = re.sub(r'\},','  \},',dados_lin)
   tipo = dados['command']
   texto = "<hr/>Metodo %s chamado com dados:<br/>%s<hr/>" % (tipo, dados_lin);
-  conteudo = gera_html_elem.bloco_texto(texto,"Courier","18px","5px","left",None,cor_fundo)
+  conteudo = gera_html_elem.bloco_texto(texto,"Courier","18px","normal","5px","left",None,cor_fundo)
   pagina = gera_html_pag.generica(conteudo)
   return pagina
 

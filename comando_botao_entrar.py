@@ -3,6 +3,6 @@
 import comando_botao_entrar_IMP
 
 def processa(ses, args):
-  """Retorna a página HTML com o formulário de "login"."""
+  """Retorna a página HTML com o formulário para o usuário fazer login."""
   return comando_botao_entrar_IMP.processa(ses, args)
 

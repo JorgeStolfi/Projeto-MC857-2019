@@ -31,26 +31,25 @@ class ObjSessao_IMP:
     global cache, nome_tb, letra_tb, colunas
     self.id_sessao = id_sessao
     self.atrs = atrs.copy()
-    self.cookie = set_cookie()
 
 # Implementações:
 
 def inicializa(limpa):
   global cache, nome_tb, letra_tb, colunas
   colunas = \
-    ( ( "usr",   usuario.ObjUsuario,  'INTEGER', False, 0,  99999999  ), # Objeto/índice do usuário.
-      ( "abrt",  type(False),         'INTEGER', False, 0,         1  ),  # Estado da sessao (1 = aberta).
-      ( "cookie"), char[],  'TEXT',False,0,100) #Cookie da sessao
+    ( ( "usr",     usuario.ObjUsuario,  'INTEGER', False,   0,  99999999  ), # Objeto/índice do usuário.
+      ( "abrt",    type(False),         'INTEGER', False,   0,         1  ), # Estado da sessao (1 = aberta).
+      ( "cookie",  type("foo"),         'TEXT',    False,  10,        45  )  # Cookie da sessao
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
   else:
     tabela_generica.cria_tabela(nome_tb, colunas)
  
-def cria(usr):
+def cria(usr, cookie):
   global cache, nome_tb, letra_tb, colunas
   # Insere na base de dados e obtém o índice na mesma:
-  atrs_SQL = {'usr': usuario.obtem_indice(usr), 'abrt': 1}
+  atrs_SQL = { 'usr': usuario.obtem_indice(usr), 'abrt': 1, 'cookie': cookie }
   ses = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
   if not type(ses) is sessao.ObjSessao:
     sys.stderr.write("sessao_IMP.cria: ** erro: " + str(ses) + "\n");
@@ -73,9 +72,9 @@ def obtem_usuario(ses):
   global cache, nome_tb, letra_tb, colunas
   return ses.atrs['usr']
 
-def obtem_cookie():
+def obtem_cookie(ses):
   global cache, nome_tb, letra_tb, colunas
-  return ses.cookie
+  return ses.atrs['cookie']
 
 def aberta(ses):
   global cache, nome_tb, letra_tb, colunas
@@ -100,7 +99,7 @@ def muda_atributos(ses, mods):
     assert False
   return
 
-def logout(ses):
+def fecha(ses):
   global cache, nome_tb, letra_tb, colunas
   mods = { 'abrt': False }
   muda_atributos(ses, mods)
@@ -109,11 +108,25 @@ def campos():
   global cache, nome_tb, letra_tb, colunas
   return colunas
 
-# FUNÇÕES INTERNAS
-def set_cookies():
-  return secrets.token_urlsafe(32)
+def cria_testes():
+  global cache, nome_tb, letra_tb, colunas
+  inicializa(True)
+  # Identificador de usuários e cookie de cada sessão:
+  lista_ucs = \
+    [ 
+      ( "U-00000001", "ABCDEFGHIJK" ),
+      ( "U-00000001", "BCDEFGHIJKL" ),
+      ( "U-00000003", "CDEFGHIJKLM" )
+    ]
+  for id_usuario, cookie in lista_ucs:
+    usr = usuario.busca_por_identificador(id_usuario)
+    ses = cria(usr, cookie)
+    assert ses != None and type(ses) is sessao.ObjSessao
+  return
 
-def def_obj(obj, ident, atrs_SQL):
+# FUNÇÕES INTERNAS
+
+def def_obj(obj, id_sessao, atrs_SQL):
   """Se {obj} for {None}, cria um novo objeto da classe {ObjSessao} com
   identificador {id_sessao} e atributos {atrs_SQL}, tais como extraidos
   da tabela de sessoes. O objeto *não* é inserido na base de dados. 
@@ -125,13 +138,13 @@ def def_obj(obj, ident, atrs_SQL):
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
   equivalentes na memória."""
   global cache, nome_tb, letra_tb, colunas
-  sys.stderr.write("produto_IMP.def_obj(" + str(obj) + ", " + ident + ", " + str(atrs_SQL) + ") ...\n")
+  sys.stderr.write("produto_IMP.def_obj(" + str(obj) + ", " + id_sessao + ", " + str(atrs_SQL) + ") ...\n")
   if obj == None:
     atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
     sys.stderr.write("  criando objeto, atrs_mem = " + str(atrs_mem) + "\n")
-    obj = sessao.ObjSessao(ident, atrs_mem)
+    obj = sessao.ObjSessao(id_sessao, atrs_mem)
   else:
-    assert obj.id_sessao == ident
+    assert obj.id_sessao == id_sessao
     mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
     sys.stderr.write("  modificando objeto, mods_mem = " + str(mods_mem) + "\n")
     if len(mods_mem) > len(obj.atrs):

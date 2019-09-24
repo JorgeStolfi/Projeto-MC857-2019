@@ -4,7 +4,7 @@
 
 import comando_subm_buscar_produtos_IMP
 
-def processa(bas, sessao, args):
+def processa(sessao, args):
   """A condição de busca deve estar no campo {args['condicao']}.
   Localiza todos os produtos do catálogo que satisfazem essa condição,
   e gera uma página que mostra os mesmos em forma compacta.
@@ -12,4 +12,4 @@ def processa(bas, sessao, args):
   Por enquanto, a condição deve ser apenas uma palavra que 
   deve aparecer nos campos 'descr_curta' e  'descr_media' dos 
   produtos."""
-  return comando_subm_buscar_produtos_IMP.processa(bas, sessao, args)
+  return comando_subm_buscar_produtos_IMP.processa(sessao, args)

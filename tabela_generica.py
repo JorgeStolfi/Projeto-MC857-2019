@@ -146,8 +146,9 @@ def busca_por_campo(nome_tb, let, cols, chave, valor):
   satisfizer o critério da busca, devolve uma lista vazia."""
   return tabela_generica_IMP.busca_por_campo(nome_tb, let, cols, chave, valor)
 
-def busca_por_semelhanca(nome_tb, cache, let, cols, chaves, valores):
+def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   #@TODO documentar interface
+  # Devolve lista de identificadores (não objetos)
   return tabela_generica_IMP.busca_por_semelhanca(nome_tb, let, cols, chaves, valores)
 
 def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):

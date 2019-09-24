@@ -55,8 +55,14 @@ testa(rodape, gera_html_elem.rodape)
 
 testa(menu_geral, gera_html_elem.menu_geral)
 
-testa(bloco_texto, gera_html_elem.bloco_texto, "Hello World","Helvetica","18px","30px","center","#000000","#ff8800")
+testa(bloco_texto, gera_html_elem.bloco_texto, "Hello World","Helvetica","18px","bold","30px","center","#000000","#ff8800")
 
-testa(bloco_de_produto, gera_html_elem.bloco_de_produto, prod)
+testa(bloco_de_produto, gera_html_elem.bloco_de_produto, prod, None, False)
 
-testa(formulario_login, gera_html_elem.formulario_login, "800px","600px","solid","30px","35px")
+testa(bloco_de_produto, gera_html_elem.bloco_de_produto, prod, None, True)
+
+testa(bloco_de_produto, gera_html_elem.bloco_de_produto, prod, 10, False)
+
+testa(bloco_de_produto, gera_html_elem.bloco_de_produto, prod, 10, True)
+
+testa(formulario_entrar, gera_html_elem.formulario_entrar, "800px","600px","solid","30px","35px")

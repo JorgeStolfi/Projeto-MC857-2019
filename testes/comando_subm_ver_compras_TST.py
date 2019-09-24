@@ -26,7 +26,7 @@ usr1_atrs = {
 }
 
 usr1 = usuario.cria(usr1_atrs)
-
+cookie1 = "ABCDEFGHIJK"
 s1 = sessao.cria(usr1)
 
 identificador = usuario.obtem_identificador(usr1)

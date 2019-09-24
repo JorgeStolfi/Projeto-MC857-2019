@@ -10,11 +10,17 @@ import usuario
 # Implementaçao deste módulo:
 import sessao_IMP; from sessao_IMP import ObjSessao_IMP
 
+# !!! Acrescentar mais um atributo 'carrinho' que é um objeto da classe {ObjCompra}. !!!
+# !!! Acrescentar o parâmetro {carrinho} à função {sessao.cria(usr,cookie)}.  Procurar todas as chamadas e consertar. !!!
+# !!! Acrescentar a função {sessao.obtem_carrinho(ses)} !!!
+# !!! No módulo de teste, passar {None} como carrinho !!!
+
 def inicializa(limpa):
   """Inicializa o modulo, criando a tabela de sessões na base de dados.
-  Deve ser chamada apenas uma vez no ínicio da execução do servidor.
-  Não retorna nenhum valor.  Se o parâmetro booleano {limpa} for {True},
-  apaga todas as linhas da tabela SQL, resetando o contador em 0."""
+  Deve ser chamada apenas uma vez no ínicio da execução do servidor, 
+  depois de chamar {base_sql.conecta}. Não retorna nenhum valor.  
+  Se o parâmetro booleano {limpa} for {True}, apaga todas as linhas da tabela
+  SQL, resetando o contador em 0."""
   sessao_IMP.inicializa(limpa)
 
 class ObjSessao(ObjSessao_IMP):
@@ -43,13 +49,13 @@ class ObjSessao(ObjSessao_IMP):
   Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
   atributos da sessão (menos o identificador), como definido por {sessão.campos()}."""
  
-def cria(usr):
+def cria(usr, cookie):
   """Cria um novo objeto da classe {ObjSessao}, associada ao usuário {usr},
-  inicialmente aberta.  Também acrescenta a sessão à base de dados.  Em caso de
+  inicialmente aberta, com o cookie inicial {cookie}.  Também acrescenta a sessão à base de dados.  Em caso de
   sucesso, retorna o objeto.
   Atribui um identificador único à sessão, derivado do seu índice na tabela.
   Retorna o objeto criado."""
-  return sessao_IMP.cria(usr)
+  return sessao_IMP.cria(usr, cookie)
 
 def obtem_identificador(ses):
   """Devolve o identificador 'S-{NNNNNNNN}' da sessão {ses}."""
@@ -86,11 +92,11 @@ def muda_atributos(ses, mods):
   campos na base de dados. """
   sessao_IMP.muda_atributos(ses, mods)
 
-def logout(ses):
+def fecha(ses):
   """Registra o logout do usuário na sessão {ses}, mudando o atributo 'abrt'
   permanentemente para {False}. Também altera esse campo na base de dados.
   Em caso de sucesso, retorna o próprio objeto."""
-  return sessao_IMP.logout(ses)
+  return sessao_IMP.fecha(ses)
 
 def busca_por_identificador(id_sessao):
   """Localiza uma sessao com identificador {id_sessao} (uma string da forma
@@ -108,3 +114,13 @@ def campos():
   dos atributos de um {ObjSessao}, menos o identificador.  O resultado é adequado 
   para o parâmetro {cols} das funções do módulo {tabela_generica}."""
   return sessao_IMP.campos()
+
+def cria_testes():
+  """Limpa a tabela de sessoes com {inicializa(True)}, e cria três sessões
+  para fins de teste, incluindo-as na tabela.  As sessões estarão
+  inicialmente abertas.  Não devolve nenhum resultado.
+  
+  Deve ser chamada apenas uma vez no ínicio da execução do programa, 
+  depois de chamar {base_sql.conecta}.Supõe que a tabela de usuários 
+  já foi inicializada e tem pelo menos três entradas.""" 
+  sessao_IMP.cria_testes()
