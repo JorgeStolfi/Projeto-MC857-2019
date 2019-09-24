@@ -107,5 +107,5 @@ def bloco_de_produto(prod, qt, detalhe):
     imagem_click = "<a href=\"imagens/155951.png\" border=0px>" + imagem + "</a>"
 
     bloco_final = \
-      span("\n padding: 15px; border-radius: 25px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", imagem_click + bloco_descr)
+      span("\n padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", imagem_click + bloco_descr)
     return bloco_final
