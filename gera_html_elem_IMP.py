@@ -104,8 +104,8 @@ def bloco_de_produto(prod, qt, detalhe):
     tam_imagem = (200 if detalhe else 150)
     imagem = ("<img src=\"imagens/155951.png\" alt=\"" + id_produto + "\" style=\"float:left;height:%dpx;\"/>" % tam_imagem)
     # imagem = "&bullet;"
-    imagem_click = "<a href=\"imagens/155951.png\" border=0px padding=20px>" + imagem + "</a>"
+    imagem_click = "<a href=\"imagens/155951.png\" border=0px>" + imagem + "</a>"
 
     bloco_final = \
-      span("\n padding: 15px; border-radius: 25px; display: block;\n  background-color: #ffffff;", imagem_click + bloco_descr)
+      span("\n padding: 15px; border-radius: 25px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", imagem_click + bloco_descr)
     return bloco_final
