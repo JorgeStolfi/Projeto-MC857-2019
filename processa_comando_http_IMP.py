@@ -1,20 +1,25 @@
 # Implementação do módulo {processa_comando_http}.
 
+import cgi
+# Outras interfaces usadas por este módulo:
+import json
+import re
+import sys
+import urllib.parse
 # Interfaces do projeto usadas por este módulo:
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import urllib.parse, cgi
-import sys
 
 import base_sql
-import gera_html_pag, gera_html_elem
-import comando_botao_entrar 
-import comando_botao_cadastrar 
-import comando_botao_sair 
-import comando_subm_ver_produto
-import comando_subm_comprar_produto
+import comando_botao_cadastrar
+import comando_botao_entrar
+import comando_botao_sair
 import comando_subm_buscar_produtos
-import comando_subm_entrar 
 import comando_subm_cadastrar
+import comando_subm_comprar_produto
+import comando_subm_entrar
+import comando_subm_ver_produto
+import gera_html_elem
+import gera_html_pag
 import comando_subm_definir_qt
 import comando_subm_excluir_item_de_compra
 import comando_subm_ver_compras
