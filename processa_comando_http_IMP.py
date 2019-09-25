@@ -1,21 +1,28 @@
 # Implementação do módulo {processa_comando_http}.
 
+import cgi
+# Outras interfaces usadas por este módulo:
+import json
+import re
+import sys
+import urllib.parse
 # Interfaces do projeto usadas por este módulo:
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import urllib.parse, cgi
-import sys
 
 import base_sql
-import gera_html_pag, gera_html_elem
-import comando_botao_entrar 
-import comando_botao_cadastrar 
-import comando_botao_sair 
-import comando_subm_ver_produto
-import comando_subm_comprar_produto
+import comando_botao_cadastrar
+import comando_botao_entrar
+import comando_botao_sair
 import comando_subm_buscar_produtos
-import comando_subm_entrar 
 import comando_subm_cadastrar
-
+import comando_subm_comprar_produto
+import comando_subm_entrar
+import comando_subm_ver_produto
+import gera_html_elem
+import gera_html_pag
+import comando_subm_definir_qt
+import comando_subm_excluir_item_de_compra
+import comando_subm_ver_compras
 # Outras interfaces usadas por este módulo:
 import json, sys, re
 
@@ -258,7 +265,16 @@ def processa_comando(tipo, sessao, dados):
       return comando_subm_ver_produto.processa(sessao,dados['form_data'])      
     elif dados['real_path'] == '/submit_comprar_produto':
       # Usuário preencheu a quantidade desejada na página de um produto e apertou o botão "Comprar":
-      return comando_subm_comprar_produto.processa(sessao,dados['form_data'])      
+      return comando_subm_comprar_produto.processa(sessao,dados['form_data'])
+    elif dados['real_path'] == '/submit_definir_qt':
+      # Usuário preencheu a quantidade desejada de um produto e apertou o botão "Comprar":
+      return comando_subm_definir_qt.processa(sessao,dados['form_data'])
+    elif dados['real_path'] == '/submit_excluir_item_de_compra':
+      # Usuário apertou o botão "Excluir" do carrinho:
+      return comando_subm_excluir_item_de_compra.processa(sessao,dados['form_data'])
+    elif dados['real_path'] == '/submit_ver_compras':
+      # Usuário apertou o botão "Carrinho":
+      return comando_subm_ver_compras.processa(sessao,dados['form_data'])
     else:   
       # Comando não identificado
       return mostra_comando(dados)
@@ -280,7 +296,10 @@ def mostra_comando(dados):
   tipo = dados['command']
   texto = "<hr/>Metodo %s chamado com dados:<br/>%s<hr/>" % (tipo, dados_lin);
   conteudo = gera_html_elem.bloco_texto(texto, None,"Courier","18px","normal","5px","left",None,cor_fundo)
-  pagina = gera_html_pag.generica(conteudo)
+  # !!! Extrair informações abaixo dos dados !!!
+  logado = True
+  nome_usuario = 'Fulano'
+  pagina = gera_html_pag.generica(conteudo, logado, nome_usuario)
   return pagina
 
 def cria_objeto_servidor(host,porta):

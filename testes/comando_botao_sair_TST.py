@@ -1,6 +1,4 @@
-#módulo para testar comando_botao_sair.py
 import sys
-sys.path.append('/home/cc2016/ra173711/mc857/data/173711')
 import sessao
 import usuario
 import comando_botao_sair

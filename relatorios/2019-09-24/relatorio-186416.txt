@@ -1,0 +1,6 @@
+Nome: Rebecca Moreira Messias RA: 186416
+
+Dia: 24/09/2019
+
+Melhorei a interface do formulário de cadastro de usuário.
+Adicionei algumas propriedades nessa interface.
