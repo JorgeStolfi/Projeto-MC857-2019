@@ -1,0 +1,3 @@
+############ 24/SET/2019 ############
+Foi corrigido no comando_botao_sair a página que deve ser gerada após realizar o logout da sessão
+Além disso no arquivo testa.sh foi alterado para o comando ser executado no ambiente python

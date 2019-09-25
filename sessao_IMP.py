@@ -7,6 +7,7 @@ import usuario
 import conversao_sql
 import identificador
 import sessao
+import compra
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
  
@@ -37,19 +38,20 @@ class ObjSessao_IMP:
 def inicializa(limpa):
   global cache, nome_tb, letra_tb, colunas
   colunas = \
-    ( ( "usr",     usuario.ObjUsuario,  'INTEGER', False,   0,  99999999  ), # Objeto/índice do usuário.
-      ( "abrt",    type(False),         'INTEGER', False,   0,         1  ), # Estado da sessao (1 = aberta).
-      ( "cookie",  type("foo"),         'TEXT',    False,  10,        45  )  # Cookie da sessao
+    ( ( "usr",          usuario.ObjUsuario, 'INTEGER', False,   0,  99999999  ),    # Objeto/índice do usuário.
+      ( "abrt",         type(False),        'INTEGER', False,   0,         1  ),    # Estado da sessao (1 = aberta).
+      ( "cookie",       type("foo"),        'TEXT',    False,  10,        45  ),    # Cookie da sessao
+      ( "carrinho",     compra.ObjCompra,   'INTEGER', True,    0,  99999999  )      #Objeto carrinho
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
   else:
     tabela_generica.cria_tabela(nome_tb, colunas)
  
-def cria(usr, cookie):
+def cria(usr, cookie, carrinho):
   global cache, nome_tb, letra_tb, colunas
   # Insere na base de dados e obtém o índice na mesma:
-  atrs_SQL = { 'usr': usuario.obtem_indice(usr), 'abrt': 1, 'cookie': cookie }
+  atrs_SQL = { 'usr': usuario.obtem_indice(usr), 'abrt': 1, 'cookie': cookie, 'carrinho' : compra.obtem_indice(carrinho)}
   ses = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
   if not type(ses) is sessao.ObjSessao:
     sys.stderr.write("sessao_IMP.cria: ** erro: " + str(ses) + "\n");
@@ -79,6 +81,10 @@ def obtem_cookie(ses):
 def aberta(ses):
   global cache, nome_tb, letra_tb, colunas
   return ses.atrs['abrt']
+
+def obtem_carrinho(ses):
+  global cache, nome_tb, letra_tb, colunas
+  return ses.atrs['carrinho']
 
 def busca_por_identificador(id_sessao):
   global cache, nome_tb, letra_tb, colunas
@@ -114,13 +120,14 @@ def cria_testes():
   # Identificador de usuários e cookie de cada sessão:
   lista_ucs = \
     [ 
-      ( "U-00000001", "ABCDEFGHIJK" ),
-      ( "U-00000001", "BCDEFGHIJKL" ),
-      ( "U-00000003", "CDEFGHIJKLM" )
+      ( "U-00000001", "ABCDEFGHIJK", "C-00000001" ),
+      ( "U-00000001", "BCDEFGHIJKL", "C-00000002" ),
+      ( "U-00000002", "CDEFGHIJKLM", "C-00000003" )
     ]
-  for id_usuario, cookie in lista_ucs:
+  for id_usuario, cookie, id_carrinho in lista_ucs:
     usr = usuario.busca_por_identificador(id_usuario)
-    ses = cria(usr, cookie)
+    carrinho = compra.busca_por_identificador(id_carrinho)
+    ses = cria(usr, cookie, carrinho)
     assert ses != None and type(ses) is sessao.ObjSessao
   return
 
