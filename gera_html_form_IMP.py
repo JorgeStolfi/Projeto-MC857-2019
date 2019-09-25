@@ -277,3 +277,18 @@ def informacao_usuario(usr):
     correspondente em formato HTML."""
     info_final = """ <h1> """ + usr.nome + """ </h1> <br> """ + usr.cpf + """ <br> """ + usr.email + """ <br> """ + usr.endereco + """ <br> """ + usr.cep + """ <br> """ + + usr.telefone + """ <br> """
     return info_final
+
+def erro_generico(msg):
+    fam_fonte = "Courier"
+    tam_fonte = "18px"
+    return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <h2>Ocorreu um erro inesperado!</h2>" + \
+    "  <strong>" + msg + "</strong>" + \
+    "</span>"
+  

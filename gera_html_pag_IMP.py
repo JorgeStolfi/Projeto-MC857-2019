@@ -65,3 +65,8 @@ def mostra_usuario(usr):
   conteudo = gera_html_elem.informacao_usuario(usr)
   pagina = generica(conteudo)
   return pagina
+
+def erro_busca_produto(msg):
+  conteudo = gera_html_form.erro_generico(msg)
+  pagina = generica(conteudo)
+  return pagina

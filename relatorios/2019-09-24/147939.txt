@@ -1,0 +1,2 @@
+Alteração na classe comando_subm_buscar_produtos para retornar uma tela de erro quando nada foi informado na busca;
+Criação da página de erro para ser usada nesse caso.

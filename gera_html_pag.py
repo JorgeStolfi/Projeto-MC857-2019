@@ -45,6 +45,10 @@ def mostra_compra(comp):
   """Retorna uma página com a lista dos produtos no pedido de compra {comp}."""
   return gera_html_pag_IMP.mostra_compra(comp)
 
+def erro_busca_produto(msg):
+  """Retorna uma página de erro com a mensagem (msg) informada"""
+  return gera_html_pag_IMP.erro_busca_produto(msg)
+
 # Utilitários
 
 def generica(conteudo, logado, nome_usuario):
