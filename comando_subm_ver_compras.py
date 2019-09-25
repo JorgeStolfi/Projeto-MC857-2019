@@ -3,8 +3,6 @@
 
 import comando_subm_ver_compras_IMP
 
-# !!! Imlementar e usar a função {gera_html_elem.bloco_de_compra}.  Similar a {gera_html_elem.bloco_de_produto} mas sem parâmetros {qt,detalhe}. !!!
-
 def processa(ses, args):
     """Esta função espera o identificador do usuario que faz a requisição.
     Devolve a lista de pedidos que o usuário já realizou, um pedido por linha,

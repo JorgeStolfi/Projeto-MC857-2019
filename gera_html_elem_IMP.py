@@ -112,3 +112,29 @@ def bloco_de_produto(prod, qt, detalhe):
     bloco_final = \
       span("\n  display: block;\n  background-color: #00ff00;", imagem_click + bloco_descr)
     return bloco_final
+
+  def bloco_de_compra(comp):
+    lista_de_itens = compra.obtem_itens(comp)
+    
+    estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;"
+    bloco_final = ""
+    
+    for item in lista_de_itens:
+      #NOME E DESCRICÃO DO PRODUTO, COM BOTÃO 'VER'
+      desc = item.desc
+      html_desc = paragrafo(estilo_parag, bloco_texto(desc, None, "Courier", "18px", "bold", "2px", "left", "#ff0000", "#88fff8"))
+      str_preco = ("R$%.2f" % preco)
+      html_preco = paragrafo(estilo_parag, bloco_texto(str_preco, None, "Courier", "20px", "bold", "2px", "left", "#000000", "#f8ff88"))
+      html_botao = gera_html_form.ver_produto(id_produto)
+      html_descr = html_desc + html_preco + html_botao
+      #FOTO DO PRODUTO
+      imagem = ("<img src=\"imagens/155951.png\" alt=\"" + id_compra + "\" style=\"float:left;height:%dpx;\"/>" % 80)
+      imagem_click = "<a href=\"imagens/155951.png\" border=0px>" + imagem + "</a>
+      #MONTA BLOCO PRODUTO
+      bloco_descr = span("\n  display: inline-block;", html_descr)
+      bloco_item = \
+        span("\n  display: block;\n  background-color: #00ff00;", imagem_click + bloco_descr)
+      bloco_final = bloco_final + bloco_item
+      
+    return bloco_final
+ 
