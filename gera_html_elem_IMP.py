@@ -71,20 +71,20 @@ def bloco_texto(texto, disp, fam_fonte, tam_fonte, peso_fonte, pad, halign, cor_
 def bloco_de_produto(prod, qt, detalhe):
     id_produto = produto.obtem_identificador(prod)
     atrs = produto.obtem_atributos(prod)
-    
+
     # Monta o parágrafo de descrição
     estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;"
-    
+
     d_curta = atrs['descr_curta']
-    html_d_curta = paragrafo(estilo_parag, bloco_texto(d_curta, None, "Courier", "18px", "bold", "2px", "left", "#ff0000", "#88fff8"))
-    
+    html_d_curta = paragrafo(estilo_parag, bloco_texto(d_curta, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
     d_media = atrs['descr_media']
-    html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#0000ff", "#fff888"))
-    
+    html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "12px", "normal", "0px", "left", "#000000", None))
+
     qt_inicial = (qt if qt != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
     if detalhe:
       d_longa = atrs['descr_longa']
-      html_d_longa = paragrafo(estilo_parag, bloco_texto(d_longa, None, "Courier", "14px", "normal", "0px", "left", "#0000ff", "#fff888"))
+      html_d_longa = paragrafo(estilo_parag, bloco_texto(d_longa, None, "Courier", "12px", "normal", "0px", "left", "#000000", None))
       html_botao = gera_html_form.comprar_produto(id_produto, qt_inicial)
     else:
       html_d_longa = ""
@@ -93,24 +93,24 @@ def bloco_de_produto(prod, qt, detalhe):
     if qt == None:
       # Preço unitário, sem campo de quantidade:
       preco = atrs['preco']
-      html_qt = "" 
+      html_qt = ""
     else:
       preco = produto.calcula_preco(prod, qt)
-      html_qt = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "18px", "bold", "0px", "left", "#0000ff", "#fff888")
+      html_qt = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "35px", "bold", "0px", "left", "#0000ff", "#fff888")
 
     str_preco = ("R$%.2f" % preco)
-    html_preco = paragrafo(estilo_parag, bloco_texto(str_preco, None, "Courier", "20px", "bold", "2px", "left", "#000000", "#f8ff88"))
-    
-    html_descr = html_d_curta + html_d_media + html_d_longa + html_preco + html_qt + html_botao
-    bloco_descr = span("\n  display: inline-block;", html_descr)
-    
-    tam_imagem = (200 if detalhe else 80)
+    html_preco = paragrafo(estilo_parag, bloco_texto(str_preco, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
+
+    html_descr = html_d_curta + html_preco + "<hr>" + html_d_media + "<br>" + html_d_longa + html_qt + html_botao + "<hr>"
+    bloco_descr = span("\n display: inline-block;", html_descr)
+
+    tam_imagem = (200 if detalhe else 150)
     imagem = ("<img src=\"imagens/155951.png\" alt=\"" + id_produto + "\" style=\"float:left;height:%dpx;\"/>" % tam_imagem)
     # imagem = "&bullet;"
     imagem_click = "<a href=\"imagens/155951.png\" border=0px>" + imagem + "</a>"
- 
+
     bloco_final = \
-      span("\n  display: block;\n  background-color: #00ff00;", imagem_click + bloco_descr)
+      span("\n padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", imagem_click + bloco_descr)
     return bloco_final
 
   def bloco_de_compra(comp):
