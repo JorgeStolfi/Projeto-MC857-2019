@@ -28,6 +28,7 @@ colunas = \
     ( 'descr_longa', type("foo"), 'TEXT',    False,   10,       3000 ), # Descricao longa do produto.
     ( 'unidade',     type("foo"), 'TEXT',    False,    1,         20 ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
     ( 'preco',       type(10.5),  'FLOAT',   False,    1,  999999.99 ), # Preco unitário do produto em reais.
+    ( 'imagem',      type("foo"), 'TEXT',    False,    5,         50 ), # Nome do arquivo da imagem no diretorio 'imagens'.
     ( 'estoque',     type(10),    'INTEGER', False,    0,   99999999 )  # Estoque do produto  
 
   )
@@ -121,14 +122,16 @@ def cria_testes():
         'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
         'descr_longa': "Fabricante: Ouricex LTD<br/>\nOrigem: Cochinchina<br/>\nModelo: EO-22<br/>\nTensão: 110-230 V<br/>\nPotência: 1500 W<br/>\nAcessórios: cabo de força de 50 m, 10 pentes finos, 10 pentes grossos, valise em ABS<br/>\nDimensões: 300 x 200 x 3000 mm",
         'preco': float(120.50),
+        'imagem': '155951.png',
         'estoque': 500,
-        'unidade': '1 aparelho'
+        'unidade': '1 aparelho',
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",
         'descr_media': "Kit com duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
         'descr_longa': "Fabricante: Ferramentas Tres Dedos SA<br/>\nOrigem: Brasil<br/>\nModelo: FT7T<br/>\nTensão: insuportável<br/>\nPotência: 700 W<br/>\nMaterial: Alumínio, policarbonato, chiclete.<br/>\nAcessórios: 1 acoplador para guarda-chuvas, 1 jogo de 5 pedais, cabo de força de 2 m.<br/>\nDimensões: 150 x 400 x 250 mm",
         'preco': float(420.00),
+        'imagem': '156931.png',
         'estoque': 500,
         'unidade': 'caixa de 2'
       },
@@ -137,6 +140,7 @@ def cria_testes():
         'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
         'descr_longa': "Fabricante: United Trash Inc.<br/>\nOrigem: USA<br/>\nModelo: 8-EB<br/>\nNormas: ANSI 2345, ABNT 2019-857<br/>\nMaterial: Camurça artificial 1 mm, lã de aço.<br/>\nTamanho: G<br/>\nPeso: 120 g",
         'preco': float(19.95),
+        'imagem': '160519.png',
         'estoque': 500,
         'unidade': '1 unidade'
       }

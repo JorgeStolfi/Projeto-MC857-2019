@@ -43,6 +43,7 @@ prod1_atrs = {
   'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
   'descr_longa': "Fabricante: Ouricex LTD\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nAcessórios: cabo de força de 50 m, 10 pentes finos, 10 pentes grossos, valise em ABS\nDimensões: 300 x 200 x 3000 mm",
   'preco': float(120.50),
+  'imagem': '160519.png',
   'estoque': 500,
   'unidade': '1 aparelho'
 }
@@ -55,6 +56,7 @@ prod2_atrs = {
   'descr_media': "Duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
   'descr_longa': "Fabricante: Ferramentas Tres Dedos SA\nOrigem: Brasil\nModelo: FT7T\nTensão: insuportável\nPotência: 700 W\nMaterial: Alumínio, policarbonato, chiclete.\nAcessórios: 1 acoplador para guarda-chuvas, 1 jogo de 5 pedais, cabo de força de 2 m.\nDimensões: 150 x 400 x 250 mm",
   'preco': float(420.00),
+  'imagem': '160519.png',
   'estoque': 500,
   'unidade': 'caixa de 2'
 }
@@ -67,6 +69,7 @@ prod3_atrs = {
   'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
   'descr_longa': "Fabricante: United Trash Inc.\nOrigem: USA\nModelo: 8-EB\nNormas: ANSI 2345, ABNT 2019-857\nMaterial: Camurça artificial 1 mm, lã de aço.\nTamanho: G\nPeso: 120 g",
   'preco': float(19.95),
+  'imagem': '160519.png',
   'estoque': 500,
   'unidade': '1 unidade'
 }

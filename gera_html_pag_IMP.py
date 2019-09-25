@@ -27,7 +27,7 @@ def entrada_da_loja():
   
   cor_texto = "#000488"
   cor_fundo = "#fff844"
-  conteudo = gera_html_elem.bloco_texto(texto,"none","Courier","18px","normal","5px","center",cor_texto,cor_fundo)
+  conteudo = gera_html_elem.bloco_texto(texto,None,"Courier","18px","normal","5px","center",cor_texto,cor_fundo)
   pagina = generica(conteudo)
   return pagina
 

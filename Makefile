@@ -59,4 +59,4 @@ teste_unico:
 
 roda_servidor:
 	./cria_base_de_teste.py
-	( ./servidor.py & sleep 1000 )
+	./servidor.py &
