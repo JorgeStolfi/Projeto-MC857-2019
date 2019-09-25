@@ -16,12 +16,9 @@ def rodape():
   """Retorna o rodapé padrão do site."""
   return gera_html_elem_IMP.rodape()
 
-def menu_geral():
+def menu_geral(logado, nome_usuario):
   """Retorna o menu geral do site."""
-  # !!! Precisa acrescentar parâmetro que diz se usuário está logado para saber se mostra botão "Entrar" ou "Sair" !!!
-  # !!! Precisa acrescentar botão "Carrinho" para mostrar carrinho, se usuário está logado.  Tem que criar {comando_botao_carrinho.py} !!!
-  # !!! Precisa acrescentar botão "Principal" para mostrar página de entrada.  Tem que criar {comando_botao_principal.py} !!!
-  return gera_html_elem_IMP.menu_geral()
+  return gera_html_elem_IMP.menu_geral(logado, nome_usuario)
 
 def span(estilo, conteudo):
   """Retorna um string que é um fragmento HTML consistindo do {conteudo}

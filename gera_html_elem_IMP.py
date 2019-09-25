@@ -29,14 +29,17 @@ def rodape():
     "</body>\n" + \
     "</html>\n"
 
-def menu_geral():
+def menu_geral(logado, nome_usuario):
   return \
-    "<nav>\n" + \
-    "  " + gera_html_form.buscar_produtos() + "\n" + \
-    "  " + gera_html_botao.menu_entrar() + "\n" + \
-    "  " + gera_html_botao.menu_sair() + "\n" + \
-    "  " + gera_html_botao.menu_cadastrar() + "\n" + \
-    "</nav>"
+    """
+    <nav>
+      """ + gera_html_botao.inicio() + """
+      """ + gera_html_form.buscar_produtos() + """
+      """ + gera_html_botao.menu_sair() if logado else gera_html_botao.menu_entrar() + """
+      """ + '' if logado else gera_html_botao.menu_cadastrar() + """
+      """ + gera_html_botao.carrinho() if logado else '' + """
+    </nav>
+    """
 
 def span(estilo, conteudo):
   est = (" style=\"" + estilo + "\n\"" if estilo != "" else "")

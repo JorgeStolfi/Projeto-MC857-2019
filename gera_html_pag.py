@@ -43,6 +43,6 @@ def mostra_compra(comp):
 
 # Utilitários
 
-def generica(conteudo):
+def generica(conteudo, logado, nome_usuario):
   """Retorna uma página com cabeçalho, menus, e rodapé padrões do projeto, e o {conteudo} dado (um {string} em formato HTML5)."""
-  return gera_html_pag_IMP.generica(conteudo)
+  return gera_html_pag_IMP.generica(conteudo, logado, nome_usuario)

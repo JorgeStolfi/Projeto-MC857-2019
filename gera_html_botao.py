@@ -66,4 +66,10 @@ def submit_sair():
   """Retorna o botão para a confirmação de sair"""
   return gera_html_botao_IMP.submit_sair()
 
+def inicio():
+  """Retorna o botão que redireciona a tela inicia"""
+  return gera_html_botao_IMP.botao_inicio()
 
+def carrinho():
+  """Retorna o botão que redireciona para a pagina do carrinho"""
+  return gera_html_botao_IMP.botao_carrinho()
