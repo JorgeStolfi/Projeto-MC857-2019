@@ -20,6 +20,18 @@ def botao_simples(texto, URL, cor_fundo):
     "  >" + texto + "</button>\n" + \
     "</span>"
 
+def botao_inicio():
+  texto = "Inicio"
+  cor_fundo = "#fff888"
+  caminho = '/'
+  return botao_simples(texto, caminho, cor_fundo)
+
+def botao_carrinho():
+  texto = "Carrinho"
+  cor_fundo = "#fff888"
+  caminho = '/carrinho'
+  return botao_simples(texto, caminho, cor_fundo)
+
 def menu_entrar():
   texto = "Entrar"
   cor_fundo = "#fff888"
@@ -74,4 +86,3 @@ def submit_sair():
   texto = "Sair"
   cor_fundo = "#fff888"
   return botao_submit(texto, "submit_sair", cor_fundo)
-
