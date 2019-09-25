@@ -33,6 +33,10 @@ def cadastrar_usuario():
   """Retorna uma página de cadastro de usuário que contém os campos do objeto usuário e um botão para submeter o cadastro."""
   return gera_html_pag_IMP.cadastrar_usuario()
 
+def carrinho():
+  """Retorna uma página de carrinho do usuário."""
+  return gera_html_pag_IMP.carrinho()
+
 def mostra_usuario(usr):
   """Retorna uma página que contém as informações do usuário que acabou de ser cadastrado"""
   return gera_html_pag_IMP.mostra_usuario(usr)
@@ -41,8 +45,12 @@ def mostra_compra(comp):
   """Retorna uma página com a lista dos produtos no pedido de compra {comp}."""
   return gera_html_pag_IMP.mostra_compra(comp)
 
+def erro_busca_produto(msg):
+  """Retorna uma página de erro com a mensagem (msg) informada"""
+  return gera_html_pag_IMP.erro_busca_produto(msg)
+
 # Utilitários
 
-def generica(conteudo):
+def generica(conteudo, logado, nome_usuario):
   """Retorna uma página com cabeçalho, menus, e rodapé padrões do projeto, e o {conteudo} dado (um {string} em formato HTML5)."""
-  return gera_html_pag_IMP.generica(conteudo)
+  return gera_html_pag_IMP.generica(conteudo, logado, nome_usuario)

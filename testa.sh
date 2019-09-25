@@ -6,5 +6,5 @@
 modulo="$1"; shift  # 
 
 echo "=== testando módulo ${modulo} ============================="
-export PYTHONPATH=".:testes:/usr/lib/python3.6/site-packages/sos/plugins" ; testes/${modulo}_TST.py > testes/saida/${modulo}.html
+export PYTHONPATH=".:testes:/usr/lib/python3.6/site-packages/sos/plugins" ; python3 testes/${modulo}_TST.py > testes/saida/${modulo}.html
 echo "======================================================================"

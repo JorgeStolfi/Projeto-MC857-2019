@@ -1,0 +1,5 @@
+# 178183
+# Vinicius Balbino de Souza 
+
+Criado teste para método processa no arquivo comando_subm_comprar_produto.py
+Nesse teste, é verificada a existência das possibilidades da submissão da compra do produto.

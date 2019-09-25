@@ -49,13 +49,13 @@ class ObjSessao(ObjSessao_IMP):
   Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
   atributos da sessão (menos o identificador), como definido por {sessão.campos()}."""
  
-def cria(usr, cookie):
+def cria(usr, cookie, carrinho):
   """Cria um novo objeto da classe {ObjSessao}, associada ao usuário {usr},
   inicialmente aberta, com o cookie inicial {cookie}.  Também acrescenta a sessão à base de dados.  Em caso de
   sucesso, retorna o objeto.
   Atribui um identificador único à sessão, derivado do seu índice na tabela.
   Retorna o objeto criado."""
-  return sessao_IMP.cria(usr, cookie)
+  return sessao_IMP.cria(usr, cookie, carrinho)
 
 def obtem_identificador(ses):
   """Devolve o identificador 'S-{NNNNNNNN}' da sessão {ses}."""
@@ -78,6 +78,9 @@ def aberta(ses):
   """Retorna o estado da sessão {ses}: {True} se a sessao ainda esta aberta, 
   {False} se o usuário deu logout.  Equivale a {sessao.obtem_atributos(ses)['abrt']}."""
   return sessao_IMP.aberta(ses)
+
+def obtem_carrinho(ses):
+  return sessao_IMP.obtem_carrinho(ses)
 
 def obtem_atributos(ses):
   """Retorna um dicionário Python que é uma cópia dos atributos da sessão {ses},
