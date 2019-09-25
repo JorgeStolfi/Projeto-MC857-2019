@@ -6,5 +6,14 @@ import gera_html_pag
 
 def processa(sessao, args):
   usr = usuario.cria(args)
-  # !!! Deveria verificar se a criação deu certo, e mostrar página de erro caso contrário. !!!
-  return gera_html_pag.mostra_usuario(usr)
+
+  conteudo = ""
+
+  #verifica se o usuário foi criado corretamente 
+  #e retorna uma página de acordo com o resultado
+  if type(usr) is ObjUsuario:
+    conteudo = gera_html_pag.mostra_usuario(usr)
+  else:
+    erro = "Erro ao gerar novo usuário"
+    conteudo = gera_html_pag.generica(erro)
+  return conteudo
