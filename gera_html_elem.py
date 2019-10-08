@@ -10,9 +10,9 @@ import gera_html_elem_IMP
 
 # Funções exportadas por este módulo:
 
-def cabecalho(title):
-  """Retorna o cabecalho padrão site, com titulo da página {title}."""
-  return gera_html_elem_IMP.cabecalho(title)
+def cabecalho(title, grande):
+  """Retorna o cabecalho padrão site, com titulo da página {title}, recebendo a informação se o title será grande ou não."""
+  return gera_html_elem_IMP.cabecalho(title, grande)
 
 def rodape():
   """Retorna o rodapé padrão do site."""
@@ -105,7 +105,7 @@ def bloco_de_produto(prod, qt, detalhe):
   return gera_html_elem_IMP.bloco_de_produto(prod, qt, detalhe)
 
 def bloco_de_compra(compra):
-  """Devolve um fragmento HTML que decreve a compra {compra}, 
+  """Devolve um fragmento HTML mostra todas as compras feitas pelo cliente, 
   retornando os dados das compras exclusivamente.
   
   Os dados exibidos serão: ID, status, valor total, data de entrega (que será informada apenas quando for acrescentada ao {ObjCompra})

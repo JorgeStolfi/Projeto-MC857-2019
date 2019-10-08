@@ -13,7 +13,7 @@ from utils_testes import erro_prog, mostra
 from datetime import datetime, timezone
   
 def generica(ses, conteudo):
-  cabe = gera_html_elem.cabecalho("Projeto MC857A 2019-2s")
+  cabe = gera_html_elem.cabecalho("Projeto MC857A 2019-2s", True)
   logado = (ses != None)
   if logado:
     usr = sessao.obtem_usuario(ses)

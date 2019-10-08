@@ -12,9 +12,12 @@ from datetime import datetime, timezone
 
 #Funções exportadas por este módulo:
 
-def cabecalho(title):
-  # !!! Acrescentar um parãmetro {grande} que reduz o tamanho do título se for {False}. !!!
-  # !!! Procurar todos os usos desta função e acrescentar esse parãmetro. !!!
+def cabecalho(title, grande):
+  header_title = "<h1>" + title + "</h1>"
+
+  if grande == False:
+    header_title = "<h2>" + title + "</h2>"
+
   return \
     "<!doctype html>\n" + \
     "<html>\n" + \
@@ -23,7 +26,8 @@ def cabecalho(title):
     "<title>" + title + "</title>\n" + \
     "</head>\n" + \
     "<body style=\"background-color:#eeeeee; text-indent: 0px\">\n" + \
-    "<h1>" + title + "</h1>"
+    header_title
+    
 
 def rodape():
   nowraw = datetime.now(timezone.utc)
