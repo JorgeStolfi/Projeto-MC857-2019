@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/local/bin/python3
 
 # Este programa executável Python3 é o daemon servidor HTTP do website do projeto de MC857.
 #
