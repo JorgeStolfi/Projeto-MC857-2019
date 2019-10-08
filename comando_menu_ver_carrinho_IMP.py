@@ -12,7 +12,9 @@ def processa(ses, args):
   #TEMPORARIO ATE ARRUMAR O gera_html_pag.mostra_carrinho
   #pagina_carrinho = gera_html_pag.mostra_carrinho(ses)
   compra = sessao.obtem_carrinho(ses)
+
   pagina_carrinho = "<table><tbody>"
+  pagina_carrinho = pagina_carrinho + "<tr><td>Produto</td><td>Quantidade</td><td>Preço</td></tr>"
   for prod, qt, prc in compra.itens:
     atrs = produto.obtem_atributos(prod)
     d_curta = atrs['descr_curta']
