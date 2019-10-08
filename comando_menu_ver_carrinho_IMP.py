@@ -24,7 +24,7 @@ def processa(ses, args):
     d_curta = atrs['descr_curta']
     pagina_carrinho = pagina_carrinho + "<tr><td>"+d_curta+"</td> \
     <td><input type=\"number\" value=\""+str(qt)+"\"></td> \
-    <td>R$ "+str(prc)+"</td> \
+    <td>R$ "+"{:10.2f}".format(prc)+"</td> \
     <td><input type=\"button\" value=\"Remover\"></td></tr>"
 
   pagina_carrinho = pagina_carrinho + "</tbody></table></html>"
