@@ -95,7 +95,7 @@ def cadastrar_usuario():
                 "<label>CPF: <span style=\"color:red;\"></span></label>" + \
             "</td>" + \
             "<td>" + \
-                "<input type=\"text\" id=\"cpf\" name=\"cpf\" />" + \
+                "<input type=\"text\" id=\"CPF\" name=\"CPF\" />" + \
             "</td>" + \
         "</tr>" + \
         "<tr>" + \
@@ -119,7 +119,7 @@ def cadastrar_usuario():
                 "<label>CEP:</label>" + \
             "</td>" + \
             "<td>" + \
-                "<input type=\"text\" id=\"cep\" name=\"cep\" />" + \
+                "<input type=\"text\" id=\"CEP\" name=\"CEP\" />" + \
             "</td>" + \
         "</tr>" + \
         "<tr>" + \
