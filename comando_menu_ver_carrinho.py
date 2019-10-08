@@ -2,8 +2,6 @@
 
 import comando_menu_ver_carrinho_IMP
 
-# !!! Implementação incompleta !!!
-
 def processa(ses, args):
   """Esta função é chamada quando o usuário que está logado na sessão {ses} aperta o 
   botão "Ver Carrinho" no menu geral. 
