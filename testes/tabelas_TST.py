@@ -8,7 +8,7 @@ import sys
 # ----------------------------------------------------------------------
 
 sys.stderr.write("Conectando com base de dados...\n")
-res = base_sql.conecta("DB/MC857", None, None)
+res = base_sql.conecta("DB", None, None)
 assert res == None
 
 # ----------------------------------------------------------------------

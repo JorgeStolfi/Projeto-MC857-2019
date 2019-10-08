@@ -3,6 +3,8 @@
 # As funções desta interface retornam cadeias de caracteres que são
 # fragmentos de código HTML5, usados em várias páginas.
 
+# !!! Verificar se todas as funções são testadas no programa de teste !!!
+
 # Implementação desta interface:
 import gera_html_elem_IMP
 
@@ -17,7 +19,11 @@ def rodape():
   return gera_html_elem_IMP.rodape()
 
 def menu_geral(logado, nome_usuario):
-  """Retorna o menu geral do site."""
+  """Retorna o menu geral, que será mostrado no alto da maioria das páginas do site.  
+  
+  O parâmetro {logado} deve ser {True} se o usuário estiver logado; 
+  nesse caso {nome_usuario} deve ser seu nome.  Se for {False}, o nome
+  será ignorado."""
   return gera_html_elem_IMP.menu_geral(logado, nome_usuario)
 
 def span(estilo, conteudo):
@@ -79,6 +85,11 @@ def bloco_texto(texto, disp, fam_fonte, tam_fonte, peso_fonte, pad, halign, cor_
   do contexto ou de especificações de estilo CSS globais."""
   return gera_html_elem_IMP.bloco_texto(texto, disp, fam_fonte, tam_fonte, peso_fonte, pad, halign, cor_texto, cor_fundo)
 
+def bloco_de_erro(msg):
+  """Retorna um fragmento de HTML que contém a mensagem {msg},
+  e um botão "OK" que retorna para a página principal da loja."""
+  return gera_html_elem_IMP.bloco_de_erro(msg)
+
 def bloco_de_produto(prod, qt, detalhe):
   """Devolve um fragmento HTMP que decreve o produto {prod}, um objeto da classe {ObjProduto}.
   
@@ -95,4 +106,8 @@ def bloco_de_produto(prod, qt, detalhe):
 
 def bloco_de_compra(compra):
   """Devolve um fragmento HTML que decreve a compra {compra}, um objeto da classe {ObjCompra}."""
+  # !!! Descrição errada.  Esta função é usada para montar a página que mostra todas as compras feitas por um cliente. !!!
+  # !!! Portanto, ela deve retirnar um bloco de 1 ou 2 linhas apenas que mostra o ID da compra, o status, !!!
+  # !!! o valor total, e a data de entrega (quando for acrescentada ao {ObjCompra}). !!!
+  # !!! NÃO deve mostrar os produtos. !!!
   return gera_html_elem_IMP.bloco_de_compra(compra)

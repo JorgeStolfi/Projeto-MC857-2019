@@ -77,19 +77,17 @@ def valor_SQL_para_valor_mem(val_SQL, tipo_SQL, tipo_mem, nulo_ok, vmin, vmax, i
 
   
 def dict_mem_para_dict_SQL(dic_mem, cols, obj_para_indice):
-  """Supõe que {dic_mem} é um dicionário Python com nomes
-  e valores de atributos de um objeto na memória.
-  Converte os valores para representações correspondentes
-  na base de dados, usando {valor_mem_para_valor_SQL}
-  e os tipos especificados em {cols}. 
+  """Supõe que {dic_mem} é um dicionário Python com nomes e valores de
+  atributos de um objeto na memória. Converte os valores para
+  representações correspondentes na base de dados, usando
+  {valor_mem_para_valor_SQL} e os tipos SQL especificados em {cols}.
   
-  Os nomes dos campos em {dic_mem} devem ser um subconjunto
-  dos definidos em {cols}.  O dicionário retornado terá 
-  apenas esses mesmos campos. 
+  Os nomes dos campos em {dic_mem} devem ser um subconjunto dos
+  definidos em {cols}. O dicionário retornado terá apenas esses mesmos
+  campos.
   
-  Porém, campos em {cols} cujo {tipo_mem} for lista, tupla, ou dicionário
-  são ignorados se estiverem presented em {dic_mem},
-  e serão omitidos no dicionário resultante."""
+  A lista de colunas {cols} não deve ter atributos cujo {tipo_mem} for
+  lista, tupla, ou dicionário. """
   return conversao_sql_IMP.dict_mem_para_dict_SQL(dic_mem, cols, obj_para_indice)
   
 def dict_SQL_para_dict_mem(dic_SQL, cols, indice_para_obj):
@@ -101,7 +99,7 @@ def dict_SQL_para_dict_mem(dic_SQL, cols, indice_para_obj):
   Os nomes dos campos em {dic_SQL} devem ser um subconjunto dos campos
   definidos em {cols}.
   
-  Porém, campos em {cols} cujo {tipo_mem} for lista, tupla, ou dicionário
-  não devem estar presentes em {dic_SQL}, e não estarão no dicionário resultante."""
+  A lista {cols} não deve ter atributso cujo {tipo_mem} for lista, tupla, 
+  ou dicionário."""
   return conversao_sql_IMP.dict_SQL_para_dict_mem(dic_SQL, cols, indice_para_obj)
   

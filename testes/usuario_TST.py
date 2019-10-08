@@ -6,10 +6,11 @@ import base_sql
 import identificador
 import utils_testes
 import sys
+from utils_testes import erro_prog, mostra
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Conectando com base de dados...\n")
-base_sql.conecta("DB/MC857",None,None)
+base_sql.conecta("DB",None,None)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Inicializando módulo {usuario}, limpando tabela:\n")
@@ -24,7 +25,10 @@ def verifica_usuario(rotulo,usr,indice,ident,atrs):
   """Testes básicos de consistência do objeto {usr} da classe {ObjUsuario}, dados {indice},
   {ident} e {atrs} esperados."""
   global ok_global
-  ok = utils_testes.verifica_objeto(rotulo, usuario, usuario.ObjUsuario, usr, indice, ident, atrs)
+
+  sys.stderr.write("%s\n" % ("-" * 70))
+  sys.stderr.write("verificando usuário %s\n" % rotulo)
+  ok = utils_testes.verifica_objeto(usuario, usuario.ObjUsuario, usr, indice, ident, atrs)
 
   if usr != None and type(usr) is usuario.ObjUsuario:
     
@@ -33,7 +37,7 @@ def verifica_usuario(rotulo,usr,indice,ident,atrs):
     em1 = atrs['email']
     ident1 = usuario.busca_por_email(em1)
     if ident1 != ident:
-      sys.stderr.write("  **erro: retornou " + str(ident1) + ", deveria ter retornado " + str(ident) + "\n")
+      aviso_prog("retornou " + str(ident1) + ", deveria ter retornado " + str(ident),True)
       ok = False
 
     # ----------------------------------------------------------------------
@@ -41,10 +45,14 @@ def verifica_usuario(rotulo,usr,indice,ident,atrs):
     CPF1 = atrs['CPF']
     ident1 = usuario.busca_por_CPF(CPF1)
     if ident1 != ident:
-      sys.stderr.write("  **erro: retornou " + str(ident1) + ", deveria ter retornado " + str(ident) + "\n")
+      aviso_prog("retornou " + str(ident1) + ", deveria ter retornado " + str(ident),True)
       ok = False
 
-  ok_global = ok_global and ok
+  if not ok:
+    aviso_prog("teste falhou",True)
+    ok_global = False
+
+  sys.stderr.write("%s\n" % ("-" * 70))
   return
  
 def testa_cria_usuario(rotulo,indice,ident,atrs):
@@ -126,9 +134,6 @@ if type(usr2) is usuario.ObjUsuario:
 # Veredito final:
 
 if ok_global:
-  # Terminou OK:
   sys.stderr.write("Teste terminou sem detectar erro\n")
 else:
-  # Termina com erro:
-  sys.stderr.write("**erro - teste falhou\n")
-  assert False
+  erro_prog("- teste falhou")

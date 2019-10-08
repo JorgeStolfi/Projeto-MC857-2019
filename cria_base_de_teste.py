@@ -9,7 +9,7 @@ import sys
 
 def principal():
   sys.stderr.write("Conectando com base de dados...\n")
-  base_sql.conecta("DB/MC857",None,None)
+  base_sql.conecta("DB",None,None)
 
   sys.stderr.write("cria_base_de_teste.py: limpando e criando objetos para testes...\n")
   tabelas.cria_todos_os_testes()

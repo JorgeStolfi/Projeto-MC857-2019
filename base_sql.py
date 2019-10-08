@@ -7,7 +7,7 @@
 # Nas funções abaixo, o parâmetro {atrs} é um dicionário
 # Python cujas chaves devem ser os nomes das colunas da tabela (strings), 
 # e os valores de {atrs} serão os valores dessas colunas.  Os tipos dos 
-# valores de {atrs} devem ser compatíveis com os tipos das colunas da tabela.
+# valores de {atrs} devem ser compatíveis com os tipos SQL das colunas da tabela.
 #
 # Em caso de erro, as funções abaixo devolvem um string que descreve o mesmo.
 
@@ -15,14 +15,15 @@
 import base_sql_IMP
 
 def conecta(dir, uid, senha):
-  """Conecta com a base de dados no disco.
+  """Conecta com a base de dados no disco, criando-a se necessário.
   Em caso de sucesso, devolve {None}.
   
   A string {dir} é o nome completo do diretório onde fica a base de dados. 
+  A base será um arquivo SQLite3 com nome "MC857.sqlite3" nesse diretório.
   
   A string {uid} é o nome do usuário Linux que tem acesso à base, e {senha}
-  é a sua senha de login.  Se {uid} for {None}, tenta concectar usando o usuário corrente;
-  nesse caso a {senha} é ignorada."""
+  é a sua senha de login.  Se {uid} for {None}, tenta concectar usando o usuário
+  corrente; nesse caso a {senha} é ignorada."""
   return base_sql_IMP.conecta(dir, uid, senha)
 
 def executa_comando_CREATE_TABLE(nome_tb, colunas):
@@ -102,8 +103,11 @@ def codifica_valor(val):
     (arbitrariamente) 2 casas depois do ponto, e sinal "-" se necessario. 
     
     Se {val} é um string, envolve-o em aspas simples. 
-    
-    !!! Deveria proteger caracteres especiais em {val}. !!!
-  
   """
   return base_sql_IMP.codifica_valor(val)
+
+def mostra_comandos(val):
+  """Habilita (se {val=True}) ou desabilita (se {val=False}) a
+  impressão em {sys.stderr} dos comandos SQL montados pelas funções 
+  deste módulo, e dos resultados dos mesmos."""
+  base_sql_IMP.mostra_comandos(val)

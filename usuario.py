@@ -35,12 +35,11 @@ class ObjUsuario(ObjUsuario_IMP):
   da classe {ObjUsuario}.
 
   Cada linha da tabela tem um índice inteiro (chave primária) distinto, que é atribuído
-  quando a linha é criada.  Neste sistema, esse índice é manipulado na forma de
-  um identificador de usuário, uma string da forma "U-{NNNNNNNN}"
-  onde {NNNNNNNN} é o índice formatado em 8 algarismos.
+  quando a linha é criada.  Cada usuário também tem um identificador, uma string da forma
+  "U-{NNNNNNNN}" onde {NNNNNNNN} é o índice formatado em 8 algarismos.
 
   Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
-  atributos do usuário (menos o identificador), como definido por {usuario.campos()}.
+  atributos do usuário (menos o identificador/índice).
 
   Os campos 'CPF' e 'email' de todos os usuários
   devem ser distintos.  Todos os campos podem ser alterados,
@@ -103,16 +102,16 @@ def busca_por_CPF(CPF):
   ou {None} se não existir tal usuário."""
   return usuario_IMP.busca_por_CPF(CPF)
 
-def campos():
-  """Retorna uma seqüência de tuplas que descrevem os nomes e propriedades
-  dos atributos de um {ObjUsuario}, menos o identificador.  O resultado é adequado
-  para o parâmetro {cols} das funções do módulo {tabela_generica}."""
-  return usuario_IMP.campos()
-
 def cria_testes():
-  """Limpa a tabela de usuários com {inicializa(True)}, e cria três usuários
+  """Limpa a tabela de usuários com {inicializa(True)}, e cria pelo menos três usuários
   para fins de teste, incluindo-os na tabela.  Não devolve nenhum resultado.
   
   Deve ser chamada apenas uma vez no ínicio da execução do programa, 
   depois de chamar {base_sql.conecta}.""" 
   usuario_IMP.cria_testes()
+
+def diagnosticos(val):
+  """Habilita (se {val=True}) ou desabilita (se {val=False}) a
+  impressão em {sys.stderr} de mensagens de diagnóstico pelas 
+  funções deste módulo."""
+  usuario_IMP.diagnosticos(val)

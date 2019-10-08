@@ -27,7 +27,8 @@
 #   {let} é a letra de prefixo dos identificadores da tabela (p. ex. "U").
 #
 #   {cols} é uma seqüência de tuplas que descrevem os campos da tabela,
-#     menos o índice da linha (vide descrição em {cria_tabela}).
+#     menos o índice da linha e o identificador do objeto
+#     (vide descrição em {cria_tabela} abaixo).
 #
 #   {atrs_SQL} é um dicionário Python com os atributos do objeto, menos o identificador, tal como 
 #     representados na base de dados SQL.

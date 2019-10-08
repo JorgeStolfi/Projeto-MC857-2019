@@ -28,7 +28,5 @@ def de_lista_de_indices(let, indices):
         idents.append(de_indice(let,el[0]))
     return idents
   else:
-    # Deu algum erro:
-    sys.stderr.write("identificador.de_lista_de_indices: **erro tipo de " + str(indices) + " inválido\n")
-    assert False
+    erro_prog("tipo de " + str(indices) + " inválido")
   

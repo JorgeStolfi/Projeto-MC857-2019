@@ -4,6 +4,7 @@ import base_sql
 import identificador
 import conversao_sql
 import sys # Para depuração.
+from utils_testes import erro_prog, mostra
 
 # FUNÇÕES INTERNAS
 
@@ -40,17 +41,15 @@ def cria_tabela(nome_tb, cols):
   colunas = constroi_colunas_SQL(cols)
   res = base_sql.executa_comando_CREATE_TABLE(nome_tb, colunas);
   if res != None:
-    sys.stderr.write("usuario_IMP.inicializa: **erro CREATE_TABLE falhou " + str(res) + "\n")
     assert type(res) is str
-    assert False
+    erro_prog("CREATE_TABLE falhou " + str(res))
   return
 
 def acrescenta(nome_tb, cache, let, cols, def_obj, atrs_SQL):
   # Insere na base de dados e obtém o índice na mesma:
   ind = base_sql.executa_comando_INSERT(nome_tb, atrs_SQL)
   if not type(ind) is int:
-    sys.stderr.write("tabela_generica_IMP.acrescenta: ** erro: indice inválido " + str(ind) + "\n");
-    assert False
+    erro_prog("indice inválido " + str(ind))
   # Cria o objeto :
   ident = identificador.de_indice(let, ind)
   obj = def_obj(None, ident, atrs_SQL)
@@ -84,9 +83,7 @@ def busca_por_identificador_e_indice(nome_tb, cache, let, cols, def_obj, ident, 
   if len(res) == 0:
     return None
   elif len(res) > 1:
-    sys.stderr.write("**erro: SELECT com índice em '" + nome_tb + "' não é único\n")
-    sys.stderr.write("res = " + str(res) + "\n")
-    assert False
+    erro_prog("SELECT com índice em '" + nome_tb + "' não é único, res = " + str(res))
   col_vals = list(res[0])
   assert len(col_vals) == len(col_nomes)
   atrs_SQL = dict(zip(col_nomes, col_vals))
@@ -100,11 +97,9 @@ def busca_por_campo(nome_tb, let, cols, chave, valor):
 
   # Supõe que o cache é um subconjuto da base em disco, então procura só na última:
   cond = chave + " = " + valor
-  sys.stderr.write("executa_comando_SELECT cond = \"" + str(cond) + "\"\n")
   res = base_sql.executa_comando_SELECT(nome_tb, cond, ['indice'])
   if res != None and type(res) is str:
-    sys.stderr.write("usuario_IMP.busca_por_campo: **erro SELECT falhou " + str(res) + "\n")
-    assert False
+    erro_prog("SELECT falhou " + str(res))
   return identificador.de_lista_de_indices(let, res)
 
 def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
@@ -118,8 +113,7 @@ def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
         cond += "OR "
   res = base_sql.executa_comando_SELECT(nome_tb, cond, ['indice'])
   if res != None and type(res) is str:
-    sys.stderr.write("usuario_IMP.busca_por_campo: **erro SELECT falhou " + str(res) + "\n")
-    assert False
+    erro_prog("SELECT falhou " + str(res))
   sys.stderr.write("busca_por_semelhanca: res = " + str(res) + "\n")
   return identificador.de_lista_de_indices(let, res)
 
@@ -128,8 +122,7 @@ def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
   obj = busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident)
   if obj == None:
     # Objeto não existe:
-    sys.stderr.write("**erro: identificador '" + ident + "' nao encontrado\n")
-    assert False
+    erro_prog("identificador '" + ident + "' nao encontrado")
   # Atualiza os atributos do objeto na memória:
   res = def_obj(obj, ident, mods_SQL)
   assert res == obj
@@ -138,16 +131,14 @@ def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
   cond = "indice = " + str(ind)
   res = base_sql.executa_comando_UPDATE(nome_tb, cond, mods_SQL)
   if res != None:
-    sys.stderr.write("**erro: UPDATE da tabela '" + nome_tb + "' falhou\n")
-    assert False
+    erro_prog("UPDATE da tabela '" + nome_tb + "' falhou")
   return obj
 
 def limpa_tabela(nome_tb, cols):
   res = base_sql.executa_comando_DROP_TABLE(nome_tb);
   if res != None:
-    sys.stderr.write("**erro: DROP_TABLE de " + nome_tb + " falhou, res = '" + str(res) + "' falhou\n")
     assert type(res) is str
-    assert False
+    erro_prog("DROP_TABLE de " + nome_tb + " falhou, res = '" + str(res) + "' falhou")
   cria_tabela(nome_tb, cols)
   return
   

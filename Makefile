@@ -3,6 +3,7 @@
 
 # Módulos na ordem a testar:
 MODULOS := \
+  utils_testes \
   base_sql \
   identificador \
   tabela_generica \
@@ -23,21 +24,25 @@ MODULOS := \
    \
   processa_comando_http \
    \
-  comando_botao_cadastrar \
-  comando_botao_entrar \
-  comando_botao_sair \
-  comando_subm_buscar_produtos \
-  comando_subm_cadastrar \
-  comando_subm_comprar_produto \
-  comando_subm_ver_produto \
-   \
-  servidor \
-
+  comando_menu_cadastrar_usuario \
+  comando_menu_entrar \
+  comando_menu_sair \
+  comando_menu_ver_carrinho \
+  comando_submit_buscar_produtos \
+  comando_submit_cadastrar_usuario \
+  comando_submit_comprar_produto \
+  comando_submit_definir_qt \
+  comando_submit_entrar \
+  comando_submit_excluir_item_de_compra \
+  comando_submit_finalizar_compra \
+  comando_submit_ver_todas_as_compras \
+  comando_submit_ver_compra \
+  comando_submit_ver_produto
 
 # O que "make" deve fazer:
-# all: todos_os_testes
+all: todos_os_testes
 # all: teste_unico
-all: roda_servidor
+# all: roda_servidor
 
 # Roda todos os módulos de teste:
 todos_os_testes:
@@ -59,4 +64,4 @@ teste_unico:
 
 roda_servidor:
 	./cria_base_de_teste.py
-	./servidor.py &
+	( ./servidor.py & sleep 1000 )

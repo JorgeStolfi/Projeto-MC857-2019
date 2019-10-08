@@ -7,10 +7,11 @@
 import gera_html_form
 import sys
 
-# Comandos:
-# html = gera_html_pag.entrada()
+# !!! Precisa chamar todas as funções da interface, pelo menos uma vez, e gravar em arquivos ".html" separados. !!!
 
-html= gera_html_form.busca()
+# Comandos:
+
+html = gera_html_form.buscar_produtos()
 
 html = html + "\n" # In case the fragment does not end with newline.
 

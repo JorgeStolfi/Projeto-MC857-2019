@@ -14,7 +14,7 @@ import produto
 import compra_IMP; from compra_IMP import ObjCompra_IMP
 
 def inicializa(limpa):
-  """Inicializa o modulo, criando a tabela de compras na base de dados.
+  """Inicializa o modulo, criando a tabela "compras" na base de dados.
   Deve ser chamada apenas uma vez no ínicio da execução do servidor, 
   depois de chamar {base_sql.conecta}. Não retorna nenhum valor.  
   Se o parâmetro booleano {limpa} for {True}, apaga todas as linhas da tabela
@@ -31,14 +31,13 @@ class ObjCompra(ObjCompra_IMP):
   Por enquanto, os atributos de um objeto desta classe são:
   
     'cliente' um {ObjUsuario} que representa o cliente que fez ou está montando a compra.
-    'itens'   uma lista Python de itens no pedido.
     'status'  uma string que indica o estado do pedido. 
     
-  Cada elemento da lista 'itens' é uma lista de tres elementos {[prod,
-  qt,preco]} onde {prod} é um objeto da classe {ObjProduto}, {qt} é
-  um float que indica a quantidade comprada, e {preco} é um float que
-  indica o preço total do item.  Os produtos na lista são sempre
-  todos distintos.
+  Além disso, cada objeto desta classe possui uma lista de itens. Cada
+  item é uma lista de tres elementos {[prod, qt,preco]} onde {prod} é um
+  objeto da classe {ObjProduto}, {qt} é um float que indica a quantidade
+  comprada, e {preco} é um float que indica o preço total do item. Os
+  produtos na lista são sempre todos distintos.
   
   O atributo 'status' por enquanto, pode ser:
   
@@ -55,8 +54,7 @@ class ObjCompra(ObjCompra_IMP):
   da classe {ObjCompra}. 
   
   Cada linha da tabela de compras tem um índice inteiro (chave primária) distinto, que é atribuído
-  quando a linha é criada.  Neste sistema, esse índice é manipulado na forma de 
-  um identificador de compra, uma string da forma "C-{NNNNNNNN}"
+  quando a linha é criada.  Cada compra também tem identificador, uma string da forma "C-{NNNNNNNN}"
   onde {NNNNNNNN} é o índice formatado em 8 algarismos."""
 
 def cria(cliente):
@@ -90,8 +88,7 @@ def obtem_status(cpr):
   return compra_IMP.obtem_status(cpr)
 
 def obtem_itens(cpr):
-  """Retorna uma cópia da lista de itens da compra {cpr}. Equivale a 
-  {obtem_atributos(cpr)['itens'].copy()}."""
+  """Retorna uma cópia da lista de itens da compra {cpr}."""
   return compra_IMP.obtem_itens(cpr)
 
 def muda_atributos(cpr, mods):
@@ -100,9 +97,8 @@ def muda_atributos(cpr, mods):
   usado para alterar os itens das compras.
 
   O parâmetro {mods} deve ser um dicionário cujas chaves são um
-  subconjunto das chaves dos atributos da compra (excluindo o identificador
-  e 'itens'). Os valores atuais desses atributos são substituídos pelos valores 
-  correspondentes em {mods}."""
+  subconjunto das chaves dos atributos da compra. Os valores atuais desses
+  atributos são substituídos pelos valores correspondentes em {mods}."""
   return compra_IMP.muda_atributos(cpr, mods)
 
 def obtem_quantidade(cpr, prod):
@@ -127,31 +123,34 @@ def fecha_compra(cpr):
     
 def acrescenta_item(cpr, prod, qt):
   """Acrescenta um novo item no pedido de cpr, consistindo da quantidade 
-  {qt} do produto {prod}, acrescentando-o também a tabela de itens de compra.
+  {qt} do produto {prod}, acrescentando-o também a tabela de itens de compra. 
+  
+  Esta função só pode ser usada se a compra ainda estiver aberta. 
   Não retorna nenhum resultado.
   
-  Se o produto já está na lista de itens, soma {qt} à quantidade que
-  consta nessa lista. Também recalcula o preço do item. 
-  Se {qt} for zero, o efeito é nulo."""
+  Em particular, se o produto já está na lista de itens, soma {qt} à quantidade que
+  consta nessa lista. Também recalcula o preço do item, mesmo se {qt} for zero."""
   compra_IMP.acrescenta_item(cpr,prod,qt)
 
 def troca_quantidade(cpr, prod, qt):
-  """Modifica a lista de itens da compra, trocando a quantidade
+  """Modifica a lista de itens da compra {cpr}, trocando a quantidade
   atual do produto {prod} por {qt}. Altera também a linha correspondente
-  da tabela de itens_de_compras.
+  da tabela de itens de compras. 
+  
+  Esta função só pode ser usada se a compra ainda estiver aberta. 
   Não retorna nenhum resultado.
   
-  Se {qt} for zero, elimina o produto {prod} da lista. 
-  Se o produto {prod} não está na lista, acrescenta-o com 
-  quantidade {qt}, e recalcula o preço do item.  Se 
-  o produto já está na lista com a mesma quantidade {qt},
-  não faz nada."""
+  Em particular, se {qt} for zero, elimina o produto {prod} da lista. Se o produto {prod} 
+  não está na lista, acrescenta-o com quantidade {qt}, e recalcula o preço do item,
+  mesmo que o produto já esteja na lista com essa quantidade. """
   compra_IMP.troca_quantidade(cpr, prod, qt)
 
 def elimina_produto(cpr, prod):
-  """Modifica a lista de itens da compra, eliminando a entrada
-  com produto {prod}. Também elimina a linha correspondente da tabela de itens_de_compras.
-  O produto deve estar na lista. Não retorna nenhum resultado."""
+  """Modifica a lista de itens da compra, eliminando a entrada com produto {prod}.
+  Também elimina a linha correspondente da tabela de itens de compras. 
+  
+  Esta função só pode ser usada se a compra ainda estiver aberta
+  e o produto estiver na lista. Não retorna nenhum resultado."""
   compra_IMP.elimina_produto(cpr, prod)
 
 def busca_por_identificador(id_compra):
@@ -171,19 +170,18 @@ def busca_por_produto(id_produto):
   ou lista vazia se não existir tal compra."""
   return compra_IMP.busca_por_produto(id_produto)
 
-def campos():
-  """Retorna uma seqüência de tuplas que descrevem os nomes e propriedades
-  dos atributos de um {ObjCompra}, menos o identificador e a lista de itens.  
-  O resultado é adequado para o parâmetro {cols} das funções do módulo
-  {tabela_generica}."""
-  return compra_IMP.campos()
-
 def cria_testes():
-  """Limpa a tabela de compras com {inicializa(True)}, e cria três pedidos de compra
-  para fins de teste, incluindo-os na tabela.  Os pedidos estarão inicialmente
+  """Limpa as tabelas de compras e de itens com {inicializa(True)}, e cria três pedidos
+  de compra para fins de teste, incluindo-os na tabela.  Os pedidos estarão inicialmente
   com status 'aberto'. Não devolve nenhum resultado.
   
   Deve ser chamada apenas uma vez no ínicio da execução do programa, 
   depois de chamar {base_sql.conecta}.  Supõe que as tabelas de usuários
   e de produtos já foram inicializadas, e cada uma tem pelo menos três entradas.""" 
   compra_IMP.cria_testes()
+
+def diagnosticos(val):
+  """Habilita (se {val=True}) ou desabilita (se {val=False}) a
+  impressão em {sys.stderr} de mensagens de diagnóstico pelas 
+  funções deste módulo."""
+  compra_IMP.diagnosticos(val)

@@ -54,7 +54,3 @@ def cadastrar_usuario():
     de cadastro (nome, email, CPF, etc.) e um botão 'Cadastrar' 
     que solicita ao servidor a criação de tal usuário."""
     return gera_html_form_IMP.cadastrar_usuario()
-
-def erro_generico(msg):
-  """Retorna o HTML da pagina de erro com a mensagem (msg) informada"""
-  return gera_html_form_IMP.erro_generico(msg)

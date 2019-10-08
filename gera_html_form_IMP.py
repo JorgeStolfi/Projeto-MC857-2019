@@ -1,7 +1,9 @@
 # Implementação do módulo {gera_html_form}.
 
 # Interfaces importadas por esta implementação:
-import gera_html_elem, gera_html_botao
+import gera_html_elem
+import gera_html_botao
+from utils_testes import erro_prog, mostra
 
 #Funções exportadas por este módulo:
 
@@ -59,6 +61,8 @@ def comprar_produto(id_produto, qtd_produto):
     "</span>"
 
 def cadastrar_usuario():
+  # !!! Os campos do formulário devem ser os mesmos do {ObjUsuario}. !!!
+  # !!! Usar o campo de seleção para o estado é muito chato. Deixe o usuário entrar o endereço em formato livre, 3 linhas. !!!
   fam_fonte = "Courier"
   tam_fonte = "18px"
   return \
@@ -207,7 +211,7 @@ def entrar():
     "</span>"
 
 def formulario_entrar(altura, largura, margem, acolchoamento, margem_entradas):
-  """ Retorna o html para o formulário que , com campos de usuário, senha e lembrar da sessão. """
+  # !!! Combinar com a função {entrar} ou eliminar. !!!
   css = """.formulario {
               border: 3px solid #f1f1f1;
               padding: """ + acolchoamento + """;
@@ -277,18 +281,4 @@ def informacao_usuario(usr):
     correspondente em formato HTML."""
     info_final = """ <h1> """ + usr.nome + """ </h1> <br> """ + usr.cpf + """ <br> """ + usr.email + """ <br> """ + usr.endereco + """ <br> """ + usr.cep + """ <br> """ + + usr.telefone + """ <br> """
     return info_final
-
-def erro_generico(msg):
-    fam_fonte = "Courier"
-    tam_fonte = "18px"
-    return \
-    "<span style=\"\n" + \
-    "  display: inline-block;\n" + \
-    "  font-family:" + fam_fonte + ";\n" + \
-    "  font-size:" + tam_fonte + ";\n" + \
-    "  padding: 5px;\n" + \
-    "\">\n" + \
-    "  <h2>Ocorreu um erro inesperado!</h2>" + \
-    "  <strong>" + msg + "</strong>" + \
-    "</span>"
-  
+ 

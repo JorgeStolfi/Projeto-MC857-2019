@@ -6,11 +6,12 @@ import base_sql
 import identificador
 import utils_testes
 import sys
+from utils_testes import erro_prog, mostra
 
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Conectando com base de dados...\n")
-base_sql.conecta("DB/MC857",None,None)
+base_sql.conecta("DB",None,None)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Inicializando módulo {produto}, limpando tabela: \n")
@@ -25,8 +26,16 @@ def verifica_produto(rotulo, prod, indice, ident, atrs):
   """Testes básicos de consistência do obleto {prod} da classe {produto.ObjProduto}, dados {indice},
   {ident} e {atrs} esperados."""
   global ok_global
-  ok = utils_testes.verifica_objeto(rotulo, produto, produto.ObjProduto, prod, indice, ident, atrs)
-  ok_global = ok_global and ok
+
+  sys.stderr.write("%s\n" % ("-" * 70))
+  sys.stderr.write("verificando produto %s\n" % rotulo)
+  ok = utils_testes.verifica_objeto(produto, produto.ObjProduto, prod, indice, ident, atrs)
+  
+  if not ok:
+    aviso_prog("teste falhou",True)
+    ok_global = False
+
+  sys.stderr.write("%s\n" % ("-" * 70))
   return
 
 def testa_cria_produto(rotulo, indice, ident, atrs):
@@ -85,7 +94,7 @@ prod1_preco_un = prod1_atrs['preco']
 prod1_preco_tot_esp = prod1_qt * prod1_preco_un
 prod1_preco_tot_cmp = produto.calcula_preco(prod1, 10)
 if prod1_preco_tot_cmp != prod1_preco_tot_esp:
-  sys.stderr.write("  **erro: resultado foi " + str(prod1_preco_tot_cmp) + " deveria ser " + str(prod1_preco_tot_esp) + "\n")
+  aviso_prog("resultado foi " + str(prod1_preco_tot_cmp) + " deveria ser " + str(prod1_preco_tot_esp),True)
   ok_global = False
 
 # ----------------------------------------------------------------------
@@ -109,13 +118,13 @@ palavra = "de força"
 plist5_cmp = produto.busca_por_palavra(palavra)
 sys.stderr.write("  resultado = " + str(plist5_cmp) + "\n")
 if not type(plist5_cmp) is list:
-  sys.stderr.write("  **erro: resultado " + str(plist5_cmp) + " deveria ser lista\n")
+  aviso_prog("resultado " + str(plist5_cmp) + " deveria ser lista",True)
   ok_global = False
 else:
   plist5_cmp = sorted(plist5_cmp)
   plist5_esp = [pident1, pident2]
   if plist5_cmp != plist5_esp:
-    sys.stderr.write("  **erro: resultado foi " + str(plist5_cmp) + " deveria ser " + str(plist5_esp) + "\n")
+    aviso_prog("resultado foi " + str(plist5_cmp) + " deveria ser " + str(plist5_esp),True)
     ok_global = False
 
 
@@ -123,9 +132,6 @@ else:
 # Veredito final:
 
 if ok_global:
-  # Terminou OK:
   sys.stderr.write("Teste terminou sem detectar erro\n")
 else:
-  # Termina com erro:
-  sys.stderr.write("**erro - teste falhou\n")
-  assert False
+  erro_prog("- teste falhou")

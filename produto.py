@@ -4,10 +4,8 @@
 # Implementação deste módulo e da classe {ObjProduto}:
 import produto_IMP; from produto_IMP import ObjProduto_IMP
 
-# !!! Acrescentar um atributo 'imagem' que é o nome de um arquivo no diretório "imagens", p.ex. "156931.png" !!!
-
 def inicializa(limpa):
-  """Inicializa o modulo, criando a tabela de usuários na base de dados.
+  """Inicializa o modulo, criando a tabela "produtos" na base de dados.
   Deve ser chamada apenas uma vez no ínicio da execução do servidor, 
   depois de chamar {base_sql.conecta}. Não retorna nenhum valor.  
   Se o parâmetro booleano {limpa} for {True}, apaga todas as linhas da tabela
@@ -18,12 +16,14 @@ class ObjProduto(ObjProduto_IMP):
   """Um objeto desta classe representa um produto da loja e armazena seus 
   atributos.  Por enquanto, eles são:
   
+    !!! Atualizar conforme implementação" !!!
+
     {descr_curta} {str} - descrição do produto em uma linha.
     {descr_media} {str} - descrição mais estensa do produto, em 1-3 linhas. 
     {descr_longa} {str} - descrição completa do produto. 
     {unidade} {str} - unidade de venda ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
     {preco} {float} - preço unitário.
-    {estoque} {integer} - estoque do produto.
+    {estoque} {integer} - quantidade do produto no estoque.
     
   O preço unitário é em reais, e é arredondado para centavos inteiros 
   (a menos de erros de arredondamento do float).
@@ -36,12 +36,11 @@ class ObjProduto(ObjProduto_IMP):
   da classe {ObjProduto}. 
   
   Cada linha da tabela tem um índice inteiro (chave primária) distinto, que é atribuído
-  quando a linha é criada.  Neste sistema, esse índice é manipulado na forma de 
-  um identificador de produto, uma string da forma "P-{NNNNNNNN}"
-  onde {NNNNNNNN} é o índice formatado em 8 algarismos.
+  quando a linha é criada.  Cada produto também tem um identificador, uma string da
+  forma "P-{NNNNNNNN}" onde {NNNNNNNN} é o índice formatado em 8 algarismos.
   
   Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
-  atributos do usuário (menos o identificador), como definido por {produto.campos()}.
+  atributos do usuário (menos o identificador/índice).
   
   Todos os campos podem ser alterados, exceto o índice (e identificador).
   Entretanto, alterações no preço podem deixar pedidos de compras inconsistentes.
@@ -61,6 +60,10 @@ def obtem_identificador(prod):
 def obtem_indice(usr):
   """Devolve o índice inteiro do produto na tabela de produtos."""
   return produto_IMP.obtem_indice(usr)
+  
+def obtem_preco(usr):
+  """Devolve o preço unitário do produto."""
+  return produto_IMP.obtem_preco(usr)
 
 def obtem_atributos(prod):
   """Retorna um dicionário Python que é uma cópia dos atributos do produto,
@@ -101,16 +104,16 @@ def busca_por_palavra(pal):
   satisfazendo a busca, devolve uma lista vazia."""
   return produto_IMP.busca_por_palavra(pal)
 
-def campos():
-  """Retorna uma seqüência de tuplas que descrevem os nomes e propriedades
-  dos atributos de um {ObjProduto}, menos o identificador.  O resultado é adequado 
-  para o parâmetro {cols} das funções do módulo {tabela_generica}."""
-  return produto_IMP.campos()
-
 def cria_testes():
-  """Limpa a tabela de produtos com {inicializa(True)}, e cria três produtos
+  """Limpa a tabela de produtos com {inicializa(True)}, e cria pelo menos três produtos
   para fins de teste, incluindo-os na tabela. Não devolve nenhum resultado.
   
   Deve ser chamada apenas uma vez no ínicio da execução do programa, 
   depois de chamar {base_sql.conecta}.""" 
   produto_IMP.cria_testes()
+
+def diagnosticos(val):
+  """Habilita (se {val=True}) ou desabilita (se {val=False}) a
+  impressão em {sys.stderr} de mensagens de diagnóstico pelas 
+  funções deste módulo."""
+  produto_IMP.diagnosticos(val)

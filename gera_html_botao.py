@@ -9,29 +9,46 @@
 # Implementação desta interface:
 import gera_html_botao_IMP
 
-# As funções abaixo geram botões "<button>":
-def botao_simples(texto, URL, cor_fundo):
-  """Função INTERNA para as demais funções de botões "<button>". 
-  Retorna HTML do botão "<button>" com texto e cor de fundo especificados.
-  Quando clicado, o botão executa um comando HTTP 'GET' para
-  o URL dado."""
-  return gera_html_botao_IMP.botao_simples(texto, URL, cor_fundo)
+# As funções abaixo geram botões de tipo "<button>" que emitem comandos "GET":
+
+def principal():
+  """Retorna um fragmento de HTML que produz o botao "Principal" que 
+  manda o usuário para a página principal (homepage) da loja."""
+  return gera_html_botao_IMP.principal()
 
 def menu_entrar():
-  """Retorna fragmento de HTML5 que produz o botao de "Entrar" (login) no menu
-  principal. Este botão será exibido em todas as páginas
-  quando o usuário estiver navegando pelo site sem estar logado."""
+  """Retorna um fragmento de HTML que produz o botao de "Entrar" (login) para uso no menu
+  principal.  
+  
+  Este botão permite que o usuário solicite ao servidor um formulário para fazer login.
+  Ele será exibido em todas as páginas quando o usuário estiver navegando 
+  pelo site sem estar logado. """
   return gera_html_botao_IMP.menu_entrar()
 
 def menu_sair():
-  """Retorna fragmento de HTML5 que representa o botao "Sair" (logout) no menu principal,
-  Este botão será exibido em todas as páginas enquanto o usuário estiver logado."""
+  """Retorna um fragmento de HTML que produz o botao "Sair" (logout) para uso no menu geral.
+  
+  Este botão permite que o usuário faça o logout da sessao corrente.
+  Ele será exibido em todas as páginas enquanto o usuário estiver logado."""
   return gera_html_botao_IMP.menu_sair()
 
 def menu_cadastrar():
-  """Retorna botão que vai ser incluído no menu geral de todas as páginas,
-  e pede ao servidor uma página com o formulário para cadastrar um novo usuário."""
+  """Retorna um fragmento de HTML que produz o botao "Cadastrar" para uso no menu geral.
+  Este botão permite que o usuário solicite ao servidor um formulário para 
+  cadastrar um novo usuário. Ele será exibido em todas as páginas."""
   return gera_html_botao_IMP.menu_cadastrar()
+
+def menu_carrinho():
+  """Retorna um fragmento de HTML que produz o botao "Carrinho" para uso no menu geral.
+  Este botão permite que o usuário solicite ao servidor uma página que mostra o estado
+  atual do seu carrinho de compras."""
+  return gera_html_botao_IMP.menu_carrinho()
+
+def erro_ok():
+  """Retorna um fragmento de HTML que produz o botao de botão que vai ser incluído em páginas de erro.
+  Quando o usuário clica nesse botão, ele é redirecionado para a página principal
+  (homepage) da loja."""
+  return gera_html_botao_IMP.erro_ok()
 
 # As funções abaixo geram botões "<input type=submit>" para uso dentro de "<form>...</form>":
 
@@ -61,15 +78,3 @@ def submit_cadastrar_usuario():
 def submit_entrar():
   """Retorna o botão para a submissão de entrar"""
   return gera_html_botao_IMP.submit_entrar()
-
-def submit_sair():
-  """Retorna o botão para a confirmação de sair"""
-  return gera_html_botao_IMP.submit_sair()
-
-def inicio():
-  """Retorna o botão que redireciona a tela inicia"""
-  return gera_html_botao_IMP.botao_inicio()
-
-def carrinho():
-  """Retorna o botão que redireciona para a pagina do carrinho"""
-  return gera_html_botao_IMP.botao_carrinho()

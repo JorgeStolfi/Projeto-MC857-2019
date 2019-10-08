@@ -2,6 +2,7 @@
 
 import sys
 import identificador
+from utils_testes import erro_prog, mostra
 
 ok_global = True  # Vira {False} se houver erro.
 
@@ -12,21 +13,21 @@ def verifica(rotulo, let, indice, ident):
   sys.stderr.write(rotulo + "\n")
   sys.stderr.write("  let = '" + let + "' indice = " + str(indice) + " ident = '" + str(ident) + "'\n")
   if not type(indice) is int:
-    sys.stderr.write("  **erro - tipo de {indice} não é int\n")
+    aviso_prog("- tipo de {indice} não é int",True)
     ok = False
   elif indice < 1 or indice > 99999999:
-    sys.stderr.write("  **erro - valor de {indice} fora dos limites\n")
+    aviso_prog("- valor de {indice} fora dos limites",True)
     ok = False
   if not type(ident) is str:
-    sys.stderr.write("  **erro - tipo de {ident} não é str\n")
+    aviso_prog("- tipo de {ident} não é str",True)
     ok = False
   elif len(ident) != 10:
-    sys.stderr.write("  **erro - comprimento de {ident} incorreto\n")
+    aviso_prog("- comprimento de {ident} incorreto",True)
     ok = False
   if ok:
     ident_esp = ("%s-%08d" % (let, indice))
     if ident != ident_esp:
-      sys.stderr.write("  **erro - identificador não bate com indice\n")
+      aviso_prog("- identificador não bate com indice",True)
       ok = False
   if ok:
     sys.stderr.write("  verifica: ok\n")
@@ -39,7 +40,7 @@ def verifica_lista(rotulo, let, indices, idents):
   if indices == None: indices = [].copy()
   sys.stderr.write(rotulo + "\n")
   if len(indices) != len(idents):
-    sys.stderr.write("  **erro - tamanhos das listas não batem\n")
+    aviso_prog("- tamanhos das listas não batem",True)
     ok = False
   else:
     pares = zip(indices, idents)
@@ -72,9 +73,6 @@ verifica_lista("identificador.de_lista_de_indices", let3, indices3, idents3)
 # Veredito final:
 
 if ok_global:
-  # Terminou OK:
   sys.stderr.write("Teste terminou sem detectar erro\n")
 else:
-  # Termina com erro:
-  sys.stderr.write("**erro - teste falhou\n")
-  assert False
+  erro_prog("- teste falhou")

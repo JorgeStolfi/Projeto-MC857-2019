@@ -34,6 +34,9 @@ colunas = \
     ( 'documento', type("foo"), 'TEXT', True,    6,  24  ), # Número do documento de identidade (RG, pasaporte, etc.)
   )
   # Descrição das colunas da tabela na base de dados.
+  
+diags = False
+  # Quando {True}, mostra comandos e resultados em {stderr}.
 
 # Definição interna da classe {ObjUsuario}:
 
@@ -47,15 +50,15 @@ class ObjUsuario_IMP:
 # Implementação das funções:
 
 def inicializa(limpa):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
   else:
     tabela_generica.cria_tabela(nome_tb, colunas)
 
 def cria(atrs):
-  global cache, nome_tb, letra_tb, colunas
-  mostra(0,"usuario_IMP.cria(" + str(atrs) + ") ...")
+  global cache, nome_tb, letra_tb, colunas, diags
+  if diags: mostra(0,"usuario_IMP.cria(" + str(atrs) + ") ...")
 
   # Verifica unicidade de CPF:
   for chave in ('CPF', 'email'):
@@ -69,61 +72,57 @@ def cria(atrs):
       elif chave == 'email':
         id_bus = busca_por_email(val)
       if id_bus != None:
-        erro_prog("atributo '" + chave + "' já existe: " + id_bus + "")
+        erro_prog("atributo '" + chave + "' já existe: " + id_bus)
 
   # Converte atibutos para formato SQL.
   mods_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, tabelas.obj_para_indice)
   # Insere na base de dados e obtém o índice na mesma:
   usr = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, mods_SQL)
   if not type(usr) is usuario.ObjUsuario:
-    erro_prog("tipo de objeto errado" + str(usr) + "")
+    erro_prog("tipo de objeto errado" + str(usr))
   return usr
 
 def obtem_identificador(usr):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return usr.id_usuario
 
 def obtem_indice(usr):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return identificador.para_indice(letra_tb, usr.id_usuario)
 
 def obtem_atributos(usr):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return usr.atrs.copy()
 
 def muda_atributos(usr, mods):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   # Converte valores de formato memória para formato SQL.
   mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice)
   res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, usr.id_usuario, mods_SQL)
   if res != usr:
-    erro_prog(" acesso à tabela falhou res = " + str(res) + "")
+    erro_prog(" acesso à tabela falhou res = " + str(res))
   return
 
 def busca_por_identificador(id_usuario):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   usr = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_usuario)
   return usr
 
 def busca_por_indice(ind):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   usr = tabela_generica.busca_por_indice(nome_tb, cache, letra_tb, colunas, def_obj, ind)
   return usr
 
 def busca_por_email(em):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return busca_por_campo_unico('email', em)
 
 def busca_por_CPF(CPF):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return busca_por_campo_unico('CPF', CPF)
 
-def campos():
-  global cache, nome_tb, letra_tb, colunas
-  return colunas
-
 def cria_testes():
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   inicializa(True)
   lista_atrs = \
     [ 
@@ -177,21 +176,21 @@ def def_obj(obj, id_usuario, atrs_SQL):
 
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
   equivalentes na memória."""
-  global cache, nome_tb, letra_tb, colunas
-  mostra(0,"usuario_IMP.def_obj(" + str(obj) + ", " + id_usuario + ", " + str(atrs_SQL) + ") ...")
+  global cache, nome_tb, letra_tb, colunas, diags
+  if diags: mostra(0,"usuario_IMP.def_obj(" + str(obj) + ", " + id_usuario + ", " + str(atrs_SQL) + ") ...")
   if obj == None:
     # Converte atributos para formato na memória.
     atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.obj_para_indice)
-    mostra(2,"criando objeto, atrs_mem = " + str(atrs_mem) + "")
+    if diags: mostra(2,"criando objeto, atrs_mem = " + str(atrs_mem))
     if len(atrs_mem) != len(colunas):
-      erro_prog("numero de atributos = " + str(len(atrs_mem)) + " devia ser " + str(len(colunas)) + "")
+      erro_prog("numero de atributos = " + str(len(atrs_mem)) + " devia ser " + str(len(colunas)))
     obj = usuario.ObjUsuario(id_usuario, atrs_mem)
     
   else:
     assert obj.id_usuario == id_usuario
     # Converte atributos para formato na memória.
     mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.obj_para_indice)
-    mostra(2,"modificando objeto, mods_mem = " + str(mods_mem) + "")
+    if diags: mostra(2,"modificando objeto, mods_mem = " + str(mods_mem))
     if len(mods_mem) > len(colunas):
       erro_prog("numero de atributos a alterar = " + str(len(mods_mem)) + " excessivo")
     
@@ -210,7 +209,7 @@ def def_obj(obj, id_usuario, atrs_SQL):
       if val != None and val_velho != None and (not type(val_velho) is type(val)):
         erro_prog("tipo do campo '" + chave + "' incorreto")
       obj.atrs[chave] = val
-  mostra(2,"obj = " + str(obj) + "")
+  if diags: mostra(2,"obj = " + str(obj))
   return obj
 
 def busca_por_campo_unico(chave, val):
@@ -218,7 +217,7 @@ def busca_por_campo_unico(chave, val):
   tem valor {val}, supondo que ele é único. Se
   encontrar, devolve o identificador desse usuário,
   senão devolve {None}"""
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   res = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, chave, val)
   if res == None:
     # Não achou ninguém?
@@ -227,10 +226,14 @@ def busca_por_campo_unico(chave, val):
     # Não achou ninguém:
     return None
   elif type(res) is str:
-    # Deu erro:
     erro_prog("busca na tabela falhou, res = " + res)
   else:
     if len(res) != 1:
       erro_prog("campo '" + chave + "' val = '" + str(val) + "' duplicado - res = " + str(res))
     id_usuario = res[0];
     return id_usuario
+
+def diagnosticos(val):
+  global cache, nome_tb, letra_tb, colunas, diags
+  diags = val
+  return

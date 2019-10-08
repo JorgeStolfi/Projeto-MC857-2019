@@ -4,6 +4,7 @@
 import tabela_generica
 import base_sql
 import identificador
+from utils_testes import erro_prog, mostra
 
 # Para diagnóstico:
 import sys
@@ -24,9 +25,7 @@ def mostra_obj(rotulo, obj, id, atrs):
       atrs_conferem = (obj.atrs == atrs)
       sys.stderr.write("  CONFERE: " + str(id_confere) + ", " + str(atrs_conferem) + "\n")
   else:
-    sys.stderr.write("  **erro: resultado não é objeto do tipo correto\n")
-    sys.stderr.write("  " + str(obj) + "\n")
-    assert False
+    erro_prog("resultado "  + str(obj) + " não é objeto do tipo correto")
 
 def mostra_lista_ids(rotulo, res):
   """Mostra uma lista de ids que devem resultar de uma busca por campos."""
@@ -37,15 +36,12 @@ def mostra_lista_ids(rotulo, res):
       obj = tabela_generica.busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident)
       mostra_obj("  ", obj, ident, None)
   else:
-    sys.stderr.write("  **erro: resultado não é lista ou tupla\n")
-    sys.stderr.write("  " + str(res) + "\n")
-    assert False
-   
+    erro_prog("resultado " + str(res) + " não é lista ou tupla")
 
 # ----------------------------------------------------------------------
 
 sys.stderr.write("Conectando com base de dados...\n")
-res = base_sql.conecta("DB/MC857", None, None)
+res = base_sql.conecta("DB", None, None)
 assert res == None
 
 # ----------------------------------------------------------------------

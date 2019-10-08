@@ -8,6 +8,7 @@ import conversao_sql
 import identificador
 import sessao
 import compra
+from utils_testes import erro_prog, mostra
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
  
@@ -24,24 +25,27 @@ letra_tb = "S"
 
 colunas = None
   # Descrição das colunas da tabela na base de dados.
+  
+diags = False
+  # Quando {True}, mostra comandos e resultados em {stderr}.
 
 # Definição interna da classe {ObjUsuario}:
 
 class ObjSessao_IMP:
   def __init__(self, id_sessao, atrs):
-    global cache, nome_tb, letra_tb, colunas
+    global cache, nome_tb, letra_tb, colunas, diags
     self.id_sessao = id_sessao
     self.atrs = atrs.copy()
 
 # Implementações:
 
 def inicializa(limpa):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   colunas = \
     ( ( "usr",          usuario.ObjUsuario, 'INTEGER', False,   0,  99999999  ),    # Objeto/índice do usuário.
       ( "abrt",         type(False),        'INTEGER', False,   0,         1  ),    # Estado da sessao (1 = aberta).
       ( "cookie",       type("foo"),        'TEXT',    False,  10,        45  ),    # Cookie da sessao
-      ( "carrinho",     compra.ObjCompra,   'INTEGER', True,    0,  99999999  )      #Objeto carrinho
+      ( "carrinho",     compra.ObjCompra,   'INTEGER', True,    0,  99999999  )     # Objeto carrinho
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
@@ -49,73 +53,68 @@ def inicializa(limpa):
     tabela_generica.cria_tabela(nome_tb, colunas)
  
 def cria(usr, cookie, carrinho):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   # Insere na base de dados e obtém o índice na mesma:
   atrs_SQL = { 'usr': usuario.obtem_indice(usr), 'abrt': 1, 'cookie': cookie, 'carrinho' : compra.obtem_indice(carrinho)}
   ses = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
   if not type(ses) is sessao.ObjSessao:
-    sys.stderr.write("sessao_IMP.cria: ** erro: " + str(ses) + "\n");
-    assert False
+    erro_prog("resultado de tipo inválido = " + str(ses))
   return ses
 
 def obtem_identificador(ses):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return ses.id_sessao
 
 def obtem_indice(ses):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return identificador.para_indice(letra_tb, ses.id_sessao)
 
 def obtem_atributos(ses):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return ses.atrs.copy()
 
 def obtem_usuario(ses):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return ses.atrs['usr']
 
 def obtem_cookie(ses):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return ses.atrs['cookie']
 
 def aberta(ses):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return ses.atrs['abrt']
 
 def obtem_carrinho(ses):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   return ses.atrs['carrinho']
 
 def busca_por_identificador(id_sessao):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   ses = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_sessao)
   return ses
 
 def busca_por_indice(ind):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   ses = tabela_generica.busca_por_indice(nome_tb, cache, letra_tb, colunas, def_obj, ind)
   return ses
 
 def muda_atributos(ses, mods):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice);
   res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, ses.id_sessao, mods_SQL)
   if res != ses:
-    sys.stderr.write("sessao_IMP.muda_atributos: **erro " + str(res) + "\n")
-    assert False
+    erro_prog("resultado inesperado = " + str(res))
   return
 
 def fecha(ses):
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
+  # !!! Verificar se a sessão não é {None} e está aberta. !!!
   mods = { 'abrt': False }
   muda_atributos(ses, mods)
 
-def campos():
-  global cache, nome_tb, letra_tb, colunas
-  return colunas
-
 def cria_testes():
-  global cache, nome_tb, letra_tb, colunas
+  global cache, nome_tb, letra_tb, colunas, diags
   inicializa(True)
   # Identificador de usuários e cookie de cada sessão:
   lista_ucs = \
@@ -144,31 +143,31 @@ def def_obj(obj, id_sessao, atrs_SQL):
   
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
   equivalentes na memória."""
-  global cache, nome_tb, letra_tb, colunas
-  sys.stderr.write("produto_IMP.def_obj(" + str(obj) + ", " + id_sessao + ", " + str(atrs_SQL) + ") ...\n")
+  global cache, nome_tb, letra_tb, colunas, diags
+  if diags: mostra(0, "produto_IMP.def_obj(" + str(obj) + ", " + id_sessao + ", " + str(atrs_SQL) + ") ...")
   if obj == None:
     atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
-    sys.stderr.write("  criando objeto, atrs_mem = " + str(atrs_mem) + "\n")
+    if diags: mostra(2, "criando objeto, atrs_mem = " + str(atrs_mem))
     obj = sessao.ObjSessao(id_sessao, atrs_mem)
   else:
     assert obj.id_sessao == id_sessao
     mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
-    sys.stderr.write("  modificando objeto, mods_mem = " + str(mods_mem) + "\n")
+    if diags: mostra(2, "modificando objeto, mods_mem = " + str(mods_mem))
     if len(mods_mem) > len(obj.atrs):
-      sys.stderr.write("  **erro: numero excessivo de atributos a alterar\n")
-      assert False
+      erro_prog("numero excessivo de atributos a alterar")
     for chave, val in mods_mem.items():
       if not chave in obj.atrs:
-        sys.stderr.write("  **erro: chave '" + chave + "' inválida\n")
-        assert False
+        erro_prog("chave '" + chave + "' inválida")
       val_velho = obj.atrs[chave]
       if not type(val_velho) is type(val):
-        sys.stderr.write("  **erro: tipo do campo '" + chave + "' incorreto\n")
-        assert False
+        erro_prog("tipo do campo '" + chave + "' incorreto")
       if chave == 'usr' and val != val_velho:
-        sys.stderr.write("  **erro: campo '" + chave + "' não pode ser alterado\n")
-        assert False
+        erro_prog("campo '" + chave + "' não pode ser alterado")
       obj.atrs[chave] = val
-  sys.stderr.write("  obj = " + str(obj) + "\n")
+  if diags: mostra(2, "obj = " + str(obj))
   return obj
 
+def diagnosticos(val):
+  global cache, nome_tb, letra_tb, colunas, diags
+  diags = val
+  return

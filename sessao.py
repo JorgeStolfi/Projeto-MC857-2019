@@ -10,13 +10,8 @@ import usuario
 # Implementaçao deste módulo:
 import sessao_IMP; from sessao_IMP import ObjSessao_IMP
 
-# !!! Acrescentar mais um atributo 'carrinho' que é um objeto da classe {ObjCompra}. !!!
-# !!! Acrescentar o parâmetro {carrinho} à função {sessao.cria(usr,cookie)}.  Procurar todas as chamadas e consertar. !!!
-# !!! Acrescentar a função {sessao.obtem_carrinho(ses)} !!!
-# !!! No módulo de teste, passar {None} como carrinho !!!
-
 def inicializa(limpa):
-  """Inicializa o modulo, criando a tabela de sessões na base de dados.
+  """Inicializa o modulo, criando a tabela "sessoes" na base de dados.
   Deve ser chamada apenas uma vez no ínicio da execução do servidor, 
   depois de chamar {base_sql.conecta}. Não retorna nenhum valor.  
   Se o parâmetro booleano {limpa} for {True}, apaga todas as linhas da tabela
@@ -26,6 +21,8 @@ def inicializa(limpa):
 class ObjSessao(ObjSessao_IMP):
   """Um objeto desta classe representa uma sessao de acesso ao
   servidor.  Os atributos deste objeto, por enquanto, são:
+  
+    !!! Atualizar conforme implementação !!!
   
     'usr' {ObjUsuario} - o usuário que fez login na sessão.
     'abrt' {bool} - estado da sessao.
@@ -42,12 +39,11 @@ class ObjSessao(ObjSessao_IMP):
   {ObjSessao}.
   
   Cada linha da tabela tem um índice inteiro (chave primária) distinto, que é atribuído
-  quando a linha é criada.  Neste sistema, esse índice é manipulado na forma de 
-  um identificador de sessão, uma string da forma "S-{NNNNNNNN}"
-  onde {NNNNNNNN} é o índice formatado em 8 algarismos.
+  quando a linha é criada.  Casa sessão também tem um identificador de sessão, uma 
+  string da forma "S-{NNNNNNNN}" onde {NNNNNNNN} é o índice formatado em 8 algarismos.
   
   Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
-  atributos da sessão (menos o identificador), como definido por {sessão.campos()}."""
+  atributos da sessão (menos o identificador/índice)."""
  
 def cria(usr, cookie, carrinho):
   """Cria um novo objeto da classe {ObjSessao}, associada ao usuário {usr},
@@ -98,8 +94,8 @@ def muda_atributos(ses, mods):
 def fecha(ses):
   """Registra o logout do usuário na sessão {ses}, mudando o atributo 'abrt'
   permanentemente para {False}. Também altera esse campo na base de dados.
-  Em caso de sucesso, retorna o próprio objeto."""
-  return sessao_IMP.fecha(ses)
+  A sessão não pode ser {None} e deve estar aberta.  Não retorna nenum resultado."""
+  sessao_IMP.fecha(ses)
 
 def busca_por_identificador(id_sessao):
   """Localiza uma sessao com identificador {id_sessao} (uma string da forma
@@ -112,12 +108,6 @@ def busca_por_indice(ind):
   Se tal sessão não existe, devolve {None}."""
   return sessao_IMP.busca_por_indice(ind)
 
-def campos():
-  """Retorna uma seqüência de tuplas que descrevem os nomes e propriedades
-  dos atributos de um {ObjSessao}, menos o identificador.  O resultado é adequado 
-  para o parâmetro {cols} das funções do módulo {tabela_generica}."""
-  return sessao_IMP.campos()
-
 def cria_testes():
   """Limpa a tabela de sessoes com {inicializa(True)}, e cria três sessões
   para fins de teste, incluindo-as na tabela.  As sessões estarão
@@ -127,3 +117,9 @@ def cria_testes():
   depois de chamar {base_sql.conecta}.Supõe que a tabela de usuários 
   já foi inicializada e tem pelo menos três entradas.""" 
   sessao_IMP.cria_testes()
+
+def diagnosticos(val):
+  """Habilita (se {val=True}) ou desabilita (se {val=False}) a
+  impressão em {sys.stderr} de mensagens de diagnóstico pelas 
+  funções deste módulo."""
+  sessao_IMP.diagnosticos(val)

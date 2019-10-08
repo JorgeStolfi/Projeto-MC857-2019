@@ -1,36 +1,19 @@
 # Implementação do módulo {gera_html_botao}.
 
-#####Funções <button>#####
+# Interfaces do projeto usados por este módulo: 
+import gera_html_elem
 
-def botao_simples(texto, URL, cor_fundo):
-  tam_fonte = "18px"
-  fam_fonte = "Courier"
-  return \
-    "<span style=\"\n" + \
-    "  display: inline-block;\n" + \
-    "  font-family:" + fam_fonte + ";\n" + \
-    "  font-size:" + tam_fonte + ";\n" + \
-    "  padding: 5px;\n" + \
-    "  background-color:" + cor_fundo + ";\n" + \
-    "  text-align: center;\n" + \
-    "\">\n" + \
-    "  <button\n" + \
-    "    type=\"button\"\n" + \
-    "    onclick=\"location.href='" + URL + "'\"\n" + \
-    "  >" + texto + "</button>\n" + \
-    "</span>"
+# Outros módulos usados por este módulo:
 
-def botao_inicio():
-  texto = "Inicio"
+# !!! Melhorar a aparência dos botões. !!!
+# !!! Reduzir o tamanho dos botões para economizar espaço da tela. !!!
+
+# BOTÕES DE TIPO <button>
+
+def principal():
+  texto = "Principal"
   cor_fundo = "#fff888"
-  caminho = '/'
-  return botao_simples(texto, caminho, cor_fundo)
-
-def botao_carrinho():
-  texto = "Carrinho"
-  cor_fundo = "#fff888"
-  caminho = '/carrinho'
-  return botao_simples(texto, caminho, cor_fundo)
+  return botao_simples(texto, "principal", cor_fundo)
 
 def menu_entrar():
   texto = "Entrar"
@@ -47,15 +30,17 @@ def menu_cadastrar():
   cor_fundo = "#fff888"
   return botao_simples(texto, "menu_cadastrar", cor_fundo)
 
-#####Funções <submit>#####
+def menu_carrinho():
+  texto = "Carrinho"
+  cor_fundo = "#fff888"
+  return botao_simples(texto, "menu_carrinho", cor_fundo)
 
-def botao_submit(texto, URL, cor_fundo):
-  """Função INTERNA para as demais funções de botões "<input type=submit>". 
-  Retorna HTML do botão <submit> com texto e cor de fundo especificados."""
-  return \
-    "<span style=\"background-color:" + cor_fundo + ";text-align: center;\">\n" + \
-    "  <input type=\"submit\" formaction=\"" + URL + "\" value=\"" + texto + "\">" + \
-    "</span>"
+def erro_ok():
+  texto = "OK"
+  cor_fundo = "#44ff44"
+  return botao_simples(texto, "", cor_fundo)
+
+# BOTÕES DE TIPO <submit>
 
 def submit_ver_produto():
   texto = "Ver"
@@ -82,7 +67,32 @@ def submit_entrar():
   cor_fundo = "#fff888"
   return botao_submit(texto, "submit_entrar", cor_fundo)
 
-def submit_sair():
-  texto = "Sair"
-  cor_fundo = "#fff888"
-  return botao_submit(texto, "submit_sair", cor_fundo)
+# FUNÇÕES INTERNAS
+
+def botao_simples(texto, URL, cor_fundo):
+  """Função INTERNA que gera um botão genérico de tipo "<button>",
+  com o {texto} e {cor_fundo} especificados.  Quando clicado,
+  o botão emite um comando HTTP 'GET' para o {URL} dado."""
+  
+  # O botão propriamente dito:
+  html_cru = "<button type=\"button\" onclick=\"location.href='" + URL + "'\">" + texto + "</button>"
+  
+  # Define o estilo:
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", cor_fundo)
+  return html
+
+def botao_submit(texto, URL, cor_fundo):
+  """Função INTERNA que gera um botões "<input type=submit>"
+  como {texto} e {cor_fundo} especificados.  Quando clicado,
+  o botão emite um comando HTTP 'POST' para o {URL} dado."""
+  
+  # O botão propriamente dito:
+  html_cru = "<input type=\"submit\" formaction=\"" + URL + "\" value=\"" + texto + "\">"
+  
+  # Define o estilo:
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", cor_fundo)
+  return html

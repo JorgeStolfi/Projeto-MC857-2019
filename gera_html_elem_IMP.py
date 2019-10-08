@@ -1,14 +1,20 @@
 # Implementação do módulo {gera_html_elem}.
 
-# Interfaces importadas por esta implementação:
-from datetime import datetime, timezone
+# Interfaces do projeto importadas por esta implementação:
 import gera_html_form
+import gera_html_elem
 import gera_html_botao
 import produto
+import compra
+
+# Outros módulos importados por esta implementação:
+from datetime import datetime, timezone
 
 #Funções exportadas por este módulo:
 
 def cabecalho(title):
+  # !!! Acrescentar um parãmetro {grande} que reduz o tamanho do título se for {False}. !!!
+  # !!! Procurar todos os usos desta função e acrescentar esse parãmetro. !!!
   return \
     "<!doctype html>\n" + \
     "<html>\n" + \
@@ -30,16 +36,32 @@ def rodape():
     "</html>\n"
 
 def menu_geral(logado, nome_usuario):
-  return \
-    """
-    <nav>
-      """ + gera_html_botao.inicio() + """
-      """ + gera_html_form.buscar_produtos() + """
-      """ + gera_html_botao.menu_sair() if logado else gera_html_botao.menu_entrar() + """
-      """ + '' if logado else gera_html_botao.menu_cadastrar() + """
-      """ + gera_html_botao.carrinho() if logado else '' + """
-    </nav>
-    """
+  html_bt_principal = "  " + gera_html_botao.principal() + "\n"
+  html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
+  if logado:
+    html_bt_sair = "  " + gera_html_botao.menu_sair() + "\n"
+    html_nome = "  " + gera_html_elem.bloco_texto(nome_usuario, "inline_block", "Courier", "14px", "bold", None, None, None, "#ff44ff") + "\n"
+    html_botao_carrinho =  "  " + gera_html_botao.menu_carrinho() + "\n"
+    html_bt_entrar = ""
+    html_bt_cadastrar = ""
+  else:
+    html_bt_sair = ""
+    html_nome = ""
+    html_botao_carrinho =  ""
+    html_bt_entrar = "  " + gera_html_botao.menu_entrar() + "\n"
+    html_bt_cadastrar = "  " + gera_html_botao.menu_cadastrar() + "\n"
+  
+  html_menu = \
+    "<nav>\n" + \
+      html_bt_principal + \
+      html_fm_buscar + \
+      html_bt_sair + \
+      html_nome + \
+      html_botao_carrinho + \
+      html_bt_entrar + \
+      html_bt_cadastrar + \
+    "</nav>"
+  return html_menu
 
 def span(estilo, conteudo):
   est = (" style=\"" + estilo + "\n\"" if estilo != "" else "")
@@ -73,18 +95,18 @@ def bloco_de_produto(prod, qt, detalhe):
     atrs = produto.obtem_atributos(prod)
 
     # Monta o parágrafo de descrição
-    estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;"
+    estilo_parag = "\n  width: 600px;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
 
     d_curta = atrs['descr_curta']
     html_d_curta = paragrafo(estilo_parag, bloco_texto(d_curta, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
 
     d_media = atrs['descr_media']
-    html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "12px", "normal", "0px", "left", "#000000", None))
+    html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
 
     qt_inicial = (qt if qt != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
     if detalhe:
       d_longa = atrs['descr_longa']
-      html_d_longa = paragrafo(estilo_parag, bloco_texto(d_longa, None, "Courier", "12px", "normal", "0px", "left", "#000000", None))
+      html_d_longa = paragrafo(estilo_parag, bloco_texto(d_longa, None, "Courier", "14px", "normal", "0px", "left", "#000000", None))
       html_botao = gera_html_form.comprar_produto(id_produto, qt_inicial)
     else:
       html_d_longa = ""
@@ -96,45 +118,73 @@ def bloco_de_produto(prod, qt, detalhe):
       html_qt = ""
     else:
       preco = produto.calcula_preco(prod, qt)
-      html_qt = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "35px", "bold", "0px", "left", "#0000ff", "#fff888")
+      html_qt = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
 
-    str_preco = ("R$%.2f" % preco)
-    html_preco = paragrafo(estilo_parag, bloco_texto(str_preco, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
+    str_preco = ("R$ %.2f" % preco)
+    html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-    html_descr = html_d_curta + html_preco + "<hr>" + html_d_media + "<br>" + html_d_longa + html_qt + html_botao + "<hr>"
+    html_descr = html_d_curta  + html_d_media + html_d_longa + html_qt + html_preco + html_botao
     bloco_descr = span("\n display: inline-block;", html_descr)
 
-    tam_imagem = (200 if detalhe else 150)
-    imagem = ("<img src=\"imagens/155951.png\" alt=\"" + id_produto + "\" style=\"float:left;height:%dpx;\"/>" % tam_imagem)
+    tam_img = (200 if detalhe else 100)
+    nome_img = atrs['imagem']
+    html_img_crua = ("<img src=\"imagens/" + nome_img + "\" alt=\"" + id_produto + "\" style=\"float:left;height:%dpx;\"/>" % tam_img)
     # imagem = "&bullet;"
-    imagem_click = "<a href=\"imagens/155951.png\" border=0px>" + imagem + "</a>"
+    html_img = "<a href=\"imagens/" + nome_img + "\" border=0px>" + html_img_crua + "</a>"
 
+    # !!! Reduzir o espaço vertical usado por cada produto, quando {detalhe} é falso !!!
     bloco_final = \
-      span("\n padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", imagem_click + bloco_descr)
+      span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", html_img + bloco_descr)
     return bloco_final
 
-  def bloco_de_compra(comp):
-    lista_de_itens = compra.obtem_itens(comp)
-    
-    estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;"
-    bloco_final = ""
-    
-    for item in lista_de_itens:
-      #NOME E DESCRICÃO DO PRODUTO, COM BOTÃO 'VER'
-      desc = item.desc
-      html_desc = paragrafo(estilo_parag, bloco_texto(desc, None, "Courier", "18px", "bold", "2px", "left", "#ff0000", "#88fff8"))
-      str_preco = ("R$%.2f" % preco)
-      html_preco = paragrafo(estilo_parag, bloco_texto(str_preco, None, "Courier", "20px", "bold", "2px", "left", "#000000", "#f8ff88"))
-      html_botao = gera_html_form.ver_produto(id_produto)
-      html_descr = html_desc + html_preco + html_botao
-      #FOTO DO PRODUTO
-      imagem = ("<img src=\"imagens/155951.png\" alt=\"" + id_compra + "\" style=\"float:left;height:%dpx;\"/>" % 80)
-      imagem_click = "<a href=\"imagens/155951.png\" border=0px>" + imagem + "</a>
-      #MONTA BLOCO PRODUTO
-      bloco_descr = span("\n  display: inline-block;", html_descr)
-      bloco_item = \
-        span("\n  display: block;\n  background-color: #00ff00;", imagem_click + bloco_descr)
-      bloco_final = bloco_final + bloco_item
-      
-    return bloco_final
+def bloco_de_compra(cpr):
+  # !!! A implementação abaixo está incorreta. Veja os "!!!" na interface. !!!
+
+  itens = compra.obtem_itens(cpr)
+  # 
+  # estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;"
+  # bloco_final = ""
+  # 
+  # for itm in itens:
+  #   #NOME E DESCRICÃO DO PRODUTO, COM BOTÃO 'VER'
+  #   desc = itm.desc
+  #   html_desc = paragrafo(estilo_parag, bloco_texto(desc, None, "Courier", "18px", "bold", "2px", "left", "#ff0000", "#88fff8"))
+  #   str_preco = ("R$%.2f" % preco)
+  #   html_preco = paragrafo(estilo_parag, bloco_texto(str_preco, None, "Courier", "20px", "bold", "2px", "left", "#000000", "#f8ff88"))
+  #   html_botao = gera_html_form.ver_produto(id_produto)
+  #   html_descr = html_desc + html_preco + html_botao
+  #   #FOTO DO PRODUTO
+  #   imagem = ("<img src=\"imagens/155951.png\" alt=\"" + id_compra + "\" style=\"float:left;height:%dpx;\"/>" % 80)
+  #   html_img = "<a href=\"imagens/155951.png\" border=0px>" + imagem + "</a>
+  #   #MONTA BLOCO PRODUTO
+  #   bloco_descr = span("\n  display: inline-block;", html_descr)
+  #   bloco_item = \
+  #     span("\n  display: block;\n  background-color: #00ff00;", html_img + bloco_descr)
+  #   bloco_final = bloco_final + bloco_item
+  # 
+  erro_html = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "24px", "bold", "2px", "left", "#ff0000", "#88fff8")
+  itens_html = bloco_texto(str(itens), None, "Courier", "14px", "normal", "2px", "left", "#000000", None)
+  bloco_final = erro_html + "\n<br/><hr/>\n" + itens_html
+  return bloco_final
+
+def bloco_de_erro(msg):
+  fam_fonte = "Courier"
+  # Cabeçalho espalhafatoso:
+  html_tit = bloco_texto("ERRO", None, fam_fonte, "24px", "bold", "20px", "left", "#880000", "#ffdd44")
+
+  # Formata a mensagem:
+  html_msg = bloco_texto(msg, None, fam_fonte, "20px", "bold", "2px", "left", "#000000", None)
+
+  # Contrói o botão "OK":
+  html_botao = gera_html_botao.erro_ok()
+
+  # Junta as partes:
+  html_tudo = html_tit + "<br/>" + html_msg + "<br/>" + html_botao
+  
+  # Formata:
+  estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  align: center;"
+  bloco_final = paragrafo(estilo_parag, html_tudo)
+  
+  return bloco_final
+
  

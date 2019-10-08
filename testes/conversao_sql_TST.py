@@ -3,6 +3,7 @@
 #Testes do módulo {conversao_sql}
 import identificador
 import conversao_sql
+from utils_testes import erro_prog, mostra
 
 # Para diagnóstico:
 import sys
@@ -73,15 +74,17 @@ def verifica_valor(rotulo, val_mem, tipo_mem, val_SQL, tipo_SQL, nulo_ok, vmin, 
    
   val_SQL_cmp = conversao_sql.valor_mem_para_valor_SQL(val_mem, tipo_mem, tipo_SQL, nulo_ok, vmin, vmax, obtem_bobo_indice)
   if val_SQL_cmp != val_SQL:
-    sys.stderr.write("  **erro: {valor_mem_para_valor_SQL} não bate = '" + str(val_SQL_cmp) + "'\n")
+    aviso_prog("{valor_mem_para_valor_SQL} não bate = '" + str(val_SQL_cmp) + "'",True)
     ok = False
   val_mem_cmp = conversao_sql.valor_SQL_para_valor_mem(val_SQL, tipo_SQL, tipo_mem, nulo_ok, vmin, vmax, obtem_bobo_obj)
   if val_mem_cmp != val_mem:
-    sys.stderr.write("  **erro: {valor_SQL_para_valor_mem} não bate = '" + str(val_mem_cmp) + "'\n")
+    aviso_prog("{valor_SQL_para_valor_mem} não bate = '" + str(val_mem_cmp) + "'",True)
     ok = False
   if ok:
     sys.stderr.write("  verifica_valor: ok\n")
   ok_global = ok_global and ok
+  sys.stderr.write("%s\n" % ("-" * 70))
+  return
   
 def verifica_dict(rotulo, dic_mem, dic_SQL):
   """Testa {dict_mem_para_dict_SQL} e {dict_SQL_para_dict_mem}."""
@@ -98,7 +101,7 @@ def verifica_dict(rotulo, dic_mem, dic_SQL):
   dic_SQL_cmp = conversao_sql.dict_mem_para_dict_SQL(dic_mem, colunas, obtem_bobo_indice)
   sys.stderr.write("    dic_SQL_cmp = '" + str(dic_SQL_cmp) + "'\n")
   if dic_SQL_cmp != dic_SQL:
-    sys.stderr.write("  **erro: {dict_mem_para_dict_SQL} não bate\n")
+    aviso_prog("{dict_mem_para_dict_SQL} não bate",True)
     ok = False
     
   # Verifica conversão SQL --> memória:
@@ -108,29 +111,31 @@ def verifica_dict(rotulo, dic_mem, dic_SQL):
     if tipo_mem is list or tipo_mem is tuple or tipo_mem is dict:
       # Campo não deve estar em {dic_SQL} nem em {dic_mem_cmp}:
       if chave in dic_SQL: 
-        sys.stderr.write("  **erro: chave " + chave + " não deveria estar em {dic_SQL}\n")
+        aviso_prog("chave " + chave + " não deveria estar em {dic_SQL}",True)
         ok = False
       elif chave in dic_mem_cmp: 
-        sys.stderr.write("  **erro: chave " + chave + " não deveria estar em {dic_mem_cmp}\n")
+        aviso_prog("chave " + chave + " não deveria estar em {dic_mem_cmp}",True)
         ok = False
     else:
       # Campo deve estar ou não estar em ambos:
       if (chave in dic_SQL) != (chave in dic_mem_cmp):
-        sys.stderr.write("  **erro: chave " + chave + " com presença incongruente\n")
+        aviso_prog("chave " + chave + " com presença incongruente",True)
         ok = False
       elif chave in dic_SQL:
         val_mem = dic_mem[chave]
         val_mem_cmp = dic_mem_cmp[chave]
         if val_mem_cmp != val_mem:
-          sys.stderr.write("  **erro: campo " + chave + " com valor incongruente\n")
+          aviso_prog("campo " + chave + " com valor incongruente",True)
           ok = False
   if len(dic_mem_cmp) != len(dic_SQL):
-    sys.stderr.write("  **erro: campos espúrios em {dic_mem_cmp\n")
+    aviso_prog("campos espúrios em {dic_mem_cmp",True)
     ok = False
   if ok:
     sys.stderr.write("  verifica_dict: ok\n")
   ok_global = ok_global and ok
-
+  sys.stderr.write("%s\n" % ("-" * 70))
+  return
+  
 # ----------------------------------------------------------------------
 # Testes de valor único:
 
@@ -150,7 +155,6 @@ dic1_mem = {
   'CPF':    "123.456.789-00",
   'pernas':  2,
   'volume':  418.4634,
-  'coisas': [1,2,3],
   'chato':   True,
   'bobagem': bobo2
 }
@@ -170,9 +174,6 @@ verifica_dict("dicionrio {dic1}", dic1_mem, dic1_SQL)
 # Veredito final:
 
 if ok_global:
-  # Terminou OK:
   sys.stderr.write("Teste terminou sem detectar erro\n")
 else:
-  # Termina com erro:
-  sys.stderr.write("**erro - teste falhou\n")
-  assert False
+  erro_prog("- teste falhou")

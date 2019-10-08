@@ -18,7 +18,7 @@ def dispara():
   """Esta função inicia a execução do servidor."""
   
   sys.stderr.write("conectando com a base de dados...\n")
-  dir = "DB/MC857"
+  dir = "DB"
   usr = None
   senha = None
   res = base_sql.conecta(dir,usr,senha); assert res == None

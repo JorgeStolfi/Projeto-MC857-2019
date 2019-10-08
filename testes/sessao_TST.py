@@ -2,20 +2,25 @@
 
 import base_sql
 import tabela_generica
+import tabelas
+import compra
 import sessao
 import usuario
 import identificador
 import utils_testes
 import sys
-import compra
+from utils_testes import erro_prog, mostra
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Conectando com base de dados...\n")
-base_sql.conecta("DB/MC857",None,None)
+base_sql.conecta("DB",None,None)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Inicializando módulo {usuario}, limpando tabela, criando usuários para teste:\n")
 usuario.cria_testes()
+
+sys.stderr.write("Inicializando módulo {produtos}, limpando tabela, criando produtos para teste:\n")
+compra.cria_testes()
 
 sys.stderr.write("Inicializando módulo {compra}, limpando tabela, criando compras para teste:\n")
 compra.cria_testes()
@@ -41,36 +46,43 @@ def verifica_sessao(rotulo, ses, indice, ident, usr, abrt, cookie, carrinho):
   """Testes básicos de consistência do objeto {ses} da classe {ObjSessao}, dados {indice},
   {ident} e {atrs} esperados."""
   global ok_global
+
+  sys.stderr.write("%s\n" % ("-" * 70))
+  sys.stderr.write("verificando sessão %s\n" % rotulo)
   atrs = { 'usr': usr, 'abrt': abrt, 'cookie': cookie, 'carrinho': carrinho }
-  ok = utils_testes.verifica_objeto(rotulo, sessao, sessao.ObjSessao, ses, indice, ident, atrs)
+  ok = utils_testes.verifica_objeto(sessao, sessao.ObjSessao, ses, indice, ident, atrs)
   
   if ses != None and type(ses) is sessao.ObjSessao:
     
     sys.stderr.write("testando {obtem_usuario()}:\n")
     usr1 = sessao.obtem_usuario(ses)
     if usr1 != usr:
-      sys.stderr.write("  **erro: retornou " + str(usr1) + ", deveria ter retornado " + str(usr) + "\n")
+      aviso_prog("retornou " + str(usr1) + ", deveria ter retornado " + str(usr),True)
       ok = False
       
     sys.stderr.write("testando {aberta()}:\n")
     abrt1 = sessao.aberta(ses)
     if abrt1 != abrt:
-      sys.stderr.write("  **erro: retornou " + str(abrt1) + ", deveria ter retornado " + str(abrt) + "\n")
+      aviso_prog("retornou " + str(abrt1) + ", deveria ter retornado " + str(abrt),True)
       ok = False
        
     sys.stderr.write("testando {obtem_cookie()}:\n")
     cookie1 = sessao.obtem_cookie(ses)
     if cookie1 != cookie:
-      sys.stderr.write("  **erro: retornou " + str(cookie1) + ", deveria ter retornado " + str(cookie) + "\n")
+      aviso_prog("retornou " + str(cookie1) + ", deveria ter retornado " + str(cookie),True)
       ok = False
       
     sys.stderr.write("testando {obtem_carrinho()}:\n")
     carrinho1 = sessao.obtem_carrinho(ses)
     if carrinho1 != carrinho:
-      sys.stderr.write("  **erro: retornou " + str(carrinho1) + ", deveria ter retornado " + str(carrinho) + "\n")
+      aviso_prog("retornou " + str(carrinho1) + ", deveria ter retornado " + str(carrinho),True)
       ok = False
  
-  ok_global = ok_global and ok
+  if not ok:
+    aviso_prog("teste falhou",True)
+    ok_global = False
+
+  sys.stderr.write("%s\n" % ("-" * 70))
   return
 
 # ----------------------------------------------------------------------
@@ -100,9 +112,6 @@ verifica_sessao("fecha s1", s1, sindice1, sident1, usr1, False, scook1, cmp1)
 # Veredito final:
 
 if ok_global:
-  # Terminou OK:
   sys.stderr.write("Teste terminou sem detectar erro\n")
 else:
-  # Termina com erro:
-  sys.stderr.write("**erro - teste falhou\n")
-  assert False
+  erro_prog("- teste falhou")
