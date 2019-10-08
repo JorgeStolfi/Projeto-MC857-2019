@@ -13,7 +13,6 @@ def processa(ses, args):
   id_produto = args['id_produto']
   prod = produto.busca_por_identificador(id_produto)
   quantidade = float(args['quantidade'])
-  # carrinho = sessao.obtem_carrinho(ses)
-  carrinho = compra.busca_por_identificador("C-00000001") # !!! Temporário enquanto {sessao.obtem_carrinho} não existe.
+  carrinho = sessao.obtem_carrinho(ses)
   compra.acrescenta_item(carrinho, prod, quantidade)
   return gera_html_pag.mostra_compra(ses, carrinho)
