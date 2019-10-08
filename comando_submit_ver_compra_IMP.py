@@ -2,6 +2,8 @@
 
 import usuario
 import sessao
+import compra
+import gera_html_elem
 
 def processa(ses, args):
   id_compra = args['id_compra']
