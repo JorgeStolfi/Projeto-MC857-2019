@@ -1,15 +1,23 @@
 #! /usr/bin/python3
 
-import base_sql
+# Parent path
+import os,sys,inspect
+current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parent_dir = os.path.dirname(current_dir)
+sys.path.insert(0, parent_dir) 
+import base_sql 
 import tabela_generica
 import tabelas
 import compra
 import sessao
 import usuario
 import identificador
+
+# Current path
+sys.path.insert(0, current_dir) 
 import utils_testes
-import sys
 from utils_testes import erro_prog, mostra
+
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Conectando com base de dados...\n")
