@@ -190,6 +190,18 @@ def busca_por_indice(ind):
   cpr = tabela_generica.busca_por_indice(nome_tb, cache, letra_tb, colunas, def_obj, ind)
   return cpr
 
+def busca_por_usuario(id_usuario):
+  global cache, nome_tb, letra_tb, colunas, diags
+  ind_usuario = identificador.para_indice(id_usuario)
+  res = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "usuario", ind_usuario)
+  if res == None:
+    # Não achou ninguém?
+    return [].copy()
+  elif type(res) is not list:
+    erro_prog("busca na tabela falhou, res = " + res)
+  else:
+    return res
+
 def cria_testes():
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
   inicializa(True)
