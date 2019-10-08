@@ -1,7 +1,7 @@
 Correções no módulo gera_html_elem:
-    - Mudança na descrição da função bloco_de_compra: 
-        - o comportamento correto é que essa funçao monte uma página com 
-          as compras feitas por um cliente, devendo retornar um bloco
-          que mostre os dados da compra
+    - Mudança na descrição da função bloco_de_compra e no seu comportamento: 
+      essa funcao agora recebe um parâmetro detalhe que define se vão ser exibidos os produtos da compra, ou não
 
     - Acrescentar o parâmetro grande na função cabecalho do gera_html_elem. Quando for false, reduz o tamanho do título
+
+
