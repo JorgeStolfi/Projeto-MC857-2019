@@ -2,7 +2,6 @@
 
 import comando_menu_ver_carrinho_IMP
 
-# !!! Falta programa de teste deste módulo !!!
 # !!! Implementação incompleta !!!
 
 def processa(ses, args):
