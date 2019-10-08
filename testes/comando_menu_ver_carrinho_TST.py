@@ -2,7 +2,6 @@
 
 # Interfaces usadas por este script:
 import sys
-
 import comando_menu_ver_carrinho
 import base_sql
 import tabelas
