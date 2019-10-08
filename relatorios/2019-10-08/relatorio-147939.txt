@@ -1,0 +1,5 @@
+Correções no módulo gera_html_elem:
+    - Mudança na descrição da função bloco_de_compra: 
+        - o comportamento correto é que essa funçao monte uma página com 
+          as compras feitas por um cliente, devendo retornar um bloco
+          que mostre os dados da compra

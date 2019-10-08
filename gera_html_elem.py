@@ -105,9 +105,9 @@ def bloco_de_produto(prod, qt, detalhe):
   return gera_html_elem_IMP.bloco_de_produto(prod, qt, detalhe)
 
 def bloco_de_compra(compra):
-  """Devolve um fragmento HTML que decreve a compra {compra}, um objeto da classe {ObjCompra}."""
-  # !!! Descrição errada.  Esta função é usada para montar a página que mostra todas as compras feitas por um cliente. !!!
-  # !!! Portanto, ela deve retirnar um bloco de 1 ou 2 linhas apenas que mostra o ID da compra, o status, !!!
-  # !!! o valor total, e a data de entrega (quando for acrescentada ao {ObjCompra}). !!!
-  # !!! NÃO deve mostrar os produtos. !!!
+  """Devolve um fragmento HTML que decreve a compra {compra}, 
+  retornando os dados das compras exclusivamente.
+  
+  Os dados exibidos serão: ID, status, valor total, data de entrega (que será informada apenas quando for acrescentada ao {ObjCompra})
+  """
   return gera_html_elem_IMP.bloco_de_compra(compra)
