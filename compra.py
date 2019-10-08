@@ -170,6 +170,13 @@ def busca_por_produto(id_produto):
   ou lista vazia se não existir tal compra."""
   return compra_IMP.busca_por_produto(id_produto)
 
+def busca_por_usuario(id_usuario):
+  """Localiza as compras feitas por um usuário {id_usuario} 
+  e devolve uma lista de compras ou lista vazia se não 
+  existirem tais compras."""
+  return compra_IMP.busca_por_usuario(id_usuario)
+
+
 def cria_testes():
   """Limpa as tabelas de compras e de itens com {inicializa(True)}, e cria três pedidos
   de compra para fins de teste, incluindo-os na tabela.  Os pedidos estarão inicialmente

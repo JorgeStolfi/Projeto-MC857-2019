@@ -138,33 +138,19 @@ def bloco_de_produto(prod, qt, detalhe):
     return bloco_final
 
 def bloco_de_compra(cpr):
-  # !!! A implementação abaixo está incorreta. Veja os "!!!" na interface. !!!
-
-  itens = compra.obtem_itens(cpr)
-  # 
-  # estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;"
-  # bloco_final = ""
-  # 
-  # for itm in itens:
-  #   #NOME E DESCRICÃO DO PRODUTO, COM BOTÃO 'VER'
-  #   desc = itm.desc
-  #   html_desc = paragrafo(estilo_parag, bloco_texto(desc, None, "Courier", "18px", "bold", "2px", "left", "#ff0000", "#88fff8"))
-  #   str_preco = ("R$%.2f" % preco)
-  #   html_preco = paragrafo(estilo_parag, bloco_texto(str_preco, None, "Courier", "20px", "bold", "2px", "left", "#000000", "#f8ff88"))
-  #   html_botao = gera_html_form.ver_produto(id_produto)
-  #   html_descr = html_desc + html_preco + html_botao
-  #   #FOTO DO PRODUTO
-  #   imagem = ("<img src=\"imagens/155951.png\" alt=\"" + id_compra + "\" style=\"float:left;height:%dpx;\"/>" % 80)
-  #   html_img = "<a href=\"imagens/155951.png\" border=0px>" + imagem + "</a>
-  #   #MONTA BLOCO PRODUTO
-  #   bloco_descr = span("\n  display: inline-block;", html_descr)
-  #   bloco_item = \
-  #     span("\n  display: block;\n  background-color: #00ff00;", html_img + bloco_descr)
-  #   bloco_final = bloco_final + bloco_item
-  # 
-  erro_html = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "24px", "bold", "2px", "left", "#ff0000", "#88fff8")
-  itens_html = bloco_texto(str(itens), None, "Courier", "14px", "normal", "2px", "left", "#000000", None)
-  bloco_final = erro_html + "\n<br/><hr/>\n" + itens_html
+  id_compra = compra.obtem_identificador(cpr)
+  qtd_itens = len(compra.obtem_itens(cpr))
+  valor = compra.calcula_total(cpr)
+  # Monta o parágrafo de descrição
+  estilo_parag = "\n  width: 600px;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
+  html_compra = paragrafo(estilo_parag, bloco_texto(id_compra, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_qtd_itens = paragrafo(estilo_parag, bloco_texto(qtd_itens, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+  html_valor = paragrafo(estilo_parag, bloco_texto(qtd_itens, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+  
+  html_descr = html_compra  + html_qtd_itens + html_valor
+  bloco_descr = span("\n display: inline-block;", html_descr)
+  bloco_final = \ 
+    span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;"bloco_descr)
   return bloco_final
 
 def bloco_de_erro(msg):
