@@ -12,8 +12,8 @@ def processa(ses, args):
   prod = produto.busca_por_identificador(id_produto)
   cpr = compra.busca_por_identificador(id_compra)
   if prod != None and cpr != None:
-    compra.elimina_prod(cpr, prod)
-    return gera_html_pag.lista_compra(ses, cpr)
+    compra.elimina_produto(cpr, prod)
+    return gera_html_pag.mostra_compra(ses, cpr)
   else:
-    # !!! Deve devolver uma página HTML !!!
-    return None
+    #retornando página genérica com o erro de "Produto ou compra não localizado"
+    return gera_html_pag.mensagem_de_erro(ses, "Produto ou compra não localizado!")
