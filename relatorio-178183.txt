@@ -1,0 +1,9 @@
+# Vinicius Balbino de Souza
+# 178183
+
+Responsavel por arrumar todos os !!! do módulo Produto e Produto_IMP, alémd e arrumar comentários que já não faziam sentido.
+Ademais disso, forám implementados novos testes para
+que cada função relevante do módulo Produto seja chamado pelo menos uma vez, com excessao da busca_por_indice, que interage com produto e quebra os testes.
+Os testes foram executados na máquina local do IC e 
+funcionaram.
+

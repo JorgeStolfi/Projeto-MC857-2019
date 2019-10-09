@@ -11,17 +11,18 @@ import sys # Para diagnóstico.
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
 
+# Nome da tabela na base de dados.
 nome_tb = "produtos"
-  # Nome da tabela na base de dados.
 
+# Dicionário que mapeia identificadores para os objetos {ObjProdutos} na memória.
+# Todo objeto dessa classe que é criado é acrescentado a esse dicionário,
+# a fim de garantir a unicidadde dos objetos.
 cache = {}.copy()
-  # Dicionário que mapeia identificadores para os objetos {ObjProdutos} na memória.
-  # Todo objeto dessa classe que é criado é acrescentado a esse dicionário,
-  # a fim de garantir a unicidadde dos objetos.
 
+# Prefixo dos identificadores de produtos.
 letra_tb = "P"
-  # Prefixo dos identificadores de produtos.
 
+# Descrição das colunas da tabela na base de dados.
 colunas = \
   (
     ( 'descr_curta', type("foo"), 'TEXT',    False,    1,         80 ), # Descricao curta do produto.
@@ -33,13 +34,11 @@ colunas = \
     ( 'estoque',     type(10),    'INTEGER', False,    0,   99999999 )  # Estoque do produto  
 
   )
-  # Descrição das colunas da tabela na base de dados.
-  
+
+# Quando {True}, mostra comandos e resultados em {stderr}. 
 diags = False
-  # Quando {True}, mostra comandos e resultados em {stderr}.
 
 # Definição interna da classe {ObjUsuario}:
-
 class ObjProduto_IMP():
   def __init__(self, id_produto, atrs):
     self.atrs = atrs.copy()
@@ -47,13 +46,16 @@ class ObjProduto_IMP():
 
 # Implementação das funções:
 
+# Inicializa a tabela de produtos dada as informaçoes globais
+# Caso seja passada a variavel limpa como TRUE, a tabela é limpa.
 def inicializa(limpa):
   global cache, nome_tb, letra_tb, colunas, diags
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
   else:
     tabela_generica.cria_tabela(nome_tb, colunas)
-
+    
+# Cria a tabela com os atributos passados pela variavel atributo
 def cria(atrs):
   global cache, nome_tb, letra_tb, colunas, diags
   if diags: mostra(0, "produto_IMP.cria(" + str(atrs) + ") ...")
@@ -67,29 +69,36 @@ def cria(atrs):
     erro_prog("resultado de tipo inesperado = " + str(prod))
   return prod
 
+# Retorna identificador do produto prod
 def obtem_identificador(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return prod.id_produto
 
+# Obtem indice de um produto na tabela
 def obtem_indice(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return identificador.para_indice(letra_tb, prod.id_produto)
 
+# Retorna o custo de um produto na tabela
 def obtem_preco(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return prod.atrs['preco']
 
+# Obtem a lista de atributos: desc_curta, desc_media, desc_longa
+# unidade, preco, imagem e estoque de um produto especifico
 def obtem_atributos(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return prod.atrs.copy()
-  
+
+# Calcula o valor dos produtos a serem retirados do estoque e colocados
+# no carrinho.
 def calcula_preco(prod, qt):
-  # Por enquanto, sem descontos por atacado:
   return prod.atrs['preco'] * qt
 
+# Modifica determinados atributos de um produto na tabela
 def muda_atributos(prod, mods):
   global cache, nome_tb, letra_tb, colunas, diags
-  # Converte valores de formato memória para formato SQL.
+  # Converte valores de formato memória para formato SQL. 
   mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice)
   
   # Modifica atributos na tabela e na memória:
@@ -98,16 +107,20 @@ def muda_atributos(prod, mods):
     erro_prog("resultado inesperado = " + str(res))
   return
 
+# Dado um id, retorna o produto associado a ele
 def busca_por_identificador(id_produto):
   global cache, nome_tb, letra_tb, colunas, diags
   prod = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_produto)
   return prod
 
+# Dado um indice, retorna o usuario associado a ele
 def busca_por_indice(ind):
   global cache, nome_tb, letra_tb, colunas, diags
   usr = tabela_generica.busca_por_indice(nome_tb, cache, letra_tb, colunas, def_obj, ind)
   return usr
 
+# Dado uma palavra, procura e retorna produtos que possuam essa palavra em
+# sua descricao curta ou media.
 def busca_por_palavra(pal):
   chaves = ('descr_curta', 'descr_media')
   valores = (pal,)

@@ -14,25 +14,24 @@ def inicializa(limpa):
 
 class ObjProduto(ObjProduto_IMP):
   """Um objeto desta classe representa um produto da loja e armazena seus 
-  atributos.  Por enquanto, eles são:
-  
-    !!! Atualizar conforme implementação" !!!
+  atributos, que são:
 
-    {descr_curta} {str} - descrição do produto em uma linha.
-    {descr_media} {str} - descrição mais estensa do produto, em 1-3 linhas. 
-    {descr_longa} {str} - descrição completa do produto. 
-    {unidade} {str} - unidade de venda ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
-    {preco} {float} - preço unitário.
-    {estoque} {integer} - quantidade do produto no estoque.
+    {atributos} - ver abaixo
+        {descr_curta} {str} - descrição do produto em uma linha.
+        {descr_media} {str} - descrição mais estensa do produto, em 1-3 linhas. 
+        {descr_longa} {str} - descrição completa do produto. 
+        {unidade} {str} - unidade de venda ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
+        {preco} {float} - preço unitário.
+        {imagem} {str} - nome do arquivo da imagem no diretorio 'imagens'
+        {estoque} {integer} - quantidade do produto no estoque.
+    {id_produto} - {str} - segue as regras P + '-' + identificador único
     
   O preço unitário é em reais, e é arredondado para centavos inteiros 
   (a menos de erros de arredondamento do float).
   
-  Mais atributos (imagens, estoque, volume, peso, descontos por atacado, etc.)
-  podem ser acrescentados no futuro.
-  
-  Cada produto da loja, mesmo com estoque esgotado, é representado por uma linha na tabela
-  "produtos" da base SQL em disco. Apenas algumas dessas linhas são representadas também na memória por objetos
+  Cada produto da loja, mesmo com estoque esgotado (pois o mesmo possuirá atributo estoque = 0), é representado
+  por uma linha na tabela "produtos" da base SQL em disco.
+  Apenas algumas dessas linhas são representadas também na memória por objetos
   da classe {ObjProduto}. 
   
   Cada linha da tabela tem um índice inteiro (chave primária) distinto, que é atribuído
@@ -117,3 +116,4 @@ def diagnosticos(val):
   impressão em {sys.stderr} de mensagens de diagnóstico pelas 
   funções deste módulo."""
   produto_IMP.diagnosticos(val)
+
