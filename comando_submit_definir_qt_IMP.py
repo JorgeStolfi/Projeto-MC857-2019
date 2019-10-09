@@ -19,9 +19,8 @@ def processa(ses, args):
   if estoque == 0:
       return gera_pagina_de_erro(f"Estoque vazio para o produto:{id_produto}")
   if qt > estoque:
-    # !!! Deveria dar mensagem de erro -- cliente que quer 3 pode não querer 2 !!!
-    # No maximo a maior quantidade disponivel para o produto
     qt = estoque
+    return gera_pagina_de_erro(f"Só temos {estoque} items do produto:{id_produto}")
   carrinho = sessao.obtem_carrinho(ses)
   compra.acrescenta_item(carrinho, prod, qt)
   return gera_html_pag.mostra_produto(ses, prod, qt)

@@ -19,7 +19,7 @@ tabelas.cria_todos_os_testes()
 
 ses1 = sessao.busca_por_identificador("S-00000001")
 # !!! Preencher o {args} com dados do produto a comprar !!!
-args1 = { 'coisa': True }
+args1 = { 'id_produto': 123, 'quantidade': '2' }
 
 html = comando_submit_ver_produto.processa(ses1, args1)
 html = html + "\n" # In case the fragment does not end with newline.
