@@ -32,7 +32,6 @@ def dispara():
     # Usa a base de dados existente:
     limpa = False # Começa com tabelas vazias?
     tabelas.inicializa_todas(limpa)
-    
   sys.stderr.write("criando o objeto servidor...\n")
   host = '0.0.0.0' # Aceita pedidos de qualquer IP.
   porta = 8081 # Porta 8081 em vez de 80, para não precisar de acesso "root"
