@@ -10,9 +10,9 @@ import gera_html_elem_IMP
 
 # Funções exportadas por este módulo:
 
-def cabecalho(title):
-  """Retorna o cabecalho padrão site, com titulo da página {title}."""
-  return gera_html_elem_IMP.cabecalho(title)
+def cabecalho(title, grande):
+  """Retorna o cabecalho padrão site, com titulo da página {title}, recebendo a informação se o title será grande ou não."""
+  return gera_html_elem_IMP.cabecalho(title, grande)
 
 def rodape():
   """Retorna o rodapé padrão do site."""
@@ -104,10 +104,10 @@ def bloco_de_produto(prod, qt, detalhe):
   mostra apenas o preço unitário, sem a quantidade."""
   return gera_html_elem_IMP.bloco_de_produto(prod, qt, detalhe)
 
-def bloco_de_compra(compra):
-  """Devolve um fragmento HTML que decreve a compra {compra}, um objeto da classe {ObjCompra}."""
-  # !!! Descrição errada.  Esta função é usada para montar a página que mostra todas as compras feitas por um cliente. !!!
-  # !!! Portanto, ela deve retirnar um bloco de 1 ou 2 linhas apenas que mostra o ID da compra, o status, !!!
-  # !!! o valor total, e a data de entrega (quando for acrescentada ao {ObjCompra}). !!!
-  # !!! NÃO deve mostrar os produtos. !!!
-  return gera_html_elem_IMP.bloco_de_compra(compra)
+def bloco_de_compra(compra, detalhe):
+  """Devolve um fragmento HTML mostra os dados da compra feito pelo cliente.
+  Se detalhe for true, mostra os dados do produto,
+  Caso contrãrio, mostra apenas os detalhes da compra
+  Os dados exibidos serão: ID, status, valor total, data de entrega (que será informada apenas quando for acrescentada ao {ObjCompra})
+  """
+  return gera_html_elem_IMP.bloco_de_compra(compra, detalhe)
