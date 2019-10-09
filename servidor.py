@@ -25,7 +25,7 @@ def dispara():
   
   sys.stderr.write("inicializando as tabelas de objetos...\n")
   limpa = False
-  tabelas.inicializa_todas(limpa)
+  tabelas.cria_todos_os_testes()
   
   sys.stderr.write("criando o objeto servidor...\n")
   host = '0.0.0.0' # Aceita pedidos de qualquer IP.
