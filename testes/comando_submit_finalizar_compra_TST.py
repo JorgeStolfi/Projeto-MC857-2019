@@ -19,12 +19,15 @@ sys.stderr.write("Criando alguns objetos...\n")
 tabelas.cria_todos_os_testes()
 
 ses1 = sessao.busca_por_identificador("S-00000001")
-# !!! Preencher o {args} com dados do formulario !!!
-args1 = { 'coisa': True }
+
+args1 = {'id_compra': 'C-00000001'}
 
 html = comando_submit_finalizar_compra.processa(ses1, args1)
 html = html + "\n"
 
 sys.stdout.buffer.write(html.encode('utf-8'))
 
-# !!! Verificar se a compra foi fechada, etc. !!!
+cpr = compra.busca_por_identificador('C-00000001')
+status = compra.obtem_status(cpr)
+
+assert status == 'pagando'

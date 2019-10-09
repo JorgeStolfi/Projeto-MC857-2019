@@ -19,7 +19,7 @@ tabelas.cria_todos_os_testes()
 
 ses1 = sessao.busca_por_identificador("S-00000001")
 # !!! Preencher o {args} com dados do formulário !!!
-args1 = { 'coisa': True }
+args1 = { 'id_compra': 'C-00000001' } # temporário
 
 html = comando_submit_ver_compra.processa(ses1, args1)
 html = html + "\n"

@@ -1,0 +1,5 @@
+Nome: Rebecca Moreira Messias RA: 186416
+
+Dia: 08/10/2019
+
+Arrumei os problemas dos imports no comando_submit_ver_compra para poder rodar o teste sem erros. 

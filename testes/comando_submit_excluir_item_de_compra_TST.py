@@ -17,14 +17,17 @@ assert res == None
 
 sys.stderr.write("Criando alguns objetos...\n")
 tabelas.cria_todos_os_testes()
+sys.stderr.write("Objetos criados...\n")
 
+sys.stderr.write("Buscando sessao por identificador...\n")
 ses1 = sessao.busca_por_identificador("S-00000001")
+sys.stderr.write("Sessao: " + str(ses1) + "\n")
+
 # !!! Preencher o {args} com dados do formulario !!!
-args1 = { 'coisa': True }
+args1 = { 'id_produto': "P-00000000", 'id_compra': "C-00000000"}
+sys.stderr.write("args1: " + str(args1) + "\n")
 
 html = comando_submit_excluir_item_de_compra.processa(ses1, args1)
 html = html + "\n"
 
 sys.stdout.buffer.write(html.encode('utf-8'))
-
-# !!! Verificar se o item foi mesmo excluído !!!
