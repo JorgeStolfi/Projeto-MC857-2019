@@ -27,11 +27,12 @@ colunas = \
     ( 'nome',      type("foo"), 'TEXT', False,   1,  60  ), # Nome completo.
     ( 'senha',     type("foo"), 'TEXT', False,   8,  24  ), # Senha de login.
     ( 'email',     type("foo"), 'TEXT', False,   6,  60  ), # Endereço de email
-    ( 'CPF',       type("foo"), 'TEXT', False,  14,  14  ), # Número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
+    ( 'CPF',       type("foo"), 'TEXT', False,  10,  15  ), # Número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
     ( 'endereco',  type("foo"), 'TEXT', False,  30, 180  ), # Endereço completo, em 3 linhas (menos CEP).
-    ( 'CEP',       type("foo"), 'TEXT', False,   9,   9  ), # Código de endereçamento postal completo ("{NNNNN}-{LLL}").
-    ( 'telefone',  type("foo"), 'TEXT', False,  15,  20  ), # Telefone completo com DDI e DDD ("+{XXX}({YYY}){MMMMM}-{NNNN}").
-    ( 'documento', type("foo"), 'TEXT', True,    6,  24  ), # Número do documento de identidade (RG, pasaporte, etc.)
+    ( 'CEP',       type("foo"), 'TEXT', False,   8,   10  ), # Código de endereçamento postal completo ("{NNNNN}-{LLL}").
+    ( 'telefone',  type("foo"), 'TEXT', False,  9,  40  ), # Telefone completo com DDI e DDD ("+{XXX}({YYY}){MMMMM}-{NNNN}").
+    ( 'celular',   type("foo"), 'TEXT', False, 9,  40   ), # Celular completo com DDI e DDD ("+{XXX}({YYY}){MMMMM}-{NNNN}").
+    ( 'estado',    type("foo"), 'TEXT', False, 2,  50    ), # Estado em que o usuario reside.
   )
   # Descrição das colunas da tabela na base de dados.
   
@@ -134,7 +135,8 @@ def cria_testes():
         'endereco': "Rua Senador Corrupto, 123\nVila Buracão\nCampinas, SP", 
         'CEP': "13083-418", 
         'telefone': "+55(19)9 9876-5432",
-        'documento': "1.234.567-9 SSP-SP"
+        'estado': "São Paulo",
+        'celular': "+55(19)9 9876-5432"
       },
       {
         'nome': "João Segundo", 
@@ -144,18 +146,19 @@ def cria_testes():
         'endereco': "Avenida dos Semáforos, 1003\nJardim Pelado\nCampinas, SP", 
         'CEP': "13083-007", 
         'telefone': "+55(19)9 9898-1212",
-        'documento': 'CD98765-43 PF'
-      
+        'estado': 'São Paulo',
+        'celular': "+55(19)9 9876-5432"
       },
       {
         'nome': "Juca Terceiro", 
         'senha': "4321002134", 
         'email': "muda@gmail.com", 
-        'CPF': "111.111.111-11", \
-        'endereco': "Rua Zero, 0000\nVila Zero\nCampinas, SP", \
+        'CPF': "111.111.111-11",
+        'endereco': "Rua Zero, 0000\nVila Zero\nCampinas, SP",
         'CEP': "13083-999", 
         'telefone': "+55(19)9 9999-9999",
-        'documento': None
+        'estado': 'São Paulo',
+        'celular': "+55(19)9 9876-5432"
       }
     ]
   for atrs in lista_atrs:

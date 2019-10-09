@@ -39,7 +39,7 @@ def testa(nome,  funcao, *args):
   f.close()
 
 
-testa("cabecalho", gera_html_elem.cabecalho, "TESTE")
+testa("cabecalho", gera_html_elem.cabecalho, "TESTE", False)
 
 testa("rodape", gera_html_elem.rodape)
 

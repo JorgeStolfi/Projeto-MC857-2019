@@ -65,6 +65,7 @@ def cadastrar_usuario():
   # !!! Usar o campo de seleção para o estado é muito chato. Deixe o usuário entrar o endereço em formato livre, 3 linhas. !!!
   fam_fonte = "Courier"
   tam_fonte = "18px"
+
   return \
       "<span style=\"\n" + \
     "  display: inline-block;\n" + \
@@ -95,7 +96,7 @@ def cadastrar_usuario():
                 "<label>CPF: <span style=\"color:red;\"></span></label>" + \
             "</td>" + \
             "<td>" + \
-                "<input type=\"text\" id=\"cpf\" name=\"cpf\" />" + \
+                "<input type=\"text\" id=\"CPF\" name=\"CPF\" />" + \
             "</td>" + \
         "</tr>" + \
         "<tr>" + \
@@ -119,7 +120,7 @@ def cadastrar_usuario():
                 "<label>CEP:</label>" + \
             "</td>" + \
             "<td>" + \
-                "<input type=\"text\" id=\"cep\" name=\"cep\" />" + \
+                "<input type=\"text\" id=\"CEP\" name=\"CEP\" />" + \
             "</td>" + \
         "</tr>" + \
         "<tr>" + \
@@ -128,43 +129,6 @@ def cadastrar_usuario():
             "</td>" + \
             "<td>" + \
                 "<input type=\"text\" id=\"endereco\" name=\"endereco\" />" + \
-            "</td>" + \
-        "</tr>" + \
-        "<tr>" + \
-            "<td>" + \
-                "<label>Estado:</label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<select id=\"estado\" name=\"estado\">" + \
-                    "<option value=\"AC\">Acre</option>" + \
-                    "<option value=\"AL\">Alagoas</option>" + \
-                    "<option value=\"AP\">Amapá</option>" + \
-                    "<option value=\"AM\">Amazonas</option>" + \
-                    "<option value=\"BA\">Bahia</option>" + \
-                    "<option value=\"CE\">Ceará</option>" + \
-                    "<option value=\"DF\">Distrito Federal</option>" + \
-                    "<option value=\"ES\">Espírito Santo</option>" + \
-                    "<option value=\"GO\">Goiás</option>" + \
-                    "<option value=\"MA\">Maranhão</option>" + \
-                    "<option value=\"MT\">Mato Grosso</option>" + \
-                    "<option value=\"MS\">Mato Grosso do Sul</option>" + \
-                    "<option value=\"MG\">Minas Gerais</option>" + \
-                    "<option value=\"PA\">Pará</option>" + \
-                    "<option value=\"PB\">Paraíba</option>" + \
-                    "<option value=\"PR\">Paraná</option>" + \
-                    "<option value=\"PE\">Pernambuco</option>" + \
-                    "<option value=\"PI\">Piauí</option>" + \
-                    "<option value=\"RJ\">Rio de Janeiro</option>" + \
-                    "<option value=\"RN\">Rio Grande do Norte</option>" + \
-                    "<option value=\"RS\">Rio Grande do Sul</option>" + \
-                    "<option value=\"RO\">Rondônia</option>" + \
-                    "<option value=\"RR\">Roraima</option>" + \
-                    "<option value=\"SC\">Santa Catarina</option>" + \
-                    "<option value=\"SP\">São Paulo</option>" + \
-                    "<option value=\"SE\">Sergipe</option>" + \
-                    "<option value=\"TO\">Tocantins</option>" + \
-                    "<option value=\"EX\">Estrangeiro</option>" + \
-                "</select>" + \
             "</td>" + \
         "</tr>" + \
         "<tr>" + \
@@ -186,9 +150,12 @@ def cadastrar_usuario():
     "</table>" + gera_html_botao.submit_cadastrar_usuario() + \
     "  </form>\n" + \
     "</span>"
-    
+
 def mostra_compra(cpr):
-   return gera_html_elem.bloco_texto("!!! IMPLEMENTAR !!!", "block", "Courier", "18px", "bold", "0px", "left", None, None)
+    text = "Itens da compra: "
+    for item in cpr.itens:
+        text = text + item + ", "
+    return gera_html_elem.bloco_texto(text, "block", "Courier", "18px", "bold", "0px", "left", None, None)
 
 def entrar():
   fam_fonte = "Courier"
@@ -210,6 +177,7 @@ def entrar():
     "  </form>\n" + \
     "</span>"
 
+# Essa função tem a mesma funcionalidade da função entrar. Acredito que seja melhor eliminá-la.
 def formulario_entrar(altura, largura, margem, acolchoamento, margem_entradas):
   # !!! Combinar com a função {entrar} ou eliminar. !!!
   css = """.formulario {
@@ -281,4 +249,3 @@ def informacao_usuario(usr):
     correspondente em formato HTML."""
     info_final = """ <h1> """ + usr.nome + """ </h1> <br> """ + usr.cpf + """ <br> """ + usr.email + """ <br> """ + usr.endereco + """ <br> """ + usr.cep + """ <br> """ + + usr.telefone + """ <br> """
     return info_final
- 

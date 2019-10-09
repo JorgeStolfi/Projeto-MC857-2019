@@ -12,9 +12,12 @@ from datetime import datetime, timezone
 
 #Funções exportadas por este módulo:
 
-def cabecalho(title):
-  # !!! Acrescentar um parãmetro {grande} que reduz o tamanho do título se for {False}. !!!
-  # !!! Procurar todos os usos desta função e acrescentar esse parãmetro. !!!
+def cabecalho(title, grande):
+  header_title = "<h1>" + title + "</h1>"
+
+  if grande == False:
+    header_title = "<h2>" + title + "</h2>"
+
   return \
     "<!doctype html>\n" + \
     "<html>\n" + \
@@ -23,7 +26,8 @@ def cabecalho(title):
     "<title>" + title + "</title>\n" + \
     "</head>\n" + \
     "<body style=\"background-color:#eeeeee; text-indent: 0px\">\n" + \
-    "<h1>" + title + "</h1>"
+    header_title
+    
 
 def rodape():
   nowraw = datetime.now(timezone.utc)
@@ -137,17 +141,21 @@ def bloco_de_produto(prod, qt, detalhe):
       span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", html_img + bloco_descr)
     return bloco_final
 
-def bloco_de_compra(cpr):
+def bloco_de_compra(cpr, detalhe):
   id_compra = compra.obtem_identificador(cpr)
-  qtd_itens = len(compra.obtem_itens(cpr))
+  itens = compra.obtem_itens(cpr)
+  qtd_itens = len(itens)
   valor = compra.calcula_total(cpr)
   # Monta o parágrafo de descrição
   estilo_parag = "\n  width: 600px;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
   html_compra = paragrafo(estilo_parag, bloco_texto(id_compra, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
   html_qtd_itens = paragrafo(estilo_parag, bloco_texto(qtd_itens, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_valor = paragrafo(estilo_parag, bloco_texto(qtd_itens, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
-  
-  html_descr = html_compra  + html_qtd_itens + html_valor
+  if detalhe:
+    html_itens = bloco_texto("!!! IMPLEMENTAR A LISTA DE ITENS !!!", None, "Courier", "20px", "bold", "2px", "left", "#263238", None)
+  else:
+    html_itens = ""
+  html_descr = html_compra  + html_qtd_itens + html_valor + html_itens
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \ 
     span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;"bloco_descr)

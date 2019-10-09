@@ -80,7 +80,7 @@ def botao_simples(texto, URL, cor_fundo):
   # Define o estilo:
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", cor_fundo)
+  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", "#eeeeee")
   return html
 
 def botao_submit(texto, URL, cor_fundo):
@@ -94,5 +94,5 @@ def botao_submit(texto, URL, cor_fundo):
   # Define o estilo:
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", cor_fundo)
+  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", "#eeeeee")
   return html

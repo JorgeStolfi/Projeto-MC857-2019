@@ -14,7 +14,7 @@ from utils_testes import erro_prog, mostra
 from datetime import datetime, timezone
   
 def generica(ses, conteudo):
-  cabe = gera_html_elem.cabecalho("Projeto MC857A 2019-2s")
+  cabe = gera_html_elem.cabecalho("Projeto MC857A 2019-2s", True)
   logado = (ses != None)
   if logado:
     usr = sessao.obtem_usuario(ses)
@@ -64,10 +64,13 @@ def cadastrar_usuario(ses):
 def mostra_carrinho(ses):
   if ses != None:
     carrinho = sessao.obtem_carrinho(ses)
+    pagina = gera_html_elem.bloco_de_compra(carrinho)
   else:
     carrinho = None
-  # !!! Precisa formatar decentemente o carrinho !!!
-  return generica(ses, str(carrinho))
+    pagina = generica(ses,"Carrinho vazio")
+  
+  return pagina
+
 
 def mostra_compra(ses, cpr):
   conteudo = gera_html_form.mostra_compra(cpr)
