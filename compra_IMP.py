@@ -22,7 +22,7 @@ cache = {}.copy()
 nome_tb = "compras"
 
   # Nome das tabelas na base de dados.
-  
+
 letra_tb = "C"
 
 colunas = None
@@ -67,10 +67,10 @@ def inicializa(limpa):
 def cria(cliente):
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
   atrs = { 'cliente': cliente, 'status': 'aberto' }
-  
+
   # Converte atributos para formato SQL.
   atrs_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, tabelas.obj_para_indice)
-  
+
   # Insere na base de dados e obtém o índice na mesma:
   cpr = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
   if not type(cpr) is compra.ObjCompra:
@@ -102,11 +102,11 @@ def obtem_status(cpr):
 def obtem_itens(cpr):
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
   return cpr.itens.copy()
-  
+
 def obtem_quantidade(cpr, prod):
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
   # Procura o produto na lista, obtendo {qt_velho}:
-  pos = itens_de_compras.posicao_do_item(prod, cpr.itens) 
+  pos = itens_de_compras.posicao_do_item(prod, cpr.itens)
   if pos == None:
     return 0.0
   else:
@@ -115,7 +115,7 @@ def obtem_quantidade(cpr, prod):
 def obtem_preco(cpr, prod):
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
   # Procura o produto na lista, obtendo {qt_velho}:
-  pos = itens_de_compras.posicao_do_item(prod, cpr.itens) 
+  pos = itens_de_compras.posicao_do_item(prod, cpr.itens)
   if pos == None:
     return 0.0
   else:
@@ -123,10 +123,10 @@ def obtem_preco(cpr, prod):
 
 def muda_atributos(cpr, mods):
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
-  
+
   # Converte valores de formato memória para formato SQL.
   mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice)
-  
+
   # Modifica atributos na tabela e na memória, menos os itens:
   res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, cpr.id_compra, mods_SQL)
   if res != cpr:
@@ -139,7 +139,7 @@ def calcula_total(cpr):
   for prod, qt, prc in cpr.itens:
     total += prc
   return total
-  
+
 def fecha_compra(cpr):
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
   status = obtem_status(cpr)
@@ -150,7 +150,7 @@ def fecha_compra(cpr):
 
 def acrescenta_item(cpr, prod, qt):
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
-  
+
   # !!! Deve dar erro de programa se a compra não está aberta. !!!
   assert qt >= 0.0
   qt_velho = obtem_quantidade(cpr, prod)
@@ -161,7 +161,7 @@ def acrescenta_item(cpr, prod, qt):
 
 def troca_quantidade(cpr, prod, qt):
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
-  
+
   # !!! Deve dar erro de programa se a compra não está aberta. !!!
   assert qt >= 0.0
   qt_velho = obtem_quantidade(cpr, prod)
@@ -171,11 +171,11 @@ def troca_quantidade(cpr, prod, qt):
 
 def elimina_produto(cpr, prod):
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
-  
+
   # !!! Deve dar erro de programa se a compra não está aberta. !!!
   qt_velho = obtem_quantidade(cpr, prod)
   if qt_velho == 0.0:
-    erro_prog("produto " + produto.obtem_identificador(prod) + " não existe na compra " + str(cpr.id_compra)) 
+    erro_prog("produto " + produto.obtem_identificador(prod) + " não existe na compra " + str(cpr.id_compra))
   qt_novo = 0.0
   id_compra = compra.obtem_identificador(cpr)
   itens_de_compras.atualiza_lista(id_compra, cpr.itens, prod, qt_velho, qt_novo)
@@ -195,7 +195,7 @@ def cria_testes():
   inicializa(True)
   # Identificador de usuários e identificadores de produtos de cada compra:
   lista_ups = \
-    [ 
+    [
       ( "U-00000001", ( "P-00000001", "P-00000003", "P-00000002" ) ),
       ( "U-00000001", ( "P-00000002", "P-00000003" ) ),
       ( "U-00000002", ( ) )
@@ -217,12 +217,12 @@ def def_obj(obj, id_compra, atrs_SQL):
   """Se {obj} for {None}, cria um novo objeto da classe {ObjCompra} com
   identificador {id_compra} e atributos {atrs_SQL}, tais como extraidos
   da tabela de sessoes.  Extrai a lista de itens da tabela
-  correspondente, se houver.  O objeto *não* é inserido na base de dados. 
-  
+  correspondente, se houver.  O objeto *não* é inserido na base de dados.
+
   Se {obj} não é {None}, deve ser um objeto da classe {ObjCompra}; nesse
   caso a função altera os atributos de {obj} conforme especificado em
   {atrs_SQL}.  A lista de itens não ser alterada.
-  
+
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
   equivalentes na memória."""
   global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags

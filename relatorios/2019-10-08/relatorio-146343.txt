@@ -1,0 +1,4 @@
+############ 08/OUT/2019 ############
+Foi corrigido o comando submit_finalizar_compra, onde estão sendo realizadas verificações de validade da sessão e alteração do status do carrinho,
+assim como a criação de um novo carrinho pra sessão
+Além disso foi corrigido o teste, para buscar a compra correta e depois validar o status desse carrinho
