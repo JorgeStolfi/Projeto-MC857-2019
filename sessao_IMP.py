@@ -109,9 +109,9 @@ def muda_atributos(ses, mods):
 
 def fecha(ses):
   global cache, nome_tb, letra_tb, colunas, diags
-  # !!! Verificar se a sessão não é {None} e está aberta. !!!
-  mods = { 'abrt': False }
-  muda_atributos(ses, mods)
+  if ((ses is not None) and (sessao.obtem_atributos(ses)['abrt'])):
+    mods = { 'abrt': False }
+    muda_atributos(ses, mods)
 
 def cria_testes():
   global cache, nome_tb, letra_tb, colunas, diags

@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 
-import base_sql
+import os,sys,inspect
+import base_sql 
 import tabela_generica
 import tabelas
 import compra
@@ -8,8 +9,8 @@ import sessao
 import usuario
 import identificador
 import utils_testes
-import sys
 from utils_testes import erro_prog, mostra
+
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Conectando com base de dados...\n")

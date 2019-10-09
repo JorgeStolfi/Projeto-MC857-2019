@@ -21,13 +21,13 @@ def inicializa(limpa):
 class ObjSessao(ObjSessao_IMP):
   """Um objeto desta classe representa uma sessao de acesso ao
   servidor.  Os atributos deste objeto, por enquanto, são:
-  
-    !!! Atualizar conforme implementação !!!
-  
+    
     'usr' {ObjUsuario} - o usuário que fez login na sessão.
     'abrt' {bool} - estado da sessao.
+    'cookie' {str} - cookie da sessao.
+    'carrinho' {ObjCompra} - o carrinho associado ao usario da sessao.
     
-  Outros atributos (data, cookie, IP, etc.) poderão ser acrescentados no futuro.
+  Outros atributos (data, IP, etc.) poderão ser acrescentados no futuro.
   
   Cada sessao pertence a um unico usuario, mas cada
   usuário pode ter várias sessoes abertas ao mesmo tempo. A sessao é criada
