@@ -6,23 +6,18 @@ import sys
 import comando_menu_sair
 import base_sql
 import tabelas
-import usuario
 import sessao
+import gera_html_pag
 
 sys.stderr.write("Conectando com base de dados...\n")
-res = base_sql.conecta("DB",None,None)
-assert res == None
+res = base_sql.conecta("DB", None, None)
+assert res is None
 
 sys.stderr.write("Criando alguns objetos...\n")
 tabelas.cria_todos_os_testes()
-
 ses1 = sessao.busca_por_identificador("S-00000001")
-args1 = { 'coisa': True }
 
-resultado = comando_menu_sair.processa(ses1, args1)
+resultado = comando_menu_sair.processa(ses1)
 
-# !!! Verificar se a sessão foi de fato fechada !!! 
-
-f = open("comando_menu_sair", "w")
-f.write((resultado + "\n").encode('utf-8'))
-f.close()
+assert not sessao.aberta(ses1)
+assert resultado == gera_html_pag.principal(ses1)

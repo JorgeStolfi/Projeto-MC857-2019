@@ -4,6 +4,7 @@
 import produto
 import sessao
 import usuario
+import compra
 import gera_html_elem
 import gera_html_form
 import gera_html_botao
@@ -13,7 +14,7 @@ from utils_testes import erro_prog, mostra
 from datetime import datetime, timezone
   
 def generica(ses, conteudo):
-  cabe = gera_html_elem.cabecalho("Projeto MC857A 2019-2s")
+  cabe = gera_html_elem.cabecalho("Projeto MC857A 2019-2s", True)
   logado = (ses != None)
   if logado:
     usr = sessao.obtem_usuario(ses)
@@ -63,10 +64,13 @@ def cadastrar_usuario(ses):
 def mostra_carrinho(ses):
   if ses != None:
     carrinho = sessao.obtem_carrinho(ses)
+    pagina = gera_html_elem.bloco_de_compra(carrinho)
   else:
     carrinho = None
-  # !!! Precisa formatar decentemente o carrinho !!!
-  return generica(ses, str(carrinho))
+    pagina = generica(ses,"Carrinho vazio")
+  
+  return pagina
+
 
 def mostra_compra(ses, cpr):
   conteudo = gera_html_form.mostra_compra(cpr)
@@ -81,4 +85,14 @@ def mostra_usuario(ses, usr):
 def mensagem_de_erro(ses, msg):
   conteudo = gera_html_elem.bloco_de_erro(msg)
   pagina = generica(ses, conteudo)
+  return pagina
+
+def lista_de_compras(ses, idents):
+  sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de produtos.
+  todas_cmprs = ""
+  for id_cmpr in idents:
+    cmpr = compra.busca_por_identificador(id_cmpr)
+    bloco_compra = gera_html_elem.bloco_de_compra(cmpr)
+    todas_cmprs = todas_cmprs + sep + bloco_compra
+  pagina = generica(ses, todas_cmprs + sep)
   return pagina

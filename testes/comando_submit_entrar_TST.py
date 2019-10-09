@@ -15,9 +15,9 @@ assert res == None
 sys.stderr.write("Criando alguns objetos...\n")
 tabelas.cria_todos_os_testes()
 
-ses1 = sessao.busca_por_identificador("S-00000001")
+ses1 = None
 # !!! Preencher o {args} com dados do produto a comprar !!!
-args1 = { 'coisa': True }
+args1 = { 'email': 'primeiro@gmail.com', 'senha' : '123456789'}
 
 html = comando_submit_entrar.processa(ses1, args1)
 html = html + "\n"

@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/local/bin/python3
 
 # Este programa executável Python3 é o daemon servidor HTTP do website do projeto de MC857.
 #
@@ -24,10 +24,14 @@ def dispara():
   res = base_sql.conecta(dir,usr,senha); assert res == None
   
   sys.stderr.write("inicializando as tabelas de objetos...\n")
-  limpa = False
-  # tabelas.inicializa_todas(limpa)
-  tabelas.cria_todos_os_testes()
-  
+  testando = True # Que base de dados deve usar?
+  if testando:
+    # Inicializa a base com algumas entradas para testes:
+    tabelas.cria_todos_os_testes()
+  else:
+    # Usa a base de dados existente:
+    limpa = False # Começa com tabelas vazias?
+    tabelas.inicializa_todas(limpa)
   sys.stderr.write("criando o objeto servidor...\n")
   host = '0.0.0.0' # Aceita pedidos de qualquer IP.
   porta = 8081 # Porta 8081 em vez de 80, para não precisar de acesso "root"
