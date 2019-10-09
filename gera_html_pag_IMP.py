@@ -4,6 +4,7 @@
 import produto
 import sessao
 import usuario
+import compra
 import gera_html_elem
 import gera_html_form
 import gera_html_botao
@@ -84,4 +85,14 @@ def mostra_usuario(ses, usr):
 def mensagem_de_erro(ses, msg):
   conteudo = gera_html_elem.bloco_de_erro(msg)
   pagina = generica(ses, conteudo)
+  return pagina
+
+def lista_de_compras(ses, idents):
+  sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de produtos.
+  todas_cmprs = ""
+  for id_cmpr in idents:
+    cmpr = compra.busca_por_identificador(id_cmpr)
+    bloco_compra = gera_html_elem.bloco_de_compra(cmpr)
+    todas_cmprs = todas_cmprs + sep + bloco_compra
+  pagina = generica(ses, todas_cmprs + sep)
   return pagina

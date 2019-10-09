@@ -105,9 +105,15 @@ def bloco_de_produto(prod, qt, detalhe):
   return gera_html_elem_IMP.bloco_de_produto(prod, qt, detalhe)
 
 def bloco_de_compra(compra, detalhe):
-  """Devolve um fragmento HTML mostra os dados da compra feito pelo cliente.
-  Se detalhe for true, mostra os dados do produto,
-  Caso contrãrio, mostra apenas os detalhes da compra
-  Os dados exibidos serão: ID, status, valor total, data de entrega (que será informada apenas quando for acrescentada ao {ObjCompra})
-  """
+  """Devolve um fragmento HTML mostra os dados da compra {compra}, um objeto 
+  da classe {ObjCompra}.   
+  
+  Se {detalhe} for {False}, mostra apenas os detalhes da compra:  seu 
+  identificador "C-{NNNNNNNN}", o status do pedido, a data da última 
+  alteração de status, o número de itens, o valor total, e um botão 
+  "Ver detalhes" para mostrar a lista de itens da compra
+    
+  Se {detalhe} for {True}, mostra também os itens da compra:
+  cada produto e sua quantidade, com botões para alterar quantidade e excluir 
+  se a compra estiver em aberto data de entrega"""
   return gera_html_elem_IMP.bloco_de_compra(compra, detalhe)

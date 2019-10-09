@@ -190,6 +190,13 @@ def busca_por_indice(ind):
   cpr = tabela_generica.busca_por_indice(nome_tb, cache, letra_tb, colunas, def_obj, ind)
   return cpr
 
+def busca_por_produto(id_produto):
+  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  cpr = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_produto)
+  return cpr
+
+def busca_por_usuario(id_usuario):
+  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
 def busca_por_usuario(id_usuario):
   global cache, nome_tb, letra_tb, colunas, diags
   ind_usuario = identificador.para_indice(id_usuario)

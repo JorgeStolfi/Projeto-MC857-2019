@@ -56,6 +56,10 @@ def mensagem_de_erro(ses, msg):
   """Retorna uma página de erro com a mensagem (msg) informada"""
   return gera_html_pag_IMP.mensagem_de_erro(ses, msg)
 
+def lista_de_compras(ses, idents):
+  """Retorna uma página com a lista de todas as compras realizadas por um usuário {usr}"""
+  return gera_html_pag_IMP.lista_de_compras(ses, idents)
+
 # Utilitários
 
 def generica(ses, conteudo):
