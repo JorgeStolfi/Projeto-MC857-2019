@@ -63,10 +63,13 @@ def cadastrar_usuario(ses):
 def mostra_carrinho(ses):
   if ses != None:
     carrinho = sessao.obtem_carrinho(ses)
+    pagina = gera_html_elem.bloco_de_compra(carrinho)
   else:
     carrinho = None
-  # !!! Precisa formatar decentemente o carrinho !!!
-  return generica(ses, str(carrinho))
+    pagina = generica(ses,"Carrinho vazio")
+  
+  return pagina
+
 
 def mostra_compra(ses, cpr):
   conteudo = gera_html_form.mostra_compra(cpr)
