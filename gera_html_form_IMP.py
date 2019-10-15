@@ -226,3 +226,39 @@ def cadastrar_ou_alterar_usuario(usr):
     "  </form>\n" + \
     "</span>"
 
+def escolher_pagamento():
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  html_nome = gera_html_elem.input("Nome: ", "text", "Nome", None, None, None)
+  html_num1 = gera_html_elem.input("Número do cartão: ", "text", "n1", None, None, None)
+  html_num2 = gera_html_elem.input(" - " , "text", "n2", None, None, None)
+  html_num3 = gera_html_elem.input(" - ", "text", "n3", None, None, None)
+  html_num4 = gera_html_elem.input(" - ", "text", "n4", None, None, None)
+  html_val = gera_html_elem.input("Data de validade: ", "text", "mes_val", None, None, None)
+  html_val2 = gera_html_elem.input("/", "text", "ano_val", None, None, None)
+  html_sec = gera_html_elem.input("Código de segurança: ", "number", "código de segurança", None, None, None)
+  #html_submit = gera_html_botao.escolher_pagamento()
+  return \
+        "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form method=\"post\">" + \
+    (  html_nome + "\n" ) +  \
+    "   <br/>" + \
+    (  html_num1 + "\n" ) + \
+    (  html_num2 + "\n" ) + \
+    (  html_num3 + "\n" ) + \
+    (  html_num4 + "\n" ) + \
+    "   <br/>" + \
+    (  html_val + "\n" ) + \
+    (  html_val2 + "\n" ) + \
+    "   <br/>" + \
+    (  html_sec + "\n" ) + \
+    "   <br/>" + \
+    "  </form>\n" + \
+    "</span>"
+    
+
