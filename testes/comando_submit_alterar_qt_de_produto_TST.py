@@ -19,7 +19,7 @@ tabelas.cria_todos_os_testes()
 
 ses1 = sessao.busca_por_identificador("S-00000001")
 # !!! Preencher o {args} com dados do produto etc. !!!
-args1 = { 'coisa': True }
+args1 = {"quantidade": "3","id_produto": "P-00000002"}
 
 html = comando_submit_alterar_qt_de_produto.processa(ses1, args1)
 html = html + "\n"
