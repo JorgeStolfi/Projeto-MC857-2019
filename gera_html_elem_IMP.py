@@ -127,7 +127,7 @@ def bloco_de_compra(cpr, detalhe):
   if detalhe:
     itens = compra.obtem_itens(cpr);
     linhas = [].copy() 
-    cmd = "submit_alterar_qt"
+    cmd = "submit_alterar_qt_de_item_de_compra"
     for prod, qt, prc in itens:
       atrs = produto.obtem_atributos(prod)
       d_curta = atrs['descr_curta']
