@@ -54,7 +54,7 @@ def menu_geral(logado, nome_usuario):
     html_botao_carrinho =  ""
     html_bt_entrar = "  " + gera_html_botao.menu_entrar() + "\n"
     html_bt_cadastrar = "  " + gera_html_botao.menu_cadastrar() + "\n"
-  
+
   html_menu = \
     "<nav>\n" + \
       html_bt_principal + \
@@ -126,7 +126,7 @@ def bloco_de_compra(cpr, detalhe):
   html_valor = paragrafo(estilo_parag, bloco_texto(str(valor), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   if detalhe:
     itens = compra.obtem_itens(cpr);
-    linhas = [].copy() 
+    linhas = [].copy()
     cmd = "submit_alterar_qt"
     for prod, qt, prc in itens:
       atrs = produto.obtem_atributos(prod)
@@ -135,11 +135,13 @@ def bloco_de_compra(cpr, detalhe):
       html_qt = input(None, "number", "qtd", str(qt), None, cmd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit_excluir_produto()
+      # html_trocar_carrinho = gera_html_botao.submit_trocar_carrinho(id_compra)
       linhas.append(( d_curta, html_qt, html_prc, html_excl ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
-  html_descr = html_ident  + html_qtd_itens + html_valor + html_itens
+  html_trocar_carrinho = gera_html_form.submit_trocar_carrinho(id_compra)
+  html_descr = html_trocar_carrinho + html_ident  + html_qtd_itens + html_valor + html_itens
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
     span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
@@ -158,11 +160,11 @@ def bloco_de_erro(msg):
 
   # Junta as partes:
   html_tudo = html_tit + "<br/>" + html_msg + "<br/>" + html_botao
-  
+
   # Formata:
   estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  align: center;"
   bloco_final = paragrafo(estilo_parag, html_tudo)
-  
+
   return bloco_final
 
 def span(estilo, conteudo):
@@ -194,11 +196,11 @@ def bloco_texto(texto, disp, fam_fonte, tam_fonte, peso_fonte, pad, halign, cor_
 
 def tabela(linhas):
   """Gera o HTML para uma tabela "<table>...</table>".
-  
+
   O parâmetro {linhas} deve ser uma lista ou tupla cujos elementos descrevem as linhas.
-  Cada elemento de {linhas} deve ser uma lista ou tupla de fragmentos HTML, que são 
+  Cada elemento de {linhas} deve ser uma lista ou tupla de fragmentos HTML, que são
   inseridos nas células da linha correspondente da tabela."""
-  
+
   html_tab = "    <table>\n"
   for lin in linhas:
     html_lin = "      <tr>\n"
@@ -227,4 +229,3 @@ def label(rotulo):
     return ""
   else:
     return "<label>" + rotulo + "</label>"
-

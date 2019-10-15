@@ -1,6 +1,6 @@
 # Implementação do módulo {gera_html_botao}.
 
-# Interfaces do projeto usados por este módulo: 
+# Interfaces do projeto usados por este módulo:
 import gera_html_elem
 
 # Outros módulos usados por este módulo:
@@ -62,6 +62,11 @@ def submit_excluir_produto():
   cor_fundo = "#fff888"
   return botao_submit(texto, "submit_excluir_produto", cor_fundo)
 
+def submit_trocar_carrinho():
+  texto = "Carrinho"
+  cor_fundo = "#fff888"
+  return botao_submit(texto, "submit_trocar_carrinho", cor_fundo)
+
 def submit_cadastrar_usuario():
   texto = "Cadastrar"
   cor_fundo = "#fff888"
@@ -78,10 +83,10 @@ def botao_simples(texto, URL, cor_fundo):
   """Função INTERNA que gera um botão genérico de tipo "<button>",
   com o {texto} e {cor_fundo} especificados.  Quando clicado,
   o botão emite um comando HTTP 'GET' para o {URL} dado."""
-  
+
   # O botão propriamente dito:
   html_cru = "<button type=\"button\" onclick=\"location.href='" + URL + "'\">" + texto + "</button>"
-  
+
   # Define o estilo:
   fam_fonte = "Courier"
   tam_fonte = "18px"
@@ -92,10 +97,10 @@ def botao_submit(texto, URL, cor_fundo):
   """Função INTERNA que gera um botões "<input type=submit>"
   com o {texto} e a {cor_fundo} especificados.  Quando clicado,
   o botão emite um comando HTTP 'POST' para o {URL} dado."""
-  
+
   # O botão propriamente dito:
   html_cru = "<input type=\"submit\" formaction=\"" + URL + "\" value=\"" + texto + "\">"
-  
+
   # Define o estilo:
   fam_fonte = "Courier"
   tam_fonte = "18px"
