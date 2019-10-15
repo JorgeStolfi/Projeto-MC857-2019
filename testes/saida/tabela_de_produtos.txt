@@ -1,1 +1,0 @@
-Produtos encontrados: [('juca', 23.0), ('zeca', 34.0), ('caco', 56.0)]

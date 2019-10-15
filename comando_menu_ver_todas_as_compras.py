@@ -1,7 +1,7 @@
 # Este módulo processa a acao do usuario que consiste em pedir para ver a lista de todos os 
 # pedidos de compras do usuário, em qualquer estado.
 
-import comando_submit_ver_todas_as_compras_IMP
+import comando_menu_ver_todas_as_compras_IMP
 
 def processa(ses, args):
     """Esta função é chamada quando o usuário {usr} da sessão {ses} 
@@ -13,4 +13,4 @@ def processa(ses, args):
     o status do pedido, e um botão "Ver detalhes" para mostrar o conteúdo do mesmo.
     
     A sessão {ses} não pode ser {None} e deve estar aberta."""
-    return comando_submit_ver_todas_as_compras_IMP.processa(ses, args)
+    return comando_menu_ver_todas_as_compras_IMP.processa(ses, args)

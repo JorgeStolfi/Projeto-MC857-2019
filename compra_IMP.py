@@ -44,7 +44,7 @@ diags = False
 
 class ObjCompra_IMP:
   def __init__(self, id_compra, atrs, itens):
-    global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+    global cache, nome_tb, letra_tb, colunas, diags
     self.id_compra = id_compra
     self.atrs = atrs # Inclui cliente e status
     self.itens = itens.copy()
@@ -52,7 +52,7 @@ class ObjCompra_IMP:
 # Implementações:
 
 def inicializa(limpa):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   colunas = \
     ( ( 'status',  type("foo"),         'TEXT',    False,    4,   10 ), # status da compra: 'aberto', 'pagando', 'pago', etc..
       ( 'cliente', usuario.ObjUsuario,  'INTEGER', False,   14,   14 ), # Objeto/índice do cliente que realizou a compra.
@@ -65,7 +65,7 @@ def inicializa(limpa):
   return
 
 def cria(cliente):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   atrs = { 'cliente': cliente, 'status': 'aberto' }
 
   # Converte atributos para formato SQL.
@@ -80,49 +80,43 @@ def cria(cliente):
   return cpr
 
 def obtem_identificador(cpr):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   return cpr.id_compra
 
 def obtem_indice(cpr):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   return identificador.para_indice(letra_tb, cpr.id_compra)
 
 def obtem_atributos(cpr):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   return cpr.atrs.copy()
 
 def obtem_cliente(cpr):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   return cpr.atrs['cliente']
 
 def obtem_status(cpr):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   return cpr.atrs["status"]
 
 def obtem_itens(cpr):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   return cpr.itens.copy()
 
 def obtem_quantidade(cpr, prod):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
-  # Procura o produto na lista, obtendo {qt_velho}:
-  pos = itens_de_compras.posicao_do_item(prod, cpr.itens)
-  if pos == None:
-    return 0.0
-  else:
-    return cpr.itens[pos][1]
+  global cache, nome_tb, letra_tb, colunas, diags
+  return itens_de_compras.obtem_quantidade(cpr.itens, prod)
 
 def obtem_preco(cpr, prod):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
-  # Procura o produto na lista, obtendo {qt_velho}:
-  pos = itens_de_compras.posicao_do_item(prod, cpr.itens)
-  if pos == None:
-    return 0.0
-  else:
-    return cpr.itens[pos][2]
+  global cache, nome_tb, letra_tb, colunas, diags
+  return itens_de_compras.obtem_preco(cpr.itens, prod)
+
+def calcula_total(cpr):
+  global cache, nome_tb, letra_tb, colunas, diags
+  return itens_de_compras.calcula_total(cpr.itens)
 
 def muda_atributos(cpr, mods):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
 
   # Converte valores de formato memória para formato SQL.
   mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice)
@@ -133,15 +127,8 @@ def muda_atributos(cpr, mods):
     erro_prog("resultado inesperado = " + str(res))
   return
 
-def calcula_total(cpr):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
-  total = 0
-  for prod, qt, prc in cpr.itens:
-    total += prc
-  return total
-
 def fecha_compra(cpr):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   status = obtem_status(cpr)
   if status == 'aberto':
     cpr.status = 'pagando'
@@ -149,7 +136,7 @@ def fecha_compra(cpr):
     muda_atributos(cpr,mods)
 
 def acrescenta_item(cpr, prod, qt):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
 
   # !!! Deve dar erro de programa se a compra não está aberta. !!!
   assert qt >= 0.0
@@ -160,7 +147,7 @@ def acrescenta_item(cpr, prod, qt):
   return
 
 def troca_quantidade(cpr, prod, qt):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
 
   # !!! Deve dar erro de programa se a compra não está aberta. !!!
   assert qt >= 0.0
@@ -170,7 +157,7 @@ def troca_quantidade(cpr, prod, qt):
   itens_de_compras.atualiza_lista(id_compra, cpr.itens, prod, qt_velho, qt_novo)
 
 def elimina_produto(cpr, prod):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
 
   # !!! Deve dar erro de programa se a compra não está aberta. !!!
   qt_velho = obtem_quantidade(cpr, prod)
@@ -181,22 +168,21 @@ def elimina_produto(cpr, prod):
   itens_de_compras.atualiza_lista(id_compra, cpr.itens, prod, qt_velho, qt_novo)
 
 def busca_por_identificador(id_compra):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   cpr = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_compra)
   return cpr
 
 def busca_por_indice(ind):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   cpr = tabela_generica.busca_por_indice(nome_tb, cache, letra_tb, colunas, def_obj, ind)
   return cpr
 
 def busca_por_produto(id_produto):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
+  # !!! Furada! A tabela de compras NÃO tem os itens das compras. !!!
   cpr = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_produto)
   return cpr
 
-def busca_por_usuario(id_usuario):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
 def busca_por_usuario(id_usuario):
   global cache, nome_tb, letra_tb, colunas, diags
   ind_usuario = identificador.para_indice(id_usuario)
@@ -210,7 +196,7 @@ def busca_por_usuario(id_usuario):
     return res
 
 def cria_testes():
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   inicializa(True)
   # Identificador de usuários e identificadores de produtos de cada compra:
   lista_ups = \
@@ -244,7 +230,7 @@ def def_obj(obj, id_compra, atrs_SQL):
 
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
   equivalentes na memória."""
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   if diags: mostra(0, "produto_IMP.def_obj(" + str(obj) + ", " + id_compra + ", " + str(atrs_SQL) + ") ...")
   if obj == None:
     atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
@@ -270,6 +256,6 @@ def def_obj(obj, id_compra, atrs_SQL):
   return obj
 
 def diagnosticos(val):
-  global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
+  global cache, nome_tb, letra_tb, colunas, diags
   diags = val
   return

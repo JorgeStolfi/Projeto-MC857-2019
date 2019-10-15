@@ -1,27 +1,35 @@
 #! /usr/bin/python3
 
-import itens_de_compras
+import usuario
 import produto
+import compra
+import itens_de_compras
 import tabela_generica
 import base_sql
 import identificador
 import utils_testes
 import sys
-from utils_testes import erro_prog, mostra
+from utils_testes import erro_prog, aviso_prog, mostra
 
 # ----------------------------------------------------------------------
 sys.stderr.write("Conectando com base de dados...\n")
 base_sql.conecta("DB", None, None)
 
 # ----------------------------------------------------------------------
-sys.stderr.write("Inicializando módulo {produto}, limpando tabela, criando produtos de teste:\n")
-produto.cria_testes()
+sys.stderr.write("Inicializando módulo {usuario}, limpando tabela, criando usuários para teste:\n")
+usuario.cria_testes()
 
-sys.stderr.write("Inicializando módulo {itens_de_compras}, limpando tabela:\n")
-itens_de_compras.inicializa(True)
+indice1 = 1
+uident1 = "U-00000001"
+usr1 = usuario.busca_por_identificador(uident1)
+
+indice2 = 2
+uident2 = "U-00000002"
+usr2 = usuario.busca_por_identificador(uident2)
 
 # ----------------------------------------------------------------------
-sys.stderr.write("Obtendo produtos para teste:\n")
+sys.stderr.write("Inicializando módulo {produto}, limpando tabela, criando produtos de teste:\n")
+produto.cria_testes()
 
 pindice1 = 1
 pident1 = "P-00000001"
@@ -38,52 +46,50 @@ pident3 = "P-00000003"
 prod3 = produto.busca_por_identificador(pident3)
 preco3 = produto.obtem_preco(prod3)
 
+pindice4 = 4
+pident4 = "P-00000004"
+prod4 = produto.busca_por_identificador(pident4)
+preco4 = produto.obtem_preco(prod4)
+
+# ----------------------------------------------------------------------
+# Dados de duas compras, sem criar o objeto:
+
+cindice1 = 1
+cident1 = "C-00000001"
+citens1 = [].copy()
+ctot1 = 0.0
+
+cindice2 = 2
+cident2 = "C-00000002"
+citens2 = [].copy()
+ctot2 = 0.0
+
+# ----------------------------------------------------------------------
+sys.stderr.write("Inicializando módulo {itens_de_compras}, limpando tabela:\n")
+itens_de_compras.inicializa(True)
+
 # ----------------------------------------------------------------------
 # Funções de teste:
 
 ok_global = True # Vira {False} se um teste falha.
 
-def verifica_itens_de_compras(rotulo, cpr, indice, ident, atrs, itens, ctot):
-  """Testes básicos de consistência do objeto {cpr} da classe {ObjCompra}, dados {indice},
-  {ident}, {atrs}, e preço total {ctot} esperados."""
+def verifica_itens_de_compras(rotulo, id_compra, lit_esp, ctot_esp):
+  """Testes básicos de consistência da lista de itens do objeto {cpr} da classe {ObjCompra}, 
+  dados a lista {lit_esp} de itens e o preço total {ctot_esp} esperados."""
   global ok_global
 
   sys.stderr.write("%s\n" % ("-" * 70))
-  sys.stderr.write("verificando compra %s\n" % rotulo)
-  ok = utils_testes.verifica_objeto(compra, compra.ObjCompra, cpr, indice, ident, atrs)
-
-  if cpr != None and type(cpr) is compra.ObjCompra:
+  sys.stderr.write("verificando lista de itens, teste %s\n" % rotulo)
   
-    # ----------------------------------------------------------------------
-    sys.stderr.write("testando {obtem_cliente()}:\n")
-    usr_cmp = compra.obtem_cliente(cpr)
-    usr_esp = atrs['cliente']
-    if usr_cmp != usr_esp:
-      aviso_prog("retornou " + str(usr_cmp) + ", deveria ter retornado " + str(usr_esp),True)
-      ok = False
-    
-    # ----------------------------------------------------------------------
-    sys.stderr.write("testando {obtem_status()}:\n")
-    stat_cmp = compra.obtem_status(cpr)
-    stat_esp = atrs['status']
-    if stat_cmp != stat_esp:
-      aviso_prog("retornou " + str(stat_cmp) + ", deveria ter retornado " + str(stat_esp),True)
-      ok = False
-    
-    # ----------------------------------------------------------------------
-    sys.stderr.write("testando {obtem_itens()}:\n")
-    its_cmp = compra.obtem_itens(cpr)
-    its_esp = itens
-    if its_cmp != its_esp:
-      aviso_prog("retornou " + str(its_cmp) + ", deveria ter retornado " + str(its_esp),True)
-      ok = False
-    
-    # ----------------------------------------------------------------------
-    sys.stderr.write("testando {calcula_total()}:\n")
-    ctot_cmp = compra.calcula_total(cpr)
-    if ctot_cmp != ctot:
-      aviso_prog("retornou " + str(ctot_cmp) + ", deveria ter retornado " + str(ctot),True)
-      ok = False
+  ok = True
+
+  lit_cmp = itens_de_compras.busca_por_compra(id_compra)
+  if lit_cmp == None or not (type(lit_cmp) is list or type(lit_cmp) is tuple):
+    aviso_prog("retornou " + str(lit_cmp) + ", deveria ter retornado lista",True)
+    ok = False
+  elif lit_cmp != lit_esp:
+    aviso_prog("retornou " + str(lit_cmp) + ", deveria ter retornado " + str(lit_esp), True)
+    ok = False
 
   if not ok:
     aviso_prog("teste falhou",True)
@@ -91,221 +97,94 @@ def verifica_itens_de_compras(rotulo, cpr, indice, ident, atrs, itens, ctot):
 
   sys.stderr.write("  %s\n" % ("-" * 70))
   return
- 
-def testa_cria_compra(rotulo, indice, ident, cliente):
-  """Testa criação de pedido de compra cliente {cliente}. Retorna o pedido de compra."""
+
+def verifica_posicao_do_item(rotulo, lit, prod, pos_esp):
+  """Verifica se {itens_de_compras.posicao_do_item(lit, prod)} devolve {pos_esp}."""
   global ok_global
-  # Cria o objeto inicialmente com status aberto e sem itens:
-  cpr = compra.cria(cliente)
-  atrs_ini = { 'cliente': cliente, 'status': 'aberto' }
-  itens_ini = [].copy()
-  ctot_ini = 0.0
-  verifica_itens_de_compras(rotulo, cpr, indice, ident, atrs_ini, itens_ini, ctot_ini)
-  return cpr
-  
-def testa_quantidade(rotulo, id_compra, itens, prod, qt_esp, preco_esp):
-  """Verifica se a quantidade de {prod} em {cpr} foi alterada para {qt_esp}."""
-  global ok_global
+
   sys.stderr.write("%s\n" % ("-" * 70))
-  ok = True # Este teste deu certo?
-  assert qt_esp >= 0
-  id_compra = compra.obtem_identificador(cpr)
-  id_produto = produto.obtem_identificador(prod)
-  sys.stderr.write("  compra = " + id_compra + " produto = " + id_produto + " qt_esp = " + str(qt_esp) + "\n")
+  sys.stderr.write("verificando {posicao_do_item}, teste %s\n" % rotulo)
 
-  # ----------------------------------------------------------------------
-  sys.stderr.write("testando {compra.obtem_quantidade}:\n")
-  qt_cmp = compra.obtem_quantidade(cpr, prod)
-  if abs(qt_cmp - qt_esp) >= 0.001:
-    aviso_prog("{compra.obtem_quantidade} é " + str(qt_cmp) + ", deveria ser " + str(qt_esp),True)
-    ok = False
+  ok = True
 
-  # ----------------------------------------------------------------------
-  sys.stderr.write("testando {compra.obtem_preco}:\n")
-  preco_cmp = compra.obtem_preco(cpr, prod)
-  if abs(preco_cmp - preco_esp) >= 0.001:
-    aviso_prog("{compra.obtem_preco} é " + str(preco_cmp) + ", deveria ser " + str(preco_esp),True)
+  pos_cmp = itens_de_compras.posicao_do_item(lit, prod)
+  if pos_cmp != None and not (type(pos_cmp) is int):
+    aviso_prog("retornou " + str(pos_cmp) + " " + str(type(pos_cmp)) + ", deveria ter retornado {None} ou {int}",True)
     ok = False
-  preco_prd = produto.calcula_preco(prod, qt)
-  if abs(preco_cmp - preco_prd) >= 0.001:
-    aviso_prog("{compra.obtem_preco} é " + str(preco_cmp) + ", deveria ser " + str(preco_prd),True)
+  elif pos_cmp != pos_esp:
+    aviso_prog("retornou " + str(pos_cmp) + ", deveria ter retornado " + str(pos_esp),True)
     ok = False
 
-  # ----------------------------------------------------------------------
-  sys.stderr.write("testando produto em {compra.obtem_itens}:\n")
-  itens_cmp = compra.obtem_itens(cpr)
-  conta = 0 # Numero de vezes que o produto apareceu:
-  for prod_it, qt_it, preco_it in itens_cmp:
-    if prod_it == prod:
-      conta = conta + 1
-      if qt_esp == 0:
-        aviso_prog("produto não deveria aparecer na compra, item = " + str(item),True)
-        ok = False
-      elif abs(qt_it - qt_esp) >= 0.001:
-        aviso_prog("quantidade nos itens da compra é " + str(qt_it) + ", deveria ser " + str(qt_esp),True)
-        ok = False
-      if abs(preco_it - preco_esp) >= 0.001:
-        aviso_prog("preço nos itens da compra é " + str(preco_it) + ", deveria ser " + str(preco_esp),True)
-        ok = False
-  conta_esp = (1 if qt_esp != 0.0 else 0)
-  if conta != conta_esp:
-    aviso_prog("produto  ocorre na compra " + str(conta_cmp) + " vezes, deveria ser " + str(conta_esp),True)
-    ok = False
   if not ok:
     aviso_prog("teste falhou",True)
     ok_global = False
-  sys.stderr.write("%s\n" % ("-" * 70))
-  
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {compra.cria}:\n")
-cindice1 = 1
-cident1 = "C-00000001"
-cusr1 = usr1
-cpr1 = testa_cria_compra("cpr1", cindice1, cident1, cusr1)
-cpr1_atrs = {
-  'cliente': cusr1,
-  'status': "aberto"
-}
-cpr1_itens = [].copy()
-ctot1 = 0.0
 
-cindice2 = 2
-cident2 = "C-00000002"
-cusr2 = usr2
-cpr2 = testa_cria_compra("cpr2", cindice2, cident2, cusr2)
-cpr2_atrs = {
-  'cliente': cusr2,
-  'status': "aberto"
-}
-cpr2_itens = [].copy()
-ctot2 = 0.0
-
-cindice3 = 3
-cident3 = "C-00000003"
-cusr3 = usr1
-cpr3 = testa_cria_compra("cpr3", cindice3, cident3, cusr3)
-cpr3_atrs = {
-  'cliente': cusr3,
-  'status': "aberto"
-}
-cpr3_itens = [].copy()
-ctot3 = 0.0
+  sys.stderr.write("  %s\n" % ("-" * 70))
+  return
 
 # ----------------------------------------------------------------------
-sys.stderr.write("testando {compra.muda_atributos}:\n")
+sys.stderr.write("testando {itens_de_compras.posicao_do_item}:\n")
 
-cpr1_mods = {
-  'cliente': cusr1,
-  'status': "despachada"
-}
-compra.muda_atributos(cpr1, cpr1_mods)
-for k, v in cpr1_mods.items():
-  cpr1_atrs[k] = v
-verifica_itens_de_compras("cpr1_d", cpr1, cindice1, cident1, cpr1_atrs, cpr1_itens, ctot1)
-
-cpr2_mods = cpr2_atrs.copy()
-compra.muda_atributos(cpr2, cpr2_mods) # Não deveria mudar os atributos
-verifica_itens_de_compras("cpr2", cpr2, cindice2, cident2, cpr2_atrs, cpr2_itens, ctot2)
-
-cpr2_mods = cpr3_atrs.copy()
-cpr2_mods['cliente'] = cpr2_atrs['cliente'] # Não pode alterar o cliente.
-compra.muda_atributos(cpr2, cpr2_mods) # Deveria assumir os valores do cpr3
-for k, v in cpr2_mods.items():
-  cpr2_atrs[k] = v
-verifica_itens_de_compras("cpr2_m", cpr2, cindice2, cident2, cpr2_atrs, cpr2_itens, ctot2)
+lit1 = [ (prod1, 10, 100, ), (prod3, 20, 30, ),  (prod2, 20, 30, ) ]
+verifica_posicao_do_item("lit11", lit1, prod1, 0)
+verifica_posicao_do_item("lit12", lit1, prod2, 2)
+verifica_posicao_do_item("lit13", lit1, prod3, 1)
+verifica_posicao_do_item("lit14", lit1, prod4, None)
 
 # ----------------------------------------------------------------------
-sys.stderr.write("testando {compra.fecha_compra}:\n")
+sys.stderr.write("testando {itens_de_compras.atualiza_lista}:\n")
+ 
+# Acrescenta produto que não existe na compra 1:
+qt11a = 15.0
+prc11a = produto.calcula_preco(prod1, qt11a)
+ctot11a = prc11a
 
-compra.fecha_compra(cpr3)
-cpr3_atrs['status'] = "pagando"
-verifica_itens_de_compras("cpr3_m", cpr3, cindice3, cident3, cpr3_atrs, cpr3_itens, ctot3)
+itens_de_compras.atualiza_lista(cident1, citens1, prod1, 0.0, qt11a)
 
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {compra.acrescenta_item}:\n")
+lit11a = [ (prod1, qt11a, prc11a, ), ]
+verifica_itens_de_compras("11a", cident1, lit11a, ctot11a)
+ 
+# Acrescenta produto que não existe na compra 2:
+qt21a = 100.0
+prc21a = produto.calcula_preco(prod1, qt21a)
+ctot21a = prc21a
 
-cpr3_itens = [ (prod1, 2, 2*preco1), (prod3, 3, 3*preco3), (prod2, 20, 20*preco2) ]
-for prod, qt, preco in cpr3_itens:
-  compra.acrescenta_item(cpr3, prod, qt)
-ctot3 = 0.00
-for prod, qt, preco in cpr3_itens:
-  testa_quantidade("+prod", cpr3, prod, qt, preco)
-  ctot3 = ctot3 + preco
-verifica_itens_de_compras("3prods", cpr3, cindice3, cident3, cpr3_atrs, cpr3_itens, ctot3)  
+itens_de_compras.atualiza_lista(cident2, citens2, prod1, 0.0, qt21a)
 
-# Acrecenta a produto que já existe:
-assert cpr3_itens[2][0] == prod2
-qt_old = cpr3_itens[2][1]
-qt_add = 10
-qt_new = qt_old + qt_add
-compra.acrescenta_item(cpr3, prod2, qt_add)
-cpr3_itens[2] = (prod2, qt_new, 420.00*qt_new)
-ctot3 = 0.00
-for prod, qt, preco in cpr3_itens:
-  testa_quantidade("prod2:+10", cpr3, prod, qt, preco)
-  ctot3 = ctot3 + preco
-verifica_itens_de_compras("prod2:+10", cpr3, cindice3, cident3, cpr3_atrs, cpr3_itens, ctot3)  
+lit21a = [ (prod1, qt21a, prc21a, ), ]
+verifica_itens_de_compras("21a", cident2, lit21a, ctot21a)
 
-# Acrescenta quantidade zero:
-compra.acrescenta_item(cpr3, prod2, 0)
-ctot3 = 0.00
-for prod, qt, preco in cpr3_itens:
-  testa_quantidade("prod2:+0", cpr3, prod, qt, preco)
-  ctot3 = ctot3 + preco
-verifica_itens_de_compras("prod2:+0", cpr3, cindice3, cident3, cpr3_atrs, cpr3_itens, ctot3)  
+# Acrescenta outro produto que não existe na compra 1:
+qt12a = 25.0
+prc12a = produto.calcula_preco(prod2, qt12a)
+ctot12a = ctot11a + prc12a
 
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {compra.troca_quantidade}:\n")
+itens_de_compras.atualiza_lista(cident1, citens1, prod2, 0.0, qt12a)
 
-# Produto que existe:
-assert cpr3_itens[0][0] == prod1
-qt_old = cpr3_itens[0][1]
-qt_new = 6
-compra.troca_quantidade(cpr3, prod1, qt_new)
-cpr3_itens[0] = (prod1, qt_new, 120.50*qt_new)
-ctot3 = 0.00
-for prod, qt, preco in cpr3_itens:
-  testa_quantidade("prod2:+10", cpr3, prod, qt, preco)
-  ctot3 = ctot3 + preco
-verifica_itens_de_compras("prod1:=6", cpr3, cindice3, cident3, cpr3_atrs, cpr3_itens, ctot3)  
+lit12a = lit11a + [ (prod2, qt12a, prc12a, ), ]
+verifica_itens_de_compras("12a", cident1, lit12a, ctot12a)
 
-# Produto que não existe:
-assert cpr2_itens == []
-qt_old = 0
-qt_new = 6
-compra.troca_quantidade(cpr2, prod1, qt_new)
-cpr2_itens.append((prod1, qt_new, 120.50*qt_new))
-ctot2 = 0.00
-for prod, qt, preco in cpr2_itens:
-  testa_quantidade("prod1:=6", cpr2, prod, qt, preco)
-  ctot2 = ctot2 + preco
-verifica_itens_de_compras("prod1:=6", cpr2, cindice2, cident2, cpr2_atrs, cpr2_itens, ctot2)  
+# Modifica quantidade de produto que existe na compra 1:
+qt11b = 30.0
+prc11b = produto.calcula_preco(prod1, qt11b)
+ctot11b = prc11b + prc12a
 
-# Exliminando produto que existe:
-assert cpr3_itens[1][0] == prod3
-qt_old = cpr3_itens[1][1]
-qt_new = 0
-compra.troca_quantidade(cpr3, prod3, qt_new)
-del cpr3_itens[1]
-ctot3 = 0.00
-for prod, qt, preco in cpr3_itens:
-  testa_quantidade("prod3:=0", cpr3, prod, qt, preco)
-  ctot3 = ctot3 + preco
-verifica_itens_de_compras("prod1:=6", cpr3, cindice3, cident3, cpr3_atrs, cpr3_itens, ctot3)  
+itens_de_compras.atualiza_lista(cident1, citens1, prod1, qt11a, qt11b)
 
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {compra.elimina_produto}:\n")
+lit11b = lit11a.copy();
+lit11b[0] = (prod1, qt11b, prc11b,)
+verifica_itens_de_compras("11b", cident1, lit11b, ctot11b)
 
-assert cpr3_itens[1][0] == prod2
-qt_old = cpr3_itens[1][1]
-qt_new = 0
-compra.elimina_produto(cpr3, prod2)
-del cpr3_itens[1]
-ctot3 = 0.00
-for prod, qt, preco in cpr3_itens:
-  testa_quantidade("prod2:elim", cpr3, prod, qt, preco)
-  ctot3 = ctot3 + preco
-verifica_itens_de_compras("prod1:=6", cpr3, cindice3, cident3, cpr3_atrs, cpr3_itens, ctot3)  
+# Elimina produto que existe na compra 1:
+qt11c = 30.0
+prc11c = produto.calcula_preco(prod1, qt11c)
+ctot11c = prc11c + prc12a
+
+itens_de_compras.atualiza_lista(cident1, citens1, prod1, qt11a, qt11c)
+
+lit11c = lit11b.copy();
+del lit11c[0]
+verifica_itens_de_compras("11c", cident1, lit11c, ctot11c)
 
 # ----------------------------------------------------------------------
 # Veredito final:

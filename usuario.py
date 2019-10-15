@@ -29,21 +29,24 @@ class ObjUsuario(ObjUsuario_IMP):
     
   Outros atributos (nascimento, preferências, etc.) poderão ser acrescentados no futuro.
 
+  Além desses atributos, cada usuário tem um identificador, uma string da forma
+  "U-{NNNNNNNN}" onde {NNNNNNNN} é o índice na tabela (vide abaixo)
+  formatado em 8 algarismos.
+  
+  Os campos 'CPF' e 'email' de todos os usuários
+  devem ser distintos.  Todos os campos podem ser alterados,
+  exceto o índice (e identificador) e o CPF.
+  
+  REPRESENTAÇÃO NA BASE DE DADOS
+
   Cada usuário do sistema -- cliente ou funcionário, ativo ou bloqueado
   -- é representado por uma linha na tabela "usuarios" da base SQL em
   disco. Apenas algumas dessas linhas são representadas também na memória por objetos
   da classe {ObjUsuario}.
 
-  Cada linha da tabela tem um índice inteiro (chave primária) distinto, que é atribuído
-  quando a linha é criada.  Cada usuário também tem um identificador, uma string da forma
-  "U-{NNNNNNNN}" onde {NNNNNNNN} é o índice formatado em 8 algarismos.
-
-  Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
-  atributos do usuário (menos o identificador/índice).
-
-  Os campos 'CPF' e 'email' de todos os usuários
-  devem ser distintos.  Todos os campos podem ser alterados,
-  exceto o índice (e identificador) e o CPF."""
+  Cada linha da tabela tem um índice inteiro (chave primária) distinto,
+  que é atribuído quando a linha é criada. Além disso, cada linha tem
+  uma coluna da tabela (um campo) para cada um dos atributos do usuário."""
 
 def cria(atrs):
   """Cria um novo objeto da classe {ObjUsuario}, com os atributos especificados

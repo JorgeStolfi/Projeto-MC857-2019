@@ -22,3 +22,4 @@ html = comando_menu_ver_carrinho.processa(ses1, args1)
 html = html + "\n" # In case the fragment does not end with newline.
 
 sys.stdout.buffer.write(html.encode('utf-8'))
+sys.stderr.write("Fim.\n")

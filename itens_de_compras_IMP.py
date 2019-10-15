@@ -37,7 +37,7 @@ def inicializa(limpa):
   else:
     tabela_generica.cria_tabela(nome_tb, colunas)
 
-def posicao_do_item(prod, lit):
+def posicao_do_item(lit, prod):
   global cache, nome_tb, letra_tb, colunas, diags
   pos = 0
   for item in lit:
@@ -78,7 +78,7 @@ def atualiza_lista(id_compra, lit, prod, qt_velho, qt_novo):
   else:
     # O produto existe na lista.
     # Determina indice {pos} do produto na lista:
-    pos = posicao_do_item(prod, lit)
+    pos = posicao_do_item(lit, prod)
     assert pos != None
     cond = "compra = " + str(ind_compra) + " AND produto = " + str(produto.obtem_indice(prod))
     if qt_novo == 0 and pos != None:
@@ -93,6 +93,29 @@ def atualiza_lista(id_compra, lit, prod, qt_velho, qt_novo):
       base_sql.executa_comando_UPDATE(nome_tb, cond, atrs_SQL)
   if diags: mostra(2, "itens alterados = " + str(lit));
   return
+
+def obtem_quantidade(lit, prod):
+  global cache, nome_tb, letra_tb, colunas, diags
+  pos = posicao_do_item(lit, prod)
+  if pos == None:
+    return 0.0
+  else:
+    return lit[pos][1]
+
+def obtem_preco(lit, prod):
+  global cache, nome_tb, letra_tb, colunas, diags
+  pos = posicao_do_item(lit, prod)
+  if pos == None:
+    return 0.0
+  else:
+    return lit[pos][2]
+
+def calcula_total(lit):
+  global cache, nome_tb, letra_tb, colunas, diags
+  total = 0
+  for prod, qt, prc in lit:
+    total += prc
+  return total
 
 # FUNÇÕES INTERNAS
 

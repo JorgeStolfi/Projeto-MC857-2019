@@ -30,11 +30,11 @@ class ObjCompra(ObjCompra_IMP):
   
   Por enquanto, os atributos de um objeto desta classe são:
   
-    'cliente' um {ObjUsuario} que representa o cliente que fez ou está montando a compra.
-    'status'  uma string que indica o estado do pedido. 
+    'cliente' {ObjUsuario} o cliente que fez ou está montando a compra.
+    'status'  {str}        o estado do pedido. 
     
   Além disso, cada objeto desta classe possui uma lista de itens. Cada
-  item é uma lista de tres elementos {[prod, qt,preco]} onde {prod} é um
+  item é uma tripla {(prod, qt,preco)} onde {prod} é um
   objeto da classe {ObjProduto}, {qt} é um float que indica a quantidade
   comprada, e {preco} é um float que indica o preço total do item. Os
   produtos na lista são sempre todos distintos.
@@ -49,13 +49,20 @@ class ObjCompra(ObjCompra_IMP):
    
   Mais campos e/ou estados poderão ser acrescentados no futuro.
   
-  Cada pedido de compra no sistema é representado por uma linha na tabela "compras" da base SQL em
-  disco. Apenas algumas dessas linhas são representadas também na memória por objetos
-  da classe {ObjCompra}. 
+  Além desses atributos, cada compra também tem identificador, uma string da forma "C-{NNNNNNNN}"
+  onde {NNNNNNNN} é o índice na tabela (vide abaixo) formatado em 8 algarismos.
   
-  Cada linha da tabela de compras tem um índice inteiro (chave primária) distinto, que é atribuído
-  quando a linha é criada.  Cada compra também tem identificador, uma string da forma "C-{NNNNNNNN}"
-  onde {NNNNNNNN} é o índice formatado em 8 algarismos."""
+  REPRESENTAÇÃO NA BASE DE DADOS
+
+  Cada pedido de compra no sistema é representado por uma linha na tabela "compras" 
+  da base SQL em disco.  Apenas algumas dessas linhas são representadas também na 
+  memória por objetos da classe {ObjCompra}. 
+  
+  Cada linha da tabela de compras tem um índice inteiro (chave primária)
+  distinto, que é atribuído quando a linha é criada.  Além disso, cada
+  linha tem uma coluna da tabela (um campo) para cada um dos atributos
+  da compra (exceto a lista de itens, que é armazenada em uma tabela 
+  separada, e o identificador)."""
 
 def cria(cliente):
   """Cria um novo objeto da classe {ObjCompra} para o usuário {cliente}
@@ -165,16 +172,17 @@ def busca_por_indice(ind):
   return compra_IMP.busca_por_indice(ind)
 
 def busca_por_produto(id_produto):
-  """Localiza algumas compras cujo produto é {id_produto} 
+  """Localiza os pedidos de compra que contém o produto com identificador {id_produto} 
   e devolve uma lista de identificadores das compras (não uma lista de objetos);
   ou lista vazia se não existir tal compra."""
   return compra_IMP.busca_por_produto(id_produto)
 
 def busca_por_usuario(id_usuario):
-  """Localiza as compras feitas pelo usuário {id_usuario} 
-  e devolve uma lista de compras ou lista vazia se não 
-  existirem tais compras."""
+  """Localiza os pedidos de compra feitas pelo usuário {id_usuario} 
+  e devolve uma lista de identificadores compras (não uma lista de objetos);
+  ou lista vazia se não existirem tais compras."""
   return compra_IMP.busca_por_usuario(id_usuario)
+
 def cria_testes():
   """Limpa as tabelas de compras e de itens com {inicializa(True)}, e cria três pedidos
   de compra para fins de teste, incluindo-os na tabela.  Os pedidos estarão inicialmente

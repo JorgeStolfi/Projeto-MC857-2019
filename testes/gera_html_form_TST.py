@@ -9,30 +9,63 @@ import sys
 import usuario
 import identificador
 
-# !!! Precisa chamar todas as funções da interface, pelo menos uma vez, e gravar em arquivos ".html" separados. !!!
+sys.stderr.write("Conectando com base de dados...\n")
+res = base_sql.conecta("DB",None,None)
+assert res == None
 
-# Comandos:
-class ObjCompra_IMP:
-  def __init__(self, id_compra, atrs, itens):
-    global cache, nome_tb, letra_tb, colunas, letra_tb_itens, colunas_itens, diags
-    self.id_compra = id_compra
-    self.atrs = atrs # Inclui cliente e status
-    self.itens = itens.copy()
+sys.stderr.write("Criando alguns objetos...\n")
+tabelas.cria_todos_os_testes()
 
-cpr = ObjCompra_IMP("123", ["Cliente"], ["Computador"])
+# Testes das funções de {gera_html_form}:
 
-html = gera_html_form.buscar_produtos()
+def testa(nome,  funcao, *args):
+  """Testa {funcao(*args)}, grava resultado 
+  em "testes/saida/gera_html_form.{nome}.html"."""
+  
+  prefixo = "testes/saida/gera_html_form"
+  f = open(prefixo + "." + nome + '.html', 'w')
+  try:
+    res = funcao(*args)
+    f.buffer.write(str(res).encode('utf-8'))
+  except Exception as ex:
+    msg = "testa(" + nome + "): ** erro = " + str(ex) + "\n"
+    sys.stderr.buffer.write(str(msg).encode('utf-8'))
+    f.buffer.write(str(msg).encode('utf-8'))
+  f.close()
 
-html = html + "<br/>" + gera_html_form.ver_produto("1234", 3)
+ses = sessao.busca_por_identificador("S-00000001")
+assert ses != None
+assert sessao.aberta(ses)
 
-html = html + "<br/>" + gera_html_form.comprar_produto("1234", 3)
+usr1 = sessao.obtem_usuario(ses)
+assert usr1 != None
 
-html = html + "<br/>" + gera_html_form.cadastrar_usuario()
+prod1_ident = "P-00000001"
+prod1 = produto.busca_por_identificador(prod1_ident)
+assert prod1 != None
 
-html = html + "<br/>" + gera_html_form.mostra_compra(cpr)
+prod2_ident = "P-00000002"
+prod2 = produto.busca_por_identificador(prod2_ident)
+assert prod2 != None
 
-html = html + "<br/>" + gera_html_form.entrar()
+cpr1_ident = "C-00000001"
+cpr1 = compra.busca_por_identificador(cpr1_ident)
+assert cpr1 != None
 
-html = html + "\n" # In case the fragment does not end with newline.
+testa("buscar_produtos", buscar_produtos)
 
-sys.stdout.buffer.write(html.encode('utf-8'))
+testa("ver_produto", ver_produto, prod1_ident, 3)
+
+testa("comprar_produto", comprar_produto, cpr1_ident, prod1_ident, 3)
+
+testa("alterar_quantidade", alterar_quantidade, cpr1_ident, prod1_ident, 5)
+
+testa("ver_compra", ver_compra, cpr1_ident)
+
+testa("fechar_compra", fechar_compra, cpr1_ident)
+
+testa("entrar", entrar)
+
+testa("cadastrar_usuario", cadastrar_usuario)
+
+testa("alterar_usuario", alterar_usuario, usr1)

@@ -1,6 +1,6 @@
 
 import utils_testes
-import utils_testes_AUX
+import utils_testes_AUX; from utils_testes_AUX import ObjTeste, obj1, obj1_ind, obj1_id, obj1_atrs
 import sys
 from utils_testes import erro_prog, mostra
 
@@ -13,7 +13,7 @@ for p in range(10):
 sys.stderr.write("testando {utils_testes.verifica_objeto}\n") 
 
 sys.stderr.write("verificando objeto %s\n" % "obj1") 
-utils_testes.verifica_objeto(utils_testes_TST, ObjTeste, obj1, obj1_ind, obj1_id, obj1_atrs)
+utils_testes.verifica_objeto(utils_testes_AUX, ObjTeste, obj1, obj1_ind, obj1_id, obj1_atrs)
 sys.stderr.write("\n")
 
 # ----------------------------------------------------------------------

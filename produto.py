@@ -15,35 +15,40 @@ def inicializa(limpa):
 class ObjProduto(ObjProduto_IMP):
   """Um objeto desta classe representa um produto da loja e armazena seus 
   atributos, que são:
-
-    {atributos} - ver abaixo
-        {descr_curta} {str} - descrição do produto em uma linha.
-        {descr_media} {str} - descrição mais estensa do produto, em 1-3 linhas. 
-        {descr_longa} {str} - descrição completa do produto. 
-        {unidade} {str} - unidade de venda ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
-        {preco} {float} - preço unitário.
-        {imagem} {str} - nome do arquivo da imagem no diretorio 'imagens'
-        {estoque} {integer} - quantidade do produto no estoque.
-    {id_produto} - {str} - segue as regras P + '-' + identificador único
+  
+    'descr_curta'  {str}   descrição do produto em uma linha.
+    'descr_media'  {str}   descrição mais extensa do produto, em 1-3 linhas. 
+    'descr_longa'  {str}   descrição completa do produto. 
+    'unidade'      {str}   unidade de venda ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
+    'preco'        {float} preço unitário.
+    'imagem'       {str}   nome do arquivo da imagem no diretorio 'imagens'
+    'estoque'      {int}   quantidade do produto no estoque.
+  
+  Mais atributos (volume, peso, descontos por atacado, etc.)
+  podem ser acrescentados no futuro.
     
+  Além desses atributos, cada produto tem um identificador, uma string da
+  forma "P-{NNNNNNNN}" onde {NNNNNNNN} é o índice na tabela
+  (vide abaixo) formatado em 8 algarismos.
+ 
   O preço unitário é em reais, e é arredondado para centavos inteiros 
   (a menos de erros de arredondamento do float).
   
-  Cada produto da loja, mesmo com estoque esgotado (pois o mesmo possuirá atributo estoque = 0), é representado
-  por uma linha na tabela "produtos" da base SQL em disco.
-  Apenas algumas dessas linhas são representadas também na memória por objetos
-  da classe {ObjProduto}. 
-  
-  Cada linha da tabela tem um índice inteiro (chave primária) distinto, que é atribuído
-  quando a linha é criada.  Cada produto também tem um identificador, uma string da
-  forma "P-{NNNNNNNN}" onde {NNNNNNNN} é o índice formatado em 8 algarismos.
-  
-  Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
-  atributos do usuário (menos o identificador/índice).
-  
   Todos os campos podem ser alterados, exceto o índice (e identificador).
   Entretanto, alterações no preço podem deixar pedidos de compras inconsistentes.
-  Esse problema deverá ser tratado no futuro."""
+  Esse problema deverá ser tratado no futuro.
+  
+  REPRESENTAÇÃO NA BASE DE DADOS
+
+  Cada produto da loja, mesmo com estoque esgotado (pois o mesmo
+  possuirá atributo estoque = 0), é representado por uma linha na tabela
+  "produtos" da base SQL em disco. Apenas algumas dessas linhas são
+  representadas também na memória por objetos da classe {ObjProduto}.
+  
+  Cada linha da tabela tem um índice inteiro (chave primária) distinto,
+  que é atribuído quando a linha é criada. Além disso, cada linha tem
+  uma coluna da tabela (um campo) para cada um dos atributos do produto
+  (exceto o identificador)."""
 
 def cria(atrs):
   """Cria um novo objecto da classe {ObjProduto} com os

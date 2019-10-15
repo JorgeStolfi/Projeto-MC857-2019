@@ -17,7 +17,7 @@ sys.stderr.write("Criando alguns objetos...\n")
 tabelas.cria_todos_os_testes()
 ses1 = sessao.busca_por_identificador("S-00000001")
 
-resultado = comando_menu_sair.processa(ses1)
+resultado = comando_menu_sair.processa(ses1, {})
 
 assert not sessao.aberta(ses1)
 assert resultado == gera_html_pag.principal(ses1)

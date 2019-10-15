@@ -39,7 +39,6 @@ def processa(ses, args):
   # Remove o campo confSenha, não mais necessário
   args.pop('confSenha', None)
 
-  # !!! Precisa extrair dados do formulário {args} e montar um dicionário como {cria} quer. !!! 
   if not erro:
     usr = None
   else:

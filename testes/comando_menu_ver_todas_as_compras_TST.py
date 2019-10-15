@@ -3,7 +3,7 @@
 # Interfaces usadas por este script:
 import sys
 
-import comando_submit_ver_todas_as_compras
+import comando_menu_ver_todas_as_compras
 import base_sql
 import tabelas
 import usuario
@@ -22,7 +22,7 @@ ses1 = sessao.busca_por_identificador("S-00000001")
 usr1 = usuario.busca_por_identificador("U-00000001")
 
 args1 = { 'id_usuario': "U-00000001"}
-userTest = comando_submit_ver_todas_as_compras.processa(ses1, args1)
+userTest = comando_menu_ver_todas_as_compras.processa(ses1, args1)
 
 if( userTest == usr1):
   sys.stderr.write("Teste terminou sem detectar erro\n")

@@ -64,6 +64,12 @@ def submit_comprar_produto():
   o usuário pede ao servidor a inclusão do produto no seu carrinho de compras. """
   return gera_html_botao_IMP.submit_comprar_produto()
 
+def submit_excluir_produto():
+  """Retorna um fragmento HTML que descreve um botão <submit> com o texto 'EXCLUIR',
+  para uso em uma página com a descrição detalhada de um pedido de compra em aberto (carrinho).
+  Por este botão o usuário pede ao servidor a exclusão do produto do seu carrinho de compras. """
+  return gera_html_botao_IMP.submit_excluir_produto()
+
 def submit_buscar_produtos():
   """Retorna HTML um fragmento HTML que descreve um botão <submit> com o texto 'BUSCAR',
   para uso em formulario de busca de produtos por palavras. Por este botão

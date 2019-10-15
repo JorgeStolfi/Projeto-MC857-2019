@@ -36,8 +36,8 @@ def principal(ses):
   pagina = generica(ses, conteudo)
   return pagina
 
-def mostra_produto(ses, prod, qt):
-  conteudo = gera_html_elem.bloco_de_produto(prod, qt, True)
+def mostra_produto(ses, id_compra, prod, qt):
+  conteudo = gera_html_elem.bloco_de_produto(id_compra, prod, qt, True)
   pagina = generica(ses, conteudo)
   return pagina
 
@@ -46,7 +46,7 @@ def lista_de_produtos(ses, idents):
   todos_prods = ""
   for id_prod in idents:
     prod = produto.busca_por_identificador(id_prod)
-    bloco_prod = gera_html_elem.bloco_de_produto(prod, None, False)
+    bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
     todos_prods = todos_prods + sep + bloco_prod
   pagina = generica(ses, todos_prods + sep)
   return pagina
@@ -64,16 +64,15 @@ def cadastrar_usuario(ses):
 def mostra_carrinho(ses):
   if ses != None:
     carrinho = sessao.obtem_carrinho(ses)
-    pagina = gera_html_elem.bloco_de_compra(carrinho)
+    conteudo = gera_html_elem.bloco_de_compra(carrinho, True)
+    pagina = generica(ses, conteudo)
   else:
-    carrinho = None
-    pagina = generica(ses,"Carrinho vazio")
-  
+    pagina = mensagem_de_erro(ses, "É necessário fazer login para esta função")
   return pagina
 
-
 def mostra_compra(ses, cpr):
-  conteudo = gera_html_form.mostra_compra(cpr)
+  detalhe = True
+  conteudo = gera_html_elem.bloco_de_compra(cpr, True)
   pagina = generica(ses, conteudo) 
   return pagina
 

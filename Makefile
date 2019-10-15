@@ -12,6 +12,7 @@ MODULOS := \
   usuario \
   produto \
   sessao \
+  itens_de_compras \
   compra \
    \
   tabelas \
@@ -28,14 +29,15 @@ MODULOS := \
   comando_menu_entrar \
   comando_menu_sair \
   comando_menu_ver_carrinho \
+  comando_submit_acrescentar_produto \
   comando_submit_buscar_produtos \
   comando_submit_cadastrar_usuario \
   comando_submit_comprar_produto \
-  comando_submit_definir_qt \
+  comando_submit_alterar_qt_de_produto \
   comando_submit_entrar \
   comando_submit_excluir_item_de_compra \
   comando_submit_finalizar_compra \
-  comando_submit_ver_todas_as_compras \
+  comando_menu_ver_todas_as_compras \
   comando_submit_ver_compra \
   comando_submit_ver_produto
 
@@ -58,6 +60,7 @@ todos_os_testes:
 # MODULO := produto
 # MODULO := sessao 
 # MODULO := compra
+# MODULO := gera_html_elem
 
 teste_unico:
 	./testa.sh ${MODULO}

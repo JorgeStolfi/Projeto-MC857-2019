@@ -127,15 +127,6 @@ else:
     aviso_prog("resultado foi " + str(plist5_cmp) + " deveria ser " + str(plist5_esp),True)
     ok_global = False
 
-
-# ----------------------------------------------------------------------
-sys.stderr.write("testando {produto.busca_por_identificador}:\n")
-
-id_tst = "P-00000001"
-r_tst_id = produto.busca_por_indice(id_tst)
-if r_tst_ind.id_produto != id_tst:
-    aviso_prog("resultado foi " + str(r_tst_ind.id_produto) + " deveria ser " + str(id_tst),True)
-    ok_global = False
 # ----------------------------------------------------------------------
 # Veredito final:
 

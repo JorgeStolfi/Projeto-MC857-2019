@@ -15,7 +15,7 @@ def processa(ses, args):
   para o usuário fazer login (com campos para email e senha,
   e um botão "Entrar").
   
-  Se os dados nao forem aceitáveis,a função devolve o
+  Se os dados não forem aceitáveis,a função devolve o
   mesmo formulário de cadastrar usuário, com os mesmos
   dados nos campos preenchidos, mais uma mensagem de erro adequada."""
   return comando_submit_cadastrar_usuario_IMP.processa(ses, args)

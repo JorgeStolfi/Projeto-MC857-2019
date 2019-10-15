@@ -57,6 +57,11 @@ def submit_buscar_produtos():
   cor_fundo = "#fff888"
   return botao_submit(texto, "submit_buscar_produtos", cor_fundo)
 
+def submit_excluir_produto():
+  texto = "Excluir"
+  cor_fundo = "#fff888"
+  return botao_submit(texto, "submit_excluir_produto", cor_fundo)
+
 def submit_cadastrar_usuario():
   texto = "Cadastrar"
   cor_fundo = "#fff888"
@@ -85,7 +90,7 @@ def botao_simples(texto, URL, cor_fundo):
 
 def botao_submit(texto, URL, cor_fundo):
   """Função INTERNA que gera um botões "<input type=submit>"
-  como {texto} e {cor_fundo} especificados.  Quando clicado,
+  com o {texto} e a {cor_fundo} especificados.  Quando clicado,
   o botão emite um comando HTTP 'POST' para o {URL} dado."""
   
   # O botão propriamente dito:
@@ -94,5 +99,5 @@ def botao_submit(texto, URL, cor_fundo):
   # Define o estilo:
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", "#eeeeee")
+  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "3px", "center", "#000000", cor_fundo)
   return html

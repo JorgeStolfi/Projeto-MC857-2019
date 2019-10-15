@@ -9,15 +9,19 @@ import comando_menu_cadastrar_usuario
 import comando_menu_entrar
 import comando_menu_sair
 import comando_menu_ver_carrinho
+import comando_menu_ver_todas_as_compras
+import comando_menu_acrescentar_produto
 
 import comando_submit_buscar_produtos
 import comando_submit_cadastrar_usuario
 import comando_submit_comprar_produto
-import comando_submit_definir_qt
+import comando_submit_acrescentar_produto
+import comando_submit_alterar_qt_de_produto
 import comando_submit_entrar
+import comando_submit_alterar_qt_de_item_de_compra
 import comando_submit_excluir_item_de_compra
 import comando_submit_finalizar_compra
-import comando_submit_ver_todas_as_compras
+import comando_menu_ver_todas_as_compras
 import comando_submit_ver_produto
 
 import gera_html_elem
@@ -261,6 +265,12 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/menu_carrinho':
       # Usuário apertou o botão "Meu Carrinho" do menu geral:
       pagina =  comando_menu_ver_carrinho.processa(ses, args)
+    elif cmd == '/menu_ver_todas_as_compras':
+      # Usuário apertou o botão "Minhas compras" do menu geral:
+      pagina =  comando_menu_ver_todas_as_compras.processa(ses, args)
+    elif cmd == '/menu_acrescentar_produto':
+      # Usuário apertou o botão "Acrescentar produto" do menu geral:
+      pagina =  comando_menu_acrescentar_produto.processa(ses, args)
     else:
       # Comando não identificado:
       pagina = gera_html_pag.mensagem_de_erro(ses, ("** comando GET \"%s\" inválido" % cmd)) 
@@ -282,18 +292,18 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/submit_comprar_produto':
       # Usuário preencheu a quantidade desejada na página de um produto e apertou o botão "Comprar":
       pagina =  comando_submit_comprar_produto.processa(ses, args)
-    elif cmd == '/submit_definir_qt':
+    elif cmd == '/submit_alterar_qt_de_produto':
       # Usuário alterou a quantidade desejada numa descrição de produto:
-      pagina =  comando_submit_definir_qt.processa(ses, args)
+      pagina =  comando_submit_alterar_qt_de_produto.processa(ses, args)
     elif cmd == '/submit_excluir_item_de_compra':
       # Usuário apertou o botão "Excluir" do carrinho:
       pagina =  comando_submit_excluir_item_de_compra.processa(ses, args)
-    elif cmd == '/submit_ver_todas_as_compras':
-      # Usuário apertou o botão "Minhas compras":
-      pagina =  comando_submit_ver_todas_as_compras.processa(ses, args)
     elif cmd == '/submit_finalizar_compra':
-      # Usuário apertou o botão "Finalizar compra":
+      # Usuário apertou o botão "Finalizar compra" na descrição do carrinho:
       pagina =  comando_submit_finalizar_compra.processa(ses, args)
+    elif cmd == '/submit_alterar_endereco_de_entrega':
+      # Usuário apertou o botão "Alterar endereço" na descrição de um pedido de compra:
+      pagina =  comando_submit_alterar_endereco_de_entrega.processa(ses, args)
     else:   
       # Comando não identificado
       pagina =  gera_html_pag.mensagem_de_erro(ses, ("** comando POST \"%s\" inválido" % cmd)) 

@@ -2,6 +2,8 @@
 
 import utils_testes_IMP
 
+# MENSAGENS DE DIAGNÓSTICO
+
 def erro_prog(mens):
   """Escreve a mensagem {mens} na saída {sys.stderr}, prefixada com o arquivo e linha da chamada
   e a palavra " ** erro: ", e aborta a execução com {assert False}.
@@ -11,7 +13,6 @@ def erro_prog(mens):
   browser na forma de uma página HTML com a mensagem de erro (vide {gera_html_pag.mensagem_de_erro})."""
   utils_testes_IMP.erro_prog(mens)
 
-
 def aviso_prog(mens, grave):
   """Escreve a mensagem {mens} na saída {sys.stderr}, prefixada com o arquivo e linha da chamada.
   Se {grave} for {True}, insere também a palavra " ** erro: ", senão insere palavra " !! aviso: ".
@@ -20,14 +21,14 @@ def aviso_prog(mens, grave):
   Esta função deve ser chamada apenas para depuração do programa. 
   Avisos destinados ao usuário (cliente ou administrador) devem ser enviados ao browser na forma
   de uma página HTML com a mensagem de erro (vide {gera_html_pag.mensagem_de_erro})."""
-  utils_testes_IMP.aviso_prog(mens)
-
-
+  utils_testes_IMP.aviso_prog(mens, grave)
 
 def mostra(ind,mens):
   """Escreve a mensagem {mens} na saída {sys.stderr}, indentada de {ind} colunas.
   Útil para imprimir variáveis internas no diagnóstico de programas"""
   utils_testes_IMP.mostra(ind,mens)
+  
+# VERIFICAÇÃO BÁSICA DE OBJETOS
 
 def verifica_objeto(modulo, tipo, obj, indice, ident, atrs):
   """Faz testes de consistência básicos de um objeto {obj} de classe {tipo}, 
@@ -43,6 +44,8 @@ def verifica_objeto(modulo, tipo, obj, indice, ident, atrs):
   Devolve {True} se os testes deram certo, {False} caso contrário. Também
   imprme diagnósticos em {sys.stderr}."""
   return utils_testes_IMP.verifica_objeto(modulo, tipo, obj, indice, ident, atrs)
+
+# FORMATAÇÃO DE DADOS PARA DIAGNÓSTICO
 
 def formata_dict(dados):
   """Esta função de depuração recebe um dicionário {dados}

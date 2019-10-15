@@ -1,4 +1,4 @@
-#! /usr/local/bin/python3
+#! /usr/bin/python3
 
 # Este programa executável limpa todas as tabelas da base de dados e cria 
 # pelo menos três objetos de cada classe nas tabela correspondente.

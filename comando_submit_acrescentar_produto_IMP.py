@@ -10,8 +10,9 @@ def processa(ses, args):
 
   # Verifica se o usuário foi criado corretamente 
   # e retorna uma página de acordo com o resultado:
-  if type(prod) is ObjProduto:
-    conteudo = gera_html_pag.mostra_produto(ses,prod=prod,qt=1)
+  if prod != None and type(prod) is ObjProduto:
+    qtd = 1
+    conteudo = gera_html_pag.mostra_produto(ses, None, prod, qtd)
   else:
     erro = "Erro ao gerar novo usuário"
     conteudo = gera_html_pag.mensagem_de_erro(erro)

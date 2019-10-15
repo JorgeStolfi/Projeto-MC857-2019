@@ -15,16 +15,26 @@ def principal(ses):
   """Retorna a página de entrada da loja (homepage)."""
   return gera_html_pag_IMP.principal(ses)
 
-def mostra_produto(ses, prod, qt):
-  """Retorna uma página com descrição detalhada do produto {prod}.
+def mostra_produto(ses, id_compra, prod, qt):
+  """Retorna uma página com descrição detalhada do produto {prod},
+  como construída pro {gera_html_elem.bloco_de_produto(id_compra, prod, qt, True)},
+  e um botão 'Comprar'.
+  
   Se {qt} não for {None}, mostra a quantidade {qt}
   e o preço para essa quantidade.  Se {qt} for {None},
-  mostra o preço unitário, sem a quantidade."""
-  return gera_html_pag_IMP.mostra_produto(ses, prod, qt)
+  mostra o preço unitário, sem a quantidade.
+  
+  O parâmetro {id_compra}, se não for {None}, será incluído nos argumentos do POST
+  gerado pelo botão "Comprar".  Nesse caso, deve ser o identificador do pedido de
+  compra ao qual o produto deve ser acrescentado."""
+  return gera_html_pag_IMP.mostra_produto(ses, id_compra, prod, qt)
   
 def lista_de_produtos(ses, idents):
   """Dada uma lista {idents} de identificadores de produtos,
-  retorna uma página mostrando todos esses produtos."""
+  retorna uma página mostrando a descrição resumida de todos esses produtos.
+  
+  Cada descrição será gerada por {gera_html_elem.bloco_de_produto(None, prod, qt, False)},
+  e terá um botão 'Ver' para mostrar a descrição detalhada."""
   return gera_html_pag_IMP.lista_de_produtos(ses, idents)
 
 def entrar(ses):
@@ -52,13 +62,13 @@ def mostra_compra(ses, cpr):
   """Retorna uma página com a lista dos produtos no pedido de compra {cpr}."""
   return gera_html_pag_IMP.mostra_compra(ses, cpr)
 
-def mensagem_de_erro(ses, msg):
-  """Retorna uma página de erro com a mensagem (msg) informada"""
-  return gera_html_pag_IMP.mensagem_de_erro(ses, msg)
-
 def lista_de_compras(ses, idents):
   """Retorna uma página com a lista de todas as compras realizadas por um usuário {usr}"""
   return gera_html_pag_IMP.lista_de_compras(ses, idents)
+
+def mensagem_de_erro(ses, msg):
+  """Retorna uma página de erro com a mensagem (msg) informada"""
+  return gera_html_pag_IMP.mensagem_de_erro(ses, msg)
 
 # Utilitários
 

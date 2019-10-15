@@ -11,6 +11,8 @@ def buscar_produtos():
   fam_fonte = "Courier"
   tam_fonte = "18px"
   cor_cinza = "#fff888"
+  html_condicao = gera_html_elem.input(None, "text", "condicao", None, "Buscar o que?", None)
+  html_submit_buscar = gera_html_botao.submit_buscar_produtos()
   return \
     "<span style=\"\n" + \
     "  display: inline-block;\n" + \
@@ -20,15 +22,18 @@ def buscar_produtos():
     "\">\n" + \
     "  <form method=\"post\">\n" + \
     "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
-    "      <input type =\"text\" name=\"condicao\" id=\"condicao\" placeholder=\"Buscar o que?\">\n" + \
+    "      " + html_condicao + "\n" + \
     "    </span>\n" + \
-    "    " + gera_html_botao.submit_buscar_produtos() + "\n" + \
+    "    " + html_submit_buscar + "\n" + \
     "  </form>\n" + \
     "</span>"
 
 def ver_produto(id_produto, qtd_produto):
   fam_fonte = "Courier"
   tam_fonte = "18px"
+  html_produto = gera_html_elem.input(None, "hidden", "id_produto", id_produto, None, None)
+  html_qtd = ( gera_html_elem.input(None, "hidden", "quantidade", str(qtd_produto), None, None) if qtd_produto != None else "" )
+  html_submit_ver = gera_html_botao.submit_ver_produto()
   return \
     "<span style=\"\n" + \
     "  display: inline-block;\n" + \
@@ -37,15 +42,22 @@ def ver_produto(id_produto, qtd_produto):
     "  padding: 5px;\n" + \
     "\">\n" + \
     "  <form method=\"post\">\n" + \
-    "    <input type =\"hidden\" name=\"id_produto\" id=\"id_produto\" value=\"" + id_produto + "\">\n" + \
-    "    <input type =\"hidden\" name=\"quantidade\" id=\"quantidade\" value=\"" + str(qtd_produto) + "\">\n" + \
-    "    " + gera_html_botao.submit_ver_produto() + "\n" + \
+    ( "    " + html_produto + "\n" ) + \
+    ( "    " + html_qtd + "\n" if html_qtd != "" else "" ) + \
+    ( "    " + html_submit_ver + "\n" ) + \
     "  </form>\n" + \
     "</span>"
 
-def comprar_produto(id_produto, qtd_produto):
+def comprar_produto(id_compra, id_produto, qtd_produto):
   fam_fonte = "Courier"
   tam_fonte = "18px"
+  if id_compra != None:
+    html_compra = gera_html_elem.input(None, "hidden", "id_compra", id_compra, None, None)
+  else:
+    html_compra = None
+  html_produto = gera_html_elem.input(None, "readonly", "id_produto", id_produto, None, None)
+  html_quantidade = gera_html_elem.input(None, "text", "quantidade", str(qtd_produto), None, "submit_alterar_quantidade")
+  html_submit_comprar = gera_html_botao.submit_comprar_produto()
   return \
     "<span style=\"\n" + \
     "  display: inline-block;\n" + \
@@ -54,112 +66,82 @@ def comprar_produto(id_produto, qtd_produto):
     "  padding: 5px;\n" + \
     "\">\n" + \
     "  <form method=\"post\">\n" + \
-    "    <input type =\"hidden\" name=\"id_produto\" id=\"id_produto\" value=\"" + id_produto + "\">\n" + \
-    "    <input name=\"quantidade\" id=\"quantidade\" value=\"" + str(qtd_produto) + "\">\n" + \
-    "    " + gera_html_botao.submit_comprar_produto() + "\n" + \
+    ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
+    ( "    " + html_produto + "\n" ) + \
+    ( "    " + html_quantidade + "\n" ) + \
+    ( "    " + html_submit_comprar + "\n" ) + \
     "  </form>\n" + \
     "</span>"
 
-def cadastrar_usuario():
-  # !!! Os campos do formulário devem ser os mesmos do {ObjUsuario}. !!!
-  # !!! Usar o campo de seleção para o estado é muito chato. Deixe o usuário entrar o endereço em formato livre, 3 linhas. !!!
+def alterar_quantidade(id_compra, id_produto, qtd_produto):
   fam_fonte = "Courier"
   tam_fonte = "18px"
-
+  if id_compra != None:
+    html_compra = gera_html_elem.input(None, "hidden", "id_compra", id_compra, None, None)
+  else:
+    html_compra = None
+  html_produto = gera_html_elem.input(None, "readonly", "id_produto", id_produto, None, None)
+  html_quantidade = gera_html_elem.input(None, "text", "quantidade", str(qtd_produto), None, "submit_alterar_quantidade")
+  html_submit_ver = gera_html_botao.submit_ver_produto()
+  html_submit_excluir = gera_html_botao.submit_excluir_produto()
   return \
-      "<span style=\"\n" + \
+    "<span style=\"\n" + \
     "  display: inline-block;\n" + \
     "  font-family:" + fam_fonte + ";\n" + \
     "  font-size:" + tam_fonte + ";\n" + \
     "  padding: 5px;\n" + \
     "\">\n" + \
-    "  <form method=\"post\">" + \
-    "<table>" +\
-        "<tr>" + \
-            "<td>" + \
-                "<label>Nome: <span style=\"color:red;\"></span></label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<input type=\"text\" id=\"nome\" name=\"nome\" />" + \
-            "</td>" + \
-        "</tr>" + \
-        "<tr>" + \
-            "<td>" + \
-                "<label>E-mail: <span style=\"color:red;\"></span></label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<input type=\"email\" id=\"email\" name=\"email\" />" + \
-            "</td>" + \
-        "</tr>" + \
-        "<tr>" + \
-            "<td>" + \
-                "<label>CPF: <span style=\"color:red;\"></span></label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<input type=\"text\" id=\"CPF\" name=\"CPF\" />" + \
-            "</td>" + \
-        "</tr>" + \
-        "<tr>" + \
-            "<td>" + \
-                "<label>Telefone:</label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<input type=\"text\" id=\"telefone\" name=\"telefone\" />" + \
-            "</td>" + \
-        "</tr>" + \
-        "<tr>" + \
-            "<td>" + \
-                "<label>Celular:</label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<input type=\"text\" id=\"celular\" name=\"celular\" />" + \
-            "</td>" + \
-        "</tr>" + \
-        "<tr>" + \
-            "<td>" + \
-                "<label>CEP:</label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<input type=\"text\" id=\"CEP\" name=\"CEP\" />" + \
-            "</td>" + \
-        "</tr>" + \
-        "<tr>" + \
-            "<td>" + \
-                "<label>Endereço:</label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<input type=\"text\" id=\"endereco\" name=\"endereco\" />" + \
-            "</td>" + \
-        "</tr>" + \
-        "<tr>" + \
-            "<td>" + \
-                "<label>Senha: <span style=\"color:red;\"></span></label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<input type=\"password\" id=\"senha\" name=\"senha\" />" + \
-            "</td>" + \
-        "</tr>" + \
-        "<tr>" + \
-            "<td>" + \
-                "<label>Confirmação de senha: <span style=\"color:red;\"></span></label>" + \
-            "</td>" + \
-            "<td>" + \
-                "<input type=\"password\" id=\"confSenha\" name=\"confSenha\" />" + \
-            "</td>" + \
-        "</tr>" + \
-    "</table>" + gera_html_botao.submit_cadastrar_usuario() + \
+    "  <form method=\"post\">\n" + \
+    ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
+    ( "    " + html_produto + "\n" ) + \
+    ( "    " + html_quantidade + "\n" ) + \
+    ( "    " + html_submit_ver + "\n" ) + \
+    ( "    " + html_submit_excluir + "\n" ) + \
     "  </form>\n" + \
     "</span>"
 
-def mostra_compra(cpr):
-    text = "Itens da compra: "
-    for item in cpr.itens:
-        text = text + item + ", "
-    return gera_html_elem.bloco_texto(text, "block", "Courier", "18px", "bold", "0px", "left", None, None)
+def ver_compra(id_compra):
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  html_compra = gera_html_elem.input(None, "readonly", "id_compra", id_compra, None, None)
+  html_submit_ver = gera_html_botao.submit_ver_compra()
+  return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form method=\"post\">\n" + \
+    ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
+    ( "    " + html_submit_ver + "\n" ) + \
+    "  </form>\n" + \
+    "</span>"
+
+def fechar_compra(id_compra):
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  html_compra = gera_html_elem.input(None, "readonly", "id_compra", id_compra, None, None)
+  html_submit_fechar = gera_html_botao.submit_fechar_compra()
+  return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form method=\"post\">\n" + \
+    ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
+    ( "    " + html_submit_fechar + "\n" ) + \
+    "  </form>\n" + \
+    "</span>"
 
 def entrar():
   fam_fonte = "Courier"
   tam_fonte = "18px"
+  html_email = gera_html_elem.input("E-mail: ", "email", "email", None, None, None)
+  html_senha = gera_html_elem.input("Senha: ", "text", "senha", None, None, None)
+  html_submit_entrar = gera_html_botao.submit_entrar()
   return \
       "<span style=\"\n" + \
     "  display: inline-block;\n" + \
@@ -168,84 +150,79 @@ def entrar():
     "  padding: 5px;\n" + \
     "\">\n" + \
     "  <form method=\"post\">" + \
-    "   <label>E-mail:</label>" + \
-    "	<input type=\"email\" id=\"email\" name=\"email\"/>" + \
-    "   </div>" + \
-    "   <label>Senha:</label>" + \
-    "	<input type=\"text\" id=\"senha\" name=\"senha\"/>" + \
-    "   </div>" + gera_html_botao.submit_entrar() + \
+    ( "    <label>E-mail: </label>" + html_email + "\n" ) +  \
+    "   <br/>" + \
+    ( "    <label>Senha: </label>" + html_senha + "\n" ) + \
+    "   <br/>" + \
+    ( "   " + html_submit_entrar + "\n" ) + \
     "  </form>\n" + \
     "</span>"
 
-# Essa função tem a mesma funcionalidade da função entrar. Acredito que seja melhor eliminá-la.
-def formulario_entrar(altura, largura, margem, acolchoamento, margem_entradas):
-  # !!! Combinar com a função {entrar} ou eliminar. !!!
-  css = """.formulario {
-              border: 3px solid #f1f1f1;
-              padding: """ + acolchoamento + """;
-              width: """ + largura + """;
-              height: """ + altura + """
-              align-self: center;
-              position: center;
-              margin: """ + margem + """ auto;
-          }
-          .entrada {
-              width: 100%;
-              padding: 12px 20px;
-              margin: """ + margem_entradas + """ 0;
-              display: inline-block;
-              border: 1px solid #ccc;
-              box-sizing: border-box;
-          }
-          .botao {
-              background-color: #4CAF50;
-              color: white;
-              padding: 14px 20px;
-              margin: 8px 0;
-              border: none;
-              cursor: pointer;
-              width: 100%;
-          }
-          .botao:hover {
-              opacity: 0.8;
-          }
-          .texto {
-              cursor:pointer;
-          }
-          .container {
-              padding: 4px;
-          }
-          .link {
-              float: right;
-              padding-top: 4px;
-          }"""
-  html = """<body class="body">
-            <style>%s</style>
-            <form id='login-form' class="formulario" method='post'>
-                <div class="container">
-                    <label for="username"><b>Usuário/E-mail</b></label>
-                    <input type="text" class="entrada" placeholder="Entre com o usuário ou e-mail" name="username" required>
-                </div>
-                <div class="container">
-                    <label for="senha" class="texto"><b>Senha</b></label>
-                    <input type="password" class="entrada" placeholder="Entre com a senha" name="senha" required>
-                </div>
-                <div class="container">
-                    <label class="texto">
-                        <input type="checkbox" checked="checked" name="lembrar">Lembrar de mim</input>
-                    </label>
-                    <button type='submit' formacion="submit_entrar" class="botao">Entrar</button>
-                    <span class="link"><a href="#">Esqueceu a senha?</a></span>
-                </div>
-            </form>
-        </body>""" % css
+def cadastrar_usuario():
+  return cadastrar_ou_alterar_usuario(None) 
+  
+def alterar_usuario(usr):
+  return cadastrar_ou_alterar_usuario(usr)
 
-  return html
+# FUNÇÕES INTERNAS:
 
+def cadastrar_ou_alterar_usuario(usr):
+  """Retorna o formulário de {cadastrar_usuario()} se {usr} for {None},
+  ou {alterar_usuario(usr)} caso contrário."""
+  
+  if usr != None:
+    id_usuario = usuario.obtem_identificador(usr)
+    html_id_usuario = gera_html_elem.input(None, "readonly", "id_usuario", id_usuario, None, None)
+    args = usuario.obtem_atributos(usr)
+  else:
+    id_usuario = None
+    html_id_usuario = None
+    args = {}
+  
+  # Dados brutos para as linhas. Para cada linha, o rótulo, tipo do "<input>", nome do campo, e dica.
+  dados_linhas = (
+    ( "Nome",            "text",     "nome",       None ),
+    ( "E-mail",          "email",    "email",      "xxx@xxx.xxx.xx" ),
+    ( "CPF",             "text",     "CPF",        "xxx.xxx.xxx-xx" ),
+    ( "Telefone",        "text",     "telefone",   "+xx(xx)x-xxxx-xxxx" ),
+    ( "Endereco",        "text",     "endereco",   "Rua e número\nBairro\nCidade, UF"),
+    ( "CEP",             "text",     "CEP",        "xxxxx-xxx"),
+    ( "Documento",       "text",     "documento",  "Número, tipo, órgão"),
+    ( "Senha",           "password", "senha",      None), 
+    ( "Confirmar senha", "password", "conf_senha", None),
+  )
+  
+  # Converte os dados brutos das linhas para fragmentos HTML:
+  linhas = [].copy()
+  for rotulo, tipo, nome, dica in dados_linhas:
+    html_rotulo = gera_html_elem.label(rot + ": ")
+    if usr != None and (nome == CPF or nome  == email):
+      # Não permite alterar CPF ou email:
+      tipo = "readonly"
+    # Valor corrente do atributo:
+    valor = (args[nome] if nome in args else None)
+    html_campo = gera_html_elem.input(None, tipo, nome, valor, None, None)
+    linhas.append((html_rotulo, html_campo,))
 
-def informacao_usuario(usr):
-    """ A função recebe o parâmetro {usr}, da classe {ObjUsuario}, e recupera
-    a partir dele nome, email, CPF, endereco, CEP, telefone do usuario
-    correspondente em formato HTML."""
-    info_final = """ <h1> """ + usr.nome + """ </h1> <br> """ + usr.cpf + """ <br> """ + usr.email + """ <br> """ + usr.endereco + """ <br> """ + usr.cep + """ <br> """ + + usr.telefone + """ <br> """
-    return info_final
+  # Monta a tabela com os fragmentos HTML:
+  html_tabela = gera_html_elem.tabela(4, linhas)
+  
+  if usr == None:
+    html_submit = gera_html_botao.submit_cadastrar_usuario()
+  else:
+    html_submit = gera_html_botao.submit_alterar_usuario()
+  
+  return \
+      "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form method=\"post\">" + \
+    ( "    " + html_id_usuario + "\n" if id_usuario != None else "") + \
+    ( html_tabela + "\n" ) + \
+    ( "    " + html_submit + "\n" ) + \
+    "  </form>\n" + \
+    "</span>"
+

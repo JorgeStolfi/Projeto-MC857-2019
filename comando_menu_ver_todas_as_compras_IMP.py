@@ -1,4 +1,4 @@
-# Implementação do módulo {comando_submit_ver_todas_as_compras}.
+# Implementação do módulo {comando_menu_ver_todas_as_compras}.
 
 import usuario
 import sessao

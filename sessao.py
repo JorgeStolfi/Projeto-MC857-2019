@@ -22,33 +22,37 @@ class ObjSessao(ObjSessao_IMP):
   """Um objeto desta classe representa uma sessao de acesso ao
   servidor.  Os atributos deste objeto, por enquanto, são:
     
-    'usr' {ObjUsuario} - o usuário que fez login na sessão.
-    'abrt' {bool} - estado da sessao.
-    'cookie' {str} - cookie da sessao.
-    'carrinho' {ObjCompra} - o carrinho associado ao usario da sessao.
+    'usr'      {ObjUsuario} o usuário que fez login na sessão.
+    'abrt'     {bool}       estado da sessao.
+    'cookie'   {str}        cookie da sessao.
+    'carrinho' {ObjCompra}  o carrinho associado à sessao.
     
   Outros atributos (data, IP, etc.) poderão ser acrescentados no futuro.
   
-  Cada sessao pertence a um unico usuario, mas cada
-  usuário pode ter várias sessoes abertas ao mesmo tempo. A sessao é criada
+  Além desses atributos, cada sessão também tem um identificador de
+  sessão, uma string da forma "S-{NNNNNNNN}" onde {NNNNNNNN} é o índice
+  na tabela (vide abaixo) formatado em 8 algarismos.
+  
+  Cada sessao pertence a um unico usuário, mas cada usuário 
+  pode ter várias sessoes abertas ao mesmo tempo. A sessao é criada
   e "aberta" quando o usuario faz login, e e "fechada" no logout.
+
+  REPRESENTAÇÃO NA BASE DE DADOS
 
   Cada sessão do sistema -- aberta ou fechada -- é representada por uma
   linha na tabela "sessoes" da base SQL em disco. Apenas algumas dessas
   linhas são representadas também na memória por objetos da classe
   {ObjSessao}.
   
-  Cada linha da tabela tem um índice inteiro (chave primária) distinto, que é atribuído
-  quando a linha é criada.  Casa sessão também tem um identificador de sessão, uma 
-  string da forma "S-{NNNNNNNN}" onde {NNNNNNNN} é o índice formatado em 8 algarismos.
-  
-  Além disso, cada linha tem uma coluna da tabela (um campo) para cada um dos
-  atributos da sessão (menos o identificador/índice)."""
+  Cada linha da tabela tem um índice inteiro (chave primária) distinto,
+  que é atribuído quando a linha é criada. Além disso, cada linha tem
+  uma coluna da tabela (um campo) para cada um dos atributos da sessão
+  (menos o identificador)."""
  
 def cria(usr, cookie, carrinho):
   """Cria um novo objeto da classe {ObjSessao}, associada ao usuário {usr},
-  inicialmente aberta, com o cookie inicial {cookie}.  Também acrescenta a sessão à base de dados.  Em caso de
-  sucesso, retorna o objeto.
+  inicialmente aberta, com o cookie inicial {cookie}.  Também acrescenta a 
+  sessão à base de dados.  Em caso de sucesso, retorna o objeto.
   Atribui um identificador único à sessão, derivado do seu índice na tabela.
   Retorna o objeto criado."""
   return sessao_IMP.cria(usr, cookie, carrinho)

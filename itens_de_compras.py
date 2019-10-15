@@ -68,10 +68,25 @@ def atualiza_lista(id_compra, lit, prod, qt_velho, qt_novo):
   O preço é recalculado mesmo se {qt_novo == qt_velho}."""
   itens_de_compras_IMP.atualiza_lista(id_compra, lit, prod, qt_velho, qt_novo)
 
-def posicao_do_item(prod, lit):
+def posicao_do_item(lit, prod):
   """Obtem o índice do item com produto {prod} na lista de itens de compra {lit}. Se não 
   existir, devolve {None}."""
-  return itens_de_compras_IMP.posicao_do_item(prod, lit)
+  return itens_de_compras_IMP.posicao_do_item(lit, prod)
+
+def obtem_quantidade(lit, prod):
+  """Retorna a quantidade atual do produto {prod} na lista de itens de
+  compras {lit}.  Se o produto não está na lista de itens, devolve zero."""
+  return itens_de_compras_IMP.obtem_quantidade(lit, prod)
+
+def obtem_preco(lit, prod):
+  """Retorna o preco total do produto {prod} na lista de itens de
+  compras {lit}.  Se o produto não está na lista de itens, devolve zero."""
+  return itens_de_compras_IMP.obtem_preco(lit, prod)
+
+def calcula_total(lit):
+  """ Retorna um float que é o preco total do pedido de compra, ou seja a
+  soma dos campos {qt} nos elementos da lista de itens."""
+  return itens_de_compras_IMP.calcula_total(lit)
 
 def diagnosticos(val):
   """Habilita (se {val=True}) ou desabilita (se {val=False}) a
