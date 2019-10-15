@@ -4,10 +4,15 @@
 # escrevem formulários HTML5.
 
 # Interfaces usadas por este script:
-import gera_html_form
+from gera_html_form import *
 import sys
 import usuario
 import identificador
+import base_sql
+import tabelas
+import sessao
+import produto
+import compra
 
 sys.stderr.write("Conectando com base de dados...\n")
 res = base_sql.conecta("DB",None,None)
@@ -60,12 +65,10 @@ testa("comprar_produto", comprar_produto, cpr1_ident, prod1_ident, 3)
 
 testa("alterar_quantidade", alterar_quantidade, cpr1_ident, prod1_ident, 5)
 
-testa("ver_compra", ver_compra, cpr1_ident)
+# Nao implementadas em gera_html_botao
+#testa("ver_compra", ver_compra, cpr1_ident)
 
-testa("fechar_compra", fechar_compra, cpr1_ident)
+# Nao implementada em gera_html_botao
+#testa("fechar_compra", fechar_compra, cpr1_ident)
 
 testa("entrar", entrar)
-
-testa("cadastrar_usuario", cadastrar_usuario)
-
-testa("alterar_usuario", alterar_usuario, usr1)
