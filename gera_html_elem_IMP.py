@@ -72,7 +72,7 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
   atrs = produto.obtem_atributos(prod)
 
   # Monta o parágrafo de descrição
-  estilo_parag = "\n  width: 600px;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
+  estilo_parag = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
 
   d_curta = atrs['descr_curta']
   html_d_curta = paragrafo(estilo_parag, bloco_texto(d_curta, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
@@ -111,7 +111,7 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
 
   # !!! Reduzir o espaço vertical usado por cada produto, quando {detalhe} é falso !!!
   bloco_final = \
-    span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", html_img + bloco_descr)
+    span("\n width: 50%; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\n  background-color: #ffffff; display: flex; align-items: center;", html_img + bloco_descr)
   return bloco_final
 
 def bloco_de_compra(cpr, detalhe):
