@@ -185,8 +185,8 @@ def busca_por_produto(id_produto):
 
 def busca_por_usuario(id_usuario):
   global cache, nome_tb, letra_tb, colunas, diags
-  ind_usuario = identificador.para_indice(id_usuario)
-  res = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "usuario", ind_usuario)
+  ind_usuario = identificador.para_indice('U', id_usuario)
+  res = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "cliente", ind_usuario)
   if res == None:
     # Não achou ninguém?
     return [].copy()
