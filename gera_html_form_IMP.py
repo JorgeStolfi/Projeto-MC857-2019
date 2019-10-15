@@ -190,6 +190,7 @@ def cadastrar_ou_alterar_usuario(usr):
     ( "Documento",       "text",     "documento",  "Número, tipo, órgão"),
     ( "Senha",           "password", "senha",      None), 
     ( "Confirmar senha", "password", "conf_senha", None),
+    ( "Administrador", "checkbox", "administrador", None),
   )
   
   # Converte os dados brutos das linhas para fragmentos HTML:

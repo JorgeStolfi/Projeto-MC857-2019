@@ -10,7 +10,7 @@ import comando_menu_entrar
 import comando_menu_sair
 import comando_menu_ver_carrinho
 import comando_menu_ver_todas_as_compras
-import comando_menu_acrescentar_produto
+#import comando_menu_acrescentar_produto
 
 import comando_submit_buscar_produtos
 import comando_submit_cadastrar_usuario
@@ -18,7 +18,7 @@ import comando_submit_comprar_produto
 import comando_submit_acrescentar_produto
 import comando_submit_alterar_qt_de_produto
 import comando_submit_entrar
-import comando_submit_alterar_qt_de_item_de_compra
+#import comando_submit_alterar_qt_de_item_de_compra
 import comando_submit_excluir_item_de_compra
 import comando_submit_finalizar_compra
 import comando_menu_ver_todas_as_compras
