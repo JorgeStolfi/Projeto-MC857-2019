@@ -46,12 +46,14 @@ def menu_geral(logado, nome_usuario):
     html_bt_sair = "  " + gera_html_botao.menu_sair() + "\n"
     html_nome = "  " + bloco_texto(nome_usuario, "inline_block", "Courier", "14px", "bold", None, None, None, "#ff44ff") + "\n"
     html_botao_carrinho =  "  " + gera_html_botao.menu_carrinho() + "\n"
+    html_botao_ver_todas_as_minhas_compras =  "  " + gera_html_botao.menu_minhas_compras() + "\n"
     html_bt_entrar = ""
     html_bt_cadastrar = ""
   else:
     html_bt_sair = ""
     html_nome = ""
     html_botao_carrinho =  ""
+    html_botao_ver_todas_as_minhas_compras = ""
     html_bt_entrar = "  " + gera_html_botao.menu_entrar() + "\n"
     html_bt_cadastrar = "  " + gera_html_botao.menu_cadastrar() + "\n"
   
@@ -62,6 +64,7 @@ def menu_geral(logado, nome_usuario):
       html_bt_sair + \
       html_nome + \
       html_botao_carrinho + \
+      html_botao_ver_todas_as_minhas_compras + \
       html_bt_entrar + \
       html_bt_cadastrar + \
     "</nav>"
