@@ -91,7 +91,7 @@ def lista_de_compras(ses, idents):
   todas_cmprs = ""
   for id_cmpr in idents:
     cmpr = compra.busca_por_identificador(id_cmpr)
-    bloco_compra = gera_html_elem.bloco_de_compra(cmpr)
+    bloco_compra = gera_html_elem.bloco_de_compra(cmpr, False)
     todas_cmprs = todas_cmprs + sep + bloco_compra
   pagina = generica(ses, todas_cmprs + sep)
   return pagina
