@@ -1,0 +1,8 @@
+Nome: Rebecca Moreira Messias RA: 186416
+
+Dia: 15/10/2019
+
+Aprimorei a busca por produtos.
+
+Agora o usuário pode vuscar um produto e se colocar a palavra chave 'AND' ele irá 
+considerar que há outro item a ser buscado.
