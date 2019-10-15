@@ -127,14 +127,16 @@ def bloco_de_compra(cpr, detalhe):
   if detalhe:
     itens = compra.obtem_itens(cpr);
     linhas = [].copy() 
-    cmd = "submit_alterar_qt_de_item_de_compra"
+    cmdAlterarQtd = "submit_alterar_qt_de_item_de_compra"
+    cmdverProduto = "submit_ver_produto"
     for prod, qt, prc in itens:
       atrs = produto.obtem_atributos(prod)
       d_curta = atrs['descr_curta']
       html_d_curta = d_curta
-      html_qt = input(None, "number", "qtd", str(qt), None, cmd)
+      html_qt = input(None, "number", "qtd", str(qt), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit_excluir_produto()
+      html_ver_prod = gera_html_botao.submit_ver_produto()
       linhas.append(( d_curta, html_qt, html_prc, html_excl ))
     html_itens = tabela(linhas)
   else:
