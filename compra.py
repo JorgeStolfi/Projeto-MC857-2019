@@ -6,12 +6,13 @@
 # da classe {ObjProduto}, e {qt} e um {float} que especifica uma
 # quantidade desse produto.
 
+# Implementaçao deste módulo:
+import compra_IMP
+import produto
 # Interfaces importadas por esta interface:
 import usuario
-import produto
+from compra_IMP import ObjCompra_IMP
 
-# Implementaçao deste módulo:
-import compra_IMP; from compra_IMP import ObjCompra_IMP
 
 def inicializa(limpa):
   """Inicializa o modulo, criando a tabela "compras" na base de dados.

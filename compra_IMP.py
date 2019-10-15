@@ -54,8 +54,10 @@ class ObjCompra_IMP:
 def inicializa(limpa):
   global cache, nome_tb, letra_tb, colunas, diags
   colunas = \
-    ( ( 'status',  type("foo"),         'TEXT',    False,    4,   10 ), # status da compra: 'aberto', 'pagando', 'pago', etc..
-      ( 'cliente', usuario.ObjUsuario,  'INTEGER', False,   14,   14 ), # Objeto/índice do cliente que realizou a compra.
+    ( ( 'status',   type("foo"),         'TEXT',    False,    4,   10 ), # status da compra: 'aberto', 'pagando', 'pago', etc..
+      ( 'cliente',  usuario.ObjUsuario,  'INTEGER', False,   14,   14 ), # Objeto/índice do cliente que realizou a compra.
+      ( 'endereco', type("foo"),         'TEXT',    False,    30,   180 ), # Endereço de entrega
+      ( 'CEP',      type("foo"),         'TEXT',    False,    8,   10 ), # CEP de entrega
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
@@ -66,7 +68,9 @@ def inicializa(limpa):
 
 def cria(cliente):
   global cache, nome_tb, letra_tb, colunas, diags
-  atrs = { 'cliente': cliente, 'status': 'aberto' }
+  endereco = usuario.obtem_atributos(cliente)['endereco']
+  cep = usuario.obtem_atributos(cliente)['CEP']
+  atrs = { 'cliente': cliente, 'status': 'aberto', 'endereco': endereco, 'CEP': cep }
 
   # Converte atributos para formato SQL.
   atrs_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, tabelas.obj_para_indice)
