@@ -46,6 +46,7 @@ def menu_geral(logado, nome_usuario):
     html_bt_sair = "  " + gera_html_botao.menu_sair() + "\n"
     html_nome = "  " + bloco_texto(nome_usuario, "inline_block", "Courier", "14px", "bold", None, None, None, "#ff44ff") + "\n"
     html_botao_carrinho =  "  " + gera_html_botao.menu_carrinho() + "\n"
+    html_botao_minha_conta =  "  " + gera_html_botao.menu_usuario() + "\n"
     html_bt_entrar = ""
     html_bt_cadastrar = ""
   else:
@@ -62,6 +63,7 @@ def menu_geral(logado, nome_usuario):
       html_bt_sair + \
       html_nome + \
       html_botao_carrinho + \
+      html_botao_minha_conta + \
       html_bt_entrar + \
       html_bt_cadastrar + \
     "</nav>"

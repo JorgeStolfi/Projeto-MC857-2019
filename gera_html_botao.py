@@ -50,6 +50,12 @@ def erro_ok():
   (homepage) da loja."""
   return gera_html_botao_IMP.erro_ok()
 
+def menu_usuario():
+  """Retorna um fragmento de HTML que produz o botao "Meu Usuario" para uso no menu geral.
+  Este botão permite que o usuário solicite ao servidor uma página que mostra o e seu perfil
+  de usuario no site."""
+  return gera_html_botao_IMP.menu_usuario()
+
 # As funções abaixo geram botões "<input type=submit>" para uso dentro de "<form>...</form>":
 
 def submit_ver_produto():

@@ -87,7 +87,7 @@ def mensagem_de_erro(ses, msg):
   return pagina
 
 def lista_de_compras(ses, idents):
-  sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de produtos.
+  sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de compras.
   todas_cmprs = ""
   for id_cmpr in idents:
     cmpr = compra.busca_por_identificador(id_cmpr)
