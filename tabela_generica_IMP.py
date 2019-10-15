@@ -117,6 +117,15 @@ def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   sys.stderr.write("busca_por_semelhanca: res = " + str(res) + "\n")
   return identificador.de_lista_de_indices(let, res)
 
+def busca_por_valor(nome_tb, let, cols, chaves, valores):
+  cond = "preco < " + str(valores)
+  res = base_sql.executa_comando_SELECT(nome_tb, cond, ['indice'])
+  if res != None and type(res) is str:
+    erro_prog("SELECT falhou " + str(res))
+  sys.stderr.write("busca_por_valor: res = " + str(res) + "\n")
+  return identificador.de_lista_de_indices(let, res)
+
+
 def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
   # Obtém o objeto com esse identificador e garante que está em {cache}:
   obj = busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident)
