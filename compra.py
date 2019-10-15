@@ -198,3 +198,8 @@ def diagnosticos(val):
   impressão em {sys.stderr} de mensagens de diagnóstico pelas 
   funções deste módulo."""
   compra_IMP.diagnosticos(val)
+
+def calcular_frete(compra, CEP):
+  """Retorna float {frete} de uma compra para determinado CEP. A fórmula ainda não está definida."""
+
+  return compra_IMP.calcular_frete(compra, CEP)

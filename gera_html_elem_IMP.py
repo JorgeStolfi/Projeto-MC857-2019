@@ -92,15 +92,23 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
   if qt == None:
     # Preço unitário, sem campo de quantidade:
     preco = atrs['preco']
+    peso = atrs['peso']
+    volume = volume['volume']
     html_qt = ""
   else:
     preco = produto.calcula_preco(prod, qt)
     html_qt = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
 
+  str_peso  = ("%.2f gramas" % peso)
+  html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+
+  str_volume = ("%.2f milimitros" % volume)
+  html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+
   str_preco = ("R$ %.2f" % preco)
   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  html_descr = html_d_curta  + html_d_media + html_d_longa + html_qt + html_preco + html_botao
+  html_descr = html_d_curta  + html_d_media + html_d_longa + html_qt + html_preco + html_botao + html_peso + html_volume
   bloco_descr = span("\n display: inline-block;", html_descr)
 
   tam_img = (200 if detalhe else 100)
