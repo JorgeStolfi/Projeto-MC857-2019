@@ -12,8 +12,6 @@ TAM_FONTE_PADRAO = "18px"
 #Funções exportadas por este módulo:
 
 def buscar_produtos():
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
   cor_cinza = "#fff888"
   html_condicao = gera_html_elem.input(None, "text", "condicao", None, "Buscar o que?", None)
   html_submit_buscar = gera_html_botao.submit_buscar_produtos()
@@ -25,8 +23,6 @@ def buscar_produtos():
     bottom_form()
 
 def ver_produto(id_produto, qtd_produto):
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
   html_produto = gera_html_elem.input(None, "hidden", "id_produto", id_produto, None, None)
   html_qtd = ( gera_html_elem.input(None, "hidden", "quantidade", str(qtd_produto), None, None) if qtd_produto != None else "" )
   html_submit_ver = gera_html_botao.submit_ver_produto()
@@ -38,8 +34,6 @@ def ver_produto(id_produto, qtd_produto):
     bottom_form()
 
 def comprar_produto(id_compra, id_produto, qtd_produto):
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
   if id_compra != None:
     html_compra = gera_html_elem.input(None, "hidden", "id_compra", id_compra, None, None)
   else:
@@ -55,8 +49,6 @@ def comprar_produto(id_compra, id_produto, qtd_produto):
     bottom_form()
 
 def alterar_quantidade(id_compra, id_produto, qtd_produto):
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
   if id_compra != None:
     html_compra = gera_html_elem.input(None, "hidden", "id_compra", id_compra, None, None)
   else:
@@ -74,8 +66,6 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
     bottom_form()
 
 def ver_compra(id_compra):
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
   html_compra = gera_html_elem.input(None, "readonly", "id_compra", id_compra, None, None)
   html_submit_ver = gera_html_botao.submit_ver_compra()
   return header_form() + \
@@ -84,8 +74,6 @@ def ver_compra(id_compra):
     bottom_form()
 
 def fechar_compra(id_compra):
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
   html_compra = gera_html_elem.input(None, "readonly", "id_compra", id_compra, None, None)
   html_submit_fechar = gera_html_botao.submit_fechar_compra()
   return header_form() + \
@@ -94,8 +82,6 @@ def fechar_compra(id_compra):
     bottom_form()
 
 def entrar():
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
   html_email = gera_html_elem.input("E-mail: ", "email", "email", None, None, None)
   html_senha = gera_html_elem.input("Senha: ", "text", "senha", None, None, None)
   html_submit_entrar = gera_html_botao.submit_entrar()
@@ -177,17 +163,9 @@ def cadastrar_ou_alterar_usuario(usr):
   else:
     html_submit = gera_html_botao.submit_alterar_usuario()
   
-  return \
-      "<span style=\"\n" + \
-    "  display: inline-block;\n" + \
-    "  font-family:" + fam_fonte + ";\n" + \
-    "  font-size:" + tam_fonte + ";\n" + \
-    "  padding: 5px;\n" + \
-    "\">\n" + \
-    "  <form method=\"post\">" + \
+  return header_form() + \
     ( "    " + html_id_usuario + "\n" if id_usuario != None else "") + \
     ( html_tabela + "\n" ) + \
     ( "    " + html_submit + "\n" ) + \
-    "  </form>\n" + \
-    "</span>"
+    bottom_form()
 
