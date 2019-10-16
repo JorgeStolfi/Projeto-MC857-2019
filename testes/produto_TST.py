@@ -54,7 +54,8 @@ prod1_atrs = {
   'preco': float(120.50),
   'imagem': '160519.png',
   'estoque': 500,
-  'unidade': '1 aparelho'
+  'unidade': '1 aparelho',
+  'oferta' : True
 }
 pindice1 = 1
 pident1 = "P-00000001"
@@ -67,7 +68,8 @@ prod2_atrs = {
   'preco': float(420.00),
   'imagem': '160519.png',
   'estoque': 500,
-  'unidade': 'caixa de 2'
+  'unidade': 'caixa de 2',
+  'oferta' : False
 }
 pindice2 = 2
 pident2 = "P-00000002"
@@ -80,7 +82,8 @@ prod3_atrs = {
   'preco': float(19.95),
   'imagem': '160519.png',
   'estoque': 500,
-  'unidade': '1 unidade'
+  'unidade': '1 unidade',
+  'oferta' : True
 }
 pindice3 = 3
 pident3 = "P-00000003"
