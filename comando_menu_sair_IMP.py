@@ -5,7 +5,7 @@ import sessao
 
 def processa(ses, args):
   if not sessao.aberta(ses):
-    pagina = gera_html_pag.mensagem_de_erro(ses, "Essa sessao nao existe!")
+    pagina = gera_html_pag.mensagem_de_erro(ses, "Essa sessão nao existe!")
   else:
     sessao.fecha(ses)
     pagina = gera_html_pag.principal(None)

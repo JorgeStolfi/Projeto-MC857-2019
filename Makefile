@@ -39,7 +39,8 @@ MODULOS := \
   comando_submit_finalizar_compra \
   comando_menu_ver_todas_as_compras \
   comando_submit_ver_compra \
-  comando_submit_ver_produto
+  comando_submit_ver_produto \
+  comando_submit_trocar_carrinho
 
 # O que "make" deve fazer:
 all: todos_os_testes

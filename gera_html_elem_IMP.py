@@ -44,11 +44,12 @@ def menu_geral(logado, nome_usuario):
   html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
   if logado:
     html_bt_sair = "  " + gera_html_botao.menu_sair() + "\n"
-    html_nome = "  " + bloco_texto(nome_usuario, "inline_block", "Courier", "14px", "bold", None, None, None, "#ff44ff") + "\n"
     html_botao_carrinho =  "  " + gera_html_botao.menu_carrinho() + "\n"
     html_botao_ver_todas_as_minhas_compras =  "  " + gera_html_botao.menu_minhas_compras() + "\n"
+    html_botao_minha_conta =  "  " + gera_html_botao.menu_usuario() + "\n"
     html_bt_entrar = ""
     html_bt_cadastrar = ""
+    html_nome = "  " + bloco_texto("Bem vindo(a)," + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
   else:
     html_bt_sair = ""
     html_nome = ""
@@ -56,17 +57,19 @@ def menu_geral(logado, nome_usuario):
     html_botao_ver_todas_as_minhas_compras = ""
     html_bt_entrar = "  " + gera_html_botao.menu_entrar() + "\n"
     html_bt_cadastrar = "  " + gera_html_botao.menu_cadastrar() + "\n"
-  
+    html_botao_ofertas = "  " + gera_html_botao.menu_ofertas() + "\n"
   html_menu = \
     "<nav>\n" + \
       html_bt_principal + \
       html_fm_buscar + \
-      html_bt_sair + \
-      html_nome + \
       html_botao_carrinho + \
       html_botao_ver_todas_as_minhas_compras + \
+      html_botao_minha_conta + \
       html_bt_entrar + \
       html_bt_cadastrar + \
+      html_nome + \
+      html_bt_sair + \
+      html_botao_ofertas + \
     "</nav>"
   return html_menu
 
@@ -75,13 +78,18 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
   atrs = produto.obtem_atributos(prod)
 
   # Monta o parágrafo de descrição
-  estilo_parag = "\n  width: 600px;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
+  estilo_parag = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
 
   d_curta = atrs['descr_curta']
   html_d_curta = paragrafo(estilo_parag, bloco_texto(d_curta, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
 
   d_media = atrs['descr_media']
   html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+
+  em_oferta = atrs['oferta']
+  html_em_oferta = ""
+  if em_oferta:
+    html_em_oferta = paragrafo(estilo_parag, bloco_texto("OFERTA!", None, "Courier", "24px", "normal", "5px 5px 5px 5px", "center", "#000000", "#ffff00"))
 
   qt_inicial = (qt if qt != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
   if detalhe:
@@ -95,15 +103,24 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
   if qt == None:
     # Preço unitário, sem campo de quantidade:
     preco = atrs['preco']
+    peso = atrs['peso']
+    volume = volume['volume']
     html_qt = ""
   else:
     preco = produto.calcula_preco(prod, qt)
     html_qt = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
 
+  str_peso  = ("%.2f gramas" % peso)
+  html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+
+  str_volume = ("%.2f milimitros" % volume)
+  html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+
   str_preco = ("R$ %.2f" % preco)
   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  html_descr = html_d_curta  + html_d_media + html_d_longa + html_qt + html_preco + html_botao
+  html_descr = html_em_oferta + html_d_curta  + html_d_media + html_d_longa + html_qt + html_preco + html_botao + html_peso + html_volume
+
   bloco_descr = span("\n display: inline-block;", html_descr)
 
   tam_img = (200 if detalhe else 100)
@@ -114,7 +131,7 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
 
   # !!! Reduzir o espaço vertical usado por cada produto, quando {detalhe} é falso !!!
   bloco_final = \
-    span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", html_img + bloco_descr)
+    span("\n width: 50%; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\n  background-color: #ffffff; display: flex; align-items: center;", html_img + bloco_descr)
   return bloco_final
 
 def bloco_de_compra(cpr, detalhe):
@@ -130,19 +147,26 @@ def bloco_de_compra(cpr, detalhe):
   if detalhe:
     itens = compra.obtem_itens(cpr);
     linhas = [].copy() 
-    cmd = "submit_alterar_qt"
+    cmdAlterarQtd = "submit_alterar_qt_de_item_de_compra"
+    cmdverProduto = "submit_ver_produto"
     for prod, qt, prc in itens:
       atrs = produto.obtem_atributos(prod)
       d_curta = atrs['descr_curta']
       html_d_curta = d_curta
-      html_qt = input(None, "number", "qtd", str(qt), None, cmd)
+      html_qt = input(None, "number", "qtd", str(qt), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit_excluir_produto()
-      linhas.append(( d_curta, html_qt, html_prc, html_excl ))
+      # html_trocar_carrinho = gera_html_botao.submit_trocar_carrinho(id_compra)
+      html_ver_prod = gera_html_botao.submit_ver_produto()
+      html_endereco = compra.obtem_cep(cpr) + compra.obtem_endereco(cpr)
+      html_alterar_endereco = gera_html_botao.submit_alterar_endereco()
+      # linhas.append(( d_curta, html_qt, html_prc, html_excl ))
+      linhas.append(( d_curta, html_qt, html_prc, html_excl, html_endereco, html_alterar_endereco ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
-  html_descr = html_ident  + html_qtd_itens + html_valor + html_itens
+  html_trocar_carrinho = gera_html_form.submit_trocar_carrinho(id_compra)
+  html_descr = html_trocar_carrinho + html_ident  + html_qtd_itens + html_valor + html_itens
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
     span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
@@ -151,21 +175,21 @@ def bloco_de_compra(cpr, detalhe):
 def bloco_de_erro(msg):
   fam_fonte = "Courier"
   # Cabeçalho espalhafatoso:
-  html_tit = bloco_texto("ERRO", None, fam_fonte, "24px", "bold", "20px", "left", "#880000", "#ffdd44")
+  html_tit = bloco_texto("ERRO!", None, fam_fonte, "24px", "bold", "5px", "left", "#880000", None)
 
   # Formata a mensagem:
-  html_msg = bloco_texto(msg, None, fam_fonte, "20px", "bold", "2px", "left", "#000000", None)
+  html_msg = bloco_texto(msg, None, fam_fonte, "20px", "bold", "5px", "left", "#000000", None)
 
   # Contrói o botão "OK":
   html_botao = gera_html_botao.erro_ok()
 
   # Junta as partes:
   html_tudo = html_tit + "<br/>" + html_msg + "<br/>" + html_botao
-  
+
   # Formata:
   estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  align: center;"
   bloco_final = paragrafo(estilo_parag, html_tudo)
-  
+
   return bloco_final
 
 def span(estilo, conteudo):
@@ -197,11 +221,11 @@ def bloco_texto(texto, disp, fam_fonte, tam_fonte, peso_fonte, pad, halign, cor_
 
 def tabela(linhas):
   """Gera o HTML para uma tabela "<table>...</table>".
-  
+
   O parâmetro {linhas} deve ser uma lista ou tupla cujos elementos descrevem as linhas.
-  Cada elemento de {linhas} deve ser uma lista ou tupla de fragmentos HTML, que são 
+  Cada elemento de {linhas} deve ser uma lista ou tupla de fragmentos HTML, que são
   inseridos nas células da linha correspondente da tabela."""
-  
+
   html_tab = "    <table>\n"
   for lin in linhas:
     html_lin = "      <tr>\n"
@@ -230,4 +254,3 @@ def label(rotulo):
     return ""
   else:
     return "<label>" + rotulo + "</label>"
-
