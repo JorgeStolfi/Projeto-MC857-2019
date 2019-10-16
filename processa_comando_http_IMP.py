@@ -54,6 +54,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 
   # Versao da classe, passada no dicionário {dados} aos métodos abaixo:
   server_version = "MC857"
+  sessao_corrente = None
 
   def do_GET(self):
     """Este método é chamado pela classe {BaseHTTPRequestHandler}
@@ -106,8 +107,9 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
   def obtem_sessao(self, dados):
     """Determina a sessão à qual o comando HTTP se refere, ou {None}
     se o usuário não está logado."""
-    # !!! (MAIS TARDE) Usar cookies !!!
-    return sessao.busca_por_identificador("S-00000001")
+    # !!! Usar cookies posteriormente !!!
+    return sessao_corrente
+
 
   def extrai_dados(self, tipo):
     """Retorna todos os campos de um pedido do tipo {tipo} ('GET','POST', ou 'HEAD')
