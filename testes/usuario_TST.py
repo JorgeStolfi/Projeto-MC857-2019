@@ -71,7 +71,8 @@ usr1_atrs = {
   'endereco': "Rua Senador Corrupto, 123\nVila Buracão\nCampinas, SP", 
   'CEP': "13083-418", 
   'telefone': "+55(19)9 9876-5432",
-  'documento': "1.234.567-9 SSP-SP"
+  'documento': "1.234.567-9 SSP-SP",
+  'administrador': False
 }
 uindice1 = 1
 uident1 = "U-00000001"
@@ -85,7 +86,8 @@ usr2_atrs = {
   'endereco': "Avenida dos Semáforos, 1003\nJardim Pelado\nCampinas, SP", 
   'CEP': "13083-007", 
   'telefone': "+55(19)9 9898-1212",
-  'documento': 'CD98765-43 PF'
+  'documento': 'CD98765-43 PF',
+  'administrador': False
 }
 uindice2 = 2
 uident2 = "U-00000002"
@@ -100,7 +102,8 @@ usr3_atrs = {
   'endereco': "Rua Zero, 0000\nVila Zero\nCampinas, SP", \
   'CEP': "13083-999", 
   'telefone': "+55(19)9 9999-9999",
-  'documento': None
+  'documento': None,
+  'administrador': True
 }
 uindice3 = 3
 uident3 = "U-00000003"

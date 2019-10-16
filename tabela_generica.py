@@ -152,6 +152,15 @@ def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   # Devolve lista de identificadores (não objetos)
   return tabela_generica_IMP.busca_por_semelhanca(nome_tb, let, cols, chaves, valores)
 
+def busca_por_valor(nome_tb, let, cols, chaves, valores):
+  """Procura na tabela {nome_tb} objetos cujo o valor {preco}
+  na coluna de nome {chave} eh menor que valores.
+  
+  Devolve uma lista com os *identificadores* dos objetos
+  encontrados (não os objetos em si). Se nenhuma linha
+  satisfizer o critério da busca, devolve uma lista vazia."""
+  return tabela_generica_IMP.busca_por_valor(nome_tb, let, cols, chaves, valores)
+
 def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
   """Procura na tabela {nome_tb} e no seu {cache}
   um objeto {obj} com o identificador {ident}, que deve ter a forma 

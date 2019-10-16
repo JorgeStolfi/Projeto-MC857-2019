@@ -13,7 +13,7 @@ def processa(ses, args):
     A função devolve uma página HTML com a descrição completa do produto, mostrando a
     nova quantidade e o preço calculado correspondente. 
     
-    Este comando não modifica nenum pedido de compras.  A sessão {ses}
+    Este comando não modifica nenhum pedido de compras.  A sessão {ses}
     é ignorada e pode ser {None} (ou seja, o usuário não precisa estar 
     logado)."""
     return comando_submit_alterar_qt_de_produto_IMP.processa(ses, args)

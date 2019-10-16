@@ -46,7 +46,7 @@ class ObjCompra_IMP:
   def __init__(self, id_compra, atrs, itens):
     global cache, nome_tb, letra_tb, colunas, diags
     self.id_compra = id_compra
-    self.atrs = atrs # Inclui cliente e status
+    self.atrs = atrs # Inclui cliente, status, cep e endereço
     self.itens = itens.copy()
 
 # Implementações:
@@ -54,10 +54,10 @@ class ObjCompra_IMP:
 def inicializa(limpa):
   global cache, nome_tb, letra_tb, colunas, diags
   colunas = \
-    ( ( 'status',   type("foo"),         'TEXT',    False,    4,   10 ), # status da compra: 'aberto', 'pagando', 'pago', etc..
-      ( 'cliente',  usuario.ObjUsuario,  'INTEGER', False,   14,   14 ), # Objeto/índice do cliente que realizou a compra.
-      ( 'endereco', type("foo"),         'TEXT',    False,    30,   180 ), # Endereço de entrega
-      ( 'CEP',      type("foo"),         'TEXT',    False,    8,   10 ), # CEP de entrega
+    ( ( 'status',   type("foo"),         'TEXT',    False,    4,        10 ), # status da compra: 'aberto', 'pagando', 'pago', etc..
+      ( 'cliente',  usuario.ObjUsuario,  'INTEGER', False,    0,  99999999 ), # Objeto/índice do cliente que realizou a compra.
+      ( 'endereco', type("foo"),         'TEXT',    False,    30,      180 ), # Endereço de entrega
+      ( 'CEP',      type("foo"),         'TEXT',    False,    8,        10 ), # CEP de entrega
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
@@ -102,6 +102,14 @@ def obtem_cliente(cpr):
 def obtem_status(cpr):
   global cache, nome_tb, letra_tb, colunas, diags
   return cpr.atrs["status"]
+
+def obtem_cep(cpr):
+  global cache, nome_tb, letra_tb, colunas, diags
+  return cpr.atrs["cep"]
+
+def obtem_endereco(cpr):
+  global cache, nome_tb, letra_tb, colunas, diags
+  return cpr.atrs["endereco"]
 
 def obtem_itens(cpr):
   global cache, nome_tb, letra_tb, colunas, diags
@@ -189,8 +197,8 @@ def busca_por_produto(id_produto):
 
 def busca_por_usuario(id_usuario):
   global cache, nome_tb, letra_tb, colunas, diags
-  ind_usuario = identificador.para_indice(id_usuario)
-  res = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "usuario", ind_usuario)
+  ind_usuario = identificador.para_indice('U', id_usuario)
+  res = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "cliente", ind_usuario)
   if res == None:
     # Não achou ninguém?
     return [].copy()
@@ -263,3 +271,7 @@ def diagnosticos(val):
   global cache, nome_tb, letra_tb, colunas, diags
   diags = val
   return
+
+def calcular_frete(compra, CEP):
+  frete = 3.0*1
+  return frete

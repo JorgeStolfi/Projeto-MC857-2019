@@ -10,7 +10,7 @@ import comando_menu_entrar
 import comando_menu_sair
 import comando_menu_ver_carrinho
 import comando_menu_ver_todas_as_compras
-import comando_menu_acrescentar_produto
+#import comando_menu_acrescentar_produto
 
 import comando_submit_buscar_produtos
 import comando_submit_cadastrar_usuario
@@ -18,11 +18,14 @@ import comando_submit_comprar_produto
 import comando_submit_acrescentar_produto
 import comando_submit_alterar_qt_de_produto
 import comando_submit_entrar
-import comando_submit_alterar_qt_de_item_de_compra
+#import comando_submit_alterar_qt_de_item_de_compra
 import comando_submit_excluir_item_de_compra
 import comando_submit_finalizar_compra
 import comando_menu_ver_todas_as_compras
 import comando_submit_ver_produto
+import comando_submit_trocar_carrinho
+import comando_menu_ver_usuario
+import comando_submit_alterar_endereco_de_entrega
 
 import gera_html_elem
 import gera_html_pag
@@ -51,6 +54,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 
   # Versao da classe, passada no dicionário {dados} aos métodos abaixo:
   server_version = "MC857"
+  sessao_corrente = None
 
   def do_GET(self):
     """Este método é chamado pela classe {BaseHTTPRequestHandler}
@@ -103,8 +107,9 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
   def obtem_sessao(self, dados):
     """Determina a sessão à qual o comando HTTP se refere, ou {None}
     se o usuário não está logado."""
-    # !!! (MAIS TARDE) Usar cookies !!!
-    return sessao.busca_por_identificador("S-00000001")
+    # !!! Usar cookies posteriormente !!!
+    return sessao_corrente
+
 
   def extrai_dados(self, tipo):
     """Retorna todos os campos de um pedido do tipo {tipo} ('GET','POST', ou 'HEAD')
@@ -256,6 +261,9 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/menu_cadastrar':
       # Usuário apertou o botão "Cadastrar" do menu geral:
       pagina =  comando_menu_cadastrar_usuario.processa(ses, args)
+    elif cmd == '/menu_usuario':
+      # Usuário apertou o botão "Minha Conta" do menu geral:
+      pagina =  comando_menu_ver_usuario.processa(ses, args)
     elif cmd == '/menu_entrar':
       # Usuário apertou o botão "Entrar" (login) do menu geral:
       pagina =  comando_menu_entrar.processa(ses, args)
@@ -304,7 +312,9 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/submit_alterar_endereco_de_entrega':
       # Usuário apertou o botão "Alterar endereço" na descrição de um pedido de compra:
       pagina =  comando_submit_alterar_endereco_de_entrega.processa(ses, args)
-    else:   
+    elif cmd == '/submit_trocar_carrinho':
+      pagina = comando_submit_trocar_carrinho.processa(ses, args)
+    else:
       # Comando não identificado
       pagina =  gera_html_pag.mensagem_de_erro(ses, ("** comando POST \"%s\" inválido" % cmd)) 
   elif tipo == 'HEAD':

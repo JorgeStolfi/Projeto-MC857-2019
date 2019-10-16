@@ -32,6 +32,7 @@ colunas = \
     ( 'CEP',       type("foo"), 'TEXT', False,   8,  10  ), # Código de endereçamento postal completo ("{NNNNN}-{LLL}").
     ( 'telefone',  type("foo"), 'TEXT', False,   9,  40  ), # Telefone completo com DDI e DDD ("+{XXX}({YYY}){MMMMM}-{NNNN}").
     ( 'documento', type("foo"), 'TEXT', True,    6,  24  ), # Número do documento de identidade (RG, pasaporte, etc.)
+    ('administrador', type(False), 'INTEGER', False, 0, 1), # Define se o usuário é administrador (1=administrador)
   )
   # Descrição das colunas da tabela na base de dados.
   
@@ -135,6 +136,7 @@ def cria_testes():
         'CEP': "13083-418", 
         'telefone': "+55(19)9 9876-5432",
         'documento': "1.234.567-9 SSP-SP",
+        'administrador': False,
       },
       {
         'nome': "João Segundo", 
@@ -145,6 +147,7 @@ def cria_testes():
         'CEP': "13083-007", 
         'telefone': "+55(19)9 9898-1212",
         'documento': 'CD98765-43 PF',
+        'administrador' : False,
       },
       {
         'nome': "Juca Terceiro", 
@@ -155,6 +158,7 @@ def cria_testes():
         'CEP': "13083-999", 
         'telefone': "+55(19)9 9999-9999",
         'documento': None,
+        'administrador' : True,
       }
     ]
   for atrs in lista_atrs:
