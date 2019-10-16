@@ -40,6 +40,10 @@ def erro_ok():
   cor_fundo = "#44ff44"
   return botao_simples(texto, "", cor_fundo)
 
+def menu_usuario():
+  texto = "Minha conta"
+  cor_fundo = "#fff888"
+  return botao_simples(texto, "menu_usuario", cor_fundo)
 # BOTÕES DE TIPO <submit>
 
 def submit_ver_produto():
