@@ -33,6 +33,23 @@ def ver_produto(id_produto, qtd_produto):
     ( "    " + html_submit_ver + "\n" ) + \
     bottom_form()
 
+def submit_trocar_carrinho(id_compra):
+    fam_fonte = "Courier"
+    tam_fonte = "18px"
+    html_submit_ver = gera_html_botao.submit_trocar_carrinho()
+    return \
+     "<span style=\"\n" + \
+     "  display: inline-block;\n" + \
+     "  font-family:" + fam_fonte + ";\n" + \
+     "  font-size:" + tam_fonte + ";\n" + \
+     "  padding: 5px;\n" + \
+     "\">\n" + \
+     "  <form method=\"post\">\n" + \
+     ( "    " + id_compra + "\n" ) + \
+     ( "    " + html_submit_ver + "\n" ) + \
+     "  </form>\n" + \
+     "</span>"
+
 def comprar_produto(id_compra, id_produto, qtd_produto):
   if id_compra != None:
     html_compra = gera_html_elem.input(None, "hidden", "id_compra", id_compra, None, None)
@@ -110,8 +127,8 @@ def bottom_form():
     "</span>"
 
 def cadastrar_usuario():
-  return cadastrar_ou_alterar_usuario(None) 
-  
+  return cadastrar_ou_alterar_usuario(None)
+
 def alterar_usuario(usr):
   return cadastrar_ou_alterar_usuario(usr)
 
@@ -120,7 +137,7 @@ def alterar_usuario(usr):
 def cadastrar_ou_alterar_usuario(usr):
   """Retorna o formulário de {cadastrar_usuario()} se {usr} for {None},
   ou {alterar_usuario(usr)} caso contrário."""
-  
+
   if usr != None:
     id_usuario = usuario.obtem_identificador(usr)
     html_id_usuario = gera_html_elem.input(None, "readonly", "id_usuario", id_usuario, None, None)
@@ -129,7 +146,7 @@ def cadastrar_ou_alterar_usuario(usr):
     id_usuario = None
     html_id_usuario = None
     args = {}
-  
+
   # Dados brutos para as linhas. Para cada linha, o rótulo, tipo do "<input>", nome do campo, e dica.
   dados_linhas = (
     ( "Nome",            "text",     "nome",       None ),
@@ -139,10 +156,10 @@ def cadastrar_ou_alterar_usuario(usr):
     ( "Endereco",        "text",     "endereco",   "Rua e número\nBairro\nCidade, UF"),
     ( "CEP",             "text",     "CEP",        "xxxxx-xxx"),
     ( "Documento",       "text",     "documento",  "Número, tipo, órgão"),
-    ( "Senha",           "password", "senha",      None), 
+    ( "Senha",           "password", "senha",      None),
     ( "Confirmar senha", "password", "conf_senha", None),
   )
-  
+
   # Converte os dados brutos das linhas para fragmentos HTML:
   linhas = [].copy()
   for rotulo, tipo, nome, dica in dados_linhas:
@@ -157,7 +174,7 @@ def cadastrar_ou_alterar_usuario(usr):
 
   # Monta a tabela com os fragmentos HTML:
   html_tabela = gera_html_elem.tabela(4, linhas)
-  
+
   if usr == None:
     html_submit = gera_html_botao.submit_cadastrar_usuario()
   else:
@@ -203,5 +220,3 @@ def escolher_pagamento():
     "   <br/>" + \
     "  </form>\n" + \
     "</span>"
-    
-
