@@ -30,7 +30,8 @@ colunas = \
     ( 'unidade',     type("foo"), 'TEXT',    False,    1,         20 ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
     ( 'preco',       type(10.5),  'FLOAT',   False,    1,  999999.99 ), # Preco unitário do produto em reais.
     ( 'imagem',      type("foo"), 'TEXT',    False,    5,         50 ), # Nome do arquivo da imagem no diretorio 'imagens'.
-    ( 'estoque',     type(10),    'INTEGER', False,    0,   99999999 )  # Estoque do produto  
+    ( 'estoque',     type(10),    'INTEGER', False,    0,   99999999 ), # Estoque do produto
+    ( 'oferta',      type(True),  'INTEGER', False,    0,          1 )
 
   )
   # Descrição das colunas da tabela na base de dados.
@@ -110,6 +111,15 @@ def busca_por_indice(ind):
 def busca_por_palavra(pal):
   chaves = ('descr_curta', 'descr_media')
   valores = (pal,)
+  busca_com_and = ' and ' in pal or ' AND ' in pal
+  
+  if busca_com_and:
+    if pal.find(' and ') > 0:
+      valores = pal.split(' and ')
+    else:
+      valores = pal.split(' AND ')
+    valores = tuple(valores)
+ 
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
   return produtos
 
@@ -133,6 +143,7 @@ def cria_testes():
         'imagem': "155951.png",
         'estoque': 500,
         'unidade': "1 aparelho",
+        'oferta' : True
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",
@@ -149,7 +160,8 @@ def cria_testes():
         'preco': 420.00,
         'imagem': "156931.png",
         'estoque': 500,
-        'unidade': "caixa de 2"
+        'unidade': "caixa de 2",
+        'oferta' : False
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -165,7 +177,8 @@ def cria_testes():
         'preco': 19.95,
         'imagem': "160519.png",
         'estoque': 500,
-        'unidade': "1 unidade"
+        'unidade': "1 unidade",
+        'oferta' : True
       },
       {
         'descr_curta': "Ferroada",
@@ -177,7 +190,8 @@ def cria_testes():
         'preco': 2000.00,
         'imagem': "170859.png",
         'estoque': 500,
-        'unidade': "1 espada" 
+        'unidade': "1 espada",
+        'oferta' : False
       },
       {
         'descr_curta': "Amassador de suspiros",
@@ -192,7 +206,8 @@ def cria_testes():
         'preco': 49.99,
         'imagem': "136714.png",
         'estoque': 20,
-        'unidade': "1 aparelho" 
+        'unidade': "1 aparelho",
+        'oferta' : True
       },
       { 'descr_curta': "Cabideiro", 
         'descr_media': "Cabideiro com capacidade para 420 cabides", 
@@ -202,7 +217,8 @@ def cria_testes():
         'preco': 69.00, 
         'imagem': "146752.png", 
         'estoque': 1, 
-        'unidade': "01 (hum) cabideiro"
+        'unidade': "01 (hum) cabideiro", 
+        'oferta' : False
       }
     ]
   for atrs in lista_atrs:
