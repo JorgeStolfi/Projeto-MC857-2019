@@ -270,3 +270,7 @@ def diagnosticos(val):
   global cache, nome_tb, letra_tb, colunas, diags
   diags = val
   return
+
+def calcular_frete(compra, CEP):
+  frete = 3.0*1
+  return frete

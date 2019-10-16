@@ -23,16 +23,16 @@ letra_tb = "P"
   # Prefixo dos identificadores de produtos.
 
 colunas = \
-  (
-    ( 'descr_curta', type("foo"), 'TEXT',    False,    1,         80 ), # Descricao curta do produto.
-    ( 'descr_media', type("foo"), 'TEXT',    False,   10,        250 ), # Descricao media do produto.
-    ( 'descr_longa', type("foo"), 'TEXT',    False,   10,       3000 ), # Descricao longa do produto.
-    ( 'unidade',     type("foo"), 'TEXT',    False,    1,         20 ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
-    ( 'preco',       type(10.5),  'FLOAT',   False,    1,  999999.99 ), # Preco unitário do produto em reais.
-    ( 'imagem',      type("foo"), 'TEXT',    False,    5,         50 ), # Nome do arquivo da imagem no diretorio 'imagens'.
-    ( 'estoque',     type(10),    'INTEGER', False,    0,   99999999 ), # Estoque do produto
-    ( 'oferta',      type(True),  'INTEGER', False,    0,          1 )
-
+  ( ( 'descr_curta', type("foo"), 'TEXT',    False,    1,             80 ), # Descricao curta do produto.
+    ( 'descr_media', type("foo"), 'TEXT',    False,   10,            250 ), # Descricao media do produto.
+    ( 'descr_longa', type("foo"), 'TEXT',    False,   10,           3000 ), # Descricao longa do produto.
+    ( 'unidade',     type("foo"), 'TEXT',    False,    1,             20 ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
+    ( 'preco',       type(10.5),  'FLOAT',   False,    1,      999999.99 ), # Preco unitário do produto em reais.
+    ( 'imagem',      type("foo"), 'TEXT',    False,    5,             50 ), # Nome do arquivo da imagem no diretorio 'imagens'.
+    ( 'peso',        type(10.5),  'FLOAT',   False,    0.0001, 9999999.0 ), # peso do produto em gramas.
+    ( 'volume',      type(10.5),  'FLOAT',   False,    0.0001,  999999.0 )  # volume do produto em mililitros.
+    ( 'estoque',     type(10),    'INTEGER', False,    0,       99999999 ), # Estoque do produto.
+    ( 'oferta',      type(True),  'INTEGER', False,    0,              1 ), # Produto está em oferta.
   )
   # Descrição das colunas da tabela na base de dados.
 
@@ -143,7 +143,9 @@ def cria_testes():
         'imagem': "155951.png",
         'estoque': 500,
         'unidade': "1 aparelho",
-        'oferta' : True
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : True,
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",
@@ -161,7 +163,9 @@ def cria_testes():
         'imagem': "156931.png",
         'estoque': 500,
         'unidade': "caixa de 2",
-        'oferta' : False
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : False,
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -178,7 +182,9 @@ def cria_testes():
         'imagem': "160519.png",
         'estoque': 500,
         'unidade': "1 unidade",
-        'oferta' : True
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : True,
       },
       {
         'descr_curta': "Ferroada",
@@ -190,8 +196,10 @@ def cria_testes():
         'preco': 2000.00,
         'imagem': "170859.png",
         'estoque': 500,
-        'unidade': "1 espada",
-        'oferta' : False
+        'unidade': "1 espada" ,
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : False,
       },
       {
         'descr_curta': "Amassador de suspiros",
@@ -207,7 +215,9 @@ def cria_testes():
         'imagem': "136714.png",
         'estoque': 20,
         'unidade': "1 aparelho",
-        'oferta' : True
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : True,
       },
       { 'descr_curta': "Cabideiro", 
         'descr_media': "Cabideiro com capacidade para 420 cabides", 
@@ -217,8 +227,10 @@ def cria_testes():
         'preco': 69.00, 
         'imagem': "146752.png", 
         'estoque': 1, 
-        'unidade': "01 (hum) cabideiro", 
-        'oferta' : False
+        'unidade': "01 (hum) cabideiro",
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : False,
       }
     ]
   for atrs in lista_atrs:
