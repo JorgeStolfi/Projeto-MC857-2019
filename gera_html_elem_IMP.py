@@ -56,6 +56,8 @@ def menu_geral(logado, nome_usuario):
     html_bt_entrar = "  " + gera_html_botao.menu_entrar() + "\n"
     html_bt_cadastrar = "  " + gera_html_botao.menu_cadastrar() + "\n"
   
+  html_botao_ofertas = "  " + gera_html_botao.menu_ofertas() + "\n"
+  
   html_menu = \
     "<nav>\n" + \
       html_bt_principal + \
@@ -66,6 +68,7 @@ def menu_geral(logado, nome_usuario):
       html_botao_minha_conta + \
       html_bt_entrar + \
       html_bt_cadastrar + \
+      html_botao_ofertas + \
     "</nav>"
   return html_menu
 
@@ -81,6 +84,11 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
 
   d_media = atrs['descr_media']
   html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+
+  em_oferta = atrs['oferta']
+  html_em_oferta = ""
+  if em_oferta:
+    html_em_oferta = paragrafo(estilo_parag, bloco_texto("OFERTA!", None, "Courier", "24px", "normal", "5px 5px 5px 5px", "center", "#000000", "#ffff00"))
 
   qt_inicial = (qt if qt != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
   if detalhe:
@@ -102,7 +110,7 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
   str_preco = ("R$ %.2f" % preco)
   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  html_descr = html_d_curta  + html_d_media + html_d_longa + html_qt + html_preco + html_botao
+  html_descr = html_em_oferta + html_d_curta  + html_d_media + html_d_longa + html_qt + html_preco + html_botao
   bloco_descr = span("\n display: inline-block;", html_descr)
 
   tam_img = (200 if detalhe else 100)

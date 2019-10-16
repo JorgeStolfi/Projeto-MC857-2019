@@ -35,6 +35,11 @@ def menu_carrinho():
   cor_fundo = "#fff888"
   return botao_simples(texto, "menu_carrinho", cor_fundo)
 
+def menu_ofertas():
+  texto = "Ofertas"
+  cor_fundo = "#fff888"
+  return botao_simples(texto, "menu_ofertas", cor_fundo)
+
 def erro_ok():
   texto = "OK"
   cor_fundo = "#44ff44"
