@@ -44,11 +44,11 @@ def menu_geral(logado, nome_usuario):
   html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
   if logado:
     html_bt_sair = "  " + gera_html_botao.menu_sair() + "\n"
-    html_nome = "  " + bloco_texto(nome_usuario, "inline_block", "Courier", "14px", "bold", None, None, None, "#ff44ff") + "\n"
     html_botao_carrinho =  "  " + gera_html_botao.menu_carrinho() + "\n"
     html_botao_minha_conta =  "  " + gera_html_botao.menu_usuario() + "\n"
     html_bt_entrar = ""
     html_bt_cadastrar = ""
+    html_nome = "  " + bloco_texto("Bem vindo(a)," + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
   else:
     html_bt_sair = ""
     html_nome = ""
@@ -62,12 +62,12 @@ def menu_geral(logado, nome_usuario):
     "<nav>\n" + \
       html_bt_principal + \
       html_fm_buscar + \
-      html_bt_sair + \
-      html_nome + \
       html_botao_carrinho + \
       html_botao_minha_conta + \
       html_bt_entrar + \
       html_bt_cadastrar + \
+      html_nome + \
+      html_bt_sair + \
       html_botao_ofertas + \
     "</nav>"
   return html_menu
@@ -160,10 +160,10 @@ def bloco_de_compra(cpr, detalhe):
 def bloco_de_erro(msg):
   fam_fonte = "Courier"
   # Cabeçalho espalhafatoso:
-  html_tit = bloco_texto("ERRO", None, fam_fonte, "24px", "bold", "20px", "left", "#880000", "#ffdd44")
+  html_tit = bloco_texto("ERRO!", None, fam_fonte, "24px", "bold", "5px", "left", "#880000", None)
 
   # Formata a mensagem:
-  html_msg = bloco_texto(msg, None, fam_fonte, "20px", "bold", "2px", "left", "#000000", None)
+  html_msg = bloco_texto(msg, None, fam_fonte, "20px", "bold", "5px", "left", "#000000", None)
 
   # Contrói o botão "OK":
   html_botao = gera_html_botao.erro_ok()
