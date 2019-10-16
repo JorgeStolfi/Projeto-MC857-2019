@@ -6,7 +6,7 @@ import base_sql
 import identificador
 import utils_testes
 import sys
-from utils_testes import erro_prog, mostra
+from utils_testes import erro_prog, mostra,aviso_prog
 
 
 # ----------------------------------------------------------------------
@@ -48,39 +48,70 @@ def testa_cria_produto(rotulo, indice, ident, atrs):
 sys.stderr.write("testando {produto.cria}:\n")
 
 prod1_atrs = {
-  'descr_curta': "Escovador de ouriço",
-  'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
-  'descr_longa': "Fabricante: Ouricex LTD\nOrigem: Cochinchina\nModelo: EO-22\nTensão: 110-230 V\nPotência: 1500 W\nAcessórios: cabo de força de 50 m, 10 pentes finos, 10 pentes grossos, valise em ABS\nDimensões: 300 x 200 x 3000 mm",
-  'preco': float(120.50),
-  'imagem': '160519.png',
-  'estoque': 500,
-  'unidade': '1 aparelho'
+        'descr_curta': "Escovador de ouriço",
+        'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
+        'descr_longa': 
+          """Fabricante: Ouricex LTD<br/>
+          Origem: Cochinchina<br/>
+          Modelo: EO-22<br/>
+          Tensão: 110-230 V<br/>
+          Potência: 1500 W<br/>
+          Acessórios: cabo de força de 50 m, 10 pentes finos, 10 pentes grossos, valise em ABS<br/>
+          Dimensões: 300 x 200 x 3000 mm""",
+        'preco': 120.50,
+        'imagem': "155951.png",
+        'estoque': 500,
+        'unidade': "1 aparelho",
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : True,
 }
 pindice1 = 1
 pident1 = "P-00000001"
 prod1 = testa_cria_produto("prod1", pindice1, pident1, prod1_atrs)
 
 prod2_atrs = {
-  'descr_curta': "Furadeira telepática",
-  'descr_media': "Duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
-  'descr_longa': "Fabricante: Ferramentas Tres Dedos SA\nOrigem: Brasil\nModelo: FT7T\nTensão: insuportável\nPotência: 700 W\nMaterial: Alumínio, policarbonato, chiclete.\nAcessórios: 1 acoplador para guarda-chuvas, 1 jogo de 5 pedais, cabo de força de 2 m.\nDimensões: 150 x 400 x 250 mm",
-  'preco': float(420.00),
-  'imagem': '160519.png',
-  'estoque': 500,
-  'unidade': 'caixa de 2'
+        'descr_curta': "Luva com 8 dedos",
+        'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
+        'descr_longa': 
+          """Fabricante: United Trash Inc.<br/>
+          Origem: USA<br/>
+          Modelo: 8-EB<br/>
+          Normas: ANSI 2345, ABNT 2019-857<br/>
+          Material: Camurça artificial 1 mm, lã de aço.<br/>
+          Tamanho: G<br/>
+          Peso: 120 g""",
+        'preco': 19.95,
+        'imagem': "160519.png",
+        'estoque': 500,
+        'unidade': "1 unidade",
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : False,
 }
 pindice2 = 2
 pident2 = "P-00000002"
 prod2 = testa_cria_produto("prod2", pindice2, pident2, prod2_atrs)
 
 prod3_atrs = {
-  'descr_curta': "Luva com 8 dedos",
-  'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
-  'descr_longa': "Fabricante: United Trash Inc.\nOrigem: USA\nModelo: 8-EB\nNormas: ANSI 2345, ABNT 2019-857\nMaterial: Camurça artificial 1 mm, lã de aço.\nTamanho: G\nPeso: 120 g",
-  'preco': float(19.95),
-  'imagem': '160519.png',
-  'estoque': 500,
-  'unidade': '1 unidade'
+        'descr_curta': "Furadeira telepática (x 2)",
+        'descr_media': "Kit com duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
+        'descr_longa': 
+          """"Fabricante: Ferramentas Tres Dedos SA<br/>
+          Origem: Brasil<br/>
+          Modelo: FT7T<br/>
+          Tensão: insuportável<br/>
+          Potência: 700 W<br/>
+          Material: Alumínio, policarbonato, chiclete.<br/>
+          Acessórios: 1 acoplador para guarda-chuvas, 1 jogo de 5 pedais, cabo de força de 2 m.<br/>
+          Dimensões: 150 x 400 x 250 mm""",
+        'preco': 420.00,
+        'imagem': "156931.png",
+        'estoque': 500,
+        'unidade': "caixa de 2",
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : True,
 }
 pindice3 = 3
 pident3 = "P-00000003"
@@ -122,7 +153,7 @@ if not type(plist5_cmp) is list:
   ok_global = False
 else:
   plist5_cmp = sorted(plist5_cmp)
-  plist5_esp = [pident1, pident2]
+  plist5_esp = [pident1, pident3]
   if plist5_cmp != plist5_esp:
     aviso_prog("resultado foi " + str(plist5_cmp) + " deveria ser " + str(plist5_esp),True)
     ok_global = False
