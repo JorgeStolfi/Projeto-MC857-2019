@@ -69,7 +69,7 @@ def submit_buscar_produtos():
 def submit_excluir_produto():
   texto = "Excluir"
   cor_fundo = "#fff888"
-  return botao_submit(texto, "submit_excluir_produto", cor_fundo)
+  return botao_submit(texto, "submit_excluir_item_de_compra", cor_fundo)
 
 def submit_cadastrar_usuario():
   texto = "Cadastrar"
