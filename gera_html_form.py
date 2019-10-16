@@ -130,3 +130,15 @@ def alterar_usuario(usr):
   'conf_senha' com a confirmação de senha."""
   return gera_html_form_IMP.alterar_usuario(usr)
 
+def escolher_pagamento():
+  """Retorna o HTML de um formulário para escolher a forma de pagamento, e entrar os 
+  dados do cartão de crédito.O formulário contém a seleção do meio de pagamento,os campos 
+  editaveis relacionados ao cartão de crédito(nome,numero, data de validade e
+   codigo de segurança) e um botão submit.
+   
+   Quando o usuário clicar no botão enviar ,será emitido um comando POST com ação
+   {submit_escolher_pagamento}.Os argumentos desse POST serão as informações do 
+   cartão de crédito.
+   """
+  return gera_html_form_IMP.escolher_pagamento()
+
