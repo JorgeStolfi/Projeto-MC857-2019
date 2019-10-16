@@ -104,13 +104,10 @@ def busca_por_campo(nome_tb, let, cols, chave, valor):
 
 def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   cond = ""
-  total_de_chaves = len(chaves)
   for key in chaves:
-    index_chave = chaves.index(key)
     for value in valores:
-      cond += (key + " LIKE '%" + value + "%' ")
-      if (total_de_chaves - index_chave) != 1:
-        cond += "OR "
+      cond += (key + " LIKE '%" + value + "%' OR ")
+  cond = cond[:-4]
   res = base_sql.executa_comando_SELECT(nome_tb, cond, ['indice'])
   if res != None and type(res) is str:
     erro_prog("SELECT falhou " + str(res))
