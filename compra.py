@@ -30,8 +30,10 @@ class ObjCompra(ObjCompra_IMP):
   
   Por enquanto, os atributos de um objeto desta classe são:
   
-    'cliente' {ObjUsuario} o cliente que fez ou está montando a compra.
-    'status'  {str}        o estado do pedido. 
+    'cliente'   {ObjUsuario} o cliente que fez ou está montando a compra.
+    'status'    {str}        o estado do pedido. 
+    'endereco'  {str}        o edereço de entrega para este pedido. 
+    'CEP'       {str}        o cep de entrega para este pedido. 
     
   Além disso, cada objeto desta classe possui uma lista de itens. Cada
   item é uma tripla {(prod, qt,preco)} onde {prod} é um

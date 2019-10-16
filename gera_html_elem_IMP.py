@@ -135,7 +135,9 @@ def bloco_de_compra(cpr, detalhe):
       html_qt = input(None, "number", "qtd", str(qt), None, cmd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit_excluir_produto()
-      linhas.append(( d_curta, html_qt, html_prc, html_excl ))
+      html_endereco = compra.obtem_cep(cpr) + compra.obtem_endereco(cpr)
+      html_alterar_endereco = gera_html_botao.submit_alterar_endereco()
+      linhas.append(( d_curta, html_qt, html_prc, html_excl, html_endereco, html_alterar_endereco ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
