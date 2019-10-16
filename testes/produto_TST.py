@@ -63,7 +63,8 @@ prod1_atrs = {
         'estoque': 500,
         'unidade': "1 aparelho",
         'peso':10.0,
-        'volume':500.5
+        'volume':500.5,
+        'oferta' : True,
 }
 pindice1 = 1
 pident1 = "P-00000001"
@@ -85,7 +86,8 @@ prod2_atrs = {
         'estoque': 500,
         'unidade': "1 unidade",
         'peso':10.0,
-        'volume':500.5
+        'volume':500.5,
+        'oferta' : False,
 }
 pindice2 = 2
 pident2 = "P-00000002"
@@ -108,7 +110,8 @@ prod3_atrs = {
         'estoque': 500,
         'unidade': "caixa de 2",
         'peso':10.0,
-        'volume':500.5
+        'volume':500.5,
+        'oferta' : True,
 }
 pindice3 = 3
 pident3 = "P-00000003"

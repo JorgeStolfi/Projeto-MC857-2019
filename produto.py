@@ -23,8 +23,12 @@ class ObjProduto(ObjProduto_IMP):
     'preco'        {float} preço unitário.
     'imagem'       {str}   nome do arquivo da imagem no diretorio 'imagens'
     'estoque'      {int}   quantidade do produto no estoque.
-    'peso'       {float}   peso do produto em gramas.
-    'volume'      {float}   volume do produto em mililitros.
+    'peso'         {float} peso do produto em gramas.
+    'volume'       {float} volume do produto em mililitros.
+    'oferta'       {bool}  determina se o produto está ou não em oferta.
+  
+  Mais atributos (volume, peso, descontos por atacado, etc.)
+  podem ser acrescentados no futuro.
     
   Além desses atributos, cada produto tem um identificador, uma string da
   forma "P-{NNNNNNNN}" onde {NNNNNNNN} é o índice na tabela
