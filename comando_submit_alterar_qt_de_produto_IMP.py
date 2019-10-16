@@ -8,9 +8,8 @@ from utils_testes import erro_prog, mostra
 
 def processa(ses, args):
   id_produto = args['id_produto']
-  # Considerando prod como objeto da classe Produto
-  prod = produto.busca_por_identificador(bas, id_produto)
-  atrs_produto = prod.obtem_atributos()
+  prod = produto.busca_por_identificador(id_produto)
+  atrs_produto = produto.obtem_atributos(prod)
   if 'quantidade' in args:
     qt = float(args['quantidade'])
   else:
@@ -21,6 +20,5 @@ def processa(ses, args):
   if qt > estoque:
     qt = estoque
     return gera_pagina_de_erro(f"Só temos {estoque} items do produto {id_produto}")
-  carrinho = sessao.obtem_carrinho(ses)
-  compra.acrescenta_item(carrinho, prod, qt)
-  return gera_html_pag.mostra_produto(ses, prod, qt)
+
+  return gera_html_pag.mostra_produto(ses, None, prod, qt)

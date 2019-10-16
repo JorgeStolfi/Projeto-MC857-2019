@@ -104,18 +104,24 @@ def busca_por_campo(nome_tb, let, cols, chave, valor):
 
 def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   cond = ""
-  total_de_chaves = len(chaves)
   for key in chaves:
-    index_chave = chaves.index(key)
     for value in valores:
-      cond += (key + " LIKE '%" + value + "%' ")
-      if (total_de_chaves - index_chave) != 1:
-        cond += "OR "
+      cond += (key + " LIKE '%" + value + "%' OR ")
+  cond = cond[:-4]
   res = base_sql.executa_comando_SELECT(nome_tb, cond, ['indice'])
   if res != None and type(res) is str:
     erro_prog("SELECT falhou " + str(res))
   sys.stderr.write("busca_por_semelhanca: res = " + str(res) + "\n")
   return identificador.de_lista_de_indices(let, res)
+
+def busca_por_valor(nome_tb, let, cols, chaves, valores):
+  cond = "preco < " + str(valores)
+  res = base_sql.executa_comando_SELECT(nome_tb, cond, ['indice'])
+  if res != None and type(res) is str:
+    erro_prog("SELECT falhou " + str(res))
+  sys.stderr.write("busca_por_valor: res = " + str(res) + "\n")
+  return identificador.de_lista_de_indices(let, res)
+
 
 def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
   # Obtém o objeto com esse identificador e garante que está em {cache}:
