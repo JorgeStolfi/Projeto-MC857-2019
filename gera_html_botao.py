@@ -44,6 +44,12 @@ def menu_carrinho():
   atual do seu carrinho de compras."""
   return gera_html_botao_IMP.menu_carrinho()
 
+def menu_minhas_compras():
+  """Retorna um fragmento de HTML que produz o botao "Minhas Compras" para uso no menu geral.
+  Este botão permite que o usuário solicite ao servidor uma página que mostra a lista de seus
+  pedidos de compra, abertos ou fechados."""
+  return gera_html_botao_IMP.menu_minhas_compras()
+
 def menu_ofertas():
   """Retorna um fragmento de HTML que produz o botao "Ofertas" para uso no menu geral.
   Este botão permite que o usuário solicite ao servidor uma página que mostra as ofertas

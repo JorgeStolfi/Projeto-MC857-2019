@@ -35,6 +35,11 @@ def menu_carrinho():
   cor_fundo = "#fff888"
   return botao_simples(texto, "menu_carrinho", cor_fundo)
 
+def menu_minhas_compras():
+  texto = "Minhas Compras"
+  cor_fundo = "#fff888"
+  return botao_simples(texto, "menu_ver_todas_as_compras", cor_fundo)
+
 def menu_ofertas():
   texto = "Ofertas"
   cor_fundo = "#fff888"
@@ -49,6 +54,7 @@ def menu_usuario():
   texto = "Minha conta"
   cor_fundo = "#fff888"
   return botao_simples(texto, "menu_usuario", cor_fundo)
+
 # BOTÕES DE TIPO <submit>
 
 def submit_ver_produto():

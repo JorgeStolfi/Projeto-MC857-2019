@@ -45,6 +45,7 @@ def menu_geral(logado, nome_usuario):
   if logado:
     html_bt_sair = "  " + gera_html_botao.menu_sair() + "\n"
     html_botao_carrinho =  "  " + gera_html_botao.menu_carrinho() + "\n"
+    html_botao_ver_todas_as_minhas_compras =  "  " + gera_html_botao.menu_minhas_compras() + "\n"
     html_botao_minha_conta =  "  " + gera_html_botao.menu_usuario() + "\n"
     html_bt_entrar = ""
     html_bt_cadastrar = ""
@@ -53,6 +54,7 @@ def menu_geral(logado, nome_usuario):
     html_bt_sair = ""
     html_nome = ""
     html_botao_carrinho =  ""
+    html_botao_ver_todas_as_minhas_compras = ""
     html_bt_entrar = "  " + gera_html_botao.menu_entrar() + "\n"
     html_bt_cadastrar = "  " + gera_html_botao.menu_cadastrar() + "\n"
     html_botao_ofertas = "  " + gera_html_botao.menu_ofertas() + "\n"
@@ -61,6 +63,7 @@ def menu_geral(logado, nome_usuario):
       html_bt_principal + \
       html_fm_buscar + \
       html_botao_carrinho + \
+      html_botao_ver_todas_as_minhas_compras + \
       html_botao_minha_conta + \
       html_bt_entrar + \
       html_bt_cadastrar + \
