@@ -1,0 +1,3 @@
+############ 15/OUT/2019 ############
+Nesta tarefa foi implementada a função processa() do módulo comando_submit_alterar_endereco_de_entrega.
+Foram alteradas também o módulo de compra, para salvar as novas colunas de endereço e CEP
