@@ -66,6 +66,9 @@ def inicializa(limpa):
   itens_de_compras.inicializa(limpa)
   return
 
+def modifica_status(cliente, novo_status):
+  return muda_atributos(cliente, [status, novo_status])
+
 def cria(cliente):
   global cache, nome_tb, letra_tb, colunas, diags
   endereco = usuario.obtem_atributos(cliente)['endereco']
