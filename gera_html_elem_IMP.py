@@ -40,40 +40,43 @@ def rodape():
     "</html>\n"
 
 def menu_geral(logado, nome_usuario):
-  html_bt_principal = "  " + gera_html_botao.principal() + "\n"
+  html_bt_principal = "  " + gera_html_botao.simples("Principal", 'principal', None, '#eeeeee') + "\n"
   html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
+
   if logado:
-    html_bt_sair = "  " + gera_html_botao.menu_sair() + "\n"
-    html_botao_carrinho =  "  " + gera_html_botao.menu_carrinho() + "\n"
-    html_botao_ver_todas_as_minhas_compras =  "  " + gera_html_botao.menu_minhas_compras() + "\n"
-    html_botao_minha_conta =  "  " + gera_html_botao.menu_usuario() + "\n"
+    html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
+    html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
+    html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
+    html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
     html_bt_entrar = ""
     html_bt_cadastrar = ""
-    html_nome = "  " + bloco_texto("Bem vindo(a)," + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+    html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
   else:
     html_bt_sair = ""
     html_nome = ""
-    html_botao_carrinho =  ""
-    html_botao_ver_todas_as_minhas_compras = ""
-    html_bt_entrar = "  " + gera_html_botao.menu_entrar() + "\n"
-    html_bt_cadastrar = "  " + gera_html_botao.menu_cadastrar() + "\n"
-    html_botao_ofertas = "  " + gera_html_botao.menu_ofertas() + "\n"
+    html_bt_carrinho =  ""
+    html_bt_minhas_compras = ""
+    html_bt_minha_conta = ""
+    html_bt_entrar = "  " + gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55') + "\n"
+    html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+
+  html_bt_ofertas = "  " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n"
   html_menu = \
     "<nav>\n" + \
       html_bt_principal + \
       html_fm_buscar + \
-      html_botao_carrinho + \
-      html_botao_ver_todas_as_minhas_compras + \
-      html_botao_minha_conta + \
+      html_bt_carrinho + \
+      html_bt_minhas_compras + \
+      html_bt_minha_conta + \
       html_bt_entrar + \
       html_bt_cadastrar + \
       html_nome + \
       html_bt_sair + \
-      html_botao_ofertas + \
+      html_bt_ofertas + \
     "</nav>"
   return html_menu
 
-def bloco_de_produto(id_compra, prod, qt, detalhe):
+def bloco_de_produto(id_compra, prod, qtd, detalhe):
   id_produto = produto.obtem_identificador(prod)
   atrs = produto.obtem_atributos(prod)
 
@@ -91,35 +94,38 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
   if em_oferta:
     html_em_oferta = paragrafo(estilo_parag, bloco_texto("OFERTA!", None, "Courier", "24px", "normal", "5px 5px 5px 5px", "center", "#000000", "#ffff00"))
 
-  qt_inicial = (qt if qt != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
+  qtd_inicial = (qtd if qtd != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
   if detalhe:
     d_longa = atrs['descr_longa']
     html_d_longa = paragrafo(estilo_parag, bloco_texto(d_longa, None, "Courier", "14px", "normal", "0px", "left", "#000000", None))
-    html_botao = gera_html_form.comprar_produto(id_compra, id_produto, qt_inicial)
+    html_botao = gera_html_form.comprar_produto(id_compra, id_produto, qtd_inicial)
   else:
     html_d_longa = ""
-    html_botao = gera_html_form.ver_produto(id_produto, qt_inicial)
+    html_botao = gera_html_form.ver_produto(id_produto, qtd_inicial)
 
-  if qt == None:
+  if qtd == None:
     # Preço unitário, sem campo de quantidade:
     preco = atrs['preco']
-    peso = atrs['peso']
-    volume = volume['volume']
-    html_qt = ""
+    html_qtd = ""
   else:
-    preco = produto.calcula_preco(prod, qt)
-    html_qt = bloco_texto("!!! IMPLEMENTAR !!!", None, "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
-
-  str_peso  = ("%.2f gramas" % peso)
-  html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
-
-  str_volume = ("%.2f milimitros" % volume)
-  html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+    preco = produto.calcula_preco(prod, qtd)
+    # !!! Deveria ser um campo editável !!!
+    html_qtd = bloco_texto(("%d" % qtd), None, "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
 
   str_preco = ("R$ %.2f" % preco)
   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+    
+  # !!! Peso e volume devem ser mostrados apenas ao mostrar detalhes do produto. !!!
 
-  html_descr = html_em_oferta + html_d_curta  + html_d_media + html_d_longa + html_qt + html_preco + html_botao + html_peso + html_volume
+  peso = atrs['peso']
+  str_peso  = ("%.0f gramas" % peso)
+  html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+
+  volume = atrs['volume']
+  str_volume = ("%.2f mililitros" % volume)
+  html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+
+  html_descr = html_em_oferta + html_d_curta  + html_d_media + html_d_longa + html_qtd + html_preco + html_botao + html_peso + html_volume
 
   bloco_descr = span("\n display: inline-block;", html_descr)
 
@@ -136,37 +142,39 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
 
 def bloco_de_compra(cpr, detalhe):
   id_compra = compra.obtem_identificador(cpr)
+  atrs_compra = compra.obtem_atributos(cpr)
   itens = compra.obtem_itens(cpr)
-  qtd_itens = len(itens)
-  valor = compra.calcula_total(cpr)
+  num_itens = len(itens)
+  preco_total = compra.calcula_total(cpr)
   # Monta o parágrafo de descrição
   estilo_parag = "\n  width: 600px;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
   html_ident = paragrafo(estilo_parag, bloco_texto(id_compra, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
-  html_qtd_itens = paragrafo(estilo_parag, bloco_texto(str(qtd_itens), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
-  html_valor = paragrafo(estilo_parag, bloco_texto(str(valor), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+  html_num_itens = paragrafo(estilo_parag, bloco_texto(str(num_itens), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+  html_preco_total = paragrafo(estilo_parag, bloco_texto(str(preco_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   if detalhe:
     itens = compra.obtem_itens(cpr);
     linhas = [].copy() 
-    cmdAlterarQtd = "submit_alterar_qt_de_item_de_compra"
-    cmdverProduto = "submit_ver_produto"
-    for prod, qt, prc in itens:
+    cmdAlterarQtd = "alterar_qtd_de_produto"
+    cmdverProduto = "ver_produto"
+    for prod, qtd, prc in itens:
       atrs = produto.obtem_atributos(prod)
       d_curta = atrs['descr_curta']
       html_d_curta = d_curta
-      html_qt = input(None, "number", "qtd", str(qt), None, cmdAlterarQtd)
+      html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
-      html_excl = gera_html_botao.submit_excluir_produto()
-      # html_trocar_carrinho = gera_html_botao.submit_trocar_carrinho(id_compra)
-      html_ver_prod = gera_html_botao.submit_ver_produto()
-      html_endereco = compra.obtem_cep(cpr) + compra.obtem_endereco(cpr)
-      html_alterar_endereco = gera_html_botao.submit_alterar_endereco()
-      # linhas.append(( d_curta, html_qt, html_prc, html_excl ))
-      linhas.append(( d_curta, html_qt, html_prc, html_excl, html_endereco, html_alterar_endereco ))
+      html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
+      # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
+      html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
+      html_endereco = atrs_compra['CEP'] + atrs_compra['endereco']
+      # !!! Falta custo de frete e valor total a pagar !!!
+      html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', None, '#55ee55')
+      # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
+      linhas.append(( d_curta, html_qtd, html_prc, html_excl, html_endereco, html_alterar_endereco ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
-  html_trocar_carrinho = gera_html_form.submit_trocar_carrinho(id_compra)
-  html_descr = html_trocar_carrinho + html_ident  + html_qtd_itens + html_valor + html_itens
+  html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
+  html_descr = html_trocar_carrinho + html_ident  + html_num_itens + html_preco_total + html_itens
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
     span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
@@ -181,7 +189,7 @@ def bloco_de_erro(msg):
   html_msg = bloco_texto(msg, None, fam_fonte, "20px", "bold", "5px", "left", "#000000", None)
 
   # Contrói o botão "OK":
-  html_botao = gera_html_botao.erro_ok()
+  html_botao = gera_html_botao.simples("OK", 'principal', None, '#55ee55')
 
   # Junta as partes:
   html_tudo = html_tit + "<br/>" + html_msg + "<br/>" + html_botao

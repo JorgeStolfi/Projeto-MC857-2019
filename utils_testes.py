@@ -45,6 +45,16 @@ def verifica_objeto(modulo, tipo, obj, indice, ident, atrs):
   imprme diagnósticos em {sys.stderr}."""
   return utils_testes_IMP.verifica_objeto(modulo, tipo, obj, indice, ident, atrs)
 
+# VERIFICAÇÃO DE FUNÇÕES QUE GERAM HTML
+
+def testa_gera_html(modulo, funcao, rotulo, frag, *args):
+  """Chama a função {{modulo}.{funcao}} com os argumentos {*args}.
+  Supõe que o resultado é uma página (se {frag=False}) ou fragmento (se {frag=True}
+  de HTML.  grava resultado em "testes/saida/{modulo}.{funcao}.{rotulo}.html".
+  Se {frag} é {True}, acrescenta tags "<html><body>...</body></html>" para
+  permitir visualização com browser."""
+  utils_testes_IMP.testa_gera_html(modulo, funcao, rotulo, frag, *args)
+
 # FORMATAÇÃO DE DADOS PARA DIAGNÓSTICO
 
 def formata_dict(dados):

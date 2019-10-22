@@ -135,52 +135,52 @@ verifica_posicao_do_item("lit14", lit1, prod4, None)
 sys.stderr.write("testando {itens_de_compras.atualiza_lista}:\n")
  
 # Acrescenta produto que não existe na compra 1:
-qt11a = 15.0
-prc11a = produto.calcula_preco(prod1, qt11a)
+qtd11a = 15.0
+prc11a = produto.calcula_preco(prod1, qtd11a)
 ctot11a = prc11a
 
-itens_de_compras.atualiza_lista(cident1, citens1, prod1, 0.0, qt11a)
+itens_de_compras.atualiza_lista(cident1, citens1, prod1, 0.0, qtd11a)
 
-lit11a = [ (prod1, qt11a, prc11a, ), ]
+lit11a = [ (prod1, qtd11a, prc11a, ), ]
 verifica_itens_de_compras("11a", cident1, lit11a, ctot11a)
  
 # Acrescenta produto que não existe na compra 2:
-qt21a = 100.0
-prc21a = produto.calcula_preco(prod1, qt21a)
+qtd21a = 100.0
+prc21a = produto.calcula_preco(prod1, qtd21a)
 ctot21a = prc21a
 
-itens_de_compras.atualiza_lista(cident2, citens2, prod1, 0.0, qt21a)
+itens_de_compras.atualiza_lista(cident2, citens2, prod1, 0.0, qtd21a)
 
-lit21a = [ (prod1, qt21a, prc21a, ), ]
+lit21a = [ (prod1, qtd21a, prc21a, ), ]
 verifica_itens_de_compras("21a", cident2, lit21a, ctot21a)
 
-# Acrescenta outro produto que não existe na compra 1:
-qt12a = 25.0
-prc12a = produto.calcula_preco(prod2, qt12a)
+# Acrescenta outro produto {prod2} que não existe na compra 1:
+qtd12a = 25.0
+prc12a = produto.calcula_preco(prod2, qtd12a)
 ctot12a = ctot11a + prc12a
 
-itens_de_compras.atualiza_lista(cident1, citens1, prod2, 0.0, qt12a)
+itens_de_compras.atualiza_lista(cident1, citens1, prod2, 0.0, qtd12a)
 
-lit12a = lit11a + [ (prod2, qt12a, prc12a, ), ]
+lit12a = lit11a + [ (prod2, qtd12a, prc12a, ), ]
 verifica_itens_de_compras("12a", cident1, lit12a, ctot12a)
 
-# Modifica quantidade de produto que existe na compra 1:
-qt11b = 30.0
-prc11b = produto.calcula_preco(prod1, qt11b)
+# Modifica quantidade de produto {prod1} que existe na compra 1:
+qtd11b = 30.0
+prc11b = produto.calcula_preco(prod1, qtd11b)
 ctot11b = prc11b + prc12a
 
-itens_de_compras.atualiza_lista(cident1, citens1, prod1, qt11a, qt11b)
+itens_de_compras.atualiza_lista(cident1, citens1, prod1, qtd11a, qtd11b)
 
-lit11b = lit11a.copy();
-lit11b[0] = (prod1, qt11b, prc11b,)
+lit11b = lit12a.copy();
+lit11b[0] = (prod1, qtd11b, prc11b,)
 verifica_itens_de_compras("11b", cident1, lit11b, ctot11b)
 
-# Elimina produto que existe na compra 1:
-qt11c = 30.0
-prc11c = produto.calcula_preco(prod1, qt11c)
+# Elimina produto {prod1} que existe na compra 1:
+qtd11c = 30.0
+prc11c = produto.calcula_preco(prod1, qtd11c)
 ctot11c = prc11c + prc12a
 
-itens_de_compras.atualiza_lista(cident1, citens1, prod1, qt11a, qt11c)
+itens_de_compras.atualiza_lista(cident1, citens1, prod1, qtd11a, qtd11c)
 
 lit11c = lit11b.copy();
 del lit11c[0]

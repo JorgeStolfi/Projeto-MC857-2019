@@ -9,104 +9,29 @@
 # Implementação desta interface:
 import gera_html_botao_IMP
 
-# As funções abaixo geram botões de tipo "<button>" que emitem comandos "GET":
+def simples(texto, URL, args, cor_fundo):
+  """Função que gera um botão genérico de tipo "<button>", com o {texto} e
+  {cor_fundo} especificados. 
+  
+  Quando clicado, o botão emite um comando HTTP 'GET' para o {URL} dado.
+  
+  Se {args} não for {None}, deve ser um dicionário cujas chaves e
+  valores são acrescentadas ao {URL} no formato
+  "?{chave1}={valor1}&{chave2}={valor2}...". Por enquanto, as chaves e
+  valores devem ser cadeias só com letras ASCII, dígitos, pontos,
+  hífens, e underscores."""
+  return gera_html_botao_IMP.simples(texto, URL, args, cor_fundo)
 
-def principal():
-  """Retorna um fragmento de HTML que produz o botao "Principal" que
-  manda o usuário para a página principal (homepage) da loja."""
-  return gera_html_botao_IMP.principal()
-
-def menu_entrar():
-  """Retorna um fragmento de HTML que produz o botao de "Entrar" (login) para uso no menu
-  principal.
-
-  Este botão permite que o usuário solicite ao servidor um formulário para fazer login.
-  Ele será exibido em todas as páginas quando o usuário estiver navegando
-  pelo site sem estar logado. """
-  return gera_html_botao_IMP.menu_entrar()
-
-def menu_sair():
-  """Retorna um fragmento de HTML que produz o botao "Sair" (logout) para uso no menu geral.
-
-  Este botão permite que o usuário faça o logout da sessao corrente.
-  Ele será exibido em todas as páginas enquanto o usuário estiver logado."""
-  return gera_html_botao_IMP.menu_sair()
-
-def menu_cadastrar():
-  """Retorna um fragmento de HTML que produz o botao "Cadastrar" para uso no menu geral.
-  Este botão permite que o usuário solicite ao servidor um formulário para
-  cadastrar um novo usuário. Ele será exibido em todas as páginas."""
-  return gera_html_botao_IMP.menu_cadastrar()
-
-def menu_carrinho():
-  """Retorna um fragmento de HTML que produz o botao "Carrinho" para uso no menu geral.
-  Este botão permite que o usuário solicite ao servidor uma página que mostra o estado
-  atual do seu carrinho de compras."""
-  return gera_html_botao_IMP.menu_carrinho()
-
-def menu_minhas_compras():
-  """Retorna um fragmento de HTML que produz o botao "Minhas Compras" para uso no menu geral.
-  Este botão permite que o usuário solicite ao servidor uma página que mostra a lista de seus
-  pedidos de compra, abertos ou fechados."""
-  return gera_html_botao_IMP.menu_minhas_compras()
-
-def menu_ofertas():
-  """Retorna um fragmento de HTML que produz o botao "Ofertas" para uso no menu geral.
-  Este botão permite que o usuário solicite ao servidor uma página que mostra as ofertas
-  atualmente disponíveis."""
-  return gera_html_botao_IMP.menu_ofertas()
-
-def erro_ok():
-  """Retorna um fragmento de HTML que produz o botao de botão que vai ser incluído em páginas de erro.
-  Quando o usuário clica nesse botão, ele é redirecionado para a página principal
-  (homepage) da loja."""
-  return gera_html_botao_IMP.erro_ok()
-
-def menu_usuario():
-  """Retorna um fragmento de HTML que produz o botao "Meu Usuario" para uso no menu geral.
-  Este botão permite que o usuário solicite ao servidor uma página que mostra o e seu perfil
-  de usuario no site."""
-  return gera_html_botao_IMP.menu_usuario()
-
-# As funções abaixo geram botões "<input type=submit>" para uso dentro de "<form>...</form>":
-
-def submit_ver_produto():
-  """Retorna um fragmento HTML que descreve um botão <submit> com o texto 'VER',
-  para uso em um bloco de descrição resumida do produto.  Por este botão
-  o usuário pede ao servidor uma página mostrando o produto em detalhe."""
-  return gera_html_botao_IMP.submit_ver_produto()
-
-def submit_comprar_produto():
-  """Retorna um fragmento HTML que descreve um botão <submit> com o texto 'COMPRAR',
-  para uso em uma página com descrição detalhada de um produto.  Por este botão
-  o usuário pede ao servidor a inclusão do produto no seu carrinho de compras. """
-  return gera_html_botao_IMP.submit_comprar_produto()
-
-def submit_excluir_produto():
-  """Retorna um fragmento HTML que descreve um botão <submit> com o texto 'EXCLUIR',
-  para uso em uma página com a descrição detalhada de um pedido de compra em aberto (carrinho).
-  Por este botão o usuário pede ao servidor a exclusão do produto do seu carrinho de compras. """
-  return gera_html_botao_IMP.submit_excluir_produto()
-
-  submit_trocar_carrinho
-
-def submit_trocar_carrinho():
-  """Retorna um fragmento HTML que descreve um botão <submit> com o texto 'CARRINHO',
-  para uso em uma página com a descrição detalhada de um pedido de compra em aberto (carrinho).
-  Por este botão o usuário pede ao servidor a troca do seu carrinho de compras. """
-  return gera_html_botao_IMP.submit_trocar_carrinho()
-
-def submit_buscar_produtos():
-  """Retorna HTML um fragmento HTML que descreve um botão <submit> com o texto 'BUSCAR',
-  para uso em formulario de busca de produtos por palavras. Por este botão
-  o usuário pede ao servidor que mostre a lista de todos os produtos que
-  satisfazem um critério especificado."""
-  return gera_html_botao_IMP.submit_buscar_produtos()
-
-def submit_cadastrar_usuario():
-  """Gera apenas o o botão "cadastrar" que vai estar dentro de um <form>...</form>, dentro da página de cadastrar novo usuário"""
-  return gera_html_botao_IMP.submit_cadastrar_usuario()
-
-def submit_entrar():
-  """Retorna o botão para a submissão de entrar"""
-  return gera_html_botao_IMP.submit_entrar()
+def submit(texto, URL, args, cor_fundo):
+  """Função que gera um botões "<input type=submit>" com o {texto} 
+  e a {cor_fundo} especificados, para uso dentro de um formulário HTML "<form>...</form>".  
+  
+  Quando clicado, o botão emite um comando HTTP 'POST' para o {URL} dado, com as
+  informações nos campos do formulário.
+  
+  Se {args} não for {None}, deve ser um dicionário cujas chaves e
+  valores são acrescentadas como campos 'hidden' junto ao 
+  botão propriamente dito. Por enquanto, as chaves e
+  valores devem ser cadeias só com letras ASCII, dígitos, pontos,
+  hífens, e underscores."""
+  return gera_html_botao_IMP.submit(texto, URL, args, cor_fundo)

@@ -18,7 +18,7 @@
 #
 #  'compra':  índice inteiro do objeto {ObjCompra} que representa o pedido.
 #  'produto': índice inteiro do objeto {ObjProduto} que representa o produto.
-#  'qt':      um float, a quantidade do produto nessa compra.
+#  'qtd':      um float, a quantidade do produto nessa compra.
 #  'preco':   um float, o preço dessa quantidade desse produto.
 
 # Interfaces importadas por esta interface:
@@ -39,34 +39,34 @@ def busca_por_compra(id_compra):
   """Extrai da tabela de itens de compras todas as entradas referente
   ao pedido com identificador {id_compra}. 
   
-  Devolve uma lista de triplas ({prd}, {qt}, {prc}), onde {prd} é um
-  objeto da classe {ObjProduto}, {qt} é um {float}, a quantidade do
+  Devolve uma lista de triplas ({prd}, {qtd}, {prc}), onde {prd} é um
+  objeto da classe {ObjProduto}, {qtd} é um {float}, a quantidade do
   produto nessa compra. e {prc} é um {float}, o preço dessa quantidade
   desse produto.
   
   Nessa lista, não haverá duas entradas com o mesmo produto,
-  nem entradas com {qt} nulo ou negativo."""
+  nem entradas com {qtd} nulo ou negativo."""
   return itens_de_compras_IMP.busca_por_compra(id_compra)
 
-def atualiza_lista(id_compra, lit, prod, qt_velho, qt_novo):
+def atualiza_lista(id_compra, lit, prod, qtd_velho, qtd_novo):
   """Atualiza a lista de itens {lit} de um pedido de compra com
   identificador {id_compra}, trocando a quantidade do produto {prod}
-  nessa lista do valor atual, que deve ser {qt_velho}, para {qt_novo}, 
+  nessa lista do valor atual, que deve ser {qtd_velho}, para {qtd_novo}, 
   e recalculando o preço. Também atualiza a tabela de itens na base SQL.
   Não retorna nenhum resultado.
   
-  O parâmetro {lit} deve ser uma lista de triplas ({prd}, {qt}, {prc}), 
+  O parâmetro {lit} deve ser uma lista de triplas ({prd}, {qtd}, {prc}), 
   como a devolvida por {busca_por_compra}. O parâmetro {prod} deve ser um 
-  objeto da classe {ObjProduto}. Os parâmetros {qt_velho} e {qt_novo}
+  objeto da classe {ObjProduto}. Os parâmetros {qtd_velho} e {qtd_novo}
   devem ser {float}s não-negativos.
   
   Em particular, o produto {prod} deve ocorrer na lista se e somente se
-  {qt_velho > 0}. Se {qt_velho > 0} e {qt_novo == 0}, a tripla
-  desse produto é eliminada da lista com {del lit[...]}. Se {qt_velho == 0} e
-  {qt_novo > 0}, a nova tripla é acrescentada com {lit.append(...)}. Se {qt_velho
-  > 0} e {qt_novo > 0}, a tripla é substituída com atribuição.
-  O preço é recalculado mesmo se {qt_novo == qt_velho}."""
-  itens_de_compras_IMP.atualiza_lista(id_compra, lit, prod, qt_velho, qt_novo)
+  {qtd_velho > 0}. Se {qtd_velho > 0} e {qtd_novo == 0}, a tripla
+  desse produto é eliminada da lista com {del lit[...]}. Se {qtd_velho == 0} e
+  {qtd_novo > 0}, a nova tripla é acrescentada com {lit.append(...)}. Se {qtd_velho
+  > 0} e {qtd_novo > 0}, a tripla é substituída com atribuição.
+  O preço é recalculado mesmo se {qtd_novo == qtd_velho}."""
+  itens_de_compras_IMP.atualiza_lista(id_compra, lit, prod, qtd_velho, qtd_novo)
 
 def posicao_do_item(lit, prod):
   """Obtem o índice do item com produto {prod} na lista de itens de compra {lit}. Se não 
@@ -85,7 +85,7 @@ def obtem_preco(lit, prod):
 
 def calcula_total(lit):
   """ Retorna um float que é o preco total do pedido de compra, ou seja a
-  soma dos campos {qt} nos elementos da lista de itens."""
+  soma dos campos {qtd} nos elementos da lista de itens."""
   return itens_de_compras_IMP.calcula_total(lit)
 
 def diagnosticos(val):

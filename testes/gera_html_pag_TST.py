@@ -38,8 +38,8 @@ carr = sessao.obtem_carrinho(ses)
 cpr_ident = "C-00000003"
 cpr = compra.busca_por_identificador(cpr_ident)
 
-#qt teste
-qt = 2.3
+#qtd teste
+qtd = 2.3
 #produto teste
 prod1 = produto.busca_por_identificador("P-00000001")
 lista_prod = ["P-00000001", "P-00000002"]
@@ -65,7 +65,7 @@ def testa(nome, funcao, *args):
 
 testa("principal", gera_html_pag.principal, ses)
 
-testa("produto", gera_html_pag.mostra_produto, ses, cpr_ident, prod1, qt)
+testa("produto", gera_html_pag.mostra_produto, ses, cpr_ident, prod1, qtd)
 
 testa("lista_de_produtos", gera_html_pag.lista_de_produtos, ses, lista_prod)
 

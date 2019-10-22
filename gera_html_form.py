@@ -24,7 +24,7 @@ def ver_produto(id_produto, qtd_produto):
   e um botão 'Ver' (de tipo 'submit').
 
   Quando o usuário clicar no botão 'Ver', será emitido um comando POST
-  com ação {submit_ver_produto}.  Os argumentos desse
+  com ação {ver_produto}.  Os argumentos desse
   POST serão { 'id_produto': {id_produto}, 'quantidade': {qtd_produto} }.
 
   Se {qtd_produto} for {None}, esse campo é omitido do formulário
@@ -38,10 +38,10 @@ def comprar_produto(id_compra, id_produto, qtd_produto):
 
   A quantidade é apresentada em um campo numérico editável, com conteúdo
   inicial {qtd_produto}. Qualquer alteração feita pelo usuário nesse campo
-  vai causar a emissão de um comando POST com ação {submit_alterar_quantidade}.
+  vai causar a emissão de um comando POST com ação {alterar_qtd_de_produto}.
 
   Quando o usuário clicar no botão 'Comprar', será emitido um comando
-  POST com ação {submit_comprar_produto}.
+  POST com ação {comprar_produto}.
 
   Nos dois casos, os argumentos incluídos no POST são
   { 'id_compra': {id_compra}, 'id_produto': {id_produto}, 'quantidade': {qtd1} },
@@ -57,13 +57,13 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
 
   A quantidade é apresentada em um campo numérico editável, com conteúdo
   inicial {qtd_produto}. Qualquer alteração feita pelo usuário nesse campo
-  vai causar a emissão de um comando POST com ação {submit_alterar_quantidade}.
+  vai causar a emissão de um comando POST com ação {alterar_qtd_de_produto}.
 
   Quando o usuário clicar no botão 'Excluir', será emitido um comando POST com
-  ação {submit_excluir_produto}.
+  ação {excluir_item_de_compra}.
 
   Quando o usuário clicar no botão 'Ver', será emitido um comando POST com
-  ação {submit_ver_produto}.
+  ação {ver_produto}.
 
   Nos três casos, os argumentos incluídos no POST são
   { id_compra': {id_compra}, 'id_produto': {id_produto}, 'quantidade': {qtd1} },
@@ -79,17 +79,17 @@ def ver_compra(id_compra):
   (não editável) e um botão 'Ver' (de tipo 'submit'). Esta função NÃO mostra os dados da compra.
 
   Quando o usuário clicar no botão 'Ver', será emitido um comando POST
-  com ação {submit_ver_compra}.  O único argumento desse
+  com ação {ver_compra}.  O único argumento desse
   POST é { 'id_compra': {id_compra} }.  O {id_compra}
   não pode ser {None}."""
   return gera_html_form_IMP.ver_compra(id_compra)
 
-def submit_trocar_carrinho(id_compra):
+def trocar_carrinho(id_compra):
   """Retorna um fragmento HTML que descreve um botão <submit> com o texto 'Carrinho',
   para uso em uma página com a descrição detalhada de um pedido de compra em aberto (carrinho).
   Por este botão o usuário pede ao servidor a troca do seu carrinho de compras."""
 
-  return gera_html_form_IMP.submit_trocar_carrinho(id_compra)
+  return gera_html_form_IMP.trocar_carrinho(id_compra)
 
 def fechar_compra(id_compra):
   """Retorna o HTML de um formulário que mostra o identificador de compra {id_compra}
@@ -107,7 +107,7 @@ def entrar():
   o email e a senha, e um botão 'Entrar' (de tipo 'submit').
 
   Quando o usuário clicar no botão 'Entrar', será emitido um comando POST
-  com ação {submit_entrar}.  Os argumentos desse
+  com ação {fazer_login}.  Os argumentos desse
   POST são { 'email': {email}, 'senha': {senha} }."""
   return gera_html_form_IMP.entrar()
 
@@ -117,20 +117,20 @@ def cadastrar_usuario():
   que o usuário deve preencher, e um botão 'Cadastrar' (de tipo 'submit').
 
   Quando o usuário clicar no botão 'Cadastrar', será emitido um comando POST
-  com ação {submit_cadastrar_usuario}.  Os argumentos desse
+  com ação {definir_dados_de_usuario}.  Os argumentos desse
   POST são todos os atributos da classe {ObjUsuario}, exceto o identificador,
   com os valores que o usuário preencheu.  Um campo adicional 'conf_senha'
   contém a confirmação de senha."""
   return gera_html_form_IMP.cadastrar_usuario()
 
 def alterar_usuario(usr):
-  """Retorna o HTML de um formulário para para alterar dados de um novo
-  usuario.  O formuláro inclui o identificador do usuário (não editável)
+  """Retorna o HTML de um formulário para para alterar dados do usuário {usr}.  
+  O formuláro inclui o identificador do usuário (não editável)
   e campos com as informações do usuário (editáveis, exceto 'email' e 'CPF'),
   e um botão 'Alterar' (de tipo 'submit').
 
   Quando o usuário clicar no botão 'Alterar', será emitido um comando POST
-  com ação {submit_alterar_usuario}.  Os argumentos desse
+  com ação {definir_dados_de_usuario}.  Os argumentos desse
   POST são todos os atributos da classe {ObjUsuario},
   com os valores modificados. Haverá também dois campos adicionais
   'id_usuario' com o identificador do usuário, e
@@ -138,13 +138,13 @@ def alterar_usuario(usr):
   return gera_html_form_IMP.alterar_usuario(usr)
 
 def escolher_pagamento():
-  """Retorna o HTML de um formulário para escolher a forma de pagamento, e entrar os 
-  dados do cartão de crédito.O formulário contém a seleção do meio de pagamento,os campos 
+  """Retorna o HTML de um formulário para escolher o meio de pagamento, e entrar os 
+  dados do cartão de crédito. O formulário contém a seleção do meio de pagamento, os campos 
   editaveis relacionados ao cartão de crédito(nome,numero, data de validade e
-   codigo de segurança) e um botão submit.
+  codigo de segurança) e um botão "Confirmar".
    
-   Quando o usuário clicar no botão enviar ,será emitido um comando POST com ação
-   {submit_escolher_pagamento}.Os argumentos desse POST serão as informações do 
-   cartão de crédito.
-   """
+  Quando o usuário clicar no botão "Confirmar" ,será emitido um comando POST com ação
+  {definir_meio_de_pagamento}.Os argumentos desse POST serão as informações do 
+  cartão de crédito.
+  """
   return gera_html_form_IMP.escolher_pagamento()

@@ -61,6 +61,36 @@ def verifica_objeto(modulo, tipo, obj, indice, ident, atrs):
 
   return ok
 
+def testa_gera_html(modulo, funcao, rotulo, frag, *args):
+  prefixo = "testes/saida/"
+  nome_mod = modulo.__name__
+  nome_fn = funcao.__qualname__
+  nome_arq = nome_mod + "." + nome_fn + "." + rotulo
+  f = open(prefixo + nome_arq + '.html', 'w')
+  # sys.stderr.buffer.write((str(*args) + "\n").encode('utf-8'))
+  cabe = \
+    "<!doctype html>\n" + \
+    "<html>\n" + \
+    "<head>\n" + \
+    "<meta charset=\"UTF-8\"/>\n" + \
+    "</head>\n" + \
+    "<body style=\"background-color:#eeeeee; text-indent: 0px\">\n"
+  roda = \
+    "</body>\n" + \
+    "</html>\n"  
+  try:
+    res = funcao(*args)
+    if frag:
+      pag = cabe + res + roda
+    else:
+      pag = res
+    f.buffer.write(str(pag).encode('utf-8'))
+  except Exception as ex:
+    msg = "testa(" + nome_arq + "): ** erro = " + str(ex) + "\n"
+    sys.stderr.buffer.write(str(msg).encode('utf-8'))
+    f.buffer.write((cabe + str(msg) + roda).encode('utf-8'))
+  f.close()
+
 def formata_dict(dados):
   """Esta função de depuração recebe um dicionário {dados}
   e devolve um string é um fragmento HTML5 que mostra esses

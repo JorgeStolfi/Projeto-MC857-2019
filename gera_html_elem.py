@@ -35,7 +35,7 @@ def bloco_de_erro(msg):
   e um botão "OK" que retorna para a página principal da loja."""
   return gera_html_elem_IMP.bloco_de_erro(msg)
 
-def bloco_de_produto(id_compra, prod, qt, detalhe):
+def bloco_de_produto(id_compra, prod, qtd, detalhe):
   """Devolve um fragmento HTMP que decreve o produto {prod}, um objeto da classe {ObjProduto}.
   
   Se {detalhe} for {False}, mostra apenas o identificador do produto,
@@ -48,23 +48,34 @@ def bloco_de_produto(id_compra, prod, qt, detalhe):
   gerado pelo botão "Comprar".  Nesse caso, deve ser o identificador do pedido de
   compra ao qual o produto deve ser acrescentado.
   
-  Em qualquer caso, se {qt} não for {None}, mostra a quantidade {qt}
-  e o preço para essa quantidade.  Se {qt} for {None},
+  Em qualquer caso, se {qtd} não for {None}, mostra a quantidade {qtd}
+  e o preço para essa quantidade.  Se {qtd} for {None},
   mostra apenas o preço unitário, sem a quantidade."""
-  return gera_html_elem_IMP.bloco_de_produto(id_compra, prod, qt, detalhe)
+  return gera_html_elem_IMP.bloco_de_produto(id_compra, prod, qtd, detalhe)
 
 def bloco_de_compra(cpr, detalhe):
-  """Devolve um fragmento HTML mostra os dados da compra {cpr}, um objeto 
+  """Devolve um fragmento HTML que mostra os dados da compra {cpr}, um objeto 
   da classe {ObjCompra}.   
   
-  Se {detalhe} for {False}, mostra apenas os detalhes da compra:  seu 
+  Se {detalhe} for {False}, mostra apenas os dados principais da compra:  seu 
   identificador "C-{NNNNNNNN}", o status do pedido, a data da última 
-  alteração de status, o número de itens, o valor total, e um botão 
-  "Ver detalhes" para mostrar a lista de itens da compra
+  alteração de status, o número de itens, o valor total a pagar (incluindo frete),
+  e um botão "Ver detalhes" que emite ao servidor um comando 'ver_compra'.
     
-  Se {detalhe} for {True}, mostra também os itens da compra:
-  cada produto e sua quantidade, com botões para alterar quantidade e excluir 
-  se a compra estiver em aberto data de entrega"""
+  Se {detalhe} for {True}, mostra também o endereço e CEP de entrega,
+  o meio de pagamento escolhido, os itens da compra, o preço total dos 
+  itens (sem frete) e o custo do frete. Para cada item da lista será apresentado 
+  um bloco como descrito em {gera_html_elem.bloco_de_produto(id_compra,prod,qtd,detalhe=False)}.
+  
+  Se {detalhe} for {True} e o estado da compra for 'aberto', mostra também
+  um botão 'Alterar endereço' que emite o comando 'solicitar_form_de_endereco';
+  um botão 'Alterar meio de pagamento', que manda
+  o comado 'solicitar_form_de_meio_de_pagamento' para o servidor; e um botão 'Finalizar'
+  que manda o comando 'finalizar_compra' para o servidor.
+  
+  Além disso, se o estado da compra for 'aberto', qualquer que seja o valor de {detalhe}, 
+  mostra também um botão 'Definir carrinho' que emite o comando 'botao_definir_carrinho'
+  para o servidor."""
   return gera_html_elem_IMP.bloco_de_compra(cpr, detalhe)
 
 # ELEMENTOS SIMPLES
@@ -100,7 +111,7 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   Este fragmento geralmente é incluído em um formulário "<form>...</form>".
   
   O parâmetro {rotulo} é um rótulo opcional. Se não for {None}, será inserido na frente
-  do elemento "<input.../>" na forma de um elemento "<label>{rotulo}</label>".
+  do elemento "<input.../>" na meio de um elemento "<label>{rotulo}</label>".
   
   O parâmetro {tipo} é o tipo de campo, por exemplo "text", "email", "readonly",
   "hidden", "password", "number", etc. (resulta em "<input type='{tipo}'.../>").

@@ -36,8 +36,8 @@ def principal(ses):
   pagina = generica(ses, conteudo)
   return pagina
 
-def mostra_produto(ses, id_compra, prod, qt):
-  conteudo = gera_html_elem.bloco_de_produto(id_compra, prod, qt, True)
+def mostra_produto(ses, id_compra, prod, qtd):
+  conteudo = gera_html_elem.bloco_de_produto(id_compra, prod, qtd, True)
   pagina = generica(ses, conteudo)
   return pagina
 
@@ -77,7 +77,7 @@ def mostra_compra(ses, cpr):
   return pagina
 
 def mostra_usuario(ses, usr):
-  conteudo = gera_html_elem.informacao_usuario(usr)
+  conteudo = gera_html_form.alterar_usuario(usr)
   pagina = generica(ses, conteudo)
   return pagina
 

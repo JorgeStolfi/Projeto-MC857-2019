@@ -29,7 +29,7 @@ def inicializa(limpa):
   colunas = \
     ( ( 'compra',  compra.ObjCompra,   'INTEGER', False, 10,         10 ), # Objeto/índice da compra.
       ( 'produto', produto.ObjProduto, 'INTEGER', False, 10,         10 ), # Objeto/índice do produto.
-      ( 'qt',      type(int),          'INTEGER', False,  0 ,    999999 ), # quantidade do produto referente.
+      ( 'qtd',     type(int),          'INTEGER', False,  0 ,    999999 ), # quantidade do produto referente.
       ( 'preco',   type(1.5),          'FLOAT',   False,  0 , 999999.99 ), # preco do produto referente.
     )
   if limpa:
@@ -50,30 +50,30 @@ def busca_por_compra(id_compra):
   indice = identificador.para_indice("C", id_compra)
   # Obtem lista de identificadores de itens referentes a esta compra:
   cond = 'compra = ' + str(indice)
-  nomes_cols = ('produto', 'qt', 'preco')
+  nomes_cols = ('produto', 'qtd', 'preco')
   lit_SQL = base_sql.executa_comando_SELECT(nome_tb, cond, nomes_cols)
   # Converte para lista de itens na memória:
   lit_mem = [].copy()
   for it_SQL in lit_SQL:
     assert ((type(it_SQL) is list) or (type(it_SQL) is tuple))  and (len(it_SQL) == 3);
     prod = produto.busca_por_indice(it_SQL[0])
-    qt = float(it_SQL[1])
+    qtd = float(it_SQL[1])
     preco = float(it_SQL[2])
-    it_mem = (prod, qt, preco)
+    it_mem = (prod, qtd, preco)
     lit_mem.append(it_mem)
   return lit_mem
 
-def atualiza_lista(id_compra, lit, prod, qt_velho, qt_novo):
+def atualiza_lista(id_compra, lit, prod, qtd_velho, qtd_novo):
   global cache, nome_tb, letra_tb, colunas, diags
 
   ind_compra = identificador.para_indice("C", id_compra)
   ind_produto = produto.obtem_indice(prod)
   if diags: mostra(2, "itens originais = " + str(lit));
-  if qt_velho == 0 and qt_novo != 0:
+  if qtd_velho == 0 and qtd_novo != 0:
     # Acrescenta a linha:
-    preco_novo = produto.calcula_preco(prod, qt_novo)
-    lit.append((prod, qt_novo, preco_novo))
-    atrs_SQL = { 'compra': ind_compra, 'produto': ind_produto, 'qt': qt_novo, 'preco': preco_novo }
+    preco_novo = produto.calcula_preco(prod, qtd_novo)
+    lit.append((prod, qtd_novo, preco_novo))
+    atrs_SQL = { 'compra': ind_compra, 'produto': ind_produto, 'qtd': qtd_novo, 'preco': preco_novo }
     base_sql.executa_comando_INSERT(nome_tb, atrs_SQL)
   else:
     # O produto existe na lista.
@@ -81,15 +81,15 @@ def atualiza_lista(id_compra, lit, prod, qt_velho, qt_novo):
     pos = posicao_do_item(lit, prod)
     assert pos != None
     cond = "compra = " + str(ind_compra) + " AND produto = " + str(produto.obtem_indice(prod))
-    if qt_novo == 0 and pos != None:
+    if qtd_novo == 0 and pos != None:
       # Elimina a linha:
       del lit[pos]
       base_sql.executa_comando_DELETE(nome_tb, cond)
     else:
       # Modifica a linha:
-      preco_novo = produto.calcula_preco(prod, qt_novo)
-      lit[pos] = (prod, qt_novo, preco_novo)
-      atrs_SQL = { 'qt': qt_novo, 'preco': preco_novo }
+      preco_novo = produto.calcula_preco(prod, qtd_novo)
+      lit[pos] = (prod, qtd_novo, preco_novo)
+      atrs_SQL = { 'qtd': qtd_novo, 'preco': preco_novo }
       base_sql.executa_comando_UPDATE(nome_tb, cond, atrs_SQL)
   if diags: mostra(2, "itens alterados = " + str(lit));
   return
@@ -113,7 +113,7 @@ def obtem_preco(lit, prod):
 def calcula_total(lit):
   global cache, nome_tb, letra_tb, colunas, diags
   total = 0
-  for prod, qt, prc in lit:
+  for prod, qtd, prc in lit:
     total += prc
   return total
 

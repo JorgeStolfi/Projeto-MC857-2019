@@ -120,9 +120,9 @@ prod3 = testa_cria_produto("prod3", pindice3, pident3, prod3_atrs)
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {produto.calcula_preco}:\n")
 
-prod1_qt = 10.0
+prod1_qtd = 10.0
 prod1_preco_un = prod1_atrs['preco']
-prod1_preco_tot_esp = prod1_qt * prod1_preco_un
+prod1_preco_tot_esp = prod1_qtd * prod1_preco_un
 prod1_preco_tot_cmp = produto.calcula_preco(prod1, 10)
 if prod1_preco_tot_cmp != prod1_preco_tot_esp:
   aviso_prog("resultado foi " + str(prod1_preco_tot_cmp) + " deveria ser " + str(prod1_preco_tot_esp),True)

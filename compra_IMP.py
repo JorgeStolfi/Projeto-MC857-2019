@@ -147,37 +147,37 @@ def fecha_compra(cpr):
     mods = { 'status': cpr.status }
     muda_atributos(cpr,mods)
 
-def acrescenta_item(cpr, prod, qt):
+def acrescenta_item(cpr, prod, qtd):
   global cache, nome_tb, letra_tb, colunas, diags
 
   # !!! Deve dar erro de programa se a compra não está aberta. !!!
-  assert qt >= 0.0
-  qt_velho = obtem_quantidade(cpr, prod)
-  qt_novo = qt_velho + qt
+  assert qtd >= 0.0
+  qtd_velho = obtem_quantidade(cpr, prod)
+  qtd_novo = qtd_velho + qtd
   id_compra = compra.obtem_identificador(cpr)
-  itens_de_compras.atualiza_lista(id_compra, cpr.itens, prod, qt_velho, qt_novo)
+  itens_de_compras.atualiza_lista(id_compra, cpr.itens, prod, qtd_velho, qtd_novo)
   return
 
-def troca_quantidade(cpr, prod, qt):
+def troca_quantidade(cpr, prod, qtd):
   global cache, nome_tb, letra_tb, colunas, diags
 
   # !!! Deve dar erro de programa se a compra não está aberta. !!!
-  assert qt >= 0.0
-  qt_velho = obtem_quantidade(cpr, prod)
-  qt_novo = qt
+  assert qtd >= 0.0
+  qtd_velho = obtem_quantidade(cpr, prod)
+  qtd_novo = qtd
   id_compra = compra.obtem_identificador(cpr)
-  itens_de_compras.atualiza_lista(id_compra, cpr.itens, prod, qt_velho, qt_novo)
+  itens_de_compras.atualiza_lista(id_compra, cpr.itens, prod, qtd_velho, qtd_novo)
 
 def elimina_produto(cpr, prod):
   global cache, nome_tb, letra_tb, colunas, diags
 
   # !!! Deve dar erro de programa se a compra não está aberta. !!!
-  qt_velho = obtem_quantidade(cpr, prod)
-  if qt_velho == 0.0:
+  qtd_velho = obtem_quantidade(cpr, prod)
+  if qtd_velho == 0.0:
     erro_prog("produto " + produto.obtem_identificador(prod) + " não existe na compra " + str(cpr.id_compra))
-  qt_novo = 0.0
+  qtd_novo = 0.0
   id_compra = compra.obtem_identificador(cpr)
-  itens_de_compras.atualiza_lista(id_compra, cpr.itens, prod, qt_velho, qt_novo)
+  itens_de_compras.atualiza_lista(id_compra, cpr.itens, prod, qtd_velho, qtd_novo)
 
 def busca_por_identificador(id_compra):
   global cache, nome_tb, letra_tb, colunas, diags
@@ -221,11 +221,11 @@ def cria_testes():
     usr = usuario.busca_por_identificador(id_usuario)
     cpr = cria(usr)
     assert cpr != None and type(cpr) is compra.ObjCompra
-    qt = 1
+    qtd = 1
     for id_produto in ids_prods:
       prod = produto.busca_por_identificador(id_produto)
-      acrescenta_item(cpr, prod, qt)
-      qt = qt*qt + 1
+      acrescenta_item(cpr, prod, qtd)
+      qtd = qtd*qtd + 1
   return
 
 # FUNÇÕES INTERNAS

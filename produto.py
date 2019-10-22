@@ -77,11 +77,11 @@ def obtem_atributos(prod):
   exceto o identificador."""
   return produto_IMP.obtem_atributos(prod)
     
-def calcula_preco(prod, qt):
-  """Dada a quantidade {qt} a comprar (um float), calcula o preço a pagar.
-  Em princípio o resultado é {qt} vezes o preço unitário, mas eventualmente
+def calcula_preco(prod, qtd):
+  """Dada a quantidade {qtd} a comprar (um float), calcula o preço a pagar.
+  Em princípio o resultado é {qtd} vezes o preço unitário, mas eventualmente
   poderá haver desconto por atacado, etc.."""
-  return produto_IMP.calcula_preco(prod,qt)
+  return produto_IMP.calcula_preco(prod,qtd)
 
 def muda_atributos(prod, mods):
   """Modifica alguns atributos do objeto {prod} da classe {ObjProduto},

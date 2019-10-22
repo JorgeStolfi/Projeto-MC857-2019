@@ -5,27 +5,29 @@
 import sessao
 import usuario
 
-import comando_menu_cadastrar_usuario
-import comando_menu_entrar
-import comando_menu_sair
-import comando_menu_ver_carrinho
-import comando_menu_ver_todas_as_compras
-#import comando_menu_acrescentar_produto
 
-import comando_submit_buscar_produtos
-import comando_submit_cadastrar_usuario
-import comando_submit_comprar_produto
-import comando_submit_acrescentar_produto
-import comando_submit_alterar_qt_de_produto
-import comando_submit_entrar
-#import comando_submit_alterar_qt_de_item_de_compra
-import comando_submit_excluir_item_de_compra
-import comando_submit_finalizar_compra
-import comando_menu_ver_todas_as_compras
-import comando_submit_ver_produto
-import comando_submit_trocar_carrinho
-import comando_menu_ver_usuario
-import comando_submit_alterar_endereco_de_entrega
+import comando_alterar_qtd_de_produto
+import comando_buscar_compras
+import comando_buscar_produtos
+import comando_comprar_produto
+import comando_definir_dados_de_produto
+import comando_definir_dados_de_usuario
+import comando_definir_endereco
+import comando_definir_meio_de_pagamento
+import comando_excluir_item_de_compra
+import comando_fazer_login
+import comando_fazer_logout
+import comando_finalizar_compra
+import comando_solicitar_form_de_dados_de_produto
+import comando_solicitar_form_de_dados_de_usuario
+import comando_solicitar_form_de_endereco
+import comando_solicitar_form_de_meio_de_pagamento
+import comando_solicitar_form_de_login
+import comando_trocar_carrinho
+import comando_ver_carrinho
+import comando_ver_compra
+import comando_ver_ofertas
+import comando_ver_produto
 
 import gera_html_elem
 import gera_html_pag
@@ -54,7 +56,6 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 
   # Versao da classe, passada no dicionário {dados} aos métodos abaixo:
   server_version = "MC857"
-  sessao_corrente = None
 
   def do_GET(self):
     """Este método é chamado pela classe {BaseHTTPRequestHandler}
@@ -95,21 +96,14 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
       ses = self.obtem_sessao(dados)
 
       # Processa o comando e constrói a página HTML de resposta:
-      pagina = processa_comando(tipo, ses, dados)
-      pag_debug = str(pagina)
+      pag, ses_nova = processa_comando(tipo, ses, dados)
+      pag_debug = str(pag)
       if len(pag_debug) > 207:
         pag_debug = pag_debug[0:100] + " [...] " + pag_debug[-100:]
-      mostra(0, "pagina = " + pag_debug + "")
+      mostra(0, "pag = " + pag_debug + "")
 
       # Envia a página ao browser do usuário:
-      self.devolve_pagina(pagina)
-
-  def obtem_sessao(self, dados):
-    """Determina a sessão à qual o comando HTTP se refere, ou {None}
-    se o usuário não está logado."""
-    # !!! Usar cookies posteriormente !!!
-    return sessao_corrente
-
+      self.devolve_pagina(ses_nova, pag)
 
   def extrai_dados(self, tipo):
     """Retorna todos os campos de um pedido do tipo {tipo} ('GET','POST', ou 'HEAD')
@@ -147,7 +141,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     assert(self.command == tipo)
 
     dados = {}.copy() # Novo dicionário.
-
+    
     # Campos originais do {BaseHTTPRequestHandler}
     dados['command'] = self.command
     dados['request_version'] = self.request_version
@@ -168,6 +162,8 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 
     dados['headers'] = self.extrai_cabecalhos_http()
 
+    dados['cookies'] = self.extrai_cookies(dados['headers']['Cookie'])
+    
     dados['query_data'] = urllib.parse.parse_qs(dados['query'])
 
     dados['form_data'] = self.extrai_dados_de_formulario()
@@ -181,6 +177,29 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     for name, value in self.headers.items():
        hds[name] = value.rstrip()
     return hds
+    
+  def extrai_cookies(self, cook_str):
+    """Analisa a cadeia {cook_str} que é o campo 'Cookie' 
+    que veio com os headers HTTP, convertendo-a em um dicionário Python.
+    
+    Supõe que {cook_str} é uma cadeia com formato '{chave1}={valor1};
+    {chave2}={valor2}; {...}'. Os campos de valor não podem conter ';'
+    ou '='. Se algum valor estiver envolvido em aspas, remove as aspas.
+
+    Os campos de {cook_str} cujo valor é a cadeia 'None' ou vazia são omitidos."""
+            
+    cookies = {}.copy()
+    cook_els = re.split(r'[ ;]+', cook_str)
+    for cook_el in cook_els:
+      # A cadeia {cook_el} deve ser '{chave}={valor}'
+      cook_pair = re.split(r'[=]', cook_el)
+      assert len(cook_pair) == 2
+      cook_key = cook_pair[0]
+      assert cook_key != ""
+      cook_val = (cook_pair[1]).strip("\"'")
+      if cook_val != "" and cook_val != "None":
+        cookies[cook_key] = cook_val
+    return cookies
 
   def extrai_dados_de_formulario(self):
     """Se o comando é 'POST', extrai os dados do formulário, dos
@@ -202,27 +221,68 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
           ffs[chave] = item.value
     return ffs
 
-  def devolve_pagina(self, pagina):
-    """Manda para o usuário a {pagina} dada, que deve ser um string
-    com o conteúdo da página em HTML 5.0.
+  def obtem_sessao(self, dados):
+    """Determina a sessão à qual o comando HTTP se refere, ou {None}
+    se o usuário não está logado, a partir do dicionário de cookies
+    contidos em {dados}."""
+    if not 'cookies' in dados:
+      # Não temos cookies? 
+      return None
+    cookies = dados['cookies']
+    if 'id_sessao' in cookies:
+      id_sessao = cookies['id_sessao']
+      ses = sessao.busca_por_identificador(id_sessao)
+    else:
+      ses = None
+    return ses
 
-    Se {pagina} é {None}, devove código 404 com conteúdo 'text/plain',
-    mensagem 'Não encontrado'. Se não devolve a página com código 200 e
-    'content-type' 'text/html'."""
+  def devolve_pagina(self, ses, pag):
+    """Manda para o usuário a {pag} dada, que deve ser um string
+    com o conteúdo da página em HTML 5.0., com os preâmulos adequados
+    segundo o protocolo HTTP.
 
-    if pagina == None:
+    Se {pag} é {None}, sinaliza no preâmbulo o código 404 com conteúdo 'text/plain',
+    mensagem 'Não encontrado'. Caso contrário, devolve a página com código 200 e
+    'content-type' 'text/html'.
+    
+    Se {ses} não é {None}, deve ser um objeto da classe {ObjSession}.
+    Nesse caso, a função inclui no preâmbulo cookies que identificam a 
+    sessão e o o usuário."""
+
+    if pag == None:
+      aviso_prog("Página a devolver é {None}", True)
       codigo = 404;  # Error - Not found.
+      msg = "Pagina nao encontrada - Page not found"
       tipo = 'text/plain'
-      conteudo = "Pagina nao encontrada - Page not found"
+      pag = gera_html_pag.mensagem_de_erro(ses, msg)
+      if pag == None:
+        aviso_prog("Função {gera_html_pag.mensagem_de_erro} devolveu {None}", True)
+        #  Na marra:
+        pag = "<!doctype html>\n<html>\n<body>\n" + msg + "\n</body>\n</head>"
     else:
       codigo = 200;  # No error.
       tipo = 'text/html'
-      conteudo = pagina
 
     self.send_response(codigo)
     self.send_header('Content-type', tipo)
+    
+    # Manda cookies que identificam usuário e sessão:
+    if ses != None:
+      id_sessao = sessao.obtem_identificador(ses)
+      cookie = sessao.obtem_cookie(ses)
+      usr = sessao.obtem_usuario(ses)
+      id_usuario = usuario.obtem_identificador(usr)
+    else:
+      id_sessao = ""
+      cookie = ""
+      usr = None
+      id_usuario = ""
+    self.send_header('Set-Cookie', 'id_usuario=' + id_usuario)
+    self.send_header('Set-Cookie', 'id_sessao=' + id_sessao)
+    self.send_header('Set-Cookie', 'cookie_sessao=' + cookie)
+
     self.end_headers()
-    self.wfile.write(conteudo.encode('utf-8'))
+    self.wfile.write(pag.encode('utf-8'))
 
   def devolve_imagem(self, imagem):
     """Manda para o usuário a {imagem} dada, que deve ser um string
@@ -240,101 +300,155 @@ def cria_objeto_servidor(host, porta):
   endereco = (host, porta)
   serv = HTTPServer(endereco, Processador_de_pedido_HTTP)
   return serv
-
+  
 # FUNÇÕES INTERNAS
 
 def processa_comando(tipo, ses, dados):
   """Esta função processa um comando HTTP 'GET', 'POST', ou 'HEAD' recebido pelo
-  servidor, com as informações convertidas em um dicionario {dados}."""
+  servidor, com as informações convertidas em um dicionario {dados}.
+  
+  A sessão {ses} deve ser a sessão deduzida a partir dos cookies que
+  viram com o comando HTTP.  
+  
+  Esta função devolve a página {pag} a ser enviada ao usuário.  Devolve também
+  a sessão {ses_nova} corrente.  Esta sessão pode ser diferente de {ses}, se o
+  comando for login ou logout."""
+  
   mostra(0, "dados = " + str(dados) + "")
   
   mostra_cmd = True # Deve mostrar os dados do comando no final da página?
 
-  # !!! Completar a lista abaixo com todos os módulos {comando_*.py} que existem. !!!
   cmd = dados['real_path']; del dados['real_path']
-  if tipo == 'GET':
-    # Comando causado por acesso inicial ou botão simples:
-    args = dados['query_data']; del dados['query_data'] # Argumentos do comando "GET", no próprio URL "cmd?n1=v1&n2=v2...".
+  
+  # Define página a retornar {pag} e a sessão {ses_nova} para futuros comandos:
+  ses_nova = ses  # Geralmente a sessão não muda
+  if tipo == 'GET' or tipo == 'POST':
+    # Obtem os argumentos do comando:
+    if tipo == 'GET':
+      # Comando causado por acesso inicial ou botão simples:
+      args = dados['query_data']; del dados['query_data'] # Argumentos do comando "GET", no próprio URL "cmd?n1=v1&n2=v2...".
+    elif tipo == 'POST':
+      # Comando causado por botão do tipo "submit" dentro de um <form>...</form>:
+      args = dados['form_data']; del dados['form_data'] # Campos do formulário.
+    else:
+      assert False
+      
+    # Despacha o comando:
+    # !!! Completar a lista abaixo com todos os módulos {comando_*.py} que existem. !!!
     if cmd == '' or cmd == '/' or cmd == '/principal':
       # Acesso sem comando, ou usuário apertou "Principal" no menu geral.
-      pagina =  gera_html_pag.principal(ses)
-    elif cmd == '/menu_cadastrar':
-      # Usuário apertou o botão "Cadastrar" do menu geral:
-      pagina =  comando_menu_cadastrar_usuario.processa(ses, args)
-    elif cmd == '/menu_usuario':
-      # Usuário apertou o botão "Minha Conta" do menu geral:
-      pagina =  comando_menu_ver_usuario.processa(ses, args)
-    elif cmd == '/menu_entrar':
+      pag =  gera_html_pag.principal(ses)
+    
+    elif cmd == '/solicitar_form_de_login':
       # Usuário apertou o botão "Entrar" (login) do menu geral:
-      pagina =  comando_menu_entrar.processa(ses, args)
-    elif cmd == '/menu_sair':
+      # ATENÇÃO: Este comando só mostra o formulário de login, não muda a sessão ainda.
+      pag = comando_solicitar_form_de_login.processa(ses, args)
+    
+    elif cmd == '/fazer_logout':
       # Usuário apertou o botão "Sair" (logout) do menu geral:
-      pagina =  comando_menu_sair.processa(ses, args)
-    elif cmd == '/menu_carrinho':
+      # ATENÇÃO: devolve também a nova sessão (que geralmente vai ser {None}).
+      pag, ses_nova = comando_fazer_logout.processa(ses, args)
+    
+    elif cmd == '/ver_carrinho':
       # Usuário apertou o botão "Meu Carrinho" do menu geral:
-      pagina =  comando_menu_ver_carrinho.processa(ses, args)
-    elif cmd == '/menu_ver_todas_as_compras':
+      pag = comando_ver_carrinho.processa(ses, args)
+    
+    elif cmd == '/buscar_compras':
       # Usuário apertou o botão "Minhas compras" do menu geral:
-      pagina =  comando_menu_ver_todas_as_compras.processa(ses, args)
-    elif cmd == '/menu_acrescentar_produto':
+      pag = comando_buscar_compras.processa(ses, args)
+    
+    elif cmd == '/solicitar_form_de_dados_de_produto':
       # Usuário apertou o botão "Acrescentar produto" do menu geral:
-      pagina =  comando_menu_acrescentar_produto.processa(ses, args)
-    else:
-      # Comando não identificado:
-      pagina = gera_html_pag.mensagem_de_erro(ses, ("** comando GET \"%s\" inválido" % cmd)) 
-  elif tipo == 'POST':
-    # Comando causado por botão do tipo "submit" dentro de um <form>...</form>:
-    args = dados['form_data']; del dados['form_data'] # Campos do formulário.
-    if cmd == '/submit_entrar':
+      pag = comando_solicitar_form_de_dados_de_produto.processa(ses, args)
+    
+    elif cmd == '/definir_dados_de_produto':
+      # Usuário apertou o botão "Confirma" num formulário de acrescentar/alterar produto:
+      pag = comando_defini_dados_de_produto.processa(ses, args)
+    
+    elif cmd == '/fazer_login':
       # Usuário preencheu o formulário de login apertou "Entrar":
-      pagina =  comando_submit_entrar.processa(ses, args)
-    elif cmd == '/submit_cadastrar_usuario':
-      # Usuário preencheu o formulário de cadastrar novo usuário e apertou "Cadastrar":
-      pagina =  comando_submit_cadastrar_usuario.processa(ses, args)
-    elif cmd == '/submit_buscar_produtos':
+      # ATENÇÃO: devolve também a nova sessão (que pode ser {None} se o login não deu certo).
+      pag, ses_nova = comando_fazer_login.processa(ses, args)
+    
+    elif cmd == '/solicitar_form_de_dados_de_usuario':
+      # Usuário apertou o botão "Cadastrar" ou "Minha Conta" do menu geral:
+      pag = comando_solicitar_form_de_dados_de_usuario.processa(ses, args)
+    
+    elif cmd == '/definir_dados_de_usuario':
+      # Usuário apertou "Cadastrar" ou "Alterar" em formulário de cadastrar/alterar usuário:
+      pag = comando_definir_dados_de_usuario.processa(ses, args)
+    
+    elif cmd == '/buscar_produtos':
       # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
-      pagina =  comando_submit_buscar_produtos.processa(ses, args)
-    elif cmd == '/submit_ver_produto':
-      # Usuário apertou o botão "Comprar" ou equivalente numa descrição curta do produto:
-      pagina =  comando_submit_ver_produto.processa(ses, args)
-    elif cmd == '/submit_comprar_produto':
+      pag = comando_buscar_produtos.processa(ses, args)
+    
+    elif cmd == '/ver_produto':
+      # Usuário apertou o botão "Ver" ou equivalente numa descrição curta do produto:
+      pag = comando_ver_produto.processa(ses, args)
+    
+    elif cmd == '/ver_ofertas':
+      # Usuário apertou o botão "Ofertas" ou equivalente no menu geral:
+      pag = comando_ver_ofertas.processa(ses, args)
+    
+    elif cmd == '/comprar_produto':
       # Usuário preencheu a quantidade desejada na página de um produto e apertou o botão "Comprar":
-      pagina =  comando_submit_comprar_produto.processa(ses, args)
-    elif cmd == '/submit_alterar_qt_de_produto':
-      # Usuário alterou a quantidade desejada numa descrição de produto:
-      pagina =  comando_submit_alterar_qt_de_produto.processa(ses, args)
-    elif cmd == '/submit_excluir_item_de_compra':
+      pag = comando_comprar_produto.processa(ses, args)
+    
+    elif cmd == '/alterar_qtd_de_produto':
+      # Usuário alterou a quantidade desejada numa descrição de produto ou num item de uma compra:
+      pag = comando_alterar_qtd_de_produto.processa(ses, args)
+    
+    elif cmd == '/excluir_item_de_compra':
       # Usuário apertou o botão "Excluir" do carrinho:
-      pagina =  comando_submit_excluir_item_de_compra.processa(ses, args)
-    elif cmd == '/submit_finalizar_compra':
+      pag = comando_excluir_item_de_compra.processa(ses, args)
+    
+    elif cmd == '/finalizar_compra':
       # Usuário apertou o botão "Finalizar compra" na descrição do carrinho:
-      pagina =  comando_submit_finalizar_compra.processa(ses, args)
-    elif cmd == '/submit_alterar_endereco_de_entrega':
-      # Usuário apertou o botão "Alterar endereço" na descrição de um pedido de compra:
-      pagina =  comando_submit_alterar_endereco_de_entrega.processa(ses, args)
-    elif cmd == '/submit_trocar_carrinho':
-      pagina = comando_submit_trocar_carrinho.processa(ses, args)
+      pag = comando_finalizar_compra.processa(ses, args)
+    
+    elif cmd == '/solicitar_form_de_endereco':
+      # Usuário apertou o botão "Alterar endereço" num formulário de dados de compra:
+      pag = comando_solicitar_form_de_endereco.processa(ses, args)
+    
+    elif cmd == '/definir_endereco':
+      # Usuário apertou o botão "Confirmar" num formulário de alterar endereço de entrega:
+      pag = comando_definir_endereco.processa(ses, args)
+    
+    elif cmd == '/solicitar_form_de_meio_de_pagamento':
+      # Usuário apertou o botão "Definir/Alterar meio de pagamento" num formulário de dados de compra:
+      pag = comando_solicitar_form_de_meio_de_pagamento.processa(ses, args)
+    
+    elif cmd == '/definir_meio_de_pagamento':
+      # Usuário apertou o botão "Confirmar" num formulário de alterar meio de pagamento de compra:
+      pag = comando_definir_meio_de_pagamento.processa(ses, args)
+    
+    elif cmd == '/trocar_carrinho':
+      # Usuário apertou o botão "Usar como carrinho" numa descrição de um pedido de compra:
+      pag = comando_trocar_carrinho.processa(ses, args)
+    
     else:
       # Comando não identificado
-      pagina =  gera_html_pag.mensagem_de_erro(ses, ("** comando POST \"%s\" inválido" % cmd)) 
+      pag =  gera_html_pag.mensagem_de_erro(ses, ("** comando POST \"%s\" inválido" % cmd)) 
+      
   elif tipo == 'HEAD':
     # Comando emitido por proxy server:
     # !!! (MAIS TARDE) Tratar este caso !!!
     args = {}.copy()
-    pagina =  gera_html_pag.mensagem_de_erro(ses, ("** comando HEAD \"%s\" não implementado" % cmd)) 
+    pag =  gera_html_pag.mensagem_de_erro(ses, ("** comando HEAD \"%s\" não implementado" % cmd)) 
   else:
     # Tipo de comando inválido:
     args = {}.copy()
-    pagina =  gera_html_pag.mensagem_de_erro(ses, ("** comando \"%s\" não implementado" % tipo)) 
-    
+    pag =  gera_html_pag.mensagem_de_erro(ses, ("** comando \"%s\" não implementado" % tipo)) 
+
   if mostra_cmd:
     # Acrescenta os dados para depuração:
-    pagina = re.sub(r'</body>', ("<br/>%s<br/></body>" % formata_dados_http(cmd,args,dados)), pagina)
-  return pagina
+    pag = re.sub(r'</body>', ("<br/>%s<br/></body>" % formata_dados_http(cmd,args,dados)), pag)
+    
+  return pag, ses_nova
 
 def formata_dados_http(cmd,args,resto):
   """Esta função de depuração devolve um string que é um trecho de HTML5 a ser inserido 
-  no final de uma página.  Ele mostra a função {cmd} a executar, o dicionário {args} 
+  no final de uma página.  Ele mostra a função {cmd} que foi executada, o dicionário {args} 
   com os argumentos da mesma, e o dicionário {resto} com os demais parâmetros do comando
   HTTP recebido, num formato razoavelmente legível."""
   resto_d = resto.copy()
@@ -349,6 +463,4 @@ def formata_dados_http(cmd,args,resto):
   texto = texto + ("<br/><hr/>Outros dados:<br/>%s" % resto_lin)
   conteudo = gera_html_elem.bloco_texto(texto, None,"Courier","18px","normal","5px","left", None, None)
   conteudo = "<hr/>\n" + gera_html_elem.div("background-color:#bbbbbb;", conteudo) + "<hr/>\n"
-  # !!! Extrair informações abaixo dos dados !!!
-  ses = None
   return conteudo

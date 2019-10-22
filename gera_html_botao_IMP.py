@@ -3,118 +3,33 @@
 # Interfaces do projeto usados por este módulo:
 import gera_html_elem
 
-# Outros módulos usados por este módulo:
-
-# !!! Melhorar a aparência dos botões. !!!
-# !!! Reduzir o tamanho dos botões para economizar espaço da tela. !!!
-
-# BOTÕES DE TIPO <button>
-
-def principal():
-  texto = "Principal"
-  cor_fundo = "#fff888"
-  return botao_simples(texto, "principal", cor_fundo)
-
-def menu_entrar():
-  texto = "Entrar"
-  cor_fundo = "#fff888"
-  return botao_simples(texto, "menu_entrar", cor_fundo)
-
-def menu_sair():
-  texto = "Sair"
-  cor_fundo = "#fff888"
-  return botao_simples(texto, "menu_sair", cor_fundo)
-
-def menu_cadastrar():
-  texto = "Cadastrar"
-  cor_fundo = "#fff888"
-  return botao_simples(texto, "menu_cadastrar", cor_fundo)
-
-def menu_carrinho():
-  texto = "Carrinho"
-  cor_fundo = "#fff888"
-  return botao_simples(texto, "menu_carrinho", cor_fundo)
-
-def menu_minhas_compras():
-  texto = "Minhas Compras"
-  cor_fundo = "#fff888"
-  return botao_simples(texto, "menu_ver_todas_as_compras", cor_fundo)
-
-def menu_ofertas():
-  texto = "Ofertas"
-  cor_fundo = "#fff888"
-  return botao_simples(texto, "menu_ofertas", cor_fundo)
-
-def erro_ok():
-  texto = "OK"
-  cor_fundo = "#44ff44"
-  return botao_simples(texto, "", cor_fundo)
-
-def menu_usuario():
-  texto = "Minha conta"
-  cor_fundo = "#fff888"
-  return botao_simples(texto, "menu_usuario", cor_fundo)
-
-# BOTÕES DE TIPO <submit>
-
-def submit_ver_produto():
-  texto = "Ver"
-  cor_fundo = "#f8ff88"
-  return botao_submit(texto, "submit_ver_produto", cor_fundo)
-
-def submit_comprar_produto():
-  texto = "Comprar"
-  cor_fundo = "#fff888"
-  return botao_submit(texto, "submit_comprar_produto", cor_fundo)
-
-def submit_buscar_produtos():
-  texto = "Buscar"
-  cor_fundo = "#fff888"
-  return botao_submit(texto, "submit_buscar_produtos", cor_fundo)
-
-def submit_excluir_produto():
-  texto = "Excluir"
-  cor_fundo = "#fff888"
-  return botao_submit(texto, "submit_excluir_item_de_compra", cor_fundo)
-
-def submit_trocar_carrinho():
-  texto = "Carrinho"
-  cor_fundo = "#fff888"
-  return botao_submit(texto, "submit_trocar_carrinho", cor_fundo)
-
-def submit_cadastrar_usuario():
-  texto = "Cadastrar"
-  cor_fundo = "#fff888"
-  return botao_submit(texto, "submit_cadastrar_usuario", cor_fundo)
-
-def submit_entrar():
-  texto = "Entrar"
-  cor_fundo = "#fff888"
-  return botao_submit(texto, "submit_entrar", cor_fundo)
-
-# FUNÇÕES INTERNAS
-
-def botao_simples(texto, URL, cor_fundo):
-  """Função INTERNA que gera um botão genérico de tipo "<button>",
-  com o {texto} e {cor_fundo} especificados.  Quando clicado,
-  o botão emite um comando HTTP 'GET' para o {URL} dado."""
-
-  # O botão propriamente dito:
+def simples(texto, URL, args, cor_fundo):
+  if args != None:
+    # Acrescenta argumentos ao {URL}:
+    sep = '?'
+    for key, val in args.items():
+      URL += (sep + key + "=" + val)
+      sep = '&'
+    
+  # Constrói o botão propriamente dito:
   html_cru = "<button type=\"button\" onclick=\"location.href='" + URL + "'\">" + texto + "</button>"
 
   # Define o estilo:
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", "#eeeeee")
+  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", cor_fundo)
   return html
 
-def botao_submit(texto, URL, cor_fundo):
-  """Função INTERNA que gera um botões "<input type=submit>"
-  com o {texto} e a {cor_fundo} especificados.  Quando clicado,
-  o botão emite um comando HTTP 'POST' para o {URL} dado."""
+def submit(texto, URL, args, cor_fundo):
+  args_html = ""
+  if args != None:
+    # Acrescenta argumentos ao {args_html}:
+    for key, val in args.items():
+      kv_html = gera_html_elem.input(None, 'hidden', key, val, None, None)
+      args_html += kv_html
 
   # O botão propriamente dito:
-  html_cru = "<input type=\"submit\" formaction=\"" + URL + "\" value=\"" + texto + "\">"
+  html_cru = args_html + "<input type=\"submit\" formaction=\"" + URL + "\" value=\"" + texto + "\">"
 
   # Define o estilo:
   fam_fonte = "Courier"

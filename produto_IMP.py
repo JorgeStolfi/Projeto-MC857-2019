@@ -30,7 +30,7 @@ colunas = \
     ( 'preco',       type(10.5),  'FLOAT',   False,    1,      999999.99 ), # Preco unitário do produto em reais.
     ( 'imagem',      type("foo"), 'TEXT',    False,    5,             50 ), # Nome do arquivo da imagem no diretorio 'imagens'.
     ( 'peso',        type(10.5),  'FLOAT',   False,    0.0001, 9999999.0 ), # peso do produto em gramas.
-    ( 'volume',      type(10.5),  'FLOAT',   False,    0.0001,  999999.0 )  # volume do produto em mililitros.
+    ( 'volume',      type(10.5),  'FLOAT',   False,    0.0001,  999999.0 ), # volume do produto em mililitros.
     ( 'estoque',     type(10),    'INTEGER', False,    0,       99999999 ), # Estoque do produto.
     ( 'oferta',      type(True),  'INTEGER', False,    0,              1 ), # Produto está em oferta.
   )
@@ -84,8 +84,8 @@ def obtem_atributos(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return prod.atrs.copy()
 
-def calcula_preco(prod, qt):
-  return prod.atrs['preco'] * qt
+def calcula_preco(prod, qtd):
+  return prod.atrs['preco'] * qtd
 
 def muda_atributos(prod, mods):
   global cache, nome_tb, letra_tb, colunas, diags

@@ -3,7 +3,7 @@
 # compras).
 # 
 # Nas funções abaixo, o parâmetro {prod} é um objeto
-# da classe {ObjProduto}, e {qt} e um {float} que especifica uma
+# da classe {ObjProduto}, e {qtd} e um {float} que especifica uma
 # quantidade desse produto.
 
 # Implementaçao deste módulo:
@@ -37,15 +37,15 @@ class ObjCompra(ObjCompra_IMP):
     'CEP'       {str}        o cep de entrega para este pedido. 
     
   Além disso, cada objeto desta classe possui uma lista de itens. Cada
-  item é uma tripla {(prod, qt,preco)} onde {prod} é um
-  objeto da classe {ObjProduto}, {qt} é um float que indica a quantidade
+  item é uma tripla {(prod, qtd,preco)} onde {prod} é um
+  objeto da classe {ObjProduto}, {qtd} é um float que indica a quantidade
   comprada, e {preco} é um float que indica o preço total do item. Os
   produtos na lista são sempre todos distintos.
   
   O atributo 'status' por enquanto, pode ser:
   
-   'aberto': O cliente ainda está montando o pedido.
-   'pagando':  O cliente fechou o pedido, e a loja está aguardando o pagamento.
+   'aberto': O cliente ainda está montando o pedido, e escolhendo endereço e forma de pagamento.
+   'pagando':  O cliente finalizou a compra, e a loja está aguardando o pagamento.
    'pago': A loja já recebeu o pagamento e está mandando para despacho.
    'despachado': A loja já colocou o pedido no correio ou transportadora.
    'entregue': O pedido foi entregue ao cliente.
@@ -97,9 +97,10 @@ def obtem_status(cpr):
   """Retorna o status da compra {cpr}. Equivale a {obtem_atributos(cpr)['status']}."""
   return compra_IMP.obtem_status(cpr)
 
-def obtem_itens(cpr):
-  """Retorna uma cópia da lista de itens da compra {cpr}."""
-  return compra_IMP.obtem_itens(cpr)
+def fecha_compra(cpr):
+  """Muda o status de uma certa compra de 'aberto' para 'pagando' e salva o novo
+  status da compra no banco de dados."""
+  return compra_IMP.fecha_compra(cpr)
 
 def muda_atributos(cpr, mods):
   """Modifica alguns atributos do objeto {cpr} da classe {ObjCompra},
@@ -110,58 +111,6 @@ def muda_atributos(cpr, mods):
   subconjunto das chaves dos atributos da compra. Os valores atuais desses
   atributos são substituídos pelos valores correspondentes em {mods}."""
   return compra_IMP.muda_atributos(cpr, mods)
-
-def obtem_quantidade(cpr, prod):
-  """Retorna a quantidade atual do produto {prod} no pedido de
-  compras {cpr}.  Se o produto não está no pedido, devolve zero."""
-  return compra_IMP.obtem_quantidade(cpr, prod)
-
-def obtem_preco(cpr, prod):
-  """Retorna o preco total do produto {prod} no pedido de
-  compras {cpr}.  Se o produto não está no pedido, devolve zero."""
-  return compra_IMP.obtem_preco(cpr, prod)
-
-def calcula_total(cpr):
-  """ Retorna um float que é o preco total do pedido de compra, ou seja a
-  soma dos campos {qt} nos elementos da lista de itens."""
-  return compra_IMP.calcula_total(cpr)
-
-def fecha_compra(cpr):
-  """Muda o status de uma certa compra de 'aberto' para 'pagando' e salva o novo
-  status da compra no banco de dados."""
-  return compra_IMP.fecha_compra(cpr)
-    
-def acrescenta_item(cpr, prod, qt):
-  """Acrescenta um novo item no pedido de cpr, consistindo da quantidade 
-  {qt} do produto {prod}, acrescentando-o também a tabela de itens de compra. 
-  
-  Esta função só pode ser usada se a compra ainda estiver aberta. 
-  Não retorna nenhum resultado.
-  
-  Em particular, se o produto já está na lista de itens, soma {qt} à quantidade que
-  consta nessa lista. Também recalcula o preço do item, mesmo se {qt} for zero."""
-  compra_IMP.acrescenta_item(cpr,prod,qt)
-
-def troca_quantidade(cpr, prod, qt):
-  """Modifica a lista de itens da compra {cpr}, trocando a quantidade
-  atual do produto {prod} por {qt}. Altera também a linha correspondente
-  da tabela de itens de compras. 
-  
-  Esta função só pode ser usada se a compra ainda estiver aberta. 
-  Não retorna nenhum resultado.
-  
-  Em particular, se {qt} for zero, elimina o produto {prod} da lista. Se o produto {prod} 
-  não está na lista, acrescenta-o com quantidade {qt}, e recalcula o preço do item,
-  mesmo que o produto já esteja na lista com essa quantidade. """
-  compra_IMP.troca_quantidade(cpr, prod, qt)
-
-def elimina_produto(cpr, prod):
-  """Modifica a lista de itens da compra, eliminando a entrada com produto {prod}.
-  Também elimina a linha correspondente da tabela de itens de compras. 
-  
-  Esta função só pode ser usada se a compra ainda estiver aberta
-  e o produto estiver na lista. Não retorna nenhum resultado."""
-  compra_IMP.elimina_produto(cpr, prod)
 
 def busca_por_identificador(id_compra):
   """Localiza uma compra com identificador {id_compra} (uma string da forma
@@ -185,6 +134,66 @@ def busca_por_usuario(id_usuario):
   e devolve uma lista de identificadores compras (não uma lista de objetos);
   ou lista vazia se não existirem tais compras."""
   return compra_IMP.busca_por_usuario(id_usuario)
+ 
+# OPERAÇÕES SOBRE OS ITENS DA COMPRA
+
+def obtem_itens(cpr):
+  """Retorna uma cópia da lista de itens da compra {cpr}."""
+  return compra_IMP.obtem_itens(cpr)
+   
+def acrescenta_item(cpr, prod, qtd):
+  """Acrescenta um novo item no pedido de cpr, consistindo da quantidade 
+  {qtd} do produto {prod}, acrescentando-o também a tabela de itens de compra. 
+  
+  Esta função só pode ser usada se a compra ainda estiver aberta. 
+  Não retorna nenhum resultado.
+  
+  Em particular, se o produto já está na lista de itens, soma {qtd} à quantidade que
+  consta nessa lista. Também recalcula o preço do item, mesmo se {qtd} for zero."""
+  compra_IMP.acrescenta_item(cpr,prod,qtd)
+
+def obtem_quantidade(cpr, prod):
+  """Retorna a quantidade atual do produto {prod} no pedido de
+  compras {cpr}.  Se o produto não está no pedido, devolve zero."""
+  return compra_IMP.obtem_quantidade(cpr, prod)
+
+def obtem_preco(cpr, prod):
+  """Retorna o preco total do produto {prod} no pedido de
+  compras {cpr}.  Se o produto não está no pedido, devolve zero."""
+  return compra_IMP.obtem_preco(cpr, prod)
+
+def troca_quantidade(cpr, prod, qtd):
+  """Modifica a lista de itens da compra {cpr}, trocando a quantidade
+  atual do produto {prod} por {qtd}. Altera também a linha correspondente
+  da tabela de itens de compras. 
+  
+  Esta função só pode ser usada se a compra ainda estiver aberta. 
+  Não retorna nenhum resultado.
+  
+  Em particular, se {qtd} for zero, elimina o produto {prod} da lista. Se o produto {prod} 
+  não está na lista, acrescenta-o com quantidade {qtd}, e recalcula o preço do item,
+  mesmo que o produto já esteja na lista com essa quantidade. """
+  compra_IMP.troca_quantidade(cpr, prod, qtd)
+
+def elimina_produto(cpr, prod):
+  """Modifica a lista de itens da compra, eliminando a entrada com produto {prod}.
+  Também elimina a linha correspondente da tabela de itens de compras. 
+  
+  Esta função só pode ser usada se a compra ainda estiver aberta
+  e o produto estiver na lista. Não retorna nenhum resultado."""
+  compra_IMP.elimina_produto(cpr, prod)
+
+def calcula_total(cpr):
+  """ Retorna um float que é o preco total do pedido de compra, ou seja a
+  soma dos campos {qtd} nos elementos da lista de itens."""
+  return compra_IMP.calcula_total(cpr)
+
+def calcular_frete(compra, CEP):
+  """Retorna float {frete} de uma compra para determinado CEP. 
+  A fórmula ainda não está definida."""
+  return compra_IMP.calcular_frete(compra, CEP)
+
+# FUNÇÕES PARA DEPURAÇÃO
 
 def cria_testes():
   """Limpa as tabelas de compras e de itens com {inicializa(True)}, e cria três pedidos
@@ -201,8 +210,3 @@ def diagnosticos(val):
   impressão em {sys.stderr} de mensagens de diagnóstico pelas 
   funções deste módulo."""
   compra_IMP.diagnosticos(val)
-
-def calcular_frete(compra, CEP):
-  """Retorna float {frete} de uma compra para determinado CEP. A fórmula ainda não está definida."""
-
-  return compra_IMP.calcular_frete(compra, CEP)
