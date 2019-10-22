@@ -28,6 +28,7 @@ import comando_ver_carrinho
 import comando_ver_compra
 import comando_ver_ofertas
 import comando_ver_produto
+import comando_busca_compras_por_produto
 
 import gera_html_elem
 import gera_html_pag
@@ -162,7 +163,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 
     dados['headers'] = self.extrai_cabecalhos_http()
 
-    dados['cookies'] = self.extrai_cookies(dados['headers']['Cookie'])
+    dados['cookies'] = self.extrai_cookies(dados['headers'])
     
     dados['query_data'] = urllib.parse.parse_qs(dados['query'])
 
@@ -178,9 +179,10 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
        hds[name] = value.rstrip()
     return hds
     
-  def extrai_cookies(self, cook_str):
+  def extrai_cookies(self, dados):
     """Analisa a cadeia {cook_str} que é o campo 'Cookie' 
-    que veio com os headers HTTP, convertendo-a em um dicionário Python.
+    do dicionário {dados}, que veio com os headers HTTP, convertendo-a
+    em um dicionário Python.
     
     Supõe que {cook_str} é uma cadeia com formato '{chave1}={valor1};
     {chave2}={valor2}; {...}'. Os campos de valor não podem conter ';'
@@ -189,16 +191,18 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     Os campos de {cook_str} cujo valor é a cadeia 'None' ou vazia são omitidos."""
             
     cookies = {}.copy()
-    cook_els = re.split(r'[ ;]+', cook_str)
-    for cook_el in cook_els:
-      # A cadeia {cook_el} deve ser '{chave}={valor}'
-      cook_pair = re.split(r'[=]', cook_el)
-      assert len(cook_pair) == 2
-      cook_key = cook_pair[0]
-      assert cook_key != ""
-      cook_val = (cook_pair[1]).strip("\"'")
-      if cook_val != "" and cook_val != "None":
-        cookies[cook_key] = cook_val
+    if 'Cookie'in dados:
+      cook_str = dados['Cookie']
+      cook_els = re.split(r'[ ;]+', cook_str)
+      for cook_el in cook_els:
+        # A cadeia {cook_el} deve ser '{chave}={valor}'
+        cook_pair = re.split(r'[=]', cook_el)
+        # assert len(cook_pair) == 2
+        cook_key = cook_pair[0]
+        assert cook_key != ""
+        cook_val = (cook_pair[1]).strip("\"'")
+        if cook_val != "" and cook_val != "None":
+          cookies[cook_key] = cook_val
     return cookies
 
   def extrai_dados_de_formulario(self):
@@ -425,7 +429,11 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/trocar_carrinho':
       # Usuário apertou o botão "Usar como carrinho" numa descrição de um pedido de compra:
       pag = comando_trocar_carrinho.processa(ses, args)
-    
+
+    elif cmd == '/busca_compras_por_produto':
+      # Usuário apertou o botão "Ver compras com produto" numa descrição de um produto:
+      pag = comando_busca_compras_por_produto.processa(ses, args)
+
     else:
       # Comando não identificado
       pag =  gera_html_pag.mensagem_de_erro(ses, ("** comando POST \"%s\" inválido" % cmd)) 
