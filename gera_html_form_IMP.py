@@ -100,15 +100,21 @@ def fechar_compra(id_compra):
     bottom_form()
 
 def entrar():
-  html_email = gera_html_elem.input("E-mail: ", "email", "email", None, None, None)
-  html_senha = gera_html_elem.input("Senha: ", "text", "senha", None, None, None)
+  linhas = [].copy()
+  html_rotulo = gera_html_elem.label("E-mail" + ": ")
+  html_campo = gera_html_elem.input(None, "text", "email", None, None, None)
+  linhas.append((html_rotulo, html_campo,))
+  html_rotulo = gera_html_elem.label("Senha" + ": ")
+  html_campo = gera_html_elem.input(None, "text", "senha", None, None, None)
+  linhas.append((html_rotulo, html_campo,))
+
+  # Monta a tabela com os fragmentos HTML:
+  html_tabela = gera_html_elem.tabela(linhas)
+  
   html_fazer_login = gera_html_botao.submit("Entrar", 'fazer_login', None, '#55ee55')
 
   return header_form() + \
-    ( "    <label>E-mail: </label>" + html_email + "\n" ) +  \
-    "   <br/>" + \
-    ( "    <label>Senha: </label>" + html_senha + "\n" ) + \
-    "   <br/>" + \
+    ( html_tabela + "\n" ) + \
     ( "   " + html_fazer_login + "\n" ) + \
     bottom_form()
 
