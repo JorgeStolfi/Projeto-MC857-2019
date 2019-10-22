@@ -61,6 +61,7 @@ def menu_geral(logado, nome_usuario):
     html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
 
   html_bt_ofertas = "  " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n"
+  html_bt_acrescentar_produto = " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n"
   html_menu = \
     "<nav>\n" + \
       html_bt_principal + \
@@ -73,6 +74,7 @@ def menu_geral(logado, nome_usuario):
       html_nome + \
       html_bt_sair + \
       html_bt_ofertas + \
+      html_bt_acrescentar_produto + \
     "</nav>"
   return html_menu
 
@@ -114,7 +116,7 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
 
   str_preco = ("R$ %.2f" % preco)
   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
-    
+
   # !!! Peso e volume devem ser mostrados apenas ao mostrar detalhes do produto. !!!
 
   peso = atrs['peso']
@@ -153,7 +155,7 @@ def bloco_de_compra(cpr, detalhe):
   html_preco_total = paragrafo(estilo_parag, bloco_texto(str(preco_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   if detalhe:
     itens = compra.obtem_itens(cpr);
-    linhas = [].copy() 
+    linhas = [].copy()
     cmdAlterarQtd = "alterar_qtd_de_produto"
     cmdverProduto = "ver_produto"
     for prod, qtd, prc in itens:

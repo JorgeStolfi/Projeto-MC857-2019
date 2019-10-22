@@ -1,2 +1,3 @@
 def processa(ses, args):
-    print(args)
+    # TEMPORÁRIO !!!
+    return str(args)
