@@ -142,6 +142,7 @@ def definir_dados_de_usuario(usr):
   if usr != None:
     id_usuario = usuario.obtem_identificador(usr)
     args = usuario.obtem_atributos(usr)
+    # Mostra o id do usuario somente se ele for administrador
     if (args['administrador']==True):
       html_id_usuario = gera_html_elem.input(None, "text", "id_usuario", id_usuario, None, None)
     else:
