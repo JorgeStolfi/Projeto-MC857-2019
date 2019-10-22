@@ -179,7 +179,7 @@ def bloco_de_compra(cpr, detalhe):
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_administrador = ""
   if (atrs_cliente['administrador']):
-    # TESTE RECEBIDO
+    # TESTE DESPACHADO
     atrs_compra['status'] = 'despachado'
     
     status_atual = atrs_compra['status']
@@ -193,7 +193,7 @@ def bloco_de_compra(cpr, detalhe):
     elif (status_atual == 'despachado'):
       atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
       html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
-    html_administrador = html_recebido + html_entregue 
+    html_administrador = html_recebido if (html_recebido != "") else html_entregue 
 
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
   html_descr = html_trocar_carrinho + html_ident  + html_num_itens + html_preco_total + html_itens + html_administrador
