@@ -67,6 +67,10 @@ class ObjCompra(ObjCompra_IMP):
   da compra (exceto a lista de itens, que é armazenada em uma tabela 
   separada, e o identificador)."""
 
+def modifica_status(cliente, novo_status):
+  """Modifica o status atual de um cliente para um {novo_status}"""
+  return compra_IMP.modifica_status(cliente, novo_status)
+  
 def cria(cliente):
   """Cria um novo objeto da classe {ObjCompra} para o usuário {cliente}
   (um objeto da classe {ObjUsuario}), acrescentando-o à tabela de compras da base de dados.
