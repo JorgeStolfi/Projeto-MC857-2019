@@ -44,10 +44,16 @@ def mostra_produto(ses, id_compra, prod, qtd):
 def lista_de_produtos(ses, idents):
   sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de produtos.
   todos_prods = ""
+  counter = 0
   for id_prod in idents:
     prod = produto.busca_por_identificador(id_prod)
     bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
-    todos_prods = todos_prods + sep + bloco_prod
+    if counter == 2:
+      todos_prods = todos_prods + sep + bloco_prod
+      counter = 0
+    else:
+      todos_prods = todos_prods + bloco_prod
+      counter = counter + 1
   pagina = generica(ses, todos_prods + sep)
   return pagina
 
