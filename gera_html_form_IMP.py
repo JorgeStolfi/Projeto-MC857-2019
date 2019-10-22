@@ -141,8 +141,11 @@ def definir_dados_de_usuario(usr):
 
   if usr != None:
     id_usuario = usuario.obtem_identificador(usr)
-    html_id_usuario = gera_html_elem.input(None, "readonly", "id_usuario", id_usuario, None, None)
     args = usuario.obtem_atributos(usr)
+    if (args['administrador']==True):
+      html_id_usuario = gera_html_elem.input(None, "text", "id_usuario", id_usuario, None, None)
+    else:
+      html_id_usuario = ""
   else:
     id_usuario = None
     html_id_usuario = None
