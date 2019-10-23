@@ -123,6 +123,10 @@ def busca_por_palavra(pal):
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
   return produtos
 
+def busca_ofertas():
+  lista_ids=tabela_generica.busca_por_campo(nome_tb,letra_tb,colunas,"oferta",1)
+  return lista_ids
+
 def cria_testes():
   global cache, nome_tb, letra_tb, colunas, diags
   inicializa(True)
@@ -279,3 +283,4 @@ def diagnosticos(val):
   global cache, nome_tb, letra_tb, colunas, diags
   diags = val
   return
+

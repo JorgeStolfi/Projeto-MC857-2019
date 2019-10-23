@@ -100,15 +100,21 @@ def fechar_compra(id_compra):
     bottom_form()
 
 def entrar():
-  html_email = gera_html_elem.input("E-mail: ", "email", "email", None, None, None)
-  html_senha = gera_html_elem.input("Senha: ", "text", "senha", None, None, None)
+  linhas = [].copy()
+  html_rotulo = gera_html_elem.label("E-mail" + ": ")
+  html_campo = gera_html_elem.input(None, "text", "email", None, None, None)
+  linhas.append((html_rotulo, html_campo,))
+  html_rotulo = gera_html_elem.label("Senha" + ": ")
+  html_campo = gera_html_elem.input(None, "text", "senha", None, None, None)
+  linhas.append((html_rotulo, html_campo,))
+
+  # Monta a tabela com os fragmentos HTML:
+  html_tabela = gera_html_elem.tabela(linhas)
+  
   html_fazer_login = gera_html_botao.submit("Entrar", 'fazer_login', None, '#55ee55')
 
   return header_form() + \
-    ( "    <label>E-mail: </label>" + html_email + "\n" ) +  \
-    "   <br/>" + \
-    ( "    <label>Senha: </label>" + html_senha + "\n" ) + \
-    "   <br/>" + \
+    ( html_tabela + "\n" ) + \
     ( "   " + html_fazer_login + "\n" ) + \
     bottom_form()
 
@@ -141,8 +147,12 @@ def definir_dados_de_usuario(usr):
 
   if usr != None:
     id_usuario = usuario.obtem_identificador(usr)
-    html_id_usuario = gera_html_elem.input(None, "readonly", "id_usuario", id_usuario, None, None)
     args = usuario.obtem_atributos(usr)
+    # Mostra o id do usuario somente se ele for administrador
+    if (args['administrador']==True):
+      html_id_usuario = gera_html_elem.input(None, "text", "id_usuario", id_usuario, None, None)
+    else:
+      html_id_usuario = ""
   else:
     id_usuario = None
     html_id_usuario = None
@@ -232,6 +242,38 @@ def escolher_pagamento():
     (  html_val2 + "\n" ) + \
     "   <br/>" + \
     (  html_sec + "\n" ) + \
+    (  html_submit + "\n" ) + \
+    "   <br/>" + \
+    "  </form>\n" + \
+    "</span>"
+
+def preencher_endereco():
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  html_logradouro = gera_html_elem.input("Logradouro: ", "text", "logradouro", None, None, None)
+  html_numero = gera_html_elem.input("Número: ", "text", "numero", None, None, None)
+  html_bairro = gera_html_elem.input("Bairro: ", "text", "bairro", None, None, None)
+  html_complemento = gera_html_elem.input("Complemento: ", "text", "complemento", None, None, None)
+  html_cidade = gera_html_elem.input("Cidade ", "text", "cidade", None, None, None)
+  html_estado = gera_html_elem.input("Estado ", "text", "estado", None, None, None)
+  html_submit = gera_html_botao.submit("Confirmar", 'definir_endereco', None, '#55ee55')
+  return \
+        "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form method=\"post\">" + \
+    (  html_logradouro + "\n" ) +  \
+    (  html_numero + "\n" ) + \
+    "   <br/>" + \
+    (  html_bairro + "\n" ) + \
+    (  html_complemento + "\n" ) + \
+    "   <br/>" + \
+    (  html_cidade + "\n" ) + \
+    (  html_estado + "\n" ) + \
+    "   <br/>" + \
     (  html_submit + "\n" ) + \
     "   <br/>" + \
     "  </form>\n" + \
