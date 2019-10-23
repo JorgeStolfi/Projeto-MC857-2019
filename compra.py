@@ -97,6 +97,9 @@ def obtem_status(cpr):
   """Retorna o status da compra {cpr}. Equivale a {obtem_atributos(cpr)['status']}."""
   return compra_IMP.obtem_status(cpr)
 
+def obtem_endereco(cpr):
+  return compra_IMP.obtem_endereco(cpr)
+
 def fecha_compra(cpr):
   """Muda o status de uma certa compra de 'aberto' para 'pagando' e salva o novo
   status da compra no banco de dados."""
