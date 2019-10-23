@@ -19,9 +19,10 @@ def generica(ses, conteudo):
   if logado:
     usr = sessao.obtem_usuario(ses)
     nome_usuario = usuario.obtem_atributos(usr)['nome']
+    administrador = usuario.obtem_atributos(usr)['administrador']
   else:
     nome_usuario = None
-  menu = gera_html_elem.menu_geral(logado, nome_usuario)
+  menu = gera_html_elem.menu_geral(logado, nome_usuario, administrador)
   roda = gera_html_elem.rodape()
   return cabe + "\n" + menu + "\n" + conteudo + "\n" + roda
 
