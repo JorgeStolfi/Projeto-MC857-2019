@@ -181,11 +181,8 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     {chave2}={valor2}; {...}'. Os campos de valor não podem conter ';'
     ou '='. Se algum valor estiver envolvido em aspas, remove as aspas.
     Os campos de {cook_str} cujo valor é a cadeia 'None' ou vazia são omitidos."""
-    if cook_str == None:
-        return {}
-
     cookies = {}.copy()
-    if 'Cookie'in dados:
+    if 'Cookie' in dados:
       cook_str = dados['Cookie']
       cook_els = re.split(r'[ ;]+', cook_str)
       for cook_el in cook_els:

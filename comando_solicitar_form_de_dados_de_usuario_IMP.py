@@ -9,11 +9,10 @@ import sys
 def processa(ses, args):
   sys.stderr.write("sessao = " + str(ses) + "\n")
   sys.stderr.write("args = " + str(args) + "\n")
-  if 'id_usuario' in args:
+  if sessao.obtem_usuario(ses) != None:
     # Supõe que o objetivo é mostrar/alterar um usuário existente:
-    usr = usuario.busca_por_identificador(args['id_usuario'])
-    assert ses != None and usr == sessao.obtem_usuario(ses)
-    pag = gera_html_pag.mostrar_usuario(ses,usr)
+    usr = sessao.obtem_usuario(ses)
+    pag = gera_html_pag.mostra_usuario(ses,usr)
   else:
     # Supõe que o objetivo é cadastrar um novo usuário:
     pag = gera_html_pag.cadastrar_usuario(ses)
