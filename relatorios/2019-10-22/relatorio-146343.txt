@@ -1,0 +1,3 @@
+############ 22/OUT/2019 ############
+Nesta tarefa foi adicionada o botão de "Acrescentar produto" no menu geral do site.
+Além disso foram corrigidos alguns pontos para que o servidor pudesse ser executado sem problemas.
