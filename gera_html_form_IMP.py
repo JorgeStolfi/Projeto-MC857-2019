@@ -236,3 +236,35 @@ def escolher_pagamento():
     "   <br/>" + \
     "  </form>\n" + \
     "</span>"
+
+def preencher_endereco():
+  fam_fonte = "Courier"
+  tam_fonte = "18px"
+  html_logradouro = gera_html_elem.input("Logradouro: ", "text", "logradouro", None, None, None)
+  html_numero = gera_html_elem.input("Número: ", "text", "numero", None, None, None)
+  html_bairro = gera_html_elem.input("Bairro: ", "text", "bairro", None, None, None)
+  html_complemento = gera_html_elem.input("Complemento: ", "text", "complemento", None, None, None)
+  html_cidade = gera_html_elem.input("Cidade ", "text", "cidade", None, None, None)
+  html_estado = gera_html_elem.input("Estado ", "text", "estado", None, None, None)
+  html_submit = gera_html_botao.submit("Confirmar", 'definir_endereco', None, '#55ee55')
+  return \
+        "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form method=\"post\">" + \
+    (  html_logradouro + "\n" ) +  \
+    (  html_numero + "\n" ) + \
+    "   <br/>" + \
+    (  html_bairro + "\n" ) + \
+    (  html_complemento + "\n" ) + \
+    "   <br/>" + \
+    (  html_cidade + "\n" ) + \
+    (  html_estado + "\n" ) + \
+    "   <br/>" + \
+    (  html_submit + "\n" ) + \
+    "   <br/>" + \
+    "  </form>\n" + \
+    "</span>"
