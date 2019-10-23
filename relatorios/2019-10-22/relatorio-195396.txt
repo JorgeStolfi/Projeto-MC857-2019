@@ -1,0 +1,1 @@
+Quebrar o menu principal numa linha que é mostrada para todos os usuários, e uma linha que só é mostrada se o usuário corrente for administrador. Nesta segunda linha deve haver um campo de busca para buscar compras que incluem um produto com id_produto dado.

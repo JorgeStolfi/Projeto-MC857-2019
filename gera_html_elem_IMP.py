@@ -40,18 +40,27 @@ def rodape():
     "</body>\n" + \
     "</html>\n"
 
-def menu_geral(logado, nome_usuario):
+def menu_geral(logado, nome_usuario, administrador):
   html_bt_principal = "  " + gera_html_botao.simples("Principal", 'principal', None, '#eeeeee') + "\n"
   html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
 
   if logado:
-    html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
-    html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
-    html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
-    html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
-    html_bt_entrar = ""
-    html_bt_cadastrar = ""
-    html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+    if administrador:
+      html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
+      html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
+      html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
+      html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+      html_bt_entrar = ""
+      html_bt_cadastrar = ""
+      html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+    else:
+      html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
+      html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
+      html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
+      html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+      html_bt_entrar = ""
+      html_bt_cadastrar = ""
+      html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
   else:
     html_bt_sair = ""
     html_nome = ""
@@ -62,6 +71,7 @@ def menu_geral(logado, nome_usuario):
     html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
 
   html_bt_ofertas = "  " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n"
+  html_bt_acrescentar_produto = " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n"
   html_menu = \
     "<nav>\n" + \
       html_bt_principal + \
@@ -74,6 +84,7 @@ def menu_geral(logado, nome_usuario):
       html_nome + \
       html_bt_sair + \
       html_bt_ofertas + \
+      html_bt_acrescentar_produto + \
     "</nav>"
   return html_menu
 
@@ -115,16 +126,20 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
 
   str_preco = ("R$ %.2f" % preco)
   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
-    
+
   # !!! Peso e volume devem ser mostrados apenas ao mostrar detalhes do produto. !!!
 
-  peso = atrs['peso']
-  str_peso  = ("%.0f gramas" % peso)
-  html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+  # Peso e o volume só é mostrado caseo seja detalhado
+  html_peso = ""
+  html_volume = ""
+  if detalhe:
+    peso = atrs['peso']
+    str_peso  = ("%.0f gramas" % peso)
+    html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  volume = atrs['volume']
-  str_volume = ("%.2f mililitros" % volume)
-  html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+    volume = atrs['volume']
+    str_volume = ("%.2f mililitros" % volume)
+    html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
   html_descr = html_em_oferta + html_d_curta  + html_d_media + html_d_longa + html_qtd + html_preco + html_botao + html_peso + html_volume
 
@@ -138,7 +153,7 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
 
   # !!! Reduzir o espaço vertical usado por cada produto, quando {detalhe} é falso !!!
   bloco_final = \
-    span("\n width: 50%; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\n  background-color: #ffffff; display: flex; align-items: center;", html_img + bloco_descr)
+    span("\n width: 48%; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\ndisplay: flex; align-items: center; float:left", html_img + bloco_descr)
   return bloco_final
 
 def bloco_de_compra(cpr, detalhe):
@@ -147,14 +162,18 @@ def bloco_de_compra(cpr, detalhe):
   itens = compra.obtem_itens(cpr)
   num_itens = len(itens)
   preco_total = compra.calcula_total(cpr)
+  id_usr = compra.obtem_cliente(cpr)
   # Monta o parágrafo de descrição
   estilo_parag = "\n  width: 600px;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
   html_ident = paragrafo(estilo_parag, bloco_texto(id_compra, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_usr = paragrafo(estilo_parag, bloco_texto(str(id_usr), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_num_itens = paragrafo(estilo_parag, bloco_texto(str(num_itens), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_preco_total = paragrafo(estilo_parag, bloco_texto(str(preco_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+  html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco']
+  html_ends = paragrafo(estilo_parag, bloco_texto(str(html_endereco), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   if detalhe:
     itens = compra.obtem_itens(cpr);
-    linhas = [].copy() 
+    linhas = [].copy()
     cmdAlterarQtd = "alterar_qtd_de_produto"
     cmdverProduto = "ver_produto"
     for prod, qtd, prc in itens:
@@ -166,11 +185,9 @@ def bloco_de_compra(cpr, detalhe):
       html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
-      html_endereco = atrs_compra['CEP'] + atrs_compra['endereco']
       # !!! Falta custo de frete e valor total a pagar !!!
-      html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', None, '#55ee55')
       # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
-      linhas.append(( d_curta, html_qtd, html_prc, html_excl, html_endereco, html_alterar_endereco ))
+      linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
@@ -178,10 +195,7 @@ def bloco_de_compra(cpr, detalhe):
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_administrador = ""
-  if (atrs_cliente['administrador']):
-    # TESTE DESPACHADO
-    atrs_compra['status'] = 'despachado'
-    
+  if (atrs_cliente['administrador']):    
     status_atual = atrs_compra['status']
     html_recebido = ""
     html_entregue = ""
@@ -196,10 +210,21 @@ def bloco_de_compra(cpr, detalhe):
     html_administrador = html_recebido if (html_recebido != "") else html_entregue 
 
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
-  html_descr = html_trocar_carrinho + html_ident  + html_num_itens + html_preco_total + html_itens + html_administrador
+  html_alterar_endereco = gera_html_botao.simples("Alterar Endereco", 'solicitar_form_de_endereco', None, '#55ee55')
+  html_alt_met_pag = gera_html_botao.simples("Alterar metodo de pagamento", 'solicitar_form_de_alt_met_pag', None, '#55ee55')
+  html_descr = \
+    html_trocar_carrinho + \
+    html_usr + html_ident  + \
+    html_num_itens + \
+    html_preco_total + \
+    html_itens + \
+    html_alt_met_pag + \
+    html_ends + \
+    html_alterar_endereco + \
+    html_administrador
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
-    span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
+  span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
   return bloco_final
 
 def bloco_de_erro(msg):
