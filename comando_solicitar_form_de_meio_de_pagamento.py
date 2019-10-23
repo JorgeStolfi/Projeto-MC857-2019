@@ -7,7 +7,7 @@ def processa(ses, args):
   na descrição de uma compra {cpr} que está sendo finalizada.
   
   O identificador "C-{NNNNNNNN}" da compra estará em {args['id_compra']}.  A compra deve
-  estar no estado 'definindo_end', e seu endereço de entrega (incluindo o CEP) deve estar definido.
+  estar no estado 'aberto', e seu endereço de entrega (incluindo o CEP) deve estar definido.
   A sessão {ses} deve estar aberta, e o usuário da sessão deve ser o mesmo
   associado à compra {cpr}.
   

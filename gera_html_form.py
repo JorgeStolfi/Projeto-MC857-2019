@@ -148,3 +148,13 @@ def escolher_pagamento():
   cartão de crédito.
   """
   return gera_html_form_IMP.escolher_pagamento()
+
+def preencher_endereco():
+  """Retorna o HTML de um formulário para preenchimento do endereço. O formulário contém o logradouro,
+  bairro, cidade, estado, pais e um botão "Confirmar".
+   
+  Quando o usuário clicar no botão "Confirmar" ,será emitido um comando POST com ação
+  {definir_endereco}.Os argumentos desse POST serão as informações do 
+  endereço.
+  """
+  return gera_html_form_IMP.preencher_endereco()
