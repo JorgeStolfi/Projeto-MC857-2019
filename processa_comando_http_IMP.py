@@ -28,6 +28,7 @@ import comando_ver_carrinho
 import comando_ver_compra
 import comando_ver_ofertas
 import comando_ver_produto
+import comando_busca_compras_por_produto
 
 import gera_html_elem
 import gera_html_pag
@@ -419,7 +420,11 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/trocar_carrinho':
       # Usuário apertou o botão "Usar como carrinho" numa descrição de um pedido de compra:
       pag = comando_trocar_carrinho.processa(ses, args)
-    
+
+    elif cmd == '/busca_compras_por_produto':
+      # Usuário apertou o botão "Ver compras com produto" numa descrição de um produto:
+      pag = comando_busca_compras_por_produto.processa(ses, args)
+
     else:
       # Comando não identificado
       pag =  gera_html_pag.mensagem_de_erro(ses, ("** comando POST \"%s\" inválido" % cmd)) 
