@@ -174,7 +174,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
   
   def extrai_cookies(self, dados):
     """Analisa a cadeia {cook_str} que é o campo 'Cookie'
-    do dicionário {dados}, que veio com os headers HTTP, convertendo-a
+        do dicionário {dados}, que veio com os headers HTTP, convertendo-a
     em um dicionário Python.
     
     Supõe que {cook_str} é uma cadeia com formato '{chave1}={valor1};
