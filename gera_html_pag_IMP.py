@@ -14,25 +14,35 @@ from utils_testes import erro_prog, mostra
 from datetime import datetime, timezone
   
 def generica(ses, conteudo):
-  cabe = gera_html_elem.cabecalho("Projeto MC857A 2019-2s", True)
+  cabe = gera_html_elem.cabecalho("Site de compras: Projeto MC857A 2019-2s", True)
   logado = (ses != None)
   if logado:
     usr = sessao.obtem_usuario(ses)
     nome_usuario = usuario.obtem_atributos(usr)['nome']
+    administrador = usuario.obtem_atributos(usr)['administrador']
   else:
     nome_usuario = None
-  menu = gera_html_elem.menu_geral(logado, nome_usuario)
+  menu = gera_html_elem.menu_geral(logado, nome_usuario, administrador)
   roda = gera_html_elem.rodape()
   return cabe + "\n" + menu + "\n" + conteudo + "\n" + roda
 
 def principal(ses):
+  if ses !=None:
+    usuario = ses.obtem_usuario(ses)
+    atrs = usuario.obtem_atributos
+    nome = atrs['nome']
+    texto2 = "<hr/>Seja bem vindo(a) <b>"+nome+"</b> ao nosso site de compras!"
+  else:
+    texto2 = "<hr/>Seja bem vindo(a) ao nosso site de compras!"
   now = datetime.now(timezone.utc)
   data = now.strftime("%Y-%m-%d %H:%M:%S %z")
-  texto = "<hr/><i>DATA CORRENTE</i><br/><b>" + data + "</b><br/>TUDO EM ORDEM NESTE SERVIDOR<hr/>"
-  
+  texto1 = "<hr/><i>DATA CORRENTE </i><b>" + data + "</b><br/>TUDO EM ORDEM NESTE SERVIDOR<hr/>"
   cor_texto = "#000488"
-  cor_fundo = "#fff844"
-  conteudo = gera_html_elem.bloco_texto(texto, None,"Courier","18px","normal","5px","center", cor_texto, cor_fundo)
+  cor_fundo = "#eee"
+  bloco_texto1 =  gera_html_elem.bloco_texto(texto1, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
+  bloco_texto2 =  gera_html_elem.bloco_texto(texto2, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
+  #Pegar bloco que funcione das ofertas para mostrar para o cliente
+  conteudo = bloco_texto1 + bloco_texto2
   pagina = generica(ses, conteudo)
   return pagina
 
@@ -44,10 +54,16 @@ def mostra_produto(ses, id_compra, prod, qtd):
 def lista_de_produtos(ses, idents):
   sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de produtos.
   todos_prods = ""
+  counter = 0
   for id_prod in idents:
     prod = produto.busca_por_identificador(id_prod)
     bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
-    todos_prods = todos_prods + sep + bloco_prod
+    if counter == 2:
+      todos_prods = todos_prods + sep + bloco_prod
+      counter = 0
+    else:
+      todos_prods = todos_prods + bloco_prod
+      counter = counter + 1
   pagina = generica(ses, todos_prods + sep)
   return pagina
 
@@ -58,6 +74,11 @@ def entrar(ses):
 
 def cadastrar_usuario(ses):
   conteudo = gera_html_form.cadastrar_usuario()
+  pagina = generica(ses, conteudo) 
+  return pagina
+
+def preencher_endereco(ses):
+  conteudo = gera_html_form.preencher_endereco()
   pagina = generica(ses, conteudo) 
   return pagina
 

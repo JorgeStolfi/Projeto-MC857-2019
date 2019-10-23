@@ -20,13 +20,14 @@ def rodape():
   """Retorna o rodapé padrão do site."""
   return gera_html_elem_IMP.rodape()
 
-def menu_geral(logado, nome_usuario):
+def menu_geral(logado, nome_usuario, administrador):
   """Retorna o menu geral, que será mostrado no alto da maioria das páginas do site.  
   
   O parâmetro {logado} deve ser {True} se o usuário estiver logado; 
   nesse caso {nome_usuario} deve ser seu nome.  Se for {False}, o nome
-  será ignorado."""
-  return gera_html_elem_IMP.menu_geral(logado, nome_usuario)
+  será ignorado.
+  O parâmetro {administrador} diz se o usuário é administrador"""
+  return gera_html_elem_IMP.menu_geral(logado, nome_usuario, administrador)
   
 # ELEMENTOS ESPECÍFICOS
 
