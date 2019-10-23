@@ -61,6 +61,11 @@ def cadastrar_usuario(ses):
   pagina = generica(ses, conteudo) 
   return pagina
 
+def preencher_endereco(ses):
+  conteudo = gera_html_form.preencher_endereco()
+  pagina = generica(ses, conteudo) 
+  return pagina
+
 def mostra_carrinho(ses):
   if ses != None:
     carrinho = sessao.obtem_carrinho(ses)
