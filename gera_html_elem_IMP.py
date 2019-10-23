@@ -128,13 +128,17 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
 
   # !!! Peso e volume devem ser mostrados apenas ao mostrar detalhes do produto. !!!
 
-  peso = atrs['peso']
-  str_peso  = ("%.0f gramas" % peso)
-  html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+  # Peso e o volume só é mostrado caseo seja detalhado
+  html_peso = ""
+  html_volume = ""
+  if detalhe:
+    peso = atrs['peso']
+    str_peso  = ("%.0f gramas" % peso)
+    html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  volume = atrs['volume']
-  str_volume = ("%.2f mililitros" % volume)
-  html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+    volume = atrs['volume']
+    str_volume = ("%.2f mililitros" % volume)
+    html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
   html_descr = html_em_oferta + html_d_curta  + html_d_media + html_d_longa + html_qtd + html_preco + html_botao + html_peso + html_volume
 
@@ -148,7 +152,7 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
 
   # !!! Reduzir o espaço vertical usado por cada produto, quando {detalhe} é falso !!!
   bloco_final = \
-    span("\n width: 50%; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\n  background-color: #ffffff; display: flex; align-items: center;", html_img + bloco_descr)
+    span("\n width: 48%; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\ndisplay: flex; align-items: center; float:left", html_img + bloco_descr)
   return bloco_final
 
 def bloco_de_compra(cpr, detalhe):
