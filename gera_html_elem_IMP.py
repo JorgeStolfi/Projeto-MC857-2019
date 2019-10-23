@@ -6,6 +6,7 @@ import gera_html_elem
 import gera_html_botao
 import produto
 import compra
+import usuario
 
 # Outros módulos importados por esta implementação:
 from datetime import datetime, timezone
@@ -190,10 +191,37 @@ def bloco_de_compra(cpr, detalhe):
     html_itens = tabela(linhas)
   else:
     html_itens = ""
+  
+  # Admnistrador
+  atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
+  html_administrador = ""
+  if (atrs_cliente['administrador']):    
+    status_atual = atrs_compra['status']
+    html_recebido = ""
+    html_entregue = ""
+    # Muda status de pagando para pago
+    if (status_atual == 'pagando'):
+      atributos_pago = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'pago'}
+      html_recebido = gera_html_botao.submit("Pagamento Recebido", 'mudar_status_de_compra', atributos_pago, '#55ee55')
+    # Muda status de despachado para entregue
+    elif (status_atual == 'despachado'):
+      atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
+      html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
+    html_administrador = html_recebido if (html_recebido != "") else html_entregue 
+
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
   html_alterar_endereco = gera_html_botao.simples("Alterar Endereco", 'solicitar_form_de_endereco', None, '#55ee55')
   html_alt_met_pag = gera_html_botao.simples("Alterar metodo de pagamento", 'solicitar_form_de_alt_met_pag', None, '#55ee55')
-  html_descr = html_trocar_carrinho + html_usr + html_ident  + html_num_itens + html_preco_total + html_itens + html_alt_met_pag + html_ends + html_alterar_endereco
+  html_descr = \
+    html_trocar_carrinho + \
+    html_usr + html_ident  + \
+    html_num_itens + \
+    html_preco_total + \
+    html_itens + \
+    html_alt_met_pag + \
+    html_ends + \
+    html_alterar_endereco + \
+    html_administrador
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
   span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
