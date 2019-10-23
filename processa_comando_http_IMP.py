@@ -28,6 +28,7 @@ import comando_ver_carrinho
 import comando_ver_compra
 import comando_ver_ofertas
 import comando_ver_produto
+import comando_busca_compras_por_produto
 
 import gera_html_elem
 import gera_html_pag
@@ -46,7 +47,6 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
   """Classe necessária para usar `HTTPServer`.  Os métodos
   {do_GET}, {do_POST}, e {do_HEAD} desta classe são chamados pelo
   servidor para processar um pedido HTTP do usuário.
-
   Eles devem devolver a resposta por meio de {devolve_pagina(hstr)}
   onde {hstr} é uma página em formato HTML (ou {None} em
   caso de erro), ou {devolve_imagem(himg)} onde {himg}
@@ -108,31 +108,25 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
   def extrai_dados(self, tipo):
     """Retorna todos os campos de um pedido do tipo {tipo} ('GET','POST', ou 'HEAD')
     na forma de um dicionário Python {dados}.
-
     O valor do campo {dados['request_type']} é o {tipo} dado. Os demais
     campos são extraídos do {self} conforme especificado
     na classe {BaseHTTPRequestHandler}, com as seguintes adições:
-
      'headers': o valor é um sub-dicionário que é uma cópia
        de {self.headers}, contendo os itens do preâmbulo do pedido HTTP
        ('contents-type', etc.).
-
      'real_path': valor de {urlparse.urlparse(self.path).path}.
        No caso de 'GET', é a sub-cadeia do URL entre o último '/'
        e o '?'.  No caso de 'POST', é o atributo 'action' do <form>
        ou 'formaction' do botão tipo 'submit', com '/' na frente.
-
      'query':  o valor de {urlparse.urlparse(self.path).query}.
        no caso de 'GET', é a cadeia que segue o '?', possivelmente
        com códigos URL; por exemplo, 'foo=bar&bar=%28FOO%29&foo=qux'
-
      'query_data': o valor é um sub-dicionário com os argumentos de
        'query' destrinchados e com códigos URL convertidos
        para caracters Unicode.  Os valores são listas, para indicar
        repetição. Por exemplo, o 'query' acima viraria
        {'foo': ['bar','qux'], 'bar': ['(FOO)']}.  No caso de 'POST',
        é um dicionário vazio.
-
      'form_data': no caso de um comando 'POST',
        o valor é um sub-dicionário com os campos do formulário
        submetido. No caso de 'GET', é um dicionário vazio.
@@ -162,8 +156,8 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 
     dados['headers'] = self.extrai_cabecalhos_http()
 
-    dados['cookies'] = self.extrai_cookies(dados['headers'].get('Cookie'))
-
+    dados['cookies'] = self.extrai_cookies(dados['headers'])
+    
     dados['query_data'] = urllib.parse.parse_qs(dados['query'])
 
     dados['form_data'] = self.extrai_dados_de_formulario()
@@ -177,30 +171,32 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     for name, value in self.headers.items():
        hds[name] = value.rstrip()
     return hds
-
-  def extrai_cookies(self, cook_str):
-    """Analisa a cadeia {cook_str} que é o campo 'Cookie'
-    que veio com os headers HTTP, convertendo-a em um dicionário Python.
-
+  
+  def extrai_cookies(self, dados):
+    """Analisa a cadeia {cook_str} que é o campo 'Cookie' 
+    do dicionário {dados}, que veio com os headers HTTP, convertendo-a
+    em um dicionário Python. 
+    
     Supõe que {cook_str} é uma cadeia com formato '{chave1}={valor1};
     {chave2}={valor2}; {...}'. Os campos de valor não podem conter ';'
     ou '='. Se algum valor estiver envolvido em aspas, remove as aspas.
-
     Os campos de {cook_str} cujo valor é a cadeia 'None' ou vazia são omitidos."""
     if cook_str == None:
         return {}
 
     cookies = {}.copy()
-    cook_els = re.split(r'[ ;]+', cook_str)
-    for cook_el in cook_els:
-      # A cadeia {cook_el} deve ser '{chave}={valor}'
-      cook_pair = re.split(r'[=]', cook_el)
-      assert len(cook_pair) == 2
-      cook_key = cook_pair[0]
-      assert cook_key != ""
-      cook_val = (cook_pair[1]).strip("\"'")
-      if cook_val != "" and cook_val != "None":
-        cookies[cook_key] = cook_val
+    if 'Cookie'in dados:
+      cook_str = dados['Cookie']
+      cook_els = re.split(r'[ ;]+', cook_str)
+      for cook_el in cook_els:
+        # A cadeia {cook_el} deve ser '{chave}={valor}'
+        cook_pair = re.split(r'[=]', cook_el)
+        assert len(cook_pair) == 2
+        cook_key = cook_pair[0]
+        assert cook_key != ""
+        cook_val = (cook_pair[1]).strip("\"'")
+        if cook_val != "" and cook_val != "None":
+          cookies[cook_key] = cook_val
     return cookies
 
   def extrai_dados_de_formulario(self):
@@ -242,7 +238,6 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     """Manda para o usuário a {pag} dada, que deve ser um string
     com o conteúdo da página em HTML 5.0., com os preâmulos adequados
     segundo o protocolo HTTP.
-
     Se {pag} é {None}, sinaliza no preâmbulo o código 404 com conteúdo 'text/plain',
     mensagem 'Não encontrado'. Caso contrário, devolve a página com código 200 e
     'content-type' 'text/html'.
@@ -428,6 +423,10 @@ def processa_comando(tipo, ses, dados):
       # Usuário apertou o botão "Usar como carrinho" numa descrição de um pedido de compra:
       pag = comando_trocar_carrinho.processa(ses, args)
 
+    elif cmd == '/busca_compras_por_produto':
+      # Usuário apertou o botão "Ver compras com produto" numa descrição de um produto:
+      pag = comando_busca_compras_por_produto.processa(ses, args)
+      
     else:
       # Comando não identificado
       pag =  gera_html_pag.mensagem_de_erro(ses, ("** comando POST \"%s\" inválido" % cmd))
