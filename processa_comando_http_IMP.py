@@ -457,5 +457,4 @@ def formata_dados_http(cmd,args,resto):
   texto = texto + ("<br/><hr/>Outros dados:<br/>%s" % resto_lin)
   conteudo = gera_html_elem.bloco_texto(texto, None,"Courier","18px","normal","5px","left", None, None)
   conteudo = "<hr/>\n" + gera_html_elem.div("background-color:#bbbbbb;", conteudo) + "<hr/>\n"
-
   return conteudo
