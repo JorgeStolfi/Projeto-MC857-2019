@@ -42,10 +42,12 @@ def processa(ses, args):
     erro = 'O tamanho do nome deve ser entre 1 e 60 caracteres'  
   elif len(args['email']) < 6 or len(args['email']) > 60:
     erro = 'O tamanho do email deve ser entre 6 e 60 caracteres'  
-  elif len(args['endereco']) < 1 or len(args['endereco']) > 60:
-    erro = 'O tamanho do endereco deve ser entre 1 e 180 caracteres'  
+  elif len(args['endereco']) < 30 or len(args['endereco']) > 180:
+    erro = 'O tamanho do endereco deve ser entre 30 e 180 caracteres'  
   elif len(args['documento']) < 6 or len(args['documento']) > 24:
     erro = 'O tamanho do documento deve ser entre 6 e 24 caracteres'  
+  elif len(args['telefone']) < 9 or len(args['telefone']) > 40:
+    erro = 'O tamanho do telefone deve ser entre 9 e 40 caracteres'  
 
   # Converte bit de administrador para bool:
   if 'administrador' in args:
