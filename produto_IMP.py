@@ -111,13 +111,10 @@ def busca_por_indice(ind):
 def busca_por_palavra(pal):
   chaves = ('descr_curta', 'descr_media')
   valores = (pal,)
-  busca_com_and = ' and ' in pal or ' AND ' in pal
+  busca_com_and = ' AND ' in pal
   
   if busca_com_and:
-    if pal.find(' and ') > 0:
-      valores = pal.split(' and ')
-    else:
-      valores = pal.split(' AND ')
+    valores = pal.split(' AND ')
     valores = tuple(valores)
  
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
