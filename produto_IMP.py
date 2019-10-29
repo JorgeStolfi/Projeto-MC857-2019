@@ -1,4 +1,4 @@
-# Imlementação do módulo {produto} e da classe {ObjProduto}.
+# Implementação do módulo {produto} e da classe {ObjProduto}.
 
 import produto
 
@@ -33,6 +33,9 @@ colunas = \
     ( 'volume',      type(10.5),  'FLOAT',   False,    0.0001,  999999.0 ), # volume do produto em mililitros.
     ( 'estoque',     type(10),    'INTEGER', False,    0,       99999999 ), # Estoque do produto.
     ( 'oferta',      type(True),  'INTEGER', False,    0,              1 ), # Produto está em oferta.
+    ( 'variado',     type(True),  'INTEGER', False,    0,              1 ), # Produto possui variedades.
+    ( 'grupo',       type("foo"), 'TEXT',    False,    1,             10 ), # Identificador de produto do grupo.
+    ( 'variedade',   type("foo"), 'TEXT',    False,    1,             40 ), # Descrição super-curta do produto, relativa ao grupo.
   )
   # Descrição das colunas da tabela na base de dados.
 
@@ -150,6 +153,9 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Vermelho",
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",
@@ -170,6 +176,9 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Roxo",
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -189,6 +198,9 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Azul",
       },
       {
         'descr_curta': "Ferroada",
@@ -204,6 +216,9 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Amarelo rosado",
       },
       {
         'descr_curta': "Amassador de suspiros",
@@ -222,6 +237,9 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Lilás",
       },
       { 'descr_curta': "Cabideiro", 
         'descr_media': "Cabideiro com capacidade para 420 cabides", 
@@ -235,6 +253,9 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Bege",
       }
     ]
   for atrs in lista_atrs:
