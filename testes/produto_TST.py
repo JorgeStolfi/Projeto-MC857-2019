@@ -65,6 +65,9 @@ prod1_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Vermelho",
 }
 pindice1 = 1
 pident1 = "P-00000001"
@@ -88,6 +91,9 @@ prod2_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Azul",
 }
 pindice2 = 2
 pident2 = "P-00000002"
@@ -112,6 +118,9 @@ prod3_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Roxo",
 }
 pindice3 = 3
 pident3 = "P-00000003"
