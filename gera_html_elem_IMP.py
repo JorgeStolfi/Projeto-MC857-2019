@@ -53,7 +53,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
-      html_bt_ver_produto = gera_html_botao.submit("Ver", "ver_objeto", None, "#eeeeee") # adicionar args
+      html_bt_ver_produto = gera_html_form.buscar_identificador()
     else:
       html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
       html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"

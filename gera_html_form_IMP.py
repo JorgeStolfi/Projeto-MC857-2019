@@ -288,4 +288,4 @@ def buscar_identificador():
     "      " + html_condicao + "\n" + \
     "    </span>\n" + \
     "    " + html_submit_ver_produto + "\n" + \
-    bottom_form
+    bottom_form()
