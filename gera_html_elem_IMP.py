@@ -98,6 +98,14 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
   d_curta = atrs['descr_curta']
   html_d_curta = paragrafo(estilo_parag, bloco_texto(d_curta, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
 
+  variedade = atrs['variedade']
+  html_variedade = paragrafo(estilo_parag, bloco_texto(variedade, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
+
+  html_grupo = ""
+  if detalhe == True:
+      grupo = atrs['grupo']
+      html_grupo = paragrafo(estilo_parag, bloco_texto(grupo, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
+
   d_media = atrs['descr_media']
   html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
 
@@ -141,7 +149,7 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
     str_volume = ("%.2f mililitros" % volume)
     html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  html_descr = html_em_oferta + html_d_curta  + html_d_media + html_d_longa + html_qtd + html_preco + html_botao + html_peso + html_volume
+  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa + html_qtd + html_preco + html_botao + html_peso + html_volume
 
   bloco_descr = span("\n display: inline-block;", html_descr)
 
@@ -195,7 +203,7 @@ def bloco_de_compra(cpr, detalhe):
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
-  if (atrs_cliente['admin']):    
+  if (atrs_cliente['administrador']):    
     status_atual = atrs_compra['status']
     html_recebido = ""
     html_entregue = ""
