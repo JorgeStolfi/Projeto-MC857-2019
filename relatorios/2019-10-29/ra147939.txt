@@ -1,0 +1,5 @@
+- Fiz a inclusão do atributo 'palavras' em {ObjProduto}, 
+que contém palavras sinônimos e palavras relacionadas ao produto;
+
+- Inclusão desse atributo nas chamadas de produto.cria (tanto nas implementações quanto nos testes)
+para que os produtos sejam criados com esse atributo;

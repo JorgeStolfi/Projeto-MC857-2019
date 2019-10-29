@@ -33,6 +33,7 @@ colunas = \
     ( 'volume',      type(10.5),  'FLOAT',   False,    0.0001,  999999.0 ), # volume do produto em mililitros.
     ( 'estoque',     type(10),    'INTEGER', False,    0,       99999999 ), # Estoque do produto.
     ( 'oferta',      type(True),  'INTEGER', False,    0,              1 ), # Produto está em oferta.
+    ( 'palavras',    type("foo"), 'TEXT',    False,    0,           1000 ), # contém sinônimos e termos relacionados ao produto.
   )
   # Descrição das colunas da tabela na base de dados.
 

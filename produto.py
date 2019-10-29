@@ -26,6 +26,7 @@ class ObjProduto(ObjProduto_IMP):
     'peso'         {float} peso do produto em gramas.
     'volume'       {float} volume do produto em mililitros.
     'oferta'       {bool}  determina se o produto está ou não em oferta.
+    'palavras'     {str}   contém sinônimos e termos relacionados ao produto.
   
   Mais atributos (volume, peso, descontos por atacado, etc.)
   podem ser acrescentados no futuro.
