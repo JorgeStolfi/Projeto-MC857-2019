@@ -66,19 +66,8 @@ def busca_por_compra(id_compra):
 def busca_por_produto(id_produto):
   indice = identificador.para_indice("P", id_produto)
   # Obtem lista de identificadores de itens referentes a esta compra:
-  cond = 'compra = ' + str(indice)
-  nomes_cols = ('produto', 'qtd', 'preco')
-  lit_SQL = base_sql.executa_comando_SELECT(nome_tb, cond, nomes_cols)
-  # Converte para lista de itens na memória:
-  lit_mem = [].copy()
-  for it_SQL in lit_SQL:
-    assert ((type(it_SQL) is list) or (type(it_SQL) is tuple))  and (len(it_SQL) == 3);
-    prod = produto.busca_por_indice(it_SQL[0])
-    qtd = float(it_SQL[1])
-    preco = float(it_SQL[2])
-    it_mem = (prod, qtd, preco)
-    lit_mem.append(it_mem)
-  return lit_mem
+  compras = tabela_generica.busca_por_campo("itens_de_compras", "I", "id_compra", "id_produto", indice)
+  return compras
 
 def atualiza_lista(id_compra, lit, prod, qtd_velho, qtd_novo):
   global cache, nome_tb, letra_tb, colunas, diags
