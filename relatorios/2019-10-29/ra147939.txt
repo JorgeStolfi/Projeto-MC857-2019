@@ -8,3 +8,5 @@ para que os produtos sejam criados com esse atributo;
 para fazer a busca pelas palavras relacionadas (atributo 'palavras').
 
 - Criação de novo caso de teste para validar a busca de produtos pelo atributo 'palavras'.
+
+- Inclusão do atributo 'palavras' na tela de compras.

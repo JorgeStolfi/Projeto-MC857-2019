@@ -131,4 +131,3 @@ def diagnosticos(val):
   impressão em {sys.stderr} de mensagens de diagnóstico pelas 
   funções deste módulo."""
   produto_IMP.diagnosticos(val)
-

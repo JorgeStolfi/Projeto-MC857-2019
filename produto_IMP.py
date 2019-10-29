@@ -151,7 +151,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'palavras': 'escovador, animal, ouriço, animais, portátil'
+        'palavras': 'escovador, animal, ourico, animais, portátil'
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",

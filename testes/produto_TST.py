@@ -65,7 +65,7 @@ prod1_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'palavras': 'escovador, animal, ouriço, animais, portátil'
+        'palavras': 'escovador, animal, ourico, animais, portátil'
 }
 pindice1 = 1
 pident1 = "P-00000001"
