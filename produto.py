@@ -26,6 +26,9 @@ class ObjProduto(ObjProduto_IMP):
     'peso'         {float} peso do produto em gramas.
     'volume'       {float} volume do produto em mililitros.
     'oferta'       {bool}  determina se o produto está ou não em oferta.
+    'variado'      {bool}  determina se o produto possui ou não variedades.
+    'grupo'        {str}   identificador de produto do grupo.
+    'variedade'    {str}   descrição super-curta do produto, relativa ao grupo.
   
   Mais atributos (volume, peso, descontos por atacado, etc.)
   podem ser acrescentados no futuro.
