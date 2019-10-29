@@ -7,6 +7,8 @@ from utils_testes import erro_prog, mostra
 import re
 #{'celular': '165156165165', 'cpf': '651651651651', 'endereco': 'av rua da casa', 'confSenha': '123456', 'cep': '6156-561', 'email': 'lucianocps9@gmail.com', 'telefone': '651561651561', 'nome': 'Luciano', 'senha': '123456', 'estado': 'AP'}
 
+import sys
+
 def msg_campo_obrigatorio(nome_do_campo):
   return "O campo %s é obrigatório." % nome_do_campo
 
@@ -30,25 +32,19 @@ def processa(ses, args):
     erro = msg_campo_obrigatorio('Administrador')
   elif 'senha' not in args:
     erro = msg_campo_obrigatorio('Senha')
-  elif 'conf_senha' not in args:
-    erro = msg_campo_obrigatorio('Confirmação da senha')
-  elif args['conf_senha'] != args['senha']:
-    erro = 'A senha e confirmação de senha não são iguais.'
   elif re.match('(.*)(@)(.*)(\.com)', args['email']):
     erro = 'O e-mail não é valido.'
   elif len(args['senha']) < 8:
     erro = 'A senha é muito pequena'
 
-  # Remove o campo conf_senha, não mais necessário
-  args.pop('conf_senha', None)
-  
   # Converte bit de administrador para bool:
-  args['administrador'] = ( args['administrador'] == "on" )
+  # args['administrador'] = ( args['administrador'] == "on" )
 
   if not erro:
-    usr = None
-  else:
     usr = usuario.cria(args)
+    sys.stderr.write("usr:" + usr.nome)
+  else:
+    usr = None
 
   # Verifica se o usuário foi criado corretamente 
   # e retorna uma página de acordo com o resultado:
