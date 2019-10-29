@@ -45,22 +45,17 @@ def menu_geral(logado, nome_usuario, admin):
   html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
 
   if logado:
+    html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
+    html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
+    html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
+    html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+    html_bt_entrar = ""
+    html_bt_cadastrar = ""
+    html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
     if admin:
-      html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
-      html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
-      html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
-      html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
-      html_bt_entrar = ""
-      html_bt_cadastrar = ""
-      html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_compras_produto = " " + gera_html_botao.simples("Compras de produto", "buscar_compras_por_produto", None, '#eeeeee') + '\n'
     else:
-      html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
-      html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
-      html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
-      html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
-      html_bt_entrar = ""
-      html_bt_cadastrar = ""
-      html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_compras_produto = " "
   else:
     html_bt_sair = ""
     html_nome = ""
@@ -69,9 +64,11 @@ def menu_geral(logado, nome_usuario, admin):
     html_bt_minha_conta = ""
     html_bt_entrar = "  " + gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55') + "\n"
     html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+    html_bt_compras_produto = " "
 
   html_bt_ofertas = "  " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n"
   html_bt_acrescentar_produto = " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n"
+
   html_menu = \
     "<nav>\n" + \
       html_bt_principal + \
@@ -81,11 +78,19 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_minha_conta + \
       html_bt_entrar + \
       html_bt_cadastrar + \
-      html_nome + \
-      html_bt_sair + \
+      html_bt_compras_produto + \
       html_bt_ofertas + \
       html_bt_acrescentar_produto + \
+      html_bt_sair + \
+      html_nome + \
     "</nav>"
+
+  if admin:
+    html_menu += \
+      "<nav>\n" + \
+        html_bt_compras_produto + \
+      "</nav>\n"
+
   return html_menu
 
 def bloco_de_produto(id_compra, prod, qtd, detalhe):
