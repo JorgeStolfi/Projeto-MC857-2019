@@ -69,7 +69,8 @@ testa("cabecalho-T", gera_html_elem.cabecalho, "TESTE", True)
 
 testa("rodape", gera_html_elem.rodape)
 
-testa("menu_geral", gera_html_elem.menu_geral, True, unome)
+testa("menu_geral-T", gera_html_elem.menu_geral, True, unome, True)
+testa("menu_geral-F", gera_html_elem.menu_geral, True, unome, False)
 
 testa("bloco_de_erro", gera_html_elem.bloco_de_erro, "Você errou, meu amigo!")
 
