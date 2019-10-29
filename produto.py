@@ -26,6 +26,7 @@ class ObjProduto(ObjProduto_IMP):
     'peso'         {float} peso do produto em gramas.
     'volume'       {float} volume do produto em mililitros.
     'oferta'       {bool}  determina se o produto está ou não em oferta.
+    'palavras'     {str}   contém sinônimos e termos relacionados, para fins de busca.
   
   Mais atributos (volume, peso, descontos por atacado, etc.)
   podem ser acrescentados no futuro.
@@ -64,6 +65,10 @@ def obtem_identificador(prod):
   """Devolve o identificador 'P-{NNNNNNNN}' do produto."""
   return produto_IMP.obtem_identificador(prod)
   
+def obtem_palavras(prod):
+  """Retorna a lista de palavras associadas ao produto."""
+  return produto_IMP.obtem_palavras(prod)
+
 def obtem_indice(usr):
   """Devolve o índice inteiro do produto na tabela de produtos."""
   return produto_IMP.obtem_indice(usr)
