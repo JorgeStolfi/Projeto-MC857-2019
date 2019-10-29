@@ -151,6 +151,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'palavras': 'escovador, animal, ouriço, animais, portátil'
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",
@@ -171,6 +172,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'palavras': 'furadeira, marcenaria'
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -190,6 +192,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'palavras': 'luva, inverno'
       },
       {
         'descr_curta': "Ferroada",
@@ -205,6 +208,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'palavras': 'espada, elfo, senhor dos aneis'
       },
       {
         'descr_curta': "Amassador de suspiros",
@@ -223,6 +227,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'palavras': 'amassador, suspiro'
       },
       { 'descr_curta': "Cabideiro", 
         'descr_media': "Cabideiro com capacidade para 420 cabides", 
@@ -236,6 +241,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'palavras':'cabide, cabides, roupas, roupa'
       }
     ]
   for atrs in lista_atrs:
