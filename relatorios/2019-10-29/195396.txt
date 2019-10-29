@@ -1,1 +1,4 @@
-Acrescentar ao {ObjProduto} um novo atributo 'palavras' cujo valor é um string de até 1000 caracters contendo sinônimos e termos relacionados, para fins de busca. Alterar todas as funções e módulos que precisam saber desses dois novos campos, como {produto.cria}. Alterar a função {produto.busca_por_palavra} de modo a fazer a busca também nesse campo. Alterar {gera_html_elem.bloco_de_compra} para mostrar essa linha com fonte minúsculo se {detalhe=True}.
+Acrescentar ao {ObjProduto} um novo atributo 'palavras' cujo valor é um string de até 1000 caracters contendo sinônimos e termos relacionados, para fins de busca.
+Alterar todas as funções e módulos que precisam saber desses dois novos campos, como {produto.cria}.
+Alterar a função {produto.busca_por_palavra} de modo a fazer a busca também nesse campo.
+Alterar {gera_html_elem.bloco_de_compra} para mostrar essa linha com fonte minúsculo se {detalhe=True}.

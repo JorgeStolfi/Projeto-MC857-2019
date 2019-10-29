@@ -114,7 +114,7 @@ def busca_por_indice(ind):
   return usr
 
 def busca_por_palavra(pal):
-  chaves = ('descr_curta', 'descr_media')
+  chaves = ('descr_curta', 'descr_media', 'palavras')
   valores = (pal,)
   busca_com_and = ' and ' in pal or ' AND ' in pal
   
