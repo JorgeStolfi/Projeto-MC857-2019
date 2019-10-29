@@ -55,6 +55,9 @@ def processa(ses, args):
   else:
     args['administrador'] = False
     
+  if 'id_usario' in args:
+    del args['id_usuario']
+  
   if not erro:
     usr = usuario.cria(args)
   else:
