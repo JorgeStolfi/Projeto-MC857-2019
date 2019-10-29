@@ -169,7 +169,7 @@ def bloco_de_compra(cpr, detalhe):
   html_usr = paragrafo(estilo_parag, bloco_texto(str(id_usr), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_num_itens = paragrafo(estilo_parag, bloco_texto(str(num_itens), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_preco_total = paragrafo(estilo_parag, bloco_texto(str(preco_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
-  html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco']
+  html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco'].replace("\n", "<br>")
   html_ends = paragrafo(estilo_parag, bloco_texto(str(html_endereco), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   if detalhe:
     itens = compra.obtem_itens(cpr);
@@ -182,7 +182,7 @@ def bloco_de_compra(cpr, detalhe):
       html_d_curta = d_curta
       html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
-      html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
+      html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#ffffff')
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
       # !!! Falta custo de frete e valor total a pagar !!!
@@ -195,7 +195,7 @@ def bloco_de_compra(cpr, detalhe):
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
-  if (atrs_cliente['admin']):    
+  if (atrs_cliente['administrador']):    
     status_atual = atrs_compra['status']
     html_recebido = ""
     html_entregue = ""
@@ -208,11 +208,16 @@ def bloco_de_compra(cpr, detalhe):
       atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
       html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
     html_admin = html_recebido if (html_recebido != "") else html_entregue 
+  
+  html_finalizar = ""
+  if (num_itens > 0):
+    atributos_finalizar = {'id_compra': id_compra}
+    html_finalizar = gera_html_botao.simples("Finalizar", 'finalizar_compra', atributos_finalizar, '#ffffff')
 
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
   atrs_alterar = { 'id_compra': id_compra }
-  html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', atrs_alterar, '#55ee55')
-  html_alt_met_pag = gera_html_botao.simples("Alterar método de pagamento", 'solicitar_form_de_meio_de_pagamento', atrs_alterar, '#55ee55')
+  html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', atrs_alterar, '#ffffff')
+  html_alt_met_pag = gera_html_botao.simples("Alterar método de pagamento", 'solicitar_form_de_meio_de_pagamento', atrs_alterar, '#ffffff')
   html_descr = \
     html_trocar_carrinho + \
     html_usr + html_ident  + \
@@ -222,6 +227,7 @@ def bloco_de_compra(cpr, detalhe):
     html_alt_met_pag + \
     html_ends + \
     html_alterar_endereco + \
+    html_finalizar + \
     html_admin
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
