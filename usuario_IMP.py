@@ -151,8 +151,8 @@ def cria_testes():
       },
       {
         'nome': "Juca Terceiro", 
-        'senha': "4321002134", 
-        'email': "muda@gmail.com", 
+        'senha': "333333333", 
+        'email': "terceiro@gmail.com", 
         'CPF': "111.111.111-11",
         'endereco': "Rua Zero, 0000\nVila Zero\nCampinas, SP",
         'CEP': "13083-999", 

@@ -40,12 +40,12 @@ def rodape():
     "</body>\n" + \
     "</html>\n"
 
-def menu_geral(logado, nome_usuario, administrador):
+def menu_geral(logado, nome_usuario, admin):
   html_bt_principal = "  " + gera_html_botao.simples("Principal", 'principal', None, '#eeeeee') + "\n"
   html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
 
   if logado:
-    if administrador:
+    if admin:
       html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
       html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
       html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
@@ -194,8 +194,8 @@ def bloco_de_compra(cpr, detalhe):
   
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
-  html_administrador = ""
-  if (atrs_cliente['administrador']):    
+  html_admin = ""
+  if (atrs_cliente['admin']):    
     status_atual = atrs_compra['status']
     html_recebido = ""
     html_entregue = ""
@@ -207,11 +207,12 @@ def bloco_de_compra(cpr, detalhe):
     elif (status_atual == 'despachado'):
       atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
       html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
-    html_administrador = html_recebido if (html_recebido != "") else html_entregue 
+    html_admin = html_recebido if (html_recebido != "") else html_entregue 
 
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
-  html_alterar_endereco = gera_html_botao.simples("Alterar Endereco", 'solicitar_form_de_endereco', None, '#55ee55')
-  html_alt_met_pag = gera_html_botao.simples("Alterar metodo de pagamento", 'solicitar_form_de_alt_met_pag', None, '#55ee55')
+  atrs_alterar = { 'id_compra': id_compra }
+  html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', atrs_alterar, '#55ee55')
+  html_alt_met_pag = gera_html_botao.simples("Alterar método de pagamento", 'solicitar_form_de_meio_de_pagamento', atrs_alterar, '#55ee55')
   html_descr = \
     html_trocar_carrinho + \
     html_usr + html_ident  + \
@@ -221,7 +222,7 @@ def bloco_de_compra(cpr, detalhe):
     html_alt_met_pag + \
     html_ends + \
     html_alterar_endereco + \
-    html_administrador
+    html_admin
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
   span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)

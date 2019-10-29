@@ -19,17 +19,18 @@ def generica(ses, conteudo):
   if logado:
     usr = sessao.obtem_usuario(ses)
     nome_usuario = usuario.obtem_atributos(usr)['nome']
-    administrador = usuario.obtem_atributos(usr)['administrador']
+    admin = usuario.obtem_atributos(usr)['administrador']
   else:
     nome_usuario = None
-  menu = gera_html_elem.menu_geral(logado, nome_usuario, administrador)
+    admin = False
+  menu = gera_html_elem.menu_geral(logado, nome_usuario, admin)
   roda = gera_html_elem.rodape()
   return cabe + "\n" + menu + "\n" + conteudo + "\n" + roda
 
 def principal(ses):
   if ses !=None:
-    usuario = ses.obtem_usuario(ses)
-    atrs = usuario.obtem_atributos
+    usr = sessao.obtem_usuario(ses)
+    atrs = usuario.obtem_atributos(usr)
     nome = atrs['nome']
     texto2 = "<hr/>Seja bem vindo(a) <b>"+nome+"</b> ao nosso site de compras!"
   else:
@@ -38,7 +39,7 @@ def principal(ses):
   data = now.strftime("%Y-%m-%d %H:%M:%S %z")
   texto1 = "<hr/><i>DATA CORRENTE </i><b>" + data + "</b><br/>TUDO EM ORDEM NESTE SERVIDOR<hr/>"
   cor_texto = "#000488"
-  cor_fundo = "#eee"
+  cor_fundo = "#eeeeee"
   bloco_texto1 =  gera_html_elem.bloco_texto(texto1, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
   bloco_texto2 =  gera_html_elem.bloco_texto(texto2, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
   #Pegar bloco que funcione das ofertas para mostrar para o cliente

@@ -2,7 +2,7 @@
 
 # Interfaces usadas por este script:
 import sys
-import comando_busca_compras_por_produto
+import comando_buscar_compras_por_produto
 import base_sql
 import tabelas
 import sessao
@@ -17,7 +17,7 @@ tabelas.cria_todos_os_testes()
 ses1 = sessao.busca_por_identificador("S-00000001")
 args1 = { 'id_produto': "P-00000001" }
 
-html = comando_busca_compras_por_produto.processa(ses1, args1)
+html = comando_buscar_compras_por_produto.processa(ses1, args1)
 html = html + "\n" # In case the fragment does not end with newline.
 
 sys.stdout.buffer.write(html.encode('utf-8'))

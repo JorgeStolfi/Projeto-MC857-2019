@@ -4,7 +4,7 @@
 # compras de todos os usuários. Senão, mostrar apenas as
 # compras do usuário corrente.
 
-import comando_busca_compras_por_produto_IMP
+import comando_buscar_compras_por_produto_IMP
 
 def processa(ses, args):
     """Esta função é chamada quando o usuário {usr} logado na sessão {ses}
@@ -18,4 +18,4 @@ def processa(ses, args):
     deste produto, caso contrário, apenas as compras para o cliente.
 
     A sessão não pode ser {None} e deve estar aberta"""
-    return comando_busca_compras_por_produto_IMP.processa(ses, args)
+    return comando_buscar_compras_por_produto_IMP.processa(ses, args)
