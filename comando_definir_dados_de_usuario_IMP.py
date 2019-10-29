@@ -28,29 +28,42 @@ def processa(ses, args):
     erro = msg_campo_obrigatorio('CEP')
   elif 'telefone' not in args:
     erro = msg_campo_obrigatorio('Telefone')
-  elif 'adminstrador' not in args:
-    erro = msg_campo_obrigatorio('Administrador')
   elif 'senha' not in args:
     erro = msg_campo_obrigatorio('Senha')
-  elif re.match('(.*)(@)(.*)(\.com)', args['email']):
-    erro = 'O e-mail não é valido.'
   elif len(args['senha']) < 8:
     erro = 'A senha é muito pequena'
+  elif len(args['senha']) > 24:
+    erro = 'A senha é muito grande'
+  elif len(args['CPF']) < 14:
+    erro = 'O CPF é muito pequeno'
+  elif len(args['CPF']) > 15:
+    erro = 'O CPF é muito grande'
+  elif len(args['nome']) < 1 or len(args['nome']) > 60:
+    erro = 'O tamanho do nome deve ser entre 1 e 60 caracteres'  
+  elif len(args['email']) < 6 or len(args['email']) > 60:
+    erro = 'O tamanho do email deve ser entre 6 e 60 caracteres'  
+  elif len(args['endereco']) < 1 or len(args['endereco']) > 60:
+    erro = 'O tamanho do endereco deve ser entre 1 e 180 caracteres'  
+  elif len(args['documento']) < 6 or len(args['documento']) > 24:
+    erro = 'O tamanho do documento deve ser entre 6 e 24 caracteres'  
 
   # Converte bit de administrador para bool:
-  # args['administrador'] = ( args['administrador'] == "on" )
-
+  if 'administrador' in args:
+    args['administrador'] = True
+  else:
+    args['administrador'] = False
+    
   if not erro:
     usr = usuario.cria(args)
-    sys.stderr.write("usr:" + usr.nome)
   else:
     usr = None
+    sys.stderr.write("err:" + erro)
 
   # Verifica se o usuário foi criado corretamente 
   # e retorna uma página de acordo com o resultado:
   if type(usr) is ObjUsuario:
     pag = gera_html_pag.mostra_usuario(ses, usr)
   else:
-    erro = "Erro ao gerar novo usuário"
-    pag = gera_html_pag.mensagem_de_erro(ses, erro)
+    err = "Erro ao gerar novo usuário: " + erro
+    pag = gera_html_pag.mensagem_de_erro(ses, err)
   return pag
