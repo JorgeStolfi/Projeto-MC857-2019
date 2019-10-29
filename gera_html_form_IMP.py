@@ -281,7 +281,7 @@ def preencher_endereco():
 
 def buscar_identificador():
   cor_cinza = "#fff888"
-  html_condicao = gera_html_elem.input(None, "text", "condicao", None, "Identificador", None)
+  html_condicao = gera_html_elem.input(None, "text", "id", None, "Identificador", None)
   html_submit_ver_produto = gera_html_botao.submit("Ver", 'ver_objeto', None, '#eeeeee')
   return header_form() + \
     "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
