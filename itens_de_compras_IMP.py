@@ -74,7 +74,7 @@ def atualiza_lista(id_compra, lit, prod, qtd_velho, qtd_novo):
 
   ind_compra = identificador.para_indice("C", id_compra)
   ind_produto = produto.obtem_indice(prod)
-  if diags: mostra(2, "itens originais = " + str(lit));
+  if diags: mostra(2, "itens originais = " + str(lit))
   if qtd_velho == 0 and qtd_novo != 0:
     # Acrescenta a linha:
     preco_novo = produto.calcula_preco(prod, qtd_novo)
@@ -97,7 +97,7 @@ def atualiza_lista(id_compra, lit, prod, qtd_velho, qtd_novo):
       lit[pos] = (prod, qtd_novo, preco_novo)
       atrs_SQL = { 'qtd': qtd_novo, 'preco': preco_novo }
       base_sql.executa_comando_UPDATE(nome_tb, cond, atrs_SQL)
-  if diags: mostra(2, "itens alterados = " + str(lit));
+  if diags: mostra(2, "itens alterados = " + str(lit))
   return
 
 def obtem_quantidade(lit, prod):
