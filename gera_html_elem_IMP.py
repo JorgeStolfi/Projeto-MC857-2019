@@ -7,6 +7,8 @@ import gera_html_botao
 import produto
 import compra
 import usuario
+import comando_excluir_item_de_compra
+import comando_alterar_qtd_de_produto
 
 # Outros módulos importados por esta implementação:
 from datetime import datetime, timezone
@@ -180,7 +182,7 @@ def bloco_de_compra(cpr, detalhe):
       atrs = produto.obtem_atributos(prod)
       d_curta = atrs['descr_curta']
       html_d_curta = d_curta
-      html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
+      html_qtd = html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
@@ -193,21 +195,21 @@ def bloco_de_compra(cpr, detalhe):
     html_itens = ""
   
   # Admnistrador
-  atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
-  html_admin = ""
-  if (atrs_cliente['admin']):    
-    status_atual = atrs_compra['status']
-    html_recebido = ""
-    html_entregue = ""
-    # Muda status de pagando para pago
-    if (status_atual == 'pagando'):
-      atributos_pago = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'pago'}
-      html_recebido = gera_html_botao.submit("Pagamento Recebido", 'mudar_status_de_compra', atributos_pago, '#55ee55')
-    # Muda status de despachado para entregue
-    elif (status_atual == 'despachado'):
-      atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
-      html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
-    html_admin = html_recebido if (html_recebido != "") else html_entregue 
+##  atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
+##  html_admin = ""
+##  if (atrs_cliente['admin']):    
+##    status_atual = atrs_compra['status']
+##    html_recebido = ""
+##    html_entregue = ""
+##    # Muda status de pagando para pago
+##    if (status_atual == 'pagando'):
+##      atributos_pago = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'pago'}
+##      html_recebido = gera_html_botao.submit("Pagamento Recebido", 'mudar_status_de_compra', atributos_pago, '#55ee55')
+##    # Muda status de despachado para entregue
+##    elif (status_atual == 'despachado'):
+##      atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
+##      html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
+##    html_admin = html_recebido if (html_recebido != "") else html_entregue 
 
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
   atrs_alterar = { 'id_compra': id_compra }
@@ -221,8 +223,8 @@ def bloco_de_compra(cpr, detalhe):
     html_itens + \
     html_alt_met_pag + \
     html_ends + \
-    html_alterar_endereco + \
-    html_admin
+    html_alterar_endereco
+    #html_admin
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
   span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
@@ -297,6 +299,8 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_rotulo = label(rotulo)
   html_tipo = " type =\"" + tipo + "\""
   html_nome = " name=\"" + nome + "\" id=\"" + nome + "\""
+  if tipo == "number":
+      html_nome += ' min="1" max="5"\ '
   if val_ini != None and dica != None:
     erro_prog("{val_ini} e {dica} são mutuamente exclusivos")
   html_val_ini = ( " value =\"" + val_ini + "\"" if val_ini != None else "" )
@@ -304,6 +308,7 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_cmd = ( " onchange=\"window.location.href=" + cmd + "\"" if cmd != None else "" )
   html = html_rotulo + "<input" + html_tipo + html_nome + html_val_ini + html_dica + "/>"
   return html
+    
 
 def label(rotulo):
   if rotulo == None or rotulo == "":
