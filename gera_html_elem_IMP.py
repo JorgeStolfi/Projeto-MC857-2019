@@ -53,6 +53,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_ver_produto = gera_html_form.buscar_identificador()
     else:
       html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
       html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
@@ -61,6 +62,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_ver_produto = ""
   else:
     html_bt_sair = ""
     html_nome = ""
@@ -69,6 +71,7 @@ def menu_geral(logado, nome_usuario, admin):
     html_bt_minha_conta = ""
     html_bt_entrar = "  " + gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55') + "\n"
     html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+    html_bt_ver_produto = ""
 
   html_bt_ofertas = "  " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n"
   html_bt_acrescentar_produto = " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n"
@@ -85,6 +88,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_sair + \
       html_bt_ofertas + \
       html_bt_acrescentar_produto + \
+      html_bt_ver_produto + \
     "</nav>"
   return html_menu
 
@@ -179,17 +183,18 @@ def bloco_de_compra(cpr, detalhe):
     for prod, qtd, prc in itens:
       atrs = produto.obtem_atributos(prod)
       d_curta = atrs['descr_curta']
+      palavras = atrs['palavras']
       html_d_curta = d_curta
+      html_palavras = palavras
       html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
-      html_plv = atrs['palavras']
       html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
 
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
       # !!! Falta custo de frete e valor total a pagar !!!
       # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
-      linhas.append(( d_curta, html_qtd, html_prc, html_plv, html_excl ))
+      linhas.append(( d_curta, html_qtd, html_prc, html_palavras, html_excl ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""

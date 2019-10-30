@@ -33,7 +33,7 @@ colunas = \
     ( 'volume',      type(10.5),  'FLOAT',   False,    0.0001,  999999.0 ), # volume do produto em mililitros.
     ( 'estoque',     type(10),    'INTEGER', False,    0,       99999999 ), # Estoque do produto.
     ( 'oferta',      type(True),  'INTEGER', False,    0,              1 ), # Produto está em oferta.
-    ( 'palavras',    type("foo"), 'TEXT',    False,    0,           1000 ), # contém sinônimos e termos relacionados ao produto.
+    ( 'palavras',    type("foo"), 'TEXT',    True,     0,           1000 ), # Sinônimos e termos relacionados, para busca.
   )
   # Descrição das colunas da tabela na base de dados.
 
@@ -72,6 +72,10 @@ def cria(atrs):
 def obtem_identificador(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return prod.id_produto
+
+def obtem_palavras(prod):
+  global cache, nome_tb, letra_tb, colunas, diags
+  return prod.palavras
 
 def obtem_indice(prod):
   global cache, nome_tb, letra_tb, colunas, diags
@@ -112,13 +116,10 @@ def busca_por_indice(ind):
 def busca_por_palavra(pal):
   chaves = ('descr_curta', 'descr_media', 'palavras')
   valores = (pal,)
-  busca_com_and = ' and ' in pal or ' AND ' in pal
+  busca_com_and = ' AND ' in pal
   
   if busca_com_and:
-    if pal.find(' and ') > 0:
-      valores = pal.split(' and ')
-    else:
-      valores = pal.split(' AND ')
+    valores = pal.split(' AND ')
     valores = tuple(valores)
  
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
