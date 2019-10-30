@@ -50,6 +50,7 @@ sys.stderr.write("testando {produto.cria}:\n")
 prod1_atrs = {
         'descr_curta': "Escovador de ouriço",
         'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
+        'palavras': 'escovador, animal, ourico, animais, portátil',
         'descr_longa': 
           """Fabricante: Ouricex LTD<br/>
           Origem: Cochinchina<br/>
@@ -65,7 +66,9 @@ prod1_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'palavras': 'escovador, animal, ourico, animais, portátil'
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Vermelho",
 }
 pindice1 = 1
 pident1 = "P-00000001"
@@ -74,6 +77,7 @@ prod1 = testa_cria_produto("prod1", pindice1, pident1, prod1_atrs)
 prod2_atrs = {
         'descr_curta': "Luva com 8 dedos",
         'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
+        'palavras': 'luva, inverno',
         'descr_longa': 
           """Fabricante: United Trash Inc.<br/>
           Origem: USA<br/>
@@ -89,7 +93,9 @@ prod2_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
-        'palavras': 'luva, inverno'
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Azul",
 }
 pindice2 = 2
 pident2 = "P-00000002"
@@ -98,6 +104,7 @@ prod2 = testa_cria_produto("prod2", pindice2, pident2, prod2_atrs)
 prod3_atrs = {
         'descr_curta': "Furadeira telepática (x 2)",
         'descr_media': "Kit com duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
+        'palavras': 'furadeira, marcenaria',
         'descr_longa': 
           """"Fabricante: Ferramentas Tres Dedos SA<br/>
           Origem: Brasil<br/>
@@ -114,7 +121,9 @@ prod3_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'palavras': 'furadeira, marcenaria'
+        'variado' : True,
+        'grupo' : "P-00000001",
+        'variedade' : "Roxo",
 }
 pindice3 = 3
 pident3 = "P-00000003"

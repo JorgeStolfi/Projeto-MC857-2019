@@ -19,6 +19,7 @@ class ObjProduto(ObjProduto_IMP):
     'descr_curta'  {str}   descrição do produto em uma linha.
     'descr_media'  {str}   descrição mais extensa do produto, em 1-3 linhas. 
     'descr_longa'  {str}   descrição completa do produto. 
+    'palavras'     {str}   sinônimos e termos relacionados, para fins de busca.
     'unidade'      {str}   unidade de venda ("item", "caixa de 10", "metro", "rolo de 5m", etc.) 
     'preco'        {float} preço unitário.
     'imagem'       {str}   nome do arquivo da imagem no diretorio 'imagens'
@@ -26,10 +27,11 @@ class ObjProduto(ObjProduto_IMP):
     'peso'         {float} peso do produto em gramas.
     'volume'       {float} volume do produto em mililitros.
     'oferta'       {bool}  determina se o produto está ou não em oferta.
-    'palavras'     {str}   contém sinônimos e termos relacionados, para fins de busca.
+    'variado'      {bool}  determina se o produto possui ou não variedades.
+    'grupo'        {str}   identificador de produto do grupo.
+    'variedade'    {str}   descrição super-curta do produto, relativa ao grupo.
   
-  Mais atributos (volume, peso, descontos por atacado, etc.)
-  podem ser acrescentados no futuro.
+  Mais atributos (descontos por atacado, etc.) podem ser acrescentados no futuro.
     
   Além desses atributos, cada produto tem um identificador, uma string da
   forma "P-{NNNNNNNN}" onde {NNNNNNNN} é o índice na tabela
