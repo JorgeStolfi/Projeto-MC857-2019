@@ -7,6 +7,7 @@ import usuario
 import compra
 import gera_html_elem
 import gera_html_form
+import comando_ver_ofertas
 import gera_html_botao
 from utils_testes import erro_prog, mostra
 
@@ -32,18 +33,18 @@ def principal(ses):
     usr = sessao.obtem_usuario(ses)
     atrs = usuario.obtem_atributos(usr)
     nome = atrs['nome']
-    texto2 = "<hr/>Seja bem vindo(a) <b>"+nome+"</b> ao nosso site de compras!"
+    texto1 = "<hr/>Seja bem vindo(a) <b>"+nome+"</b> ao nosso site de compras!"
   else:
-    texto2 = "<hr/>Seja bem vindo(a) ao nosso site de compras!"
+    texto1 = "<hr/>Seja bem vindo(a) ao nosso site de compras!"
   now = datetime.now(timezone.utc)
   data = now.strftime("%Y-%m-%d %H:%M:%S %z")
-  texto1 = "<hr/><i>DATA CORRENTE </i><b>" + data + "</b><br/>TUDO EM ORDEM NESTE SERVIDOR<hr/>"
+  texto2 = "<hr/><i>DATA CORRENTE </i><b>" + data + "</b><br/>TUDO EM ORDEM NESTE SERVIDOR<hr/>"
   cor_texto = "#000488"
   cor_fundo = "#eeeeee"
   bloco_texto1 =  gera_html_elem.bloco_texto(texto1, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
   bloco_texto2 =  gera_html_elem.bloco_texto(texto2, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
-  #Pegar bloco que funcione das ofertas para mostrar para o cliente
-  conteudo = bloco_texto1 + bloco_texto2
+  ofertas = comando_ver_ofertas.processa_container(ses, []) #chamar lista de produtos sem o cabeçalho
+  conteudo = bloco_texto1 + ofertas + bloco_texto2
   pagina = generica(ses, conteudo)
   return pagina
 
@@ -67,6 +68,21 @@ def lista_de_produtos(ses, idents):
       counter = counter + 1
   pagina = generica(ses, todos_prods + sep)
   return pagina
+
+def container_de_produtos(ses, idents):
+  sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de produtos.
+  todos_prods = ""
+  counter = 0
+  for id_prod in idents:
+    prod = produto.busca_por_identificador(id_prod)
+    bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
+    if counter == 2:
+      todos_prods = todos_prods + sep + bloco_prod
+      counter = 0
+    else:
+      todos_prods = todos_prods + bloco_prod
+      counter = counter + 1
+  return todos_prods + sep
 
 def entrar(ses):
   conteudo = gera_html_form.entrar()
