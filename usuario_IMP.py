@@ -28,7 +28,7 @@ colunas = \
     ( 'senha',         type("foo"), 'TEXT',    False,   8,  24  ), # Senha de login.
     ( 'email',         type("foo"), 'TEXT',    False,   6,  60  ), # Endereço de email
     ( 'CPF',           type("foo"), 'TEXT',    False,  14,  15  ), # Número CPF ("{XXX}.{YYY}.{ZZZ}-{KK}")
-    ( 'endereco',      type("foo"), 'TEXT',    False,  30, 180  ), # Endereço completo, em 3 linhas (menos CEP).
+    ( 'endereco',      type("foo"), 'TEXT',    False,  10, 180  ), # Endereço completo, em 3 linhas (menos CEP).
     ( 'CEP',           type("foo"), 'TEXT',    False,   8,  10  ), # Código de endereçamento postal completo ("{NNNNN}-{LLL}").
     ( 'telefone',      type("foo"), 'TEXT',    False,   9,  40  ), # Telefone completo com DDI e DDD ("+{XXX}({YYY}){MMMMM}-{NNNN}").
     ( 'documento',     type("foo"), 'TEXT',    True,    6,  24  ), # Número do documento de identidade (RG, pasaporte, etc.)

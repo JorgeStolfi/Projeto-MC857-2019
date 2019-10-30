@@ -65,6 +65,7 @@ prod1_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'palavras': 'escovador, animal, ourico, animais, portátil'
 }
 pindice1 = 1
 pident1 = "P-00000001"
@@ -88,6 +89,7 @@ prod2_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'palavras': 'luva, inverno'
 }
 pindice2 = 2
 pident2 = "P-00000002"
@@ -112,6 +114,7 @@ prod3_atrs = {
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'palavras': 'furadeira, marcenaria'
 }
 pindice3 = 3
 pident3 = "P-00000003"
@@ -158,6 +161,19 @@ else:
     aviso_prog("resultado foi " + str(plist5_cmp) + " deveria ser " + str(plist5_esp),True)
     ok_global = False
 
+
+palavra = "animal"
+plist5_cmp = produto.busca_por_palavra(palavra)
+sys.stderr.write("  resultado = " + str(plist5_cmp) + "\n")
+if not type(plist5_cmp) is list:
+  aviso_prog("resultado " + str(plist5_cmp) + " deveria ser lista",True)
+  ok_global = False
+else:
+  plist5_cmp = sorted(plist5_cmp)
+  plist5_esp = [pident1, pident3]
+  if plist5_cmp != plist5_esp:
+    aviso_prog("resultado foi " + str(plist5_cmp) + " deveria ser " + str(plist5_esp),True)
+    ok_global = False
 # ----------------------------------------------------------------------
 # Veredito final:
 

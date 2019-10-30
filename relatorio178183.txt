@@ -1,0 +1,17 @@
+Consertar gera_html_elem.bloco_de_produto.
+
+O botão "Excluir" deve emitir um comando para excluir o produto da
+compra.
+
+O botão de quantidade deve ter setas para aumentar/diminiur a
+quantidade.
+
+Qualquer alteração no campo de quantidade deve emitir um comando
+para alterar a quantidade do produto na compra.
+
+
+PRE-PROCESSAMENTO: Comentada toda a parte de html_admin, visto que quebrava algumas features.
+
+Criadas as setas para o botao de quantidade, criado um botao "submeter mudanca" para submeter as mudancas.
+
+Arrumado botao Excluir
