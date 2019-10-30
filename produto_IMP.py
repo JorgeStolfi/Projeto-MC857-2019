@@ -26,6 +26,7 @@ colunas = \
   ( ( 'descr_curta', type("foo"), 'TEXT',    False,    1,             80 ), # Descricao curta do produto.
     ( 'descr_media', type("foo"), 'TEXT',    False,   10,            250 ), # Descricao media do produto.
     ( 'descr_longa', type("foo"), 'TEXT',    False,   10,           3000 ), # Descricao longa do produto.
+    ( 'palavras',    type("foo"), 'TEXT',    True,     2,           1000 ), # Sinônimos e termos relacionados, para busca.
     ( 'unidade',     type("foo"), 'TEXT',    False,    1,             20 ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
     ( 'preco',       type(10.5),  'FLOAT',   False,    1,      999999.99 ), # Preco unitário do produto em reais.
     ( 'imagem',      type("foo"), 'TEXT',    False,    5,             50 ), # Nome do arquivo da imagem no diretorio 'imagens'.
@@ -34,8 +35,8 @@ colunas = \
     ( 'estoque',     type(10),    'INTEGER', False,    0,       99999999 ), # Estoque do produto.
     ( 'oferta',      type(True),  'INTEGER', False,    0,              1 ), # Produto está em oferta.
     ( 'variado',     type(True),  'INTEGER', False,    0,              1 ), # Produto possui variedades.
-    ( 'grupo',       type("foo"), 'TEXT',    False,    1,             10 ), # Identificador de produto do grupo.
-    ( 'variedade',   type("foo"), 'TEXT',    False,    1,             40 ), # Descrição super-curta do produto, relativa ao grupo.
+    ( 'grupo',       type("foo"), 'TEXT',    True,    10,             10 ), # Identificador de produto do grupo.
+    ( 'variedade',   type("foo"), 'TEXT',    True,     1,             40 ), # Descrição super-curta do produto, relativa ao grupo.
   )
   # Descrição das colunas da tabela na base de dados.
 
@@ -75,6 +76,10 @@ def obtem_identificador(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return prod.id_produto
 
+def obtem_palavras(prod):
+  global cache, nome_tb, letra_tb, colunas, diags
+  return prod.palavras
+
 def obtem_indice(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return identificador.para_indice(letra_tb, prod.id_produto)
@@ -112,15 +117,12 @@ def busca_por_indice(ind):
   return usr
 
 def busca_por_palavra(pal):
-  chaves = ('descr_curta', 'descr_media')
+  chaves = ('descr_curta', 'descr_media', 'palavras')
   valores = (pal,)
-  busca_com_and = ' and ' in pal or ' AND ' in pal
+  busca_com_and = ' AND ' in pal
   
   if busca_com_and:
-    if pal.find(' and ') > 0:
-      valores = pal.split(' and ')
-    else:
-      valores = pal.split(' AND ')
+    valores = pal.split(' AND ')
     valores = tuple(valores)
  
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
@@ -138,6 +140,7 @@ def cria_testes():
       {
         'descr_curta': "Escovador de ouriço",
         'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
+        'palavras': 'escovador, animal, ourico, animais, portátil',
         'descr_longa': 
           """Fabricante: Ouricex LTD<br/>
           Origem: Cochinchina<br/>
@@ -160,6 +163,7 @@ def cria_testes():
       {
         'descr_curta': "Furadeira telepática (x 2)",
         'descr_media': "Kit com duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
+        'palavras': 'furadeira, marcenaria',
         'descr_longa': 
           """"Fabricante: Ferramentas Tres Dedos SA<br/>
           Origem: Brasil<br/>
@@ -183,6 +187,7 @@ def cria_testes():
       {
         'descr_curta': "Luva com 8 dedos",
         'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
+        'palavras': 'luva, inverno',
         'descr_longa': 
           """Fabricante: United Trash Inc.<br/>
           Origem: USA<br/>
@@ -205,6 +210,7 @@ def cria_testes():
       {
         'descr_curta': "Ferroada",
         'descr_media': "Espada élfica forjada na cidade de Gondolin.",
+        'palavras': 'espada, elfo, senhor dos aneis',
         'descr_longa': 
           """Fabricante: Gondolin Ferreiros SA<br/>
           Origem: Gondolin<br/>
@@ -223,6 +229,7 @@ def cria_testes():
       {
         'descr_curta': "Amassador de suspiros",
         'descr_media': "Amassador de suspiros lânguidos manual com 5 velocidades e 2 temperaturas.",
+        'palavras': 'amassador, suspiro',
         'descr_longa': 
           """Fabricante: Produits Ineffables SA<br/>
           Origem: França<br/>
@@ -243,6 +250,7 @@ def cria_testes():
       },
       { 'descr_curta': "Cabideiro", 
         'descr_media': "Cabideiro com capacidade para 420 cabides", 
+        'palavras':'cabide, cabides, roupas, roupa',
         'descr_longa': 
           """Lindo cabideiro com suporte para 420 cabides, ideal para você, seus pais, filhos, irmãos, tios e cachorros<br/>
           Fabricante: Gargah Lar SA""",
