@@ -203,7 +203,7 @@ def bloco_de_compra(cpr, detalhe):
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
-  if (atrs_cliente['administrador']):    
+  if (atrs_cliente['administrador']):
     status_atual = atrs_compra['status']
     html_recebido = ""
     html_entregue = ""

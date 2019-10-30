@@ -22,8 +22,6 @@ def processa(ses, args):
     erro = msg_campo_obrigatorio('Email')
   elif 'CPF' not in args:
     erro = msg_campo_obrigatorio('CPF')
-  elif 'endereco' not in args:
-    erro = msg_campo_obrigatorio('Endereço')
   elif 'CEP' not in args:
     erro = msg_campo_obrigatorio('CEP')
   elif 'telefone' not in args:
@@ -32,28 +30,27 @@ def processa(ses, args):
     erro = msg_campo_obrigatorio('Senha')
   elif len(args['senha']) < 8:
     erro = 'A senha é muito pequena'
-  elif len(args['senha']) > 24:
-    erro = 'A senha é muito grande'
-  elif len(args['CPF']) < 14:
-    erro = 'O CPF é muito pequeno'
-  elif len(args['CPF']) > 15:
-    erro = 'O CPF é muito grande'
-  elif len(args['nome']) < 1 or len(args['nome']) > 60:
-    erro = 'O tamanho do nome deve ser entre 1 e 60 caracteres'  
-  elif len(args['email']) < 6 or len(args['email']) > 60:
-    erro = 'O tamanho do email deve ser entre 6 e 60 caracteres'  
-  elif len(args['endereco']) < 10 or len(args['endereco']) > 180:
-    erro = 'O tamanho do endereco deve ser entre 10 e 180 caracteres'  
-  elif len(args['documento']) < 6 or len(args['documento']) > 24:
-    erro = 'O tamanho do documento deve ser entre 6 e 24 caracteres'  
-  elif len(args['telefone']) < 9 or len(args['telefone']) > 40:
-    erro = 'O tamanho do telefone deve ser entre 9 e 40 caracteres'  
+  elif 'rua_numero' not in args:
+    erro = msg_campo_obrigatorio('Rua e Número')
+  elif 'bairro' not in args:
+    erro = msg_campo_obrigatorio('Bairro')
+  elif 'cidade_estado' not in args:
+    erro = msg_campo_obrigatorio('Cidade e Estado')
+  else
+    # Adiciona o campo endereco formatado como 'Rua, número\nBairro\nCidade, UF'
+    args['endereco'] = args['rua_numero'] + '\n' + args['bairro'] + '\n' + args['cidade_estado']
+    args.pop('rua_numero', None)
+    args.pop('bairro', None)
+    args.pop('cidade_estado', None)
 
+  # Remove o campos, não mais necessários
+  args.pop('conf_senha', None)
+  
   # Converte bit de administrador para bool:
-  if 'administrador' in args:
-    args['administrador'] = True
-  else:
-    args['administrador'] = False
+  args['administrador'] = ('administrador' in args)
+
+  if not erro:
+    usr = None
     
   if 'id_usario' in args:
     del args['id_usuario']
@@ -69,6 +66,5 @@ def processa(ses, args):
   if type(usr) is ObjUsuario:
     pag = gera_html_pag.mostra_usuario(ses, usr)
   else:
-    err = "Erro ao gerar novo usuário: " + erro
-    pag = gera_html_pag.mensagem_de_erro(ses, err)
+    pag = gera_html_pag.mensagem_de_erro(ses, erro)
   return pag
