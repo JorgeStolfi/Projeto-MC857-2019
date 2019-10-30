@@ -167,9 +167,7 @@ def buscar_identificador():
   return gera_html_form_IMP.buscar_identificador()
 
 def excluir_produto_do_carrinho(prod_id, compr_id):
-  """ faz umas merda ae"""
   return gera_html_form_IMP.excluir_produto_do_carrinho(prod_id, compr_id)
 
 def atualizar_produto_do_carrinho(qtd, prod_id, compr_id):
-  """fodase"""
   return gera_html_form_IMP.atualizar_produto_do_carrinho(qtd, prod_id, compr_id)
