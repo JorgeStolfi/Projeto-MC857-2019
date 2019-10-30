@@ -20,7 +20,7 @@ sys.stderr.write("Criando sessao...\n")
 ses1 = sessao.busca_por_identificador("S-00000001")
 
 #cria descricao do produto
-args1 = { 'descr_curta': 'Cabideiro' , 'descr_media':'cabideiro com capacidade para 420 cabides',  'descr_longa':'lindo cabideiro com suporte para 420 cabides, ideal para voce, seus pais, filhos, irmaos , tios e cachorros', 'unidade':'01 (hum) cabideiro', 'preco':69.0, 'estoque':1, 'imagem':'155951.png'}
+args1 = { 'descr_curta': 'Cabideiro' , 'descr_media':'cabideiro com capacidade para 420 cabides',  'descr_longa':'lindo cabideiro com suporte para 420 cabides, ideal para voce, seus pais, filhos, irmaos , tios e cachorros', 'unidade':'01 (hum) cabideiro', 'preco':69.0, 'estoque':1, 'imagem':'155951.png', 'palavras':'cabide, cabides, roupas, roupa'}
 
 sys.stderr.write("Criando o produto com as seguinte informaceos:\n")
 sys.stderr.write(str(args1)+'\n')

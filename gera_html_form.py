@@ -158,3 +158,12 @@ def preencher_endereco():
   endereço.
   """
   return gera_html_form_IMP.preencher_endereco()
+
+def buscar_identificador():
+  """Retorna HTML de um formulario para busca textual no identificador do
+  cadastro de produtos.  O formulário contém um campo editável onde o usuário entra 
+  o identificador na forma "{L}-{NNNNNNNN}", onde {L} pode ser "P", "C", "S", ou "U"
+  que deseja procurar, e um botão de 'Ver' que solicita o produto ao servidor."""
+  return gera_html_form_IMP.buscar_identificador()
+
+  
