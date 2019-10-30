@@ -119,6 +119,10 @@ def mostra_usuario(ses, usr):
   pagina = generica(ses, conteudo)
   return pagina
 
+def mostra_sessao(ses)
+  pagina = mensagem_de_erro(ses,"Função não implementada")
+  return pagina
+
 def mensagem_de_erro(ses, msg):
   conteudo = gera_html_elem.bloco_de_erro(msg)
   pagina = generica(ses, conteudo)

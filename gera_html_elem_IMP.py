@@ -7,6 +7,8 @@ import gera_html_botao
 import produto
 import compra
 import usuario
+import comando_excluir_item_de_compra
+import comando_alterar_qtd_de_produto
 
 # Outros módulos importados por esta implementação:
 from datetime import datetime, timezone
@@ -53,6 +55,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_ver_produto = gera_html_form.buscar_identificador()
     else:
       html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#60a3bc') + "\n"
       html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#60a3bc') + "\n"
@@ -61,6 +64,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_ver_produto = ""
   else:
     html_bt_sair = ""
     html_nome = ""
@@ -68,7 +72,8 @@ def menu_geral(logado, nome_usuario, admin):
     html_bt_minhas_compras = ""
     html_bt_minha_conta = ""
     html_bt_entrar = "  " + gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55') + "\n"
-    html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#60a3bc') + "\n"
+    html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+    html_bt_ver_produto = ""
 
   html_bt_ofertas = "  " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n"
   html_bt_acrescentar_produto = " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n"
@@ -85,6 +90,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_sair + \
       html_bt_ofertas + \
       html_bt_acrescentar_produto + \
+      html_bt_ver_produto + \
     "</nav>"
   return html_menu
 
@@ -169,25 +175,27 @@ def bloco_de_compra(cpr, detalhe):
   html_usr = paragrafo(estilo_parag, bloco_texto(str(id_usr), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_num_itens = paragrafo(estilo_parag, bloco_texto(str(num_itens), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_preco_total = paragrafo(estilo_parag, bloco_texto(str(preco_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
-  html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco']
+  html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco'].replace("\n", "<br>")
   html_ends = paragrafo(estilo_parag, bloco_texto(str(html_endereco), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   if detalhe:
-    itens = compra.obtem_itens(cpr);
+    itens = compra.obtem_itens(cpr)
     linhas = [].copy()
     cmdAlterarQtd = "alterar_qtd_de_produto"
     cmdverProduto = "ver_produto"
     for prod, qtd, prc in itens:
       atrs = produto.obtem_atributos(prod)
       d_curta = atrs['descr_curta']
+      palavras = atrs['palavras']
       html_d_curta = d_curta
+      html_palavras = palavras
       html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
-      html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
+      html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#ffffff')
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
       # !!! Falta custo de frete e valor total a pagar !!!
       # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
-      linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
+      linhas.append(( d_curta, html_qtd, html_prc, html_palavras, html_excl ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
@@ -195,7 +203,7 @@ def bloco_de_compra(cpr, detalhe):
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
-  if (atrs_cliente['admin']):    
+  if (atrs_cliente['administrador']):    
     status_atual = atrs_compra['status']
     html_recebido = ""
     html_entregue = ""
@@ -208,11 +216,16 @@ def bloco_de_compra(cpr, detalhe):
       atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
       html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
     html_admin = html_recebido if (html_recebido != "") else html_entregue 
+  
+  html_finalizar = ""
+  if (num_itens > 0):
+    atributos_finalizar = {'id_compra': id_compra}
+    html_finalizar = gera_html_botao.simples("Finalizar", 'finalizar_compra', atributos_finalizar, '#ffffff')
 
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
   atrs_alterar = { 'id_compra': id_compra }
-  html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', atrs_alterar, '#55ee55')
-  html_alt_met_pag = gera_html_botao.simples("Alterar método de pagamento", 'solicitar_form_de_meio_de_pagamento', atrs_alterar, '#55ee55')
+  html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', atrs_alterar, '#ffffff')
+  html_alt_met_pag = gera_html_botao.simples("Alterar método de pagamento", 'solicitar_form_de_meio_de_pagamento', atrs_alterar, '#ffffff')
   html_descr = \
     html_trocar_carrinho + \
     html_usr + html_ident  + \
@@ -222,6 +235,7 @@ def bloco_de_compra(cpr, detalhe):
     html_alt_met_pag + \
     html_ends + \
     html_alterar_endereco + \
+    html_finalizar + \
     html_admin
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
@@ -297,6 +311,8 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_rotulo = label(rotulo)
   html_tipo = " type =\"" + tipo + "\""
   html_nome = " name=\"" + nome + "\" id=\"" + nome + "\""
+  if tipo == "number":
+      html_nome += ' min="1" max="5"\ '
   if val_ini != None and dica != None:
     erro_prog("{val_ini} e {dica} são mutuamente exclusivos")
   html_val_ini = ( " value =\"" + val_ini + "\"" if val_ini != None else "" )
@@ -304,6 +320,7 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_cmd = ( " onchange=\"window.location.href=" + cmd + "\"" if cmd != None else "" )
   html = html_rotulo + "<input" + html_tipo + html_nome + html_val_ini + html_dica + "/>"
   return html
+    
 
 def label(rotulo):
   if rotulo == None or rotulo == "":
