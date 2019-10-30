@@ -15,7 +15,7 @@ TAM_FONTE_PADRAO = "18px"
 def buscar_produtos():
   cor_cinza = "#fff888"
   html_condicao = gera_html_elem.input(None, "text", "condicao", None, "Buscar o que?", None)
-  html_submit_buscar = gera_html_botao.submit("Buscar", 'buscar_produtos', None, '#eeeeee')
+  html_submit_buscar = gera_html_botao.submit("Buscar", 'buscar_produtos', None, '#ed3330')
   return header_form() + \
     "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
     "      " + html_condicao + "\n" + \
@@ -26,7 +26,7 @@ def buscar_produtos():
 def ver_produto(id_produto, qtd_produto):
   html_produto = gera_html_elem.input(None, "hidden", "id_produto", id_produto, None, None)
   html_qtd = ( gera_html_elem.input(None, "hidden", "quantidade", str(qtd_produto), None, None) if qtd_produto != None else "" )
-  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
   
   return header_form() + \
     ( "    " + html_produto + "\n" ) + \
@@ -35,8 +35,8 @@ def ver_produto(id_produto, qtd_produto):
     bottom_form()
 
 def trocar_carrinho(id_compra):
-    fam_fonte = "Courier"
-    tam_fonte = "18px"
+    fam_fonte = FAM_FONTE_PADRAO
+    tam_fonte = TAM_FONTE_PADRAO
     html_submit_ver = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra}, '#ffdd22')
     return \
      "<span style=\"\n" + \
@@ -73,7 +73,7 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
     html_compra = None
   html_produto = gera_html_elem.input(None, "readonly", "id_produto", id_produto, None, None)
   html_quantidade = gera_html_elem.input(None, "text", "quantidade", str(qtd_produto), None, "alterar_qtd_de_produto")
-  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
   html_submit_excluir = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
   return header_form() + \
     ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
@@ -85,7 +85,7 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
 
 def ver_compra(id_compra):
   html_compra = gera_html_elem.input(None, "readonly", "id_compra", id_compra, None, None)
-  html_submit_ver = gera_html_botao.submit("Ver", 'ver_compra', None, '#eeeeee')
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_compra', None, '#60a3bc')
   return header_form() + \
     ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
     ( "    " + html_submit_ver + "\n" ) + \
@@ -220,8 +220,8 @@ def definir_dados_de_usuario(usr):
     bottom_form()
 
 def escolher_pagamento():
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
+  fam_fonte = FAM_FONTE_PADRAO
+  tam_fonte = TAM_FONTE_PADRAO
   html_nome = gera_html_elem.input("Nome: ", "text", "Nome", None, None, None)
   html_num1 = gera_html_elem.input("Número do cartão: ", "text", "n1", None, None, None)
   html_num2 = gera_html_elem.input(" - " , "text", "n2", None, None, None)
@@ -256,8 +256,8 @@ def escolher_pagamento():
     "</span>"
 
 def preencher_endereco(args):
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
+  fam_fonte = FAM_FONTE_PADRAO
+  tam_fonte = TAM_FONTE_PADRAO
   novo_args = { 'id_compra': args['id_compra'][0] }
   html_logradouro = gera_html_elem.input("Logradouro: ", "text", "logradouro", None, None, None)
   html_numero = gera_html_elem.input("Número: ", "text", "numero", None, None, None)
@@ -289,3 +289,14 @@ def preencher_endereco(args):
     "   <br/>" + \
     "  </form>\n" + \
     "</span>"
+
+def buscar_identificador():
+  cor_cinza = "#fff888"
+  html_condicao = gera_html_elem.input(None, "text", "id", None, "Identificador", None)
+  html_submit_ver_produto = gera_html_botao.submit("Ver", 'ver_objeto', None, '#eeeeee')
+  return header_form() + \
+    "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
+    "      " + html_condicao + "\n" + \
+    "    </span>\n" + \
+    "    " + html_submit_ver_produto + "\n" + \
+    bottom_form()
