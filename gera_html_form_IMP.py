@@ -168,7 +168,6 @@ def definir_dados_de_usuario(usr):
     ( "CEP",             "text",     "CEP",           "xxxxx-xxx"),
     ( "Documento",       "text",     "documento",     "Número, tipo, órgão"),
     ( "Senha",           "password", "senha",         None),
-    ( "Confirmar senha", "password", "conf_senha",    None),
     ( "Administrador",   "checkbox", "administrador", None),
   )
 
