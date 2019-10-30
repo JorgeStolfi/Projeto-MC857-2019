@@ -12,12 +12,23 @@ def simples(texto, URL, args, cor_fundo):
       sep = '&'
     
   # Constrói o botão propriamente dito:
-  html_cru = "<button type=\"button\" onclick=\"location.href='" + URL + "'\">" + texto + "</button>"
+  estilo = """
+              color: #fff !important;
+              text-transform: uppercase;
+              text-decoration: none;
+              padding: 2px 5px 2px 5px;
+              border-radius: 5px;
+              display: inline-block;
+              border: none;
+              transition: all 0.4s ease 0s;
+           """
+  estilo += "background:" + cor_fundo + ";"
+  html_cru = "<a style=\"" + estilo + "\" href=\"" + URL + "\">" + texto + "</a>"
 
   # Define o estilo:
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", cor_fundo)
+  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "5px", "center", "#000000", '#eeeeee')
   return html
 
 def submit(texto, URL, args, cor_fundo):
@@ -29,10 +40,21 @@ def submit(texto, URL, args, cor_fundo):
       args_html += kv_html
 
   # O botão propriamente dito:
-  html_cru = args_html + "<input type=\"submit\" formaction=\"" + URL + "\" value=\"" + texto + "\">"
+  estilo = """
+                color: #fff !important;
+                text-transform: uppercase;
+                text-decoration: none;
+                padding: 2px 5px 2px 5px;
+                border-radius: 5px;
+                display: inline-block;
+                border: none;
+                transition: all 0.4s ease 0s;
+             """
+  estilo += "background:" + cor_fundo + ";"
+  html_cru = "<a style=\"" + estilo + "\" href=\"" + URL + "\">" + texto + "</a>"
 
   # Define o estilo:
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "3px", "center", "#000000", cor_fundo)
+  html = gera_html_elem.bloco_texto(html_cru, "inline_block", fam_fonte, tam_fonte, "bold", "3px", "center", "#000000", '#eeeeee')
   return html
