@@ -49,11 +49,11 @@ def cadastrar_usuario(ses):
   que emite um comando 'definir_dados_de_usuario', sem parametro 'id_usuario'."""
   return gera_html_pag_IMP.cadastrar_usuario(ses)
 
-def preencher_endereco(ses):
+def preencher_endereco(ses, args):
   """Retorna uma página de preenchimento do endereco que contém um formulário 
   para entrada dos dados de um objeto endereco, e um botão "Confirmar"
   que emite um comando 'definir_endereco'."""
-  return gera_html_pag_IMP.preencher_endereco(ses)
+  return gera_html_pag_IMP.preencher_endereco(ses, args)
 
 def mostra_usuario(ses, usr):
   """Retorna uma página que contém as informações do usuário {usr},

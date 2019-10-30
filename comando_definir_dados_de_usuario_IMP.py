@@ -20,8 +20,6 @@ def processa(ses, args):
     erro = msg_campo_obrigatorio('Email')
   elif 'CPF' not in args:
     erro = msg_campo_obrigatorio('CPF')
-  elif 'endereco' not in args:
-    erro = msg_campo_obrigatorio('Endereço')
   elif 'CEP' not in args:
     erro = msg_campo_obrigatorio('CEP')
   elif 'telefone' not in args:
@@ -38,12 +36,24 @@ def processa(ses, args):
     erro = 'O e-mail não é valido.'
   elif len(args['senha']) < 8:
     erro = 'A senha é muito pequena'
+  elif 'rua_numero' not in args:
+    erro = msg_campo_obrigatorio('Rua e Número')
+  elif 'bairro' not in args:
+    erro = msg_campo_obrigatorio('Bairro')
+  elif 'cidade_estado' not in args:
+    erro = msg_campo_obrigatorio('Cidade e Estado')
 
-  # Remove o campo conf_senha, não mais necessário
+  # Adiciona o campo endereco formatado como 'Rua, número\nBairro\nCidade, UF'
+  args['endereco'] = args['rua_numero'] + '\n' + args['bairro'] + '\n' + args['cidade_estado']
+
+  # Remove o campos, não mais necessários
+  args.pop('rua_numero', None)
+  args.pop('bairro', None)
+  args.pop('cidade_estado', None)
   args.pop('conf_senha', None)
   
   # Converte bit de administrador para bool:
-  args['administrador'] = ( args['administrador'] == "on" )
+  args['administrador'] = True if 'administrador' in args else False
 
   if not erro:
     usr = None
@@ -55,6 +65,5 @@ def processa(ses, args):
   if type(usr) is ObjUsuario:
     pag = gera_html_pag.mostra_usuario(ses, usr)
   else:
-    erro = "Erro ao gerar novo usuário"
     pag = gera_html_pag.mensagem_de_erro(ses, erro)
   return pag

@@ -14,8 +14,13 @@ def processa(ses, args):
     if (usuario.obtem_identificador(usr_ses) != usuario.obtem_identificador(usr_cpr)):
         return gera_html_pag.mensagem_de_erro(ses, "Usuário do carrinho inválido")
 
+    # Adiciona o campo 'novo endereco' formatado como 'Rua, número\nBairro\nCidade, UF\nComplemento'
+    novo_endereco = args['logradouro'] + ', ' +  args['numero'] + '\n' \
+                    + args['bairro'] + '\n' \
+                    + args['cidade'] + ', ' + args['estado'] + '\n' \
+                    + args['complemento']
+
     id_compra = args['id_compra']
-    novo_endereco = args['endereco']
     novo_cep = args['CEP']
 
     compra.muda_atributos(cpr, { 'endereco' : novo_endereco, 'CEP' : novo_cep })
