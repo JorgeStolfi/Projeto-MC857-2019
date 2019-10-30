@@ -15,7 +15,7 @@ TAM_FONTE_PADRAO = "18px"
 def buscar_produtos():
   cor_cinza = "#fff888"
   html_condicao = gera_html_elem.input(None, "text", "condicao", None, "Buscar o que?", None)
-  html_submit_buscar = gera_html_botao.submit("Buscar", 'buscar_produtos', None, '#eeeeee')
+  html_submit_buscar = gera_html_botao.submit("Buscar", 'buscar_produtos', None, '#ed3330')
   return header_form() + \
     "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
     "      " + html_condicao + "\n" + \
@@ -26,7 +26,7 @@ def buscar_produtos():
 def ver_produto(id_produto, qtd_produto):
   html_produto = gera_html_elem.input(None, "hidden", "id_produto", id_produto, None, None)
   html_qtd = ( gera_html_elem.input(None, "hidden", "quantidade", str(qtd_produto), None, None) if qtd_produto != None else "" )
-  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
   
   return header_form() + \
     ( "    " + html_produto + "\n" ) + \
@@ -73,7 +73,7 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
     html_compra = None
   html_produto = gera_html_elem.input(None, "readonly", "id_produto", id_produto, None, None)
   html_quantidade = gera_html_elem.input(None, "text", "quantidade", str(qtd_produto), None, "alterar_qtd_de_produto")
-  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
   html_submit_excluir = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
   return header_form() + \
     ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
@@ -85,7 +85,7 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
 
 def ver_compra(id_compra):
   html_compra = gera_html_elem.input(None, "readonly", "id_compra", id_compra, None, None)
-  html_submit_ver = gera_html_botao.submit("Ver", 'ver_compra', None, '#eeeeee')
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_compra', None, '#60a3bc')
   return header_form() + \
     ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
     ( "    " + html_submit_ver + "\n" ) + \
