@@ -55,6 +55,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_ver_produto = gera_html_form.buscar_identificador()
     else:
       html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
       html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
@@ -63,6 +64,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_ver_produto = ""
   else:
     html_bt_sair = ""
     html_nome = ""
@@ -71,6 +73,7 @@ def menu_geral(logado, nome_usuario, admin):
     html_bt_minha_conta = ""
     html_bt_entrar = "  " + gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55') + "\n"
     html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+    html_bt_ver_produto = ""
 
   html_bt_ofertas = "  " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n"
   html_bt_acrescentar_produto = " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n"
@@ -87,6 +90,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_sair + \
       html_bt_ofertas + \
       html_bt_acrescentar_produto + \
+      html_bt_ver_produto + \
     "</nav>"
   return html_menu
 
@@ -174,42 +178,45 @@ def bloco_de_compra(cpr, detalhe):
   html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco']
   html_ends = paragrafo(estilo_parag, bloco_texto(str(html_endereco), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   if detalhe:
-    itens = compra.obtem_itens(cpr);
+    itens = compra.obtem_itens(cpr)
     linhas = [].copy()
     cmdAlterarQtd = "alterar_qtd_de_produto"
     cmdverProduto = "ver_produto"
     for prod, qtd, prc in itens:
       atrs = produto.obtem_atributos(prod)
       d_curta = atrs['descr_curta']
+      palavras = atrs['palavras']
       html_d_curta = d_curta
-      html_qtd = html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
+      html_palavras = palavras
+      html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
+
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
       # !!! Falta custo de frete e valor total a pagar !!!
       # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
-      linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
+      linhas.append(( d_curta, html_qtd, html_prc, html_palavras, html_excl ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
   
   # Admnistrador
-##  atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
-##  html_admin = ""
-##  if (atrs_cliente['admin']):    
-##    status_atual = atrs_compra['status']
-##    html_recebido = ""
-##    html_entregue = ""
-##    # Muda status de pagando para pago
-##    if (status_atual == 'pagando'):
-##      atributos_pago = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'pago'}
-##      html_recebido = gera_html_botao.submit("Pagamento Recebido", 'mudar_status_de_compra', atributos_pago, '#55ee55')
-##    # Muda status de despachado para entregue
-##    elif (status_atual == 'despachado'):
-##      atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
-##      html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
-##    html_admin = html_recebido if (html_recebido != "") else html_entregue 
+  atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
+  html_admin = ""
+  if (atrs_cliente['administrador']):    
+    status_atual = atrs_compra['status']
+    html_recebido = ""
+    html_entregue = ""
+    # Muda status de pagando para pago
+    if (status_atual == 'pagando'):
+      atributos_pago = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'pago'}
+      html_recebido = gera_html_botao.submit("Pagamento Recebido", 'mudar_status_de_compra', atributos_pago, '#55ee55')
+    # Muda status de despachado para entregue
+    elif (status_atual == 'despachado'):
+      atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
+      html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
+    html_admin = html_recebido if (html_recebido != "") else html_entregue 
 
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
   atrs_alterar = { 'id_compra': id_compra }
