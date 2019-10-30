@@ -1,0 +1,12 @@
+- Fiz a inclusão do atributo 'palavras' em {ObjProduto}, 
+que contém palavras sinônimos e palavras relacionadas ao produto;
+
+- Inclusão desse atributo nas chamadas de produto.cria (tanto nas implementações quanto nos testes)
+para que os produtos sejam criados com esse atributo;
+
+- Alterar método "produto.busca_por_palavra" 
+para fazer a busca pelas palavras relacionadas (atributo 'palavras').
+
+- Criação de novo caso de teste para validar a busca de produtos pelo atributo 'palavras'.
+
+- Inclusão do atributo 'palavras' na tela de compras.

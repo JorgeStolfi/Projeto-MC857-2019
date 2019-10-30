@@ -7,6 +7,8 @@ from utils_testes import erro_prog, mostra
 import re
 #{'celular': '165156165165', 'cpf': '651651651651', 'endereco': 'av rua da casa', 'confSenha': '123456', 'cep': '6156-561', 'email': 'lucianocps9@gmail.com', 'telefone': '651561651561', 'nome': 'Luciano', 'senha': '123456', 'estado': 'AP'}
 
+import sys
+
 def msg_campo_obrigatorio(nome_do_campo):
   return "O campo %s é obrigatório." % nome_do_campo
 
@@ -26,35 +28,47 @@ def processa(ses, args):
     erro = msg_campo_obrigatorio('CEP')
   elif 'telefone' not in args:
     erro = msg_campo_obrigatorio('Telefone')
-  elif 'adminstrador' not in args:
-    erro = msg_campo_obrigatorio('Administrador')
   elif 'senha' not in args:
     erro = msg_campo_obrigatorio('Senha')
-  elif 'conf_senha' not in args:
-    erro = msg_campo_obrigatorio('Confirmação da senha')
-  elif args['conf_senha'] != args['senha']:
-    erro = 'A senha e confirmação de senha não são iguais.'
-  elif re.match('(.*)(@)(.*)(\.com)', args['email']):
-    erro = 'O e-mail não é valido.'
   elif len(args['senha']) < 8:
     erro = 'A senha é muito pequena'
+  elif len(args['senha']) > 24:
+    erro = 'A senha é muito grande'
+  elif len(args['CPF']) < 14:
+    erro = 'O CPF é muito pequeno'
+  elif len(args['CPF']) > 15:
+    erro = 'O CPF é muito grande'
+  elif len(args['nome']) < 1 or len(args['nome']) > 60:
+    erro = 'O tamanho do nome deve ser entre 1 e 60 caracteres'  
+  elif len(args['email']) < 6 or len(args['email']) > 60:
+    erro = 'O tamanho do email deve ser entre 6 e 60 caracteres'  
+  elif len(args['endereco']) < 10 or len(args['endereco']) > 180:
+    erro = 'O tamanho do endereco deve ser entre 10 e 180 caracteres'  
+  elif len(args['documento']) < 6 or len(args['documento']) > 24:
+    erro = 'O tamanho do documento deve ser entre 6 e 24 caracteres'  
+  elif len(args['telefone']) < 9 or len(args['telefone']) > 40:
+    erro = 'O tamanho do telefone deve ser entre 9 e 40 caracteres'  
 
-  # Remove o campo conf_senha, não mais necessário
-  args.pop('conf_senha', None)
-  
   # Converte bit de administrador para bool:
-  args['administrador'] = ( args['administrador'] == "on" )
-
-  if not erro:
-    usr = None
+  if 'administrador' in args:
+    args['administrador'] = True
   else:
+    args['administrador'] = False
+    
+  if 'id_usario' in args:
+    del args['id_usuario']
+  
+  if not erro:
     usr = usuario.cria(args)
+  else:
+    usr = None
+    sys.stderr.write("err:" + erro)
 
   # Verifica se o usuário foi criado corretamente 
   # e retorna uma página de acordo com o resultado:
   if type(usr) is ObjUsuario:
     pag = gera_html_pag.mostra_usuario(ses, usr)
   else:
-    erro = "Erro ao gerar novo usuário"
-    pag = gera_html_pag.mensagem_de_erro(ses, erro)
+    err = "Erro ao gerar novo usuário: " + erro
+    pag = gera_html_pag.mensagem_de_erro(ses, err)
   return pag

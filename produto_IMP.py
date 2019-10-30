@@ -33,6 +33,7 @@ colunas = \
     ( 'volume',      type(10.5),  'FLOAT',   False,    0.0001,  999999.0 ), # volume do produto em mililitros.
     ( 'estoque',     type(10),    'INTEGER', False,    0,       99999999 ), # Estoque do produto.
     ( 'oferta',      type(True),  'INTEGER', False,    0,              1 ), # Produto está em oferta.
+    ( 'palavras',    type("foo"), 'TEXT',    True,     0,           1000 ), # Sinônimos e termos relacionados, para busca.
   )
   # Descrição das colunas da tabela na base de dados.
 
@@ -72,6 +73,10 @@ def obtem_identificador(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return prod.id_produto
 
+def obtem_palavras(prod):
+  global cache, nome_tb, letra_tb, colunas, diags
+  return prod.palavras
+
 def obtem_indice(prod):
   global cache, nome_tb, letra_tb, colunas, diags
   return identificador.para_indice(letra_tb, prod.id_produto)
@@ -109,15 +114,12 @@ def busca_por_indice(ind):
   return usr
 
 def busca_por_palavra(pal):
-  chaves = ('descr_curta', 'descr_media')
+  chaves = ('descr_curta', 'descr_media', 'palavras')
   valores = (pal,)
-  busca_com_and = ' and ' in pal or ' AND ' in pal
+  busca_com_and = ' AND ' in pal
   
   if busca_com_and:
-    if pal.find(' and ') > 0:
-      valores = pal.split(' and ')
-    else:
-      valores = pal.split(' AND ')
+    valores = pal.split(' AND ')
     valores = tuple(valores)
  
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
@@ -150,6 +152,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'palavras': 'escovador, animal, ourico, animais, portátil'
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",
@@ -170,6 +173,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'palavras': 'furadeira, marcenaria'
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -189,6 +193,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'palavras': 'luva, inverno'
       },
       {
         'descr_curta': "Ferroada",
@@ -204,6 +209,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'palavras': 'espada, elfo, senhor dos aneis'
       },
       {
         'descr_curta': "Amassador de suspiros",
@@ -222,6 +228,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'palavras': 'amassador, suspiro'
       },
       { 'descr_curta': "Cabideiro", 
         'descr_media': "Cabideiro com capacidade para 420 cabides", 
@@ -235,6 +242,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'palavras':'cabide, cabides, roupas, roupa'
       }
     ]
   for atrs in lista_atrs:
