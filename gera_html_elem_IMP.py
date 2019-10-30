@@ -7,6 +7,8 @@ import gera_html_botao
 import produto
 import compra
 import usuario
+import comando_excluir_item_de_compra
+import comando_alterar_qtd_de_produto
 
 # Outros módulos importados por esta implementação:
 from datetime import datetime, timezone
@@ -228,8 +230,8 @@ def bloco_de_compra(cpr, detalhe):
     html_itens + \
     html_alt_met_pag + \
     html_ends + \
-    html_alterar_endereco + \
-    html_admin
+    html_alterar_endereco
+    #html_admin
   bloco_descr = span("\n display: inline-block;", html_descr)
   bloco_final = \
   span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
@@ -304,6 +306,8 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_rotulo = label(rotulo)
   html_tipo = " type =\"" + tipo + "\""
   html_nome = " name=\"" + nome + "\" id=\"" + nome + "\""
+  if tipo == "number":
+      html_nome += ' min="1" max="5"\ '
   if val_ini != None and dica != None:
     erro_prog("{val_ini} e {dica} são mutuamente exclusivos")
   html_val_ini = ( " value =\"" + val_ini + "\"" if val_ini != None else "" )
@@ -311,6 +315,7 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_cmd = ( " onchange=\"window.location.href=" + cmd + "\"" if cmd != None else "" )
   html = html_rotulo + "<input" + html_tipo + html_nome + html_val_ini + html_dica + "/>"
   return html
+    
 
 def label(rotulo):
   if rotulo == None or rotulo == "":
