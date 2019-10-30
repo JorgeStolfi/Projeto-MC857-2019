@@ -41,23 +41,23 @@ def rodape():
     "</html>\n"
 
 def menu_geral(logado, nome_usuario, admin):
-  html_bt_principal = "  " + gera_html_botao.simples("Principal", 'principal', None, '#eeeeee') + "\n"
+  html_bt_principal = "  " + gera_html_botao.simples("Principal", 'principal', None, '#60a3bc') + "\n"
   html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
 
   if logado:
     if admin:
-      html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
-      html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
-      html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
-      html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+      html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#60a3bc') + "\n"
+      html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#60a3bc') + "\n"
+      html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#60a3bc') + "\n"
+      html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#60a3bc') + "\n"
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
     else:
-      html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
-      html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
-      html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n"
-      html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+      html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#60a3bc') + "\n"
+      html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#60a3bc') + "\n"
+      html_bt_minhas_compras =  "  " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#60a3bc') + "\n"
+      html_bt_minha_conta =  "  " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#60a3bc') + "\n"
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
@@ -68,7 +68,7 @@ def menu_geral(logado, nome_usuario, admin):
     html_bt_minhas_compras = ""
     html_bt_minha_conta = ""
     html_bt_entrar = "  " + gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55') + "\n"
-    html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+    html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#60a3bc') + "\n"
 
   html_bt_ofertas = "  " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n"
   html_bt_acrescentar_produto = " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n"
@@ -184,7 +184,7 @@ def bloco_de_compra(cpr, detalhe):
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
-      html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
+      html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
       # !!! Falta custo de frete e valor total a pagar !!!
       # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
       linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
