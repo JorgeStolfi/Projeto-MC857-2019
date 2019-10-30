@@ -43,7 +43,7 @@ def rodape():
     "</html>\n"
 
 def menu_geral(logado, nome_usuario, admin):
-  html_bt_principal = "  " + gera_html_botao.simples("Principal", 'principal', None, '#eeeeee') + "\n"
+  html_bt_principal = "  " + gera_html_botao.simples("Principal", 'principal', None, '#60a3bc') + "\n"
   html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
 
   html_bt_user = ""
@@ -188,7 +188,7 @@ def bloco_de_compra(cpr, detalhe):
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#ffffff')
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
-      html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
+      html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
       # !!! Falta custo de frete e valor total a pagar !!!
       # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
       linhas.append(( d_curta, html_qtd, html_prc, html_palavras, html_excl ))
@@ -199,7 +199,7 @@ def bloco_de_compra(cpr, detalhe):
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
-  if (atrs_cliente['administrador']):    
+  if (atrs_cliente['administrador']):
     status_atual = atrs_compra['status']
     html_recebido = ""
     html_entregue = ""

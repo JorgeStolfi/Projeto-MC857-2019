@@ -37,6 +37,17 @@ def lista_de_produtos(ses, idents):
   e terá um botão 'Ver' para mostrar a descrição detalhada."""
   return gera_html_pag_IMP.lista_de_produtos(ses, idents)
 
+
+def container_de_produtos(ses, idents):
+  """Dada uma lista {idents} de identificadores de produtos,
+  retorna um container mostrando a descrição resumida de todos esses produtos.
+
+  O container é uma página sem cabeçalho e rodapé, apenas seu conteúdo
+
+  Cada descrição será gerada por {gera_html_elem.bloco_de_produto(None, prod, qtd, False)},
+  e terá um botão 'Ver' para mostrar a descrição detalhada."""
+  return gera_html_pag_IMP.container_de_produtos(ses, idents)
+
 def entrar(ses):
   """Retorna uma página contendo o formulário de entrar (login),
   com campos para entrada de usuário e senha e um botão 
@@ -49,11 +60,11 @@ def cadastrar_usuario(ses):
   que emite um comando 'definir_dados_de_usuario', sem parametro 'id_usuario'."""
   return gera_html_pag_IMP.cadastrar_usuario(ses)
 
-def preencher_endereco(ses):
+def preencher_endereco(ses, args):
   """Retorna uma página de preenchimento do endereco que contém um formulário 
   para entrada dos dados de um objeto endereco, e um botão "Confirmar"
   que emite um comando 'definir_endereco'."""
-  return gera_html_pag_IMP.preencher_endereco(ses)
+  return gera_html_pag_IMP.preencher_endereco(ses, args)
 
 def mostra_usuario(ses, usr):
   """Retorna uma página que contém as informações do usuário {usr},
