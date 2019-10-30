@@ -180,7 +180,6 @@ def bloco_de_compra(cpr, detalhe):
   if detalhe:
     itens = compra.obtem_itens(cpr)
     linhas = [].copy()
-    cmdAlterarQtd = "alterar_qtd_de_produto"
     cmdverProduto = "ver_produto"
     for prod, qtd, prc in itens:
       atrs = produto.obtem_atributos(prod)
@@ -188,9 +187,11 @@ def bloco_de_compra(cpr, detalhe):
       palavras = atrs['palavras']
       html_d_curta = d_curta
       html_palavras = palavras
-      html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
+      html_qtd = gera_html_form.atualizar_produto_do_carrinho(qtd, prod.id_produto, id_compra)
+
       html_prc = "R$ " + "{:10.2f}".format(prc)
-      html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
+
+      html_excl = gera_html_form.excluir_produto_do_carrinho(prod.id_produto, id_compra)
 
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
@@ -200,11 +201,11 @@ def bloco_de_compra(cpr, detalhe):
     html_itens = tabela(linhas)
   else:
     html_itens = ""
-  
+
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
-  if (atrs_cliente['administrador']):    
+  if (atrs_cliente['administrador']):
     status_atual = atrs_compra['status']
     html_recebido = ""
     html_entregue = ""
@@ -216,7 +217,7 @@ def bloco_de_compra(cpr, detalhe):
     elif (status_atual == 'despachado'):
       atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
       html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
-    html_admin = html_recebido if (html_recebido != "") else html_entregue 
+    html_admin = html_recebido if (html_recebido != "") else html_entregue
 
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
   atrs_alterar = { 'id_compra': id_compra }
@@ -315,7 +316,7 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_cmd = ( " onchange=\"window.location.href=" + cmd + "\"" if cmd != None else "" )
   html = html_rotulo + "<input" + html_tipo + html_nome + html_val_ini + html_dica + "/>"
   return html
-    
+
 
 def label(rotulo):
   if rotulo == None or rotulo == "":
