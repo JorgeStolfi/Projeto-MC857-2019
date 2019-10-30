@@ -179,7 +179,9 @@ def bloco_de_compra(cpr, detalhe):
     for prod, qtd, prc in itens:
       atrs = produto.obtem_atributos(prod)
       d_curta = atrs['descr_curta']
+      palavras = atrs['palavras']
       html_d_curta = d_curta
+      html_palavras = palavras
       html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
@@ -187,7 +189,7 @@ def bloco_de_compra(cpr, detalhe):
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
       # !!! Falta custo de frete e valor total a pagar !!!
       # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
-      linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
+      linhas.append(( d_curta, palavras, html_qtd, html_prc, html_excl ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
