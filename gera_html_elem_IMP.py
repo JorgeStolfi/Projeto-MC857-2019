@@ -53,6 +53,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_ver_produto = gera_html_form.buscar_identificador()
     else:
       html_bt_sair = "  " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n"
       html_bt_carrinho =  "  " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n"
@@ -61,6 +62,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_entrar = ""
       html_bt_cadastrar = ""
       html_nome = "  " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+      html_bt_ver_produto = ""
   else:
     html_bt_sair = ""
     html_nome = ""
@@ -69,6 +71,7 @@ def menu_geral(logado, nome_usuario, admin):
     html_bt_minha_conta = ""
     html_bt_entrar = "  " + gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55') + "\n"
     html_bt_cadastrar = "  " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n"
+    html_bt_ver_produto = ""
 
   html_bt_ofertas = "  " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n"
   html_bt_acrescentar_produto = " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n"
@@ -85,6 +88,7 @@ def menu_geral(logado, nome_usuario, admin):
       html_bt_sair + \
       html_bt_ofertas + \
       html_bt_acrescentar_produto + \
+      html_bt_ver_produto + \
     "</nav>"
   return html_menu
 
@@ -197,7 +201,7 @@ def bloco_de_compra(cpr, detalhe):
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
-  if (atrs_cliente['admin']):    
+  if (atrs_cliente['administrador']):    
     status_atual = atrs_compra['status']
     html_recebido = ""
     html_entregue = ""

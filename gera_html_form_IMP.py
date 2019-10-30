@@ -35,8 +35,8 @@ def ver_produto(id_produto, qtd_produto):
     bottom_form()
 
 def trocar_carrinho(id_compra):
-    fam_fonte = "Courier"
-    tam_fonte = "18px"
+    fam_fonte = FAM_FONTE_PADRAO
+    tam_fonte = TAM_FONTE_PADRAO
     html_submit_ver = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra}, '#ffdd22')
     return \
      "<span style=\"\n" + \
@@ -212,8 +212,8 @@ def definir_dados_de_usuario(usr):
     bottom_form()
 
 def escolher_pagamento():
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
+  fam_fonte = FAM_FONTE_PADRAO
+  tam_fonte = TAM_FONTE_PADRAO
   html_nome = gera_html_elem.input("Nome: ", "text", "Nome", None, None, None)
   html_num1 = gera_html_elem.input("Número do cartão: ", "text", "n1", None, None, None)
   html_num2 = gera_html_elem.input(" - " , "text", "n2", None, None, None)
@@ -248,8 +248,8 @@ def escolher_pagamento():
     "</span>"
 
 def preencher_endereco():
-  fam_fonte = "Courier"
-  tam_fonte = "18px"
+  fam_fonte = FAM_FONTE_PADRAO
+  tam_fonte = TAM_FONTE_PADRAO
   html_logradouro = gera_html_elem.input("Logradouro: ", "text", "logradouro", None, None, None)
   html_numero = gera_html_elem.input("Número: ", "text", "numero", None, None, None)
   html_bairro = gera_html_elem.input("Bairro: ", "text", "bairro", None, None, None)
@@ -278,3 +278,14 @@ def preencher_endereco():
     "   <br/>" + \
     "  </form>\n" + \
     "</span>"
+
+def buscar_identificador():
+  cor_cinza = "#fff888"
+  html_condicao = gera_html_elem.input(None, "text", "id", None, "Identificador", None)
+  html_submit_ver_produto = gera_html_botao.submit("Ver", 'ver_objeto', None, '#eeeeee')
+  return header_form() + \
+    "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
+    "      " + html_condicao + "\n" + \
+    "    </span>\n" + \
+    "    " + html_submit_ver_produto + "\n" + \
+    bottom_form()
