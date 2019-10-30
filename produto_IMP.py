@@ -33,7 +33,7 @@ colunas = \
     ( 'volume',      type(10.5),  'FLOAT',   False,    0.0001,  999999.0 ), # volume do produto em mililitros.
     ( 'estoque',     type(10),    'INTEGER', False,    0,       99999999 ), # Estoque do produto.
     ( 'oferta',      type(True),  'INTEGER', False,    0,              1 ), # Produto está em oferta.
-    ( 'palavras',    type("foo"),  'TEXT',    False,   10,              1000 ), # Sinônimos e termos relacionados, para fins de busca.
+    ( 'palavras',    type("foo"), 'TEXT',    True,     0,           1000 ), # Sinônimos e termos relacionados, para busca.
   )
   # Descrição das colunas da tabela na base de dados.
 
@@ -152,7 +152,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'palavras' : 'escova, ouroço',
+        'palavras': 'escovador, animal, ourico, animais, portátil'
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",
@@ -173,7 +173,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
-        'palavras' : 'furadeira, broca',
+        'palavras': 'furadeira, marcenaria'
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -193,7 +193,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'palavras' : 'luva, quente, aquecer, dedos',
+        'palavras': 'luva, inverno'
       },
       {
         'descr_curta': "Ferroada",
@@ -209,7 +209,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
-        'palavras' : 'ferroada, espada',
+        'palavras': 'espada, elfo, senhor dos aneis'
       },
       {
         'descr_curta': "Amassador de suspiros",
@@ -228,7 +228,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'palavras' : 'amassador, suspiros, suspiro',
+        'palavras': 'amassador, suspiro'
       },
       { 'descr_curta': "Cabideiro", 
         'descr_media': "Cabideiro com capacidade para 420 cabides", 
@@ -242,7 +242,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
-        'palavras' : 'cabide, cabideiro, roupas',
+        'palavras':'cabide, cabides, roupas, roupa'
       }
     ]
   for atrs in lista_atrs:

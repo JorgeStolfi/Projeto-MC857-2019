@@ -176,7 +176,7 @@ def bloco_de_compra(cpr, detalhe):
   html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco']
   html_ends = paragrafo(estilo_parag, bloco_texto(str(html_endereco), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   if detalhe:
-    itens = compra.obtem_itens(cpr);
+    itens = compra.obtem_itens(cpr)
     linhas = [].copy()
     cmdAlterarQtd = "alterar_qtd_de_produto"
     cmdverProduto = "ver_produto"
@@ -189,11 +189,12 @@ def bloco_de_compra(cpr, detalhe):
       html_qtd = input(None, "number", "qtd", str(qtd), None, cmdAlterarQtd)
       html_prc = "R$ " + "{:10.2f}".format(prc)
       html_excl = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
+
       # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
       # !!! Falta custo de frete e valor total a pagar !!!
       # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
-      linhas.append(( d_curta, palavras, html_qtd, html_prc, html_excl ))
+      linhas.append(( d_curta, html_qtd, html_prc, html_palavras, html_excl ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
