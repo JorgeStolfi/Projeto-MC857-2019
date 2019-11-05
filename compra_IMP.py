@@ -9,7 +9,6 @@ import tabela_generica
 import base_sql
 import conversao_sql
 import identificador
-import frete
 import sys  # Para diagnóstico.
 from utils_testes import erro_prog, mostra
 
@@ -281,9 +280,8 @@ def diagnosticos(val):
 
 def calcular_frete(comp, cep):
   peso_total = 0
-  volume_total = 0
   for item in compra.obtem_itens(comp):
     peso_total = peso_total + item.peso
-    volume_total = volume_total + item.volume
-  
-  return frete.calcula(cep,peso_total,volume_total)
+  fator_de_distancia = cep / 10000000
+  frete = peso_total * fator_de_distancia
+  return frete
