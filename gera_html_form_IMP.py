@@ -15,7 +15,7 @@ TAM_FONTE_PADRAO = "18px"
 def buscar_produtos():
   cor_cinza = "#fff888"
   html_condicao = gera_html_elem.input(None, "text", "condicao", None, "Buscar o que?", None)
-  html_submit_buscar = gera_html_botao.submit("Buscar", 'buscar_produtos', None, '#eeeeee')
+  html_submit_buscar = gera_html_botao.submit("Buscar", 'buscar_produtos', None, '#ed3330')
   return header_form() + \
     "    <span style=\"text-color:" + cor_cinza + ";text-align: left;\">\n" + \
     "      " + html_condicao + "\n" + \
@@ -73,7 +73,7 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
     html_compra = None
   html_produto = gera_html_elem.input(None, "readonly", "id_produto", id_produto, None, None)
   html_quantidade = gera_html_elem.input(None, "text", "quantidade", str(qtd_produto), None, "alterar_qtd_de_produto")
-  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
   html_submit_excluir = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', None, '#55ee55')
   return header_form() + \
     ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
@@ -85,7 +85,7 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
 
 def ver_compra(id_compra):
   html_compra = gera_html_elem.input(None, "readonly", "id_compra", id_compra, None, None)
-  html_submit_ver = gera_html_botao.submit("Ver", 'ver_compra', None, '#eeeeee')
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_compra', None, '#60a3bc')
   return header_form() + \
     ( "    " + html_compra + "\n" if html_compra != None else "" ) + \
     ( "    " + html_submit_ver + "\n" ) + \
@@ -153,6 +153,12 @@ def definir_dados_de_usuario(usr):
       html_id_usuario = gera_html_elem.input(None, "text", "id_usuario", id_usuario, None, None)
     else:
       html_id_usuario = ""
+    # Formata atributo separa os campos do enderenco do formato 'Rua, número\nBairro\nCidade, UF'
+    # para [ 'Rua, Número', 'Bairro', 'Cidade, UF']
+    dados_endereco = args['endereco'].split('\n')
+    args['rua_numero'] = dados_endereco[0]
+    args['bairro'] = dados_endereco[1]
+    args['cidade_estado'] = dados_endereco[2]
   else:
     id_usuario = None
     html_id_usuario = None
@@ -160,16 +166,18 @@ def definir_dados_de_usuario(usr):
 
   # Dados brutos para as linhas. Para cada linha, o rótulo, tipo do "<input>", nome do campo, e dica.
   dados_linhas = (
-    ( "Nome",            "text",     "nome",          None ),
-    ( "E-mail",          "email",    "email",         "xxx@xxx.xxx.xx" ),
-    ( "CPF",             "text",     "CPF",           "xxx.xxx.xxx-xx" ),
-    ( "Telefone",        "text",     "telefone",      "+xx(xx)x-xxxx-xxxx" ),
-    ( "Endereco",        "text",     "endereco",      "Rua e número\nBairro\nCidade, UF"),
-    ( "CEP",             "text",     "CEP",           "xxxxx-xxx"),
-    ( "Documento",       "text",     "documento",     "Número, tipo, órgão"),
-    ( "Senha",           "password", "senha",         None),
-    ( "Confirmar senha", "password", "conf_senha",    None),
-    ( "Administrador",   "checkbox", "administrador", None),
+    ( "Nome",                "text",     "nome",          None ),
+    ( "E-mail",              "email",    "email",         "xxx@xxx.xxx.xx" ),
+    ( "CPF",                 "text",     "CPF",           "xxx.xxx.xxx-xx" ),
+    ( "Telefone",            "text",     "telefone",      "+xx(xx)x-xxxx-xxxx" ),
+    ( "Rua, Número",         "text",     "rua_numero",    "Rua, número"),
+    ( "Bairro",              "text",     "bairro",        "Bairro"),
+    ( "Cidade, UF",          "text",     "cidade_estado", "Cidade, UF"),
+    ( "CEP",                 "text",     "CEP",           "xxxxx-xxx"),
+    ( "Documento",           "text",     "documento",     "Número, tipo, órgão"),
+    ( "Senha",               "password", "senha",         None),
+    ( "Confirmar senha",     "password", "conf_senha",    None),
+    ( "Administrador",       "checkbox", "administrador", None),
   )
 
   # Converte os dados brutos das linhas para fragmentos HTML:
@@ -247,16 +255,18 @@ def escolher_pagamento():
     "  </form>\n" + \
     "</span>"
 
-def preencher_endereco():
+def preencher_endereco(args):
   fam_fonte = FAM_FONTE_PADRAO
   tam_fonte = TAM_FONTE_PADRAO
+  novo_args = { 'id_compra': args['id_compra'][0] }
   html_logradouro = gera_html_elem.input("Logradouro: ", "text", "logradouro", None, None, None)
   html_numero = gera_html_elem.input("Número: ", "text", "numero", None, None, None)
   html_bairro = gera_html_elem.input("Bairro: ", "text", "bairro", None, None, None)
   html_complemento = gera_html_elem.input("Complemento: ", "text", "complemento", None, None, None)
   html_cidade = gera_html_elem.input("Cidade ", "text", "cidade", None, None, None)
   html_estado = gera_html_elem.input("Estado ", "text", "estado", None, None, None)
-  html_submit = gera_html_botao.submit("Confirmar", 'definir_endereco', None, '#55ee55')
+  html_cep = gera_html_elem.input("CEP ", "text", "CEP", None, None, None)
+  html_submit = gera_html_botao.submit("Confirmar", 'definir_endereco', novo_args, '#55ee55')
   return \
         "<span style=\"\n" + \
     "  display: inline-block;\n" + \
@@ -267,6 +277,7 @@ def preencher_endereco():
     "  <form method=\"post\">" + \
     (  html_logradouro + "\n" ) +  \
     (  html_numero + "\n" ) + \
+    (html_cep + "\n") + \
     "   <br/>" + \
     (  html_bairro + "\n" ) + \
     (  html_complemento + "\n" ) + \

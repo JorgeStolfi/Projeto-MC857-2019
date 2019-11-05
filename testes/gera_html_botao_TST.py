@@ -24,23 +24,23 @@ prod1 = produto.busca_por_identificador("P-00000001")
 
 # Testes das funções de {gera_html_botao}:
 
-testa(gera_html_botao, simples, "simples_Principal", True, "Principal", 'principal', None, '#eeeeee')
+testa(gera_html_botao, simples, "simples_Principal", True, "Principal", 'principal', None, '#60a3bc')
 
 testa(gera_html_botao, simples, "simples_Entrar", True, "Entrar", 'solicitar_form_de_login', None, '#55ee55')
 
-testa(gera_html_botao, simples, "simples_Sair", True, "Sair", 'fazer_logout', None, '#eeeeee')
+testa(gera_html_botao, simples, "simples_Sair", True, "Sair", 'fazer_logout', None, '#60a3bc')
 
-testa(gera_html_botao, simples, "simples_Cadastrar", True, "Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee')
+testa(gera_html_botao, simples, "simples_Cadastrar", True, "Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#60a3bc')
 
-testa(gera_html_botao, simples, "simples_Meu_Carrinho", True, "Meu Carrinho", 'ver_carrinho', None, '#eeeeee')
+testa(gera_html_botao, simples, "simples_Meu_Carrinho", True, "Meu Carrinho", 'ver_carrinho', None, '#60a3bc')
 
 testa(gera_html_botao, simples, "simples_OK", True, "OK", 'principal', None, '#55ee55')
 
-testa(gera_html_botao, submit, "submit_Ver_produto", True, "Ver", 'ver_produto', None, '#eeeeee')
+testa(gera_html_botao, submit, "submit_Ver_produto", True, "Ver", 'ver_produto', None, '#60a3bc')
 
 testa(gera_html_botao, submit, "submit_Comprar", True, "Comprar", 'comprar_produto', None, '#55ee55')
 
-testa(gera_html_botao, submit, "submit_buscar_produtos", True, "Buscar", 'buscar_produtos', None, '#eeeeee')
+testa(gera_html_botao, submit, "submit_buscar_produtos", True, "Buscar", 'buscar_produtos', None, '#60a3bc')
 
 testa(gera_html_botao, submit, "submit_Cadastrar", True, "Cadastrar", 'definir_dados_de_usuario', None, '#55ee55')
 
