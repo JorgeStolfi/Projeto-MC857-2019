@@ -124,7 +124,7 @@ def cadastrar_usuario():
   return gera_html_form_IMP.cadastrar_usuario()
 
 def alterar_usuario(usr):
-  """Retorna o HTML de um formulário para para alterar dados do usuário {usr}.  
+  """Retorna o HTML de um formulário para para alterar dados do usuário {usr}.
   O formuláro inclui o identificador do usuário (não editável)
   e campos com as informações do usuário (editáveis, exceto 'email' e 'CPF'),
   e um botão 'Alterar' (de tipo 'submit').
@@ -138,13 +138,13 @@ def alterar_usuario(usr):
   return gera_html_form_IMP.alterar_usuario(usr)
 
 def escolher_pagamento():
-  """Retorna o HTML de um formulário para escolher o meio de pagamento, e entrar os 
-  dados do cartão de crédito. O formulário contém a seleção do meio de pagamento, os campos 
+  """Retorna o HTML de um formulário para escolher o meio de pagamento, e entrar os
+  dados do cartão de crédito. O formulário contém a seleção do meio de pagamento, os campos
   editaveis relacionados ao cartão de crédito(nome,numero, data de validade e
   codigo de segurança) e um botão "Confirmar".
-   
+
   Quando o usuário clicar no botão "Confirmar" ,será emitido um comando POST com ação
-  {definir_meio_de_pagamento}.Os argumentos desse POST serão as informações do 
+  {definir_meio_de_pagamento}.Os argumentos desse POST serão as informações do
   cartão de crédito.
   """
   return gera_html_form_IMP.escolher_pagamento()
@@ -152,17 +152,22 @@ def escolher_pagamento():
 def preencher_endereco(args):
   """Retorna o HTML de um formulário para preenchimento do endereço. O formulário contém o logradouro,
   bairro, cidade, estado, pais e um botão "Confirmar".
-   
+
   Quando o usuário clicar no botão "Confirmar" ,será emitido um comando POST com ação
-  {definir_endereco}.Os argumentos desse POST serão as informações do 
+  {definir_endereco}.Os argumentos desse POST serão as informações do
   endereço.
   """
   return gera_html_form_IMP.preencher_endereco(args)
 
 def buscar_identificador():
   """Retorna HTML de um formulario para busca textual no identificador do
-  cadastro de produtos.  O formulário contém um campo editável onde o usuário entra 
+  cadastro de produtos.  O formulário contém um campo editável onde o usuário entra
   o identificador na forma "{L}-{NNNNNNNN}", onde {L} pode ser "P", "C", "S", ou "U"
   que deseja procurar, e um botão de 'Ver' que solicita o produto ao servidor."""
   return gera_html_form_IMP.buscar_identificador()
 
+def excluir_produto_do_carrinho(prod_id, compr_id):
+  return gera_html_form_IMP.excluir_produto_do_carrinho(prod_id, compr_id)
+
+def atualizar_produto_do_carrinho(qtd, prod_id, compr_id):
+  return gera_html_form_IMP.atualizar_produto_do_carrinho(qtd, prod_id, compr_id)

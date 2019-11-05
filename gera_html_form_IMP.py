@@ -26,8 +26,8 @@ def buscar_produtos():
 def ver_produto(id_produto, qtd_produto):
   html_produto = gera_html_elem.input(None, "hidden", "id_produto", id_produto, None, None)
   html_qtd = ( gera_html_elem.input(None, "hidden", "quantidade", str(qtd_produto), None, None) if qtd_produto != None else "" )
-  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
-  
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#eeeeee')
+
   return header_form() + \
     ( "    " + html_produto + "\n" ) + \
     ( "    " + html_qtd + "\n" if html_qtd != "" else "" ) + \
@@ -105,12 +105,12 @@ def entrar():
   html_campo = gera_html_elem.input(None, "text", "email", None, None, None)
   linhas.append((html_rotulo, html_campo,))
   html_rotulo = gera_html_elem.label("Senha" + ": ")
-  html_campo = gera_html_elem.input(None, "text", "senha", None, None, None)
+  html_campo = gera_html_elem.input(None, "password", "senha", None, None, None)
   linhas.append((html_rotulo, html_campo,))
 
   # Monta a tabela com os fragmentos HTML:
   html_tabela = gera_html_elem.tabela(linhas)
-  
+
   html_fazer_login = gera_html_botao.submit("Entrar", 'fazer_login', None, '#55ee55')
 
   return header_form() + \
@@ -212,7 +212,7 @@ def definir_dados_de_usuario(usr):
     html_submit = gera_html_botao.submit("Cadastrar", 'definir_dados_de_usuario', None, '#55ee55')
   else:
     html_submit = gera_html_botao.submit("Alterar", 'definir_dados_de_usuario', None, '#55ee55')
-  
+
   return header_form() + \
     ( "    " + html_id_usuario + "\n" if id_usuario != None else "") + \
     ( html_tabela + "\n" ) + \
@@ -300,3 +300,47 @@ def buscar_identificador():
     "    </span>\n" + \
     "    " + html_submit_ver_produto + "\n" + \
     bottom_form()
+
+def excluir_produto_do_carrinho(prod_id, compr_id):
+  fam_fonte = FAM_FONTE_PADRAO
+  tam_fonte = TAM_FONTE_PADRAO
+  html_qtd_condido = gera_html_elem.input(None, "hidden", "quantidade", str(0), None, None)
+  html_pid_condido = gera_html_elem.input(None, "hidden", "id_produto", str(prod_id), None, None)
+  html_cid_condido = gera_html_elem.input(None, "hidden", "id_compra", str(compr_id), None, None)
+  html_butao = gera_html_botao.submit("Excluir", 'alterar_qtd_de_produto', None, '#55ee55')
+  return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form method=\"post\">" + \
+    (  html_qtd_condido + "\n" ) +  \
+    (  html_pid_condido + "\n" ) + \
+    (  html_cid_condido + "\n" ) + \
+    (  html_butao + "\n" ) + \
+    "  </form>\n" + \
+    "</span>"
+
+def atualizar_produto_do_carrinho(qtd, prod_id, compr_id):
+  fam_fonte = FAM_FONTE_PADRAO
+  tam_fonte = TAM_FONTE_PADRAO
+  html_qtd = gera_html_elem.input(None, "number", "quantidade", str(qtd), None, None)
+  html_pid_condido = gera_html_elem.input(None, "hidden", "id_produto", str(prod_id), None, None)
+  html_cid_condido = gera_html_elem.input(None, "hidden", "id_compra", str(compr_id), None, None)
+  html_butao = gera_html_botao.submit("Atualizar", 'alterar_qtd_de_produto', None, '#55ee55')
+  return \
+    "<span style=\"\n" + \
+    "  display: inline-block;\n" + \
+    "  font-family:" + fam_fonte + ";\n" + \
+    "  font-size:" + tam_fonte + ";\n" + \
+    "  padding: 5px;\n" + \
+    "\">\n" + \
+    "  <form method=\"post\">" + \
+    (  html_qtd + "\n" ) +  \
+    (  html_pid_condido + "\n" ) + \
+    (  html_cid_condido + "\n" ) + \
+    (  html_butao + "\n" ) + \
+    "  </form>\n" + \
+    "</span>"
