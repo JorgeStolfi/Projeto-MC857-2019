@@ -195,8 +195,8 @@ def calcula_total(cpr):
 
 def calcular_frete(compra, cep):
   """Retorna float {frete} de uma compra para determinado CEP.
-  A fórmula leva em consideração o peso dos objetos que serão comprados, seu volume e
-  os dois primeiros dígitos do CEP do comprador como fator multiplicativo de distância."""
+  A fórmula leva em consideração o peso dos objetos que serão comprados e
+  o primeiro dígito do CEP do comprador como fator multiplicativo de distância."""
   return compra_IMP.calcular_frete(compra, cep)
 
 # FUNÇÕES PARA DEPURAÇÃO
