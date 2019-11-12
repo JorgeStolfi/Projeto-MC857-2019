@@ -1,2 +1,4 @@
+########################################## ATIVIADE 6 ##########################################
+
 A atividade de hoje é alterar o formulário criado por {gera_html_form.dados_de_usuario} 
 para mostar a caixa "Administrador" ticada se o usuário for administrador.
