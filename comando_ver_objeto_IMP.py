@@ -16,8 +16,8 @@ def processa(ses, args):
   type_objeto = id_objeto[0]
   id_objeto = id_objeto[1]
   
-  if type_objeto == "P"
-    id_produto = id_objeto
+  if type_objeto == "P":
+    id_produto = args['id_objeto']
     # Considerando prod como objeto da classe Produto
     prod = produto.busca_por_identificador(id_produto)
     atrs_produto = produto.obtem_atributos(prod)
@@ -29,22 +29,22 @@ def processa(ses, args):
     pag = gera_html_pag.mostra_produto(ses, None, prod, qtd, None)
     return pag
   
-  else if type_objeto == "C"
-    id_compra = id_objeto
+  elif type_objeto == "C":
+    id_compra = args['id_objeto']
     # Considerando cpr como objeto da classe Compra
     cpr = compra.busca_por_identificador(id_compra)
     pag = gera_html_pag.mostra_compra(ses,cpr, None)
     return pag
 
-  else if type_objeto == "U"
-    id_usuario = id_objeto
+  elif type_objeto == "U":
+    id_usuario = args['id_objeto']
     # Considerando usr como objeto da classe Usuário
     usr = usuario.busca_por_identificador(id_usuario)
     pag = gera_html_pag.altera_usuario(ses,usr, None)
     return pag
 
-  else if type_objeto == "S"
-    id_sessao = id_objeto
+  elif type_objeto == "S":
+    id_sessao = args['id_objeto']
     pag = gera_html_pag.mostra_sessao(ses, None)
     return pag
     
