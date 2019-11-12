@@ -112,6 +112,10 @@ def menu_geral_botoes_linha_2():
 def bloco_de_produto(id_compra, prod, qtd, detalhe):
   id_produto = produto.obtem_identificador(prod)
   atrs = produto.obtem_atributos(prod)
+  
+  grupo = atrs['grupo']
+    if grupo != None:
+      return 
 
   # Monta o parágrafo de descrição
   estilo_parag = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
