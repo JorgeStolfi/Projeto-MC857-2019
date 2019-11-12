@@ -172,10 +172,11 @@ def mensagem_de_erro(ses, msg):
   return pagina
 
 def lista_de_compras(ses, idents, erros):
+  sys.stderr.write(str(idents))
   sep = "<br/><hr/>" # Separador de blocos de compras.
   todas_cmprs = ""
-  for id_cmpr in idents:
-    cmpr = compra.busca_por_identificador(id_cmpr)
+  for id_item in idents:
+    cmpr = itens_de_compra.busca_por_identificador(id_item)
     bloco_compra = gera_html_elem.bloco_de_compra(cmpr, False)
     todas_cmprs = todas_cmprs + sep + bloco_compra
   pagina = generica(ses, todas_cmprs + sep, erros)
