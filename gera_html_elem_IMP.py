@@ -204,16 +204,16 @@ def bloco_de_compra(cpr, detalhe):
   itens = compra.obtem_itens(cpr)
   num_itens = len(itens)
   preco_total = compra.calcula_total(cpr)
+  custo_frete = compra.calcular_frete(cpr, atrs_compra['CEP'])
+  custo_total = preco_total + custo_frete
   id_usr = compra.obtem_cliente(cpr)
   # Monta o parágrafo de descrição
   estilo_parag = "width: 600px; margin-top: 10px; margin-bottom: 2px; text-indent: 0px;  line-height: 75%;"
   html_ident = paragrafo(estilo_parag, bloco_texto(id_compra, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
   html_usr = paragrafo(estilo_parag, bloco_texto(str(id_usr), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_num_itens = paragrafo(estilo_parag, bloco_texto(str(num_itens), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
-  html_preco_total = paragrafo(estilo_parag, bloco_texto(str(preco_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
-  # !!! Falta custo de frete e valor total a pagar !!!
-  html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco'].replace("\n", "<br>")
-  html_ends = paragrafo(estilo_parag, bloco_texto(str(html_endereco), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+  html_custo_total = paragrafo(estilo_parag, bloco_texto("Custo total: " + str(custo_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+
   if detalhe:
     itens = compra.obtem_itens(cpr)
     linhas = [].copy()
@@ -229,8 +229,15 @@ def bloco_de_compra(cpr, detalhe):
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
       linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
     html_itens = tabela(linhas)
+    html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco'].replace("\n", "<br>")
+    html_ends = paragrafo(estilo_parag, bloco_texto(str(html_endereco), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+    html_preco_total = paragrafo(estilo_parag, bloco_texto("Custo total dos produtos: " + str(preco_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+    html_frete = paragrafo(estilo_parag, bloco_texto("Custo de frete: " + str(custo_frete), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   else:
     html_itens = ""
+    html_ends = ""
+    html_preco_total = ""
+    html_frete = ""
   
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
@@ -250,24 +257,33 @@ def bloco_de_compra(cpr, detalhe):
     html_admin = html_recebido if (html_recebido != None and html_recebido != "") else html_entregue 
   
   html_finalizar = ""
-  if (num_itens > 0):
+  if (num_itens > 0 and detalhe):
     atributos_finalizar = {'id_compra': id_compra}
     html_finalizar = gera_html_botao.simples("Finalizar", 'finalizar_compra', atributos_finalizar, '#ffffff')
 
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
   atrs_alterar = { 'id_compra': id_compra }
-  html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', atrs_alterar, '#ffffff')
-  html_alt_met_pag = gera_html_botao.simples("Alterar método de pagamento", 'solicitar_form_de_meio_de_pagamento', atrs_alterar, '#ffffff')
+  html_alterar_endereco = ""
+  html_alt_met_pag = ""
+  html_ver = ""
+  if detalhe:
+    html_alt_met_pag = gera_html_botao.simples("Alterar método de pagamento", 'solicitar_form_de_meio_de_pagamento', atrs_alterar, '#ffffff')
+    html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', atrs_alterar, '#ffffff')
+  else:
+    html_ver = gera_html_botao.submit("Ver", 'ver_compra', {"id_compra" : id_compra}, '#60a3bc')
   html_descr = \
     html_trocar_carrinho + \
     html_usr + html_ident  + \
     html_num_itens + \
     html_preco_total + \
+    html_frete + \
+    html_custo_total + \
     html_itens + \
     html_alt_met_pag + \
     html_ends + \
     html_alterar_endereco + \
     html_finalizar + \
+    html_ver + \
     html_admin
   bloco_descr = span(" display:inline-block;", html_descr)
   bloco_final = \
