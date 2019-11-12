@@ -105,7 +105,7 @@ prod2 = testa_cria_produto("prod2", pindice2, pident2, prod2_atrs)
 prod3_atrs = {
         'descr_curta': "Furadeira telepática (x 2)",
         'descr_media': "Kit com duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
-        'palavras': 'furadeira, marcenaria',
+        'palavras': 'furadeira, marcenaria, inverno',
         'descr_longa': 
           """"Fabricante: Ferramentas Tres Dedos SA<br/>
           Origem: Brasil<br/>
@@ -185,9 +185,25 @@ else:
     aviso_prog("resultado foi " + str(plist6_cmp) + " deveria ser " + str(plist6_esp),True)
     ok_global = False
 # ----------------------------------------------------------------------
-# Veredito final:
+sys.stderr.write("\ntestando {produto.busca_por_produtos_semelhantes}:\n")
+
+palavra = "inverno"
+plist7_cmp = produto.busca_por_produtos_semelhantes(palavra)
+sys.stderr.write("  resultado = " + str(plist7_cmp) + "\n")
+if not type(plist7_cmp) is list:
+  aviso_prog("resultado " + str(plist7_cmp) + " deveria ser lista",True)
+  ok_global = False
+else:
+  plist7_cmp = sorted(plist7_cmp)
+  plist7_esp = [pident2,pident3]
+  if plist7_cmp != plist7_esp:
+    aviso_prog("resultado foi " + str(plist7_cmp) + " deveria ser " + str(plist7_esp),True)
+    ok_global = False
+# ----------------------------------------------------------------------
+
+#Veredito final:
 
 if ok_global:
-  sys.stderr.write("Teste terminou sem detectar erro\n")
+  sys.stderr.write("\nTeste terminou sem detectar erro\n")
 else:
   erro_prog("- teste falhou")
