@@ -1,5 +1,6 @@
 import frete
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 import utils_testes
 
 def verifica_calcula(cep,peso,volume):

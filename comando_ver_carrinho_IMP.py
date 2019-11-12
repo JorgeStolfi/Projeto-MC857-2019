@@ -8,5 +8,5 @@ import sys
 from utils_testes import erro_prog, mostra
 
 def processa(ses, args):
-  pag = gera_html_pag.mostra_carrinho(ses)
+  pag = gera_html_pag.mostra_carrinho(ses, None)
   return pag

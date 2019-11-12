@@ -5,13 +5,13 @@
 import sessao
 import usuario
 
-
 import comando_alterar_qtd_de_produto
 import comando_buscar_compras
 import comando_buscar_produtos
 import comando_comprar_produto
 import comando_definir_dados_de_produto
-import comando_definir_dados_de_usuario
+import comando_cadastrar_usuario
+import comando_alterar_usuario
 import comando_definir_endereco
 import comando_definir_meio_de_pagamento
 import comando_excluir_item_de_compra
@@ -19,7 +19,8 @@ import comando_fazer_login
 import comando_fazer_logout
 import comando_finalizar_compra
 import comando_solicitar_form_de_dados_de_produto
-import comando_solicitar_form_de_dados_de_usuario
+import comando_solicitar_form_de_cadastrar_usuario
+import comando_solicitar_form_de_alterar_usuario
 import comando_solicitar_form_de_endereco
 import comando_solicitar_form_de_meio_de_pagamento
 import comando_solicitar_form_de_login
@@ -206,14 +207,16 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
         headers=self.headers,
         environ={'REQUEST_METHOD':'POST', 'CONTENT_TYPE':self.headers['Content-Type']}
       )
+      # Enumera os nomes dos campos presentes no formulário:
       for chave in formulario.keys():
-        item = formulario[chave]
-        if item.filename:
-           # Valor do item é um arquivo. Ignore por enquanto:
-           ffs[chave] = "FILE(" + item.filename + ")"
-        else:
-          # Valor do item não é um arquivo:
-          ffs[chave] = item.value
+        # Pega a lista de todos os campos com nome {chave}:
+        item_list = formulario.getlist(chave)
+        # Enumera os campos com esse nome:
+        for val in item_list:
+          # Armazena no dicionário:
+          if chave in ffs:
+            erro_prog("o formulário tem mais de um campo com nome '" + chave + "'")
+          ffs[chave] = val
     return ffs
 
   def obtem_sessao(self, dados):
@@ -331,7 +334,7 @@ def processa_comando(tipo, ses, dados):
     # !!! Completar a lista abaixo com todos os módulos {comando_*.py} que existem. !!!
     if cmd == '' or cmd == '/' or cmd == '/principal':
       # Acesso sem comando, ou usuário apertou "Principal" no menu geral.
-      pag =  gera_html_pag.principal(ses)
+      pag =  gera_html_pag.principal(ses, [])
 
     elif cmd == '/solicitar_form_de_login':
       # Usuário apertou o botão "Entrar" (login) do menu geral:
@@ -364,13 +367,21 @@ def processa_comando(tipo, ses, dados):
       # ATENÇÃO: devolve também a nova sessão (que pode ser {None} se o login não deu certo).
       pag, ses_nova = comando_fazer_login.processa(ses, args)
 
-    elif cmd == '/solicitar_form_de_dados_de_usuario':
-      # Usuário apertou o botão "Cadastrar" ou "Minha Conta" do menu geral:
-      pag = comando_solicitar_form_de_dados_de_usuario.processa(ses, args)
+    elif cmd == '/solicitar_form_de_cadastrar_usuario':
+      # Usuário apertou o botão "Cadastrar" do menu geral:
+      pag = comando_solicitar_form_de_cadastrar_usuario.processa(ses, args)
 
-    elif cmd == '/definir_dados_de_usuario':
-      # Usuário apertou "Cadastrar" ou "Alterar" em formulário de cadastrar/alterar usuário:
-      pag = comando_definir_dados_de_usuario.processa(ses, args)
+    elif cmd == '/cadastrar_usuario':
+      # Usuário apertou "Cadastrar" em formulário de cadastrar usuário:
+      pag = comando_cadastrar_usuario.processa(ses, args)
+
+    elif cmd == '/solicitar_form_de_alterar_usuario':
+      # Usuário apertou o botão "Minha Conta" do menu geral:
+      pag = comando_solicitar_form_de_alterar_usuario.processa(ses, args)
+
+    elif cmd == '/alterar_usuario':
+      # Usuário apertou "Confirmar" em formulário de alterar usuário:
+      pag = comando_alterar_usuario.processa(ses, args)
 
     elif cmd == '/buscar_produtos':
       # Usuário preencheu o campo de busca de produtos e apertou "Buscar":

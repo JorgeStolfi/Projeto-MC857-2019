@@ -23,20 +23,20 @@ letra_tb = "P"
   # Prefixo dos identificadores de produtos.
 
 colunas = \
-  ( ( 'descr_curta', type("foo"), 'TEXT',    False,    1,             80 ), # Descricao curta do produto.
-    ( 'descr_media', type("foo"), 'TEXT',    False,   10,            250 ), # Descricao media do produto.
-    ( 'descr_longa', type("foo"), 'TEXT',    False,   10,           3000 ), # Descricao longa do produto.
-    ( 'palavras',    type("foo"), 'TEXT',    True,     2,           1000 ), # Sinônimos e termos relacionados, para busca.
-    ( 'unidade',     type("foo"), 'TEXT',    False,    1,             20 ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
-    ( 'preco',       type(10.5),  'FLOAT',   False,    1,      999999.99 ), # Preco unitário do produto em reais.
-    ( 'imagem',      type("foo"), 'TEXT',    False,    5,             50 ), # Nome do arquivo da imagem no diretorio 'imagens'.
-    ( 'peso',        type(10.5),  'FLOAT',   False,    0.0001, 9999999.0 ), # peso do produto em gramas.
-    ( 'volume',      type(10.5),  'FLOAT',   False,    0.0001,  999999.0 ), # volume do produto em mililitros.
-    ( 'estoque',     type(10),    'INTEGER', False,    0,       99999999 ), # Estoque do produto.
-    ( 'oferta',      type(True),  'INTEGER', False,    0,              1 ), # Produto está em oferta.
-    ( 'variado',     type(True),  'INTEGER', False,    0,              1 ), # Produto possui variedades.
-    ( 'grupo',       type("foo"), 'TEXT',    True,    10,             10 ), # Identificador de produto do grupo.
-    ( 'variedade',   type("foo"), 'TEXT',    True,     1,             40 ), # Descrição super-curta do produto, relativa ao grupo.
+  ( ( 'descr_curta', type("foo"), 'TEXT',    False ), # Descricao curta do produto.
+    ( 'descr_media', type("foo"), 'TEXT',    False ), # Descricao media do produto.
+    ( 'descr_longa', type("foo"), 'TEXT',    False ), # Descricao longa do produto.
+    ( 'palavras',    type("foo"), 'TEXT',    True  ), # Sinônimos e termos relacionados, para busca.
+    ( 'unidade',     type("foo"), 'TEXT',    False ), # Unidade de venda ('metro', 'caixa', 'peça', etc.).
+    ( 'preco',       type(10.5),  'FLOAT',   False ), # Preco unitário do produto em reais.
+    ( 'imagem',      type("foo"), 'TEXT',    False ), # Nome do arquivo da imagem no diretorio 'imagens'.
+    ( 'peso',        type(10.5),  'FLOAT',   False ), # peso do produto em gramas.
+    ( 'volume',      type(10.5),  'FLOAT',   False ), # volume do produto em mililitros.
+    ( 'estoque',     type(10),    'INTEGER', False ), # Estoque do produto.
+    ( 'oferta',      type(True),  'INTEGER', False ), # Produto está em oferta.
+    ( 'variado',     type(True),  'INTEGER', False ), # Produto possui variedades.
+    ( 'grupo',       type("foo"), 'TEXT',    True  ), # Identificador de produto do grupo.
+    ( 'variedade',   type("foo"), 'TEXT',    True  ), # Descrição super-curta do produto, relativa ao grupo.
   )
   # Descrição das colunas da tabela na base de dados.
 
@@ -64,12 +64,11 @@ def cria(atrs):
   if diags: mostra(0, "produto_IMP.cria(" + str(atrs) + ") ...")
   
   # Converte atributos para formato SQL.
-  atrs_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, tabelas.obj_para_indice)
+  atrs_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, False, tabelas.obj_para_indice)
   
   # Insere na base de dados e obtém o índice na mesma:
   prod = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
-  if not type(prod) is produto.ObjProduto:
-    erro_prog("resultado de tipo inesperado = " + str(prod))
+  assert type(prod) is produto.ObjProduto
   return prod
 
 def obtem_identificador(prod):
@@ -98,12 +97,11 @@ def calcula_preco(prod, qtd):
 def muda_atributos(prod, mods):
   global cache, nome_tb, letra_tb, colunas, diags
   # Converte valores de formato memória para formato SQL. 
-  mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice)
+  mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, True, tabelas.obj_para_indice)
   
   # Modifica atributos na tabela e na memória:
   res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, prod.id_produto, mods_SQL)
-  if res != prod:
-    erro_prog("resultado inesperado = " + str(res))
+  assert res == prod
   return
 
 def busca_por_identificador(id_produto):
@@ -139,6 +137,9 @@ def cria_testes():
     [ 
       {
         'descr_curta': "Escovador de ouriço",
+        'variado' : False,
+        'grupo' : None,
+        'variedade' : None,
         'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
         'palavras': 'escovador, animal, ourico, animais, portátil',
         'descr_longa': 
@@ -156,12 +157,12 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'variado' : True,
-        'grupo' : "P-00000001",
-        'variedade' : "Vermelho",
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",
+        'variado' : False,
+        'grupo' : None,
+        'variedade' : None,
         'descr_media': "Kit com duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
         'palavras': 'furadeira, marcenaria',
         'descr_longa': 
@@ -180,12 +181,12 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
-        'variado' : True,
-        'grupo' : "P-00000001",
-        'variedade' : "Roxo",
       },
       {
         'descr_curta': "Luva com 8 dedos",
+        'variado' : True,
+        'grupo' : None,
+        'variedade' : None,
         'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
         'palavras': 'luva, inverno',
         'descr_longa': 
@@ -203,12 +204,81 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'variado' : True,
-        'grupo' : "P-00000001",
-        'variedade' : "Azul",
       },
       {
+        'descr_curta': "Luva com 8 dedos",
+        'variado' : False,
+        'grupo': "P-00000003",
+        'variedade' : "Tamanho M",
+        'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
+        'palavras': 'luva, inverno',
+        'descr_longa': 
+          """Fabricante: United Trash Inc.<br/>
+          Origem: USA<br/>
+          Modelo: 8-EB<br/>
+          Normas: ANSI 2345, ABNT 2019-857<br/>
+          Material: Camurça artificial 1 mm, lã de aço.<br/>
+          Tamanho: G<br/>
+          Peso: 120 g""",
+        'preco': 19.95,
+        'imagem': "160519.png",
+        'estoque': 500,
+        'unidade': "1 unidade",
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : True,
+      },
+      {
+        'descr_curta': "Luva com 8 dedos",
+        'variado' : False,
+        'grupo': "P-00000003",
+        'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
+        'palavras': 'luva, inverno',
+        'descr_longa': 
+          """Fabricante: United Trash Inc.<br/>
+          Origem: USA<br/>
+          Modelo: 8-EB<br/>
+          Normas: ANSI 2345, ABNT 2019-857<br/>
+          Material: Camurça artificial 1 mm, lã de aço.<br/>
+          Tamanho: G<br/>
+          Peso: 120 g""",
+        'preco': 19.95,
+        'imagem': "160519.png",
+        'estoque': 500,
+        'unidade': "1 unidade",
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : True,
+        'variedade' : "Tamanho G",
+      },
+      {
+        'descr_curta': "Luva com 8 dedos",
+        'variado' : False,
+        'grupo': "P-00000003",
+        'variedade' : "Tamanho P",
+        'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
+        'palavras': 'luva, inverno',
+        'descr_longa': 
+          """Fabricante: United Trash Inc.<br/>
+          Origem: USA<br/>
+          Modelo: 8-EB<br/>
+          Normas: ANSI 2345, ABNT 2019-857<br/>
+          Material: Camurça artificial 1 mm, lã de aço.<br/>
+          Tamanho: G<br/>
+          Peso: 120 g""",
+        'preco': 19.95,
+        'imagem': "160519.png",
+        'estoque': 500,
+        'unidade': "1 unidade",
+        'peso':10.0,
+        'volume':500.5,
+        'oferta' : True, 
+      },
+      {
+        'variado' : False,
+        'grupo' : None,
         'descr_curta': "Ferroada",
+        'variedade' : None,
         'descr_media': "Espada élfica forjada na cidade de Gondolin.",
         'palavras': 'espada, elfo, senhor dos aneis',
         'descr_longa': 
@@ -222,12 +292,12 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
-        'variado' : True,
-        'grupo' : "P-00000001",
-        'variedade' : "Amarelo rosado",
       },
       {
+        'variado' : False,
+        'grupo' : None,
         'descr_curta': "Amassador de suspiros",
+        'variedade' : None,
         'descr_media': "Amassador de suspiros lânguidos manual com 5 velocidades e 2 temperaturas.",
         'palavras': 'amassador, suspiro',
         'descr_longa': 
@@ -244,11 +314,11 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'variado' : True,
-        'grupo' : "P-00000001",
-        'variedade' : "Lilás",
       },
-      { 'descr_curta': "Cabideiro", 
+      { 'variado' : False,
+        'grupo' : None,
+        'descr_curta': "Cabideiro",
+        'variedade' : None,
         'descr_media': "Cabideiro com capacidade para 420 cabides", 
         'palavras':'cabide, cabides, roupas, roupa',
         'descr_longa': 
@@ -261,14 +331,17 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
-        'variado' : True,
-        'grupo' : "P-00000001",
-        'variedade' : "Bege",
       }
     ]
   for atrs in lista_atrs:
+    # Acrescenta o produto à base de dados:
     prod = cria(atrs)
     assert prod != None and type(prod) is produto.ObjProduto
+    # Mostra na janela de shell:
+    sys.stderr.write("id = %s \"%s\"" % (produto.obtem_identificador(prod), atrs['descr_curta'],))
+    if ('grupo' in atrs) and (atrs['grupo'] != None):
+      sys.stderr.write(" [grupo = %s var = \"%s\"]" % (str(atrs['grupo']), str(atrs['variedade'],)))
+    sys.stderr.write("\n")
   return
 
 # FUNÇÕES INTERNAS
@@ -287,14 +360,15 @@ def def_obj(obj, id_produto, atrs_SQL):
   global cache, nome_tb, letra_tb, colunas, diags
   if diags: mostra(0, "produto_IMP.def_obj(" + str(obj) + ", " + id_produto + ", " + str(atrs_SQL) + ") ...")
   if obj == None:
-    atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.obj_para_indice)
+    atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, False, tabelas.obj_para_indice)
     if diags: mostra(2, "criando objeto, atrs_mem = " + str(atrs_mem))
     obj = produto.ObjProduto(id_produto, atrs_mem)
   else:
     assert obj.id_produto == id_produto
     # Converte atributos para formato na memória.
-    mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.obj_para_indice)
+    mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, True, tabelas.obj_para_indice)
     if diags: mostra(2, "modificando objeto, mods_mem = " + str(mods_mem))
+    assert type(mods_mem) is dict
     if len(mods_mem) > len(obj.atrs):
       erro_prog("numero excessivo de atributos a alterar")
     for chave, val in mods_mem.items():

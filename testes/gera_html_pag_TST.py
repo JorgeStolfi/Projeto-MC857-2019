@@ -8,7 +8,7 @@
 # !!! Ele ptecisa chamar cada função da interface pelo menos uma vez, gravando arquivos ".html" separados. !!!
 
 #Interfaces utilizados por este teste
-import sys
+
 import tabelas
 import usuario
 import produto
@@ -17,6 +17,9 @@ import sessao
 import gera_html_pag
 import base_sql
 from produto import ObjProduto
+import utils_testes
+
+import sys
 
 # Cria alguns produtos:
 
@@ -27,7 +30,9 @@ assert res == None
 sys.stderr.write("Criando alguns objetos...\n")
 tabelas.cria_todos_os_testes()
 #usuario teste
-usr1 = usuario.busca_por_CPF("123.456.789-00")
+usr1_id = usuario.busca_por_CPF("123.456.789-00")
+usr1 = usuario.busca_por_identificador(usr1_id)
+usr1_atrs = usuario.obtem_atributos(usr1)
 
 #sessao de teste
 ses = sessao.busca_por_identificador("S-00000001")
@@ -46,45 +51,49 @@ lista_prod = ["P-00000001", "P-00000002"]
 
 # Testes das funções de {gera_html_pag}:
 
-def testa(nome, funcao, *args):
+def testa(nome, tag, funcao, *args):
   """Testa {funcao(*args)}, grava resultado 
-  em "testes/saida/gera_html_pag.{nome}.html"."""
+  em "testes/saida/gera_html_pag.{nome}_{tag}.html"."""
   
-  prefixo = "testes/saida/gera_html_pag"
-  narq = prefixo + "." + nome + '.html'
-  f = open(narq, 'w')
-  sys.stderr.write("gravando %s\n" % narq)
-  try:
-    res = funcao(*args)
-    f.buffer.write(res.encode('utf-8'))
-  except Exception as ex:
-    msg = "testa(" + nome + "): ** erro = " + str(ex) + "\n"
-    sys.stderr.write(msg)
-    f.buffer.write(msg.encode('utf-8'))
-  f.close()
-
-testa("principal", gera_html_pag.principal, ses)
-
-testa("produto", gera_html_pag.mostra_produto, ses, cpr_ident, prod1, qtd)
-
-testa("lista_de_produtos", gera_html_pag.lista_de_produtos, ses, lista_prod)
-
-testa("cadastrar_usuario", gera_html_pag.cadastrar_usuario, ses)
-
-conteudo = "Teste do método genérico"
-
-testa("generica", gera_html_pag.generica,ses, conteudo)
-
-testa("mostra_carrinho", gera_html_pag.mostra_carrinho, ses)
-
-testa("mostra_compra_False", gera_html_pag.mostra_compra, ses, cpr)
-testa("mostra_compra_True", gera_html_pag.mostra_compra, ses, cpr)
-
-#Depende de outro modulo não impementado
-#testa("mostra_usuario", gera_html_pag.mostra_usuario,ses,usr1)
+  modulo = gera_html_pag
+  frag = False
+  utils_testes.testa_gera_html(modulo, funcao, rotulo, frag, *args)
+  
+# !!! Completar !!!
 
 msg = "voce cometeu um erro, rapaz"
-testa("mensagem_de_erro", gera_html_pag.mensagem_de_erro, ses, msg)
+testa("mensagem_de_erro", "S", gera_html_pag.mensagem_de_erro, ses, msg)
+
+msg = "voce cometeu um erro, rapaz\ne outro erro também"
+testa("mensagem_de_erro", "M", gera_html_pag.mensagem_de_erro, ses, msg)
+
+msg = ["voce cometeu um erro, rapaz", "e outro erro também",]
+testa("mensagem_de_erro", "L", gera_html_pag.mensagem_de_erro, ses, msg)
+
+for tag, erros in ( 
+    ("N", None), 
+    ("V", []), 
+    ("E", ["Mensagem UM", "Mensagem DOIS", "Mensagem TRÊS",])
+  ):
+
+  testa("principal", tag, gera_html_pag.principal, ses, erros)
+
+  testa("produto", tag, gera_html_pag.mostra_produto, ses, cpr_ident, prod1, qtd, erros)
+
+  testa("lista_de_produtos", tag, gera_html_pag.lista_de_produtos, ses, lista_prod, erros)
+
+  testa("cadastrar_usuario", tag, gera_html_pag.cadastrar_usuario, ses, usr1_atrs,["erro 1", "erro 2",])
+
+  testa("alterar_usuario", tag, gera_html_pag.alterar_usuario, ses, usr1_id, usr1_atrs, ["erro bobo", "erro genial",])
+
+  conteudo = "Teste do método genérico"
+
+  testa("generica", tag, gera_html_pag.generica,ses, conteudo, erros)
+
+  testa("mostra_carrinho", tag, gera_html_pag.mostra_carrinho, ses, erros)
+
+  testa("mostra_compra_False", tag, gera_html_pag.mostra_compra, ses, cpr, erros)
+  testa("mostra_compra_True", tag, gera_html_pag.mostra_compra, ses, cpr, erros)
 
 
 

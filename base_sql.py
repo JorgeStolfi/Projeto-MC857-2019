@@ -31,8 +31,8 @@ def executa_comando_CREATE_TABLE(nome_tb, colunas):
   O argumento {colunas} deve ser um string que descreve as colunas da
   tabela na linguagem SQL. Por exemplo,
 
-    "indice INTEGER PRIMARY KEY," \
-    "CPF CHAR(14) NOT NULL," \
+    "indice INTEGER PRIMARY KEY," + \
+    "CPF CHAR(14) NOT NULL," + \
     "valor FIXED(8,2) NOT NULL"
 
   Note que na base SQLite a coluna designada como "PRIMARY KEY" precisa ser
@@ -40,6 +40,12 @@ def executa_comando_CREATE_TABLE(nome_tb, colunas):
 
   O resultado é {None} em caso de sucesso."""
   return base_sql_IMP.executa_comando_CREATE_TABLE(nome_tb, colunas)
+
+def num_entradas(nome_tb, nome_indice):
+  """Devolve o número de entradas na tabela {nome_tb}. Supõe
+  que há uma coluna de nome {nome_indice}, com tipo SQL 
+  "integer NOT NULL PRIMARY KEY" (auto-incrementante)."""
+  return base_sql_IMP.num_entradas(nome_tb, nome_indice)
 
 def executa_comando_INSERT(nome_tb, atrs):
   """Acrescenta uma nova linha na tabela {nome_tb}, cujo conteúdo 

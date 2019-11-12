@@ -44,10 +44,10 @@
 #
 #     Se {obj} for {None}, a função {def_obj} deve criar um novo objeto
 #     da classe correta, com identificador {ident} e atributos
-#     {atrs_SQL}. Neste caso, {atrs_SQL} deve ter todas as 
-#     colunas da tabela.  Senão, {def_obj} deve alterar os campos do objeto {obj}
-#     dado; neste caso, {atrs_SQL} pode ter apenas um subconjuto das colunas
-#     da tabela.
+#     {atrs_SQL}. Neste caso, {atrs_SQL} deve ter todas as colunas da
+#     tabela. Se {obj} não é {None}, {def_obj} deve alterar os campos do
+#     objeto {obj} dado; neste caso, {atrs_SQL} pode ter apenas um
+#     subconjuto das colunas da tabela.
 #     
 #     Nos dois casos, a função {def_obj} precisa converter
 #     os valores em {atrs_SQL} do formato SQL para o formato na memória
@@ -82,10 +82,6 @@ def cria_tabela(nome_tb, cols):
        
     [3] Um booleano que diz se a coluna pode ser {NULL} na 
       tabela SQL.
-       
-    [4],[5] Limites minimo e máximo para o campo. Se for texto,
-        os limites referem-se ao comprimento. Se for numérico,
-        referem-se ao valor.
         
   Certos valores de atributos na memória exigem conversão para poderem ser
   armazenados ou recueperados da base em disco.  Por exemplo, um atributo
@@ -98,8 +94,8 @@ def cria_tabela(nome_tb, cols):
   
   Se o tipo de um atributo na memória é lista, tupla, ou dicionário,
   esse atributi não pode ser armazenado numa coluna da base SQL.
-  Nesse caso o item [2] da descrição acima deve ser {None}, e os 
-  itens [3], [4], e [5] são irrelevantes.
+  Nesse caso o item [2] da descrição acima deve ser {None}, e o 
+  item [3] é irrelevante.
       
   Esta função deveria ser chamada apenas uma vez em cada 
   inicialização do servidor, depois de chamar {base_sql.conecta}."""
@@ -108,8 +104,8 @@ def cria_tabela(nome_tb, cols):
 def acrescenta(nome_tb, cache, let, cols, def_obj, atrs_SQL):
   """Acrescenta mais um objeto {obj} com atributos {atrs_SQL} na tabela {nome_tb} 
   da base {bas}, e também no seu {cache}. Cada valor de {atrs_SQL} 
-  deve ser consistente com os tipo SQL especificado no parâmetro {cols}.
-  Devolve o objeto criado {obj}. 
+  deve ser consistente com os tipo SQL especificado no parâmetro {cols}. 
+  Devolve o objeto criado {obj}.
   
   O identificador {id} do objeto será "{let}-{ind}", onde {ind} é o
   índice da linha correspondente na tabela, formatado em 8 dígitos. 
@@ -118,6 +114,24 @@ def acrescenta(nome_tb, cache, let, cols, def_obj, atrs_SQL):
   {obj} na memória, depois de acrescentar a linha no banco de dados mas
   antes de atualizar o cache."""
   return tabela_generica_IMP.acrescenta(nome_tb, cache, let, cols, def_obj, atrs_SQL)
+
+def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
+  """Procura na tabela {nome_tb} e no seu {cache}
+  um objeto {obj} com o identificador {ident}, que deve ter a forma 
+  "{let}-{ind}" onde {ind} é o índice na tabela.  O objeto 
+  deve existir.  Se o objeto não estiver no {cache}, cria o mesmo
+  com {obj=def_obj(None,ident,atrs_SQL)} onde {atrs_SQL} são os campos 
+  atuais da linha da tabela.
+  
+  Em qualquer caso, para cada entada {chv:val_novo} no dicionário
+  {mods_SQL}, esta função substitui o valor corrente da coluna {chv}
+  dessa linha por {val_novo}. As chaves de {mods_SQL} devem ser um
+  subconjuto dos nomes das colunas da tabela, como definido em {cols}.
+  Em seguida modifica os campos do objeto {obj} na memória chamando
+  {def_obj(obj,ident,mods_SQL)}.  
+  
+  A função devolve o próprio objeto {obj}."""
+  return tabela_generica_IMP.atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL)
 
 def busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident):
   """Procura na tabela {nome_tb} e no seu {cache}
@@ -160,24 +174,6 @@ def busca_por_valor(nome_tb, let, cols, chaves, valores):
   encontrados (não os objetos em si). Se nenhuma linha
   satisfizer o critério da busca, devolve uma lista vazia."""
   return tabela_generica_IMP.busca_por_valor(nome_tb, let, cols, chaves, valores)
-
-def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
-  """Procura na tabela {nome_tb} e no seu {cache}
-  um objeto {obj} com o identificador {ident}, que deve ter a forma 
-  "{let}-{ind}" onde {ind} é o índice na tabela.  O objeto 
-  deve existir.  Se o objeto não estiver no {cache}, cria o mesmo
-  com {obj=def_obj(None,ident,atrs_SQL)} onde {atrs_SQL} são os campos 
-  atuais da linha da tabela. 
-  
-  Em qualquer caso, para cada entada {chv:val_novo} no dicionário
-  {mods_SQL}, esta função substitui o valor corrente da coluna {chv}
-  dessa linha por {val_novo}. As chaves de {mods_SQL} devem ser um
-  subconjuto dos nomes das colunas da tabela, como definido em {cols}.
-  Em seguida modifica os campos do objeto {obj} na memória chamando
-  {def_obj(obj,ident,mods_SQL)}.
-  
-  Devolve o objeto {obj}."""
-  return tabela_generica_IMP.atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL)
 
 def limpa_tabela(nome_tb, cols):
   """Apaga todas as entradas da tabela {nome_tb}, e reinicializa o

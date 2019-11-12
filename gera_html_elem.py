@@ -33,7 +33,8 @@ def menu_geral(logado, nome_usuario, admin):
 
 def bloco_de_erro(msg):
   """Retorna um fragmento de HTML que contém a mensagem {msg},
-  e um botão "OK" que retorna para a página principal da loja."""
+  e um botão "OK" que retorna para a página principal da loja.
+  A mensagem pode incluir quebras de linha '\n'."""
   return gera_html_elem_IMP.bloco_de_erro(msg)
 
 def bloco_de_produto(id_compra, prod, qtd, detalhe):
@@ -53,6 +54,15 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
   e o preço para essa quantidade.  Se {qtd} for {None},
   mostra apenas o preço unitário, sem a quantidade."""
   return gera_html_elem_IMP.bloco_de_produto(id_compra, prod, qtd, detalhe)
+
+def bloco_de_lista_de_produtos(idents):
+  """Dada uma lista {idents} de identificadores de produtos,
+  retorna o HTML da descrição resumida de todos esses produtos.
+
+  Cada descrição será gerada por
+  {gera_html_elem.bloco_de_produto(None, prod, qtd, False)},
+  e terá um botão 'Ver' para mostrar a descrição detalhada."""
+  return gera_html_elem_IMP.bloco_de_lista_de_produtos(idents)
 
 def bloco_de_compra(cpr, detalhe):
   """Devolve um fragmento HTML que mostra os dados da compra {cpr}, um objeto 
@@ -138,10 +148,10 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   "action" default do formulário."""  
   return gera_html_elem_IMP.input(rotulo, tipo, nome, val_ini, dica, cmd)
 
-def label(rotulo):
-  """Deolve o elemento HTML "<label>{rotulo}</label>",
-  ou "" se o {rotulo} for {None} ou ""."""
-  return gera_html_elem_IMP.label(rotulo)
+def label(rotulo, sep):
+  """Deolve o elemento HTML "<label>{rotulo}{sep}</label>",
+  ou "" se o {rotulo} for {None} ou a cadeia vazia ."""
+  return gera_html_elem_IMP.label(rotulo, sep)
 
 def tabela(linhas):
   """Gera o HTML para uma tabela "<table>...</table>".
@@ -173,3 +183,9 @@ def paragrafo(estilo, conteudo):
   """Retorna um string que é um fragmento HTML consistindo do {conteudo}
   dado, formatado como um parágrafo ('<p style="{estilo}">...</p>')."""
   return gera_html_elem_IMP.paragrafo(estilo, conteudo)
+
+def form(estilo, conteudo):
+  """Retorna um string que é um fragmento HTML consistindo de um <form>...</form>
+  com método "post" e o {conteudo} dado (que deve ter os <input>s necessários).
+  Note que um <form> não pode ocorrer dentro de um parágrafo."""
+  return gera_html_elem_IMP.form(estilo, conteudo)

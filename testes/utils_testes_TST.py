@@ -2,6 +2,7 @@
 import utils_testes
 import utils_testes_AUX; from utils_testes_AUX import ObjTeste, obj1, obj1_ind, obj1_id, obj1_atrs
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 from utils_testes import erro_prog, mostra
 
 # ----------------------------------------------------------------------

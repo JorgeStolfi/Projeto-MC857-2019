@@ -74,7 +74,10 @@ def cria(cliente):
   (um objeto da classe {ObjUsuario}), acrescentando-o à tabela de compras da base de dados.
   O status será inicialmente 'aberto'.  Atribui um identificador único à compra,
   derivado do seu índice na tabela.
-  Retorna o objeto criado."""
+  
+  Em caso de sucesso, retorna o objeto criado.  Se os parâmetros 
+  forem inválidos ou incompletos, retorna uma ou mais mensagens
+  de erro, na forma de uma lista de strings."""
   return compra_IMP.cria(cliente)
 
 def obtem_identificador(cpr):
@@ -114,7 +117,11 @@ def muda_atributos(cpr, mods):
 
   O parâmetro {mods} deve ser um dicionário cujas chaves são um
   subconjunto das chaves dos atributos da compra. Os valores atuais desses
-  atributos são substituídos pelos valores correspondentes em {mods}."""
+  atributos são substituídos pelos valores correspondentes em {mods}.
+  
+  Em caso de sucesso, retorna o próprio objeto {cpr}. Se os parâmetros 
+  forem inválidos ou incompletos, retorna uma ou mais mensagens
+  de erro, na forma de uma lista de strings."""
   return compra_IMP.muda_atributos(cpr, mods)
 
 def busca_por_identificador(id_compra):
@@ -193,11 +200,9 @@ def calcula_total(cpr):
   soma dos campos {qtd} nos elementos da lista de itens."""
   return compra_IMP.calcula_total(cpr)
 
-def calcular_frete(compra, cep):
-  """Retorna float {frete} de uma compra para determinado CEP.
-  A fórmula leva em consideração o peso dos objetos que serão comprados, seu volume e
-  os dois primeiros dígitos do CEP do comprador como fator multiplicativo de distância."""
-  return compra_IMP.calcular_frete(compra, cep)
+def calcular_frete(compra, CEP):
+  """Retorna float {frete} de uma compra para despacho ao {CEP} dado."""
+  return compra_IMP.calcular_frete(compra, CEP)
 
 # FUNÇÕES PARA DEPURAÇÃO
 

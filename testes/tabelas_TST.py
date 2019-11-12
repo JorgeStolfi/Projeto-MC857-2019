@@ -4,6 +4,7 @@
 import base_sql
 import tabelas
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 
 # ----------------------------------------------------------------------
 

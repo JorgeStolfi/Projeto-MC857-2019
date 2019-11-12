@@ -10,6 +10,9 @@ def processa(ses, args):
   if 'id_compra' not in args:
     return gera_html_pag.mensagem_de_erro(ses, "O identificador do novo carrinho não foi enviado.")
 
+  if ses == None:
+    return gera_html_pag.mensagem_de_erro(ses, "Usuário não está logado.")
+
   # Localiza a compra {cpr}:
   id_compra = args['id_compra']
   novo_carr = compra.busca_por_identificador(id_compra)
@@ -27,11 +30,11 @@ def processa(ses, args):
     pag = gera_html_pag.mensagem_de_erro(ses, "A sessao não possui um usuário associada a ela.")
     return pag
 
-  if usuario.obtem_identificador(usuario_da_sessao) != usuario.obtem_identificador(usuario_da_compra):
+  if usuario_da_sessao != usuario_da_compra:
     pag = gera_html_pag.mensagem_de_erro(ses, "O carrinho não esta atribuído ao cliente da sessão.")
     return pag
 
   sessao.muda_atributos(ses, {'carrinho': novo_carr})
 
-  pag = comando_ver_carrinho.processa(ses, args)
+  pag = gera_html_pag.mostra_carrinho(ses, None)
   return pag

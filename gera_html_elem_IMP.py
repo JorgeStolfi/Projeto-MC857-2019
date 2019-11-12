@@ -7,11 +7,12 @@ import gera_html_botao
 import produto
 import compra
 import usuario
-import comando_excluir_item_de_compra
-import comando_alterar_qtd_de_produto
+from utils_testes import erro_prog
 
 # Outros módulos importados por esta implementação:
 from datetime import datetime, timezone
+import re
+import sys
 
 #Funções exportadas por este módulo:
 
@@ -23,7 +24,7 @@ def cabecalho(title, grande):
     header_title = "<h2>" + title + "</h2>"
 
   return \
-    "<!doctype html>\n" + \
+    "<!DOCTYPE HTML>\n" + \
     "<html>\n" + \
     "<head>\n" + \
     "<meta charset=\"UTF-8\"/>\n" + \
@@ -43,52 +44,70 @@ def rodape():
     "</html>\n"
 
 def menu_geral(logado, nome_usuario, admin):
-  html_bt_principal = "  " + gera_html_botao.simples("Principal", 'principal', None, '#60a3bc') + "\n"
-  html_fm_buscar = "  " + gera_html_form.buscar_produtos() + "\n"
-
-  html_bt_user = ""
-  if logado:
-    html_bt_user = menu_geral_logado(nome_usuario)
-    if admin:
-      html_bt_compras_produto = " " + gera_html_botao.simples("Compras de produto", "buscar_compras_por_produto", None, '#eeeeee') + '\n'
-    else:
-      html_bt_compras_produto = " "
-  else:
-    html_bt_user = menu_geral_deslogado()
-  html_menu = \
-    "<nav>\n" + \
-      html_bt_principal + \
-      html_fm_buscar + \
-      html_bt_user + \
-    "</nav>"
-
+  html_menu = menu_geral_linha(menu_geral_botoes_linha_1(logado, nome_usuario, admin))
   if admin:
-    html_menu += \
-      "<nav>\n" + \
-        menu_geral_admin() + \
-      "</nav>\n"
-
+    html_menu += menu_geral_linha(menu_geral_botoes_linha_2())
   return html_menu
+  
+def menu_geral_linha(botoes):
+  """Monta uma linha do menu geral, dada uma lista de fragmentos HTML que 
+  descrevem os botões."""
+  html = "<nav>"
+  for bt in botoes:
+    html += "  " + bt
+  html += "</nav>"
+  return html
+  
+def menu_geral_botoes_linha_1(logado, nome_usuario, admin):
+  """Gera uma lista de fragmentos de HTML que descrevem os botões da linha 1 do menu 
+  geral.  Estes botões são mostrados para todos os usuários, mas
+  dependem do tipo de usuário (normal ou administrador) e se o
+  usuário está logado."""
 
-def menu_geral_logado(nome_usuario):
-  return gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n" + \
-    " " + gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee') + "\n" + \
-    " " + gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee') + "\n" + \
-    " " + gera_html_botao.simples("Minha Conta", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n" + \
-    " " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n" + \
-    " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n" \
-    " " + gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee') + "\n" + \
-    " " + bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None) + "\n"
+  # Botões da primeira linha que sempre aparecem:
+  html_bt_principal = gera_html_botao.simples("Principal", 'principal', None, '#60a3bc')
+  html_bt_ofertas = gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22')
+  html_fm_buscar = gera_html_form.buscar_produtos()
+  botoes = ( html_bt_principal, html_bt_ofertas, html_fm_buscar)
+  if logado:
+    # Gera outros botões de usuario normal logado
+    botoes += menu_geral_botoes_linha_1_logado(nome_usuario, admin)
+  else:
+    # Gera outros botões de usuário deslogado:
+    botoes += menu_geral_botoes_linha_1_deslogado()
+  return botoes
+  
+def menu_geral_botoes_linha_1_logado(nome_usuario, admin):
+  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu 
+  geral, para um usuário que está logado."""
+  botoes = ( 
+    gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
+    gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
+    gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
+    gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
+    bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
+  )
+  return botoes
 
-def menu_geral_deslogado():
-  return gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55') + "\n" + \
-    " " + gera_html_botao.simples("Cadastrar", 'solicitar_form_de_dados_de_usuario', None, '#eeeeee') + "\n" + \
-    " " + gera_html_botao.simples("Ofertas", 'ver_ofertas', None, '#ffdd22') + "\n" + \
-    " " + gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_dados_de_produto", None, '#ffdd22') + "\n"
+def menu_geral_botoes_linha_1_deslogado():
+  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu 
+  geral, para um usuário que não está logado."""
+  botoes = ( 
+    gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55'),
+    gera_html_botao.simples("Cadastrar", 'solicitar_form_de_cadastrar_usuario', None, '#eeeeee'),
+  )
+  return botoes
+  
+def menu_geral_botoes_linha_2():
+  """Gera uma lista de fragmentos de HTML com os botões da linha 2 do menu 
+  geral.  Estes botãoes são mostrados apenas se o usuário está logado
+  e é um administrador."""
 
-def menu_geral_admin():
-  return gera_html_botao.simples("Compras de produto", "buscar_compras_por_produto", None, '#eeeeee') + '\n'
-
+  botoes = ( 
+    gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_acrescentar_produto", None, '#ffdd22'),
+    gera_html_botao.simples("Compras de produto", "buscar_compras_por_produto", None, '#eeeeee')
+  )
+  return botoes
 
 def bloco_de_produto(id_compra, prod, qtd, detalhe):
   id_produto = produto.obtem_identificador(prod)
@@ -100,13 +119,16 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
   d_curta = atrs['descr_curta']
   html_d_curta = paragrafo(estilo_parag, bloco_texto(d_curta, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
 
+  html_variedade = ""
   variedade = atrs['variedade']
-  html_variedade = paragrafo(estilo_parag, bloco_texto(variedade, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
+  if variedade != None:
+    html_variedade = paragrafo(estilo_parag, bloco_texto(variedade, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
 
   html_grupo = ""
   if detalhe == True:
       grupo = atrs['grupo']
-      html_grupo = paragrafo(estilo_parag, bloco_texto(grupo, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
+      if grupo != None:
+        html_grupo = paragrafo(estilo_parag, bloco_texto(grupo, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
 
   d_media = atrs['descr_media']
   html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
@@ -162,9 +184,142 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
   html_img = "<a href=\"imagens/" + nome_img + "\" border=0px>" + html_img_crua + "</a>"
 
   # !!! Reduzir o espaço vertical usado por cada produto, quando {detalhe} é falso !!!
-  bloco_final = \
-    span("\n width: 48%; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\ndisplay: flex; align-items: center; float:left", html_img + bloco_descr)
+  width_pct = ("80%" if detalhe else "33%")
+  estilo_final = f"width: {width_pct}; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\ndisplay: flex; align-items: center; float:left"
+  bloco_final = span(estilo_final, html_img + bloco_descr)
   return bloco_final
+# 
+# 
+# def bloco_de_produto(id_compra, prod, qtd, detalhe):
+#   id_produto = produto.obtem_identificador(prod)
+#   atrs = produto.obtem_atributos(prod)
+#   
+#   bloco_img = bloco_de_imagem_de_produto(prod, detalhe)
+#   bloco_descr = bloco_de_descricao_de_produto(id_compra, prod, qtd, detalhe)
+#   # bloco_descr = paragrafo("", "babaca") + paragrafo("", "boboca") 
+# 
+#   # !!! Reduzir o espaço vertical usado por cada produto, quando {detalhe} é falso !!!
+#   bloco_final = \
+#     div("display:inline-block; width: 48%; padding: 15px; border-radius: 15px 50px 20px;", bloco_img + bloco_descr)
+#   return bloco_final
+# 
+# def bloco_de_imagem_de_produto(prod, detalhe):
+#   """Esta função interna devolve um <img..> 
+#   com a imagem do produto {prod}, sem o texto da descrição.  De resto 
+#   a especificação é a mesma de {bloco_de_produto}."""
+# 
+#   id_produto = produto.obtem_identificador(prod)
+#   atrs = produto.obtem_atributos(prod)
+# 
+#   tam_img = (200 if detalhe else 100)
+#   nome_img = atrs['imagem']
+#   html_img_crua = ("<img src=\"imagens/" + nome_img + "\" alt=\"" + id_produto + "\" style=\"float:left;height:%dpx;\"/>" % tam_img)
+#   # imagem = "&bullet;"
+#   html_img = "<a href=\"imagens/" + nome_img + "\" border=0px>" + html_img_crua + "</a>"
+#   bloco_img = html_img
+#   return bloco_img
+# 
+# def bloco_de_descricao_de_produto(id_compra, prod, qtd, detalhe):
+#   """Esta função interna devolve uma série de parágrafos 
+#   com a descrição do produto {prod}, menos a imagem.  De resto 
+#   a especificação é a mesma de {bloco_de_produto}."""
+# 
+#   id_produto = produto.obtem_identificador(prod)
+#   atrs = produto.obtem_atributos(prod)
+# 
+#   # Estilo para os parágrafos de descrição
+#   # estilo_parag = "word-wrap:break-word; margin-top: 10px;  margin-bottom: 2px;  text-indent: 0px;  line-height: 75%;"
+#   estilo_parag = ""
+#   
+#   em_oferta = atrs['oferta']
+#   html_em_oferta = ""
+#   if em_oferta:
+#     html_em_oferta = bloco_texto("OFERTA!", "inline-block", "Courier", "24px", "normal", "5px 5px 5px 5px", "center", "#000000", "#ffff00")
+#   d_curta = atrs['descr_curta']
+#   html_d_curta = bloco_texto(d_curta, "inline-block", "Courier", "20px", "bold", "2px", "left", "#263238", None)
+#   
+#   html_parag_oferta_d_curta = paragrafo(estilo_parag, html_em_oferta + html_d_curta)
+# 
+#   html_grupo = ""
+#   if detalhe:
+#     grupo = (atrs['grupo'] if 'grupo' in atrs else None)
+#     if grupo != None:
+#       html_grupo = bloco_texto(grupo, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+# 
+#   html_variedade = ""
+#   variedade = (atrs['variedade'] if 'variedade' in atrs else None)
+#   if variedade != None:
+#     html_variedade = bloco_texto(variedade, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+# 
+#   html_parag_grupo_var = paragrafo(estilo_parag, html_grupo + html_variedade)
+# 
+#   d_media = atrs['descr_media']
+#   html_d_media = bloco_texto(d_media, "inline-block", "Courier", "16px", "normal", "0px", "left", "#000000", None)
+#   
+#   qtd_inicial = (qtd if qtd != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
+#   args_botao = { 'id_compra': id_compra,  'id_produto': id_produto, 'qtd': qtd_inicial }
+#   if detalhe:
+#     html_botao = gera_html_botao.simples("Comprar", "comprar_produto", args_botao, "#ffee00")
+#   else:
+#     html_botao = gera_html_botao.simples("Ver", "ver_produto", args_botao, "#44dd00")
+# 
+#   html_parag_d_media_botao = paragrafo(estilo_parag, html_d_media + html_botao)
+# 
+#   if detalhe:
+#     d_longa = atrs['descr_longa']
+#     html_d_longa = bloco_texto(d_longa, "inline-block", "Courier", "14px", "normal", "0px", "left", "#000000", None)
+#   else:
+#     html_d_longa = ""
+# 
+#   html_parag_d_longa = paragrafo(estilo_parag, html_d_longa)
+#   
+#   html_peso = ""
+#   html_volume = ""
+#   if detalhe:
+#     # Mostra peso e volume só é mostrado caso seja detalhado
+#     peso = atrs['peso']
+#     str_peso  = ("%.0f gramas" % peso)
+#     html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+# 
+#     volume = atrs['volume']
+#     str_volume = ("%.2f mililitros" % volume)
+#     html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+# 
+#   html_parag_peso_vol = paragrafo(estilo_parag, html_peso + html_volume)
+# 
+#   if qtd == None:
+#     # Preço unitário, sem campo de quantidade:
+#     preco = atrs['preco']
+#     html_qtd = ""
+#   else:
+#     preco = produto.calcula_preco(prod, qtd)
+#     # !!! Deveria ser um campo editável !!!
+#     html_qtd = bloco_texto(("%d" % qtd), "inline-block", "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
+# 
+#   str_preco = ("R$ %.2f" % preco)
+#   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+# 
+#   html_parag_qtd_preco = paragrafo(estilo_parag, html_qtd + html_preco)
+#   
+#   html_descr = \
+#     html_parag_oferta_d_curta + \
+#     html_parag_grupo_var + \
+#     html_parag_d_media_botao + \
+#     html_parag_d_longa + \
+#     html_parag_peso_vol + \
+#     html_parag_qtd_preco
+# 
+#   bloco_descr = span("display:inline-block;", html_descr)
+#   return bloco_descr
+
+def bloco_de_lista_de_produtos(idents):
+  todos_prods = ""
+  for id_prod in idents:
+    prod = produto.busca_por_identificador(id_prod)
+    bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
+    todos_prods = todos_prods + bloco_prod + "\n"
+  lista_html = div("display:inline-block", todos_prods)
+  return lista_html
 
 def bloco_de_compra(cpr, detalhe):
   id_compra = compra.obtem_identificador(cpr)
@@ -174,11 +329,12 @@ def bloco_de_compra(cpr, detalhe):
   preco_total = compra.calcula_total(cpr)
   id_usr = compra.obtem_cliente(cpr)
   # Monta o parágrafo de descrição
-  estilo_parag = "\n  width: 600px;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
+  estilo_parag = "width: 600px; margin-top: 10px; margin-bottom: 2px; text-indent: 0px;  line-height: 75%;"
   html_ident = paragrafo(estilo_parag, bloco_texto(id_compra, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
   html_usr = paragrafo(estilo_parag, bloco_texto(str(id_usr), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_num_itens = paragrafo(estilo_parag, bloco_texto(str(num_itens), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_preco_total = paragrafo(estilo_parag, bloco_texto(str(preco_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+  # !!! Falta custo de frete e valor total a pagar !!!
   html_endereco = atrs_compra['CEP'] + " " + atrs_compra['endereco'].replace("\n", "<br>")
   html_ends = paragrafo(estilo_parag, bloco_texto(str(html_endereco), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   if detalhe:
@@ -190,21 +346,15 @@ def bloco_de_compra(cpr, detalhe):
       d_curta = atrs['descr_curta']
       palavras = atrs['palavras']
       html_d_curta = d_curta
-      html_palavras = palavras
-      html_qtd = gera_html_form.atualizar_produto_do_carrinho(qtd, prod.id_produto, id_compra)
-
+      html_qtd = gera_html_form.alterar_qtd_de_produto(qtd, prod.id_produto, id_compra)
       html_prc = "R$ " + "{:10.2f}".format(prc)
-      html_excl = gera_html_form.excluir_produto_do_carrinho(prod.id_produto, id_compra)
-
-      # html_trocar_carrinho = gera_html_botao.submit("Usar como carrinho", 'trocar_carrinho', {'id_compra': id_compra},'#ffdd22'))
+      html_excl = gera_html_form.excluir_item_de_compra(prod.id_produto, id_compra)
       html_ver_prod = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
-      # !!! Falta custo de frete e valor total a pagar !!!
-      # linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
-      linhas.append(( d_curta, html_qtd, html_prc, html_palavras, html_excl ))
+      linhas.append(( d_curta, html_qtd, html_prc, html_excl ))
     html_itens = tabela(linhas)
   else:
     html_itens = ""
-
+  
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
@@ -220,7 +370,8 @@ def bloco_de_compra(cpr, detalhe):
     elif (status_atual == 'despachado'):
       atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
       html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
-    html_admin = html_recebido if (html_recebido != "") else html_entregue  
+    html_admin = html_recebido if (html_recebido != None and html_recebido != "") else html_entregue 
+  
   html_finalizar = ""
   if (num_itens > 0):
     atributos_finalizar = {'id_compra': id_compra}
@@ -241,15 +392,18 @@ def bloco_de_compra(cpr, detalhe):
     html_alterar_endereco + \
     html_finalizar + \
     html_admin
-  bloco_descr = span("\n display: inline-block;", html_descr)
+  bloco_descr = span(" display:inline-block;", html_descr)
   bloco_final = \
-  span("\n  padding: 15px; border-radius: 15px 50px 20px; display: block;\n  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
+  span("padding: 15px; border-radius: 15px 50px 20px; display: block;  background-color: #ffffff; display: flex; align-items: center;", bloco_descr)
   return bloco_final
 
 def bloco_de_erro(msg):
   fam_fonte = "Courier"
   # Cabeçalho espalhafatoso:
   html_tit = bloco_texto("ERRO!", None, fam_fonte, "24px", "bold", "5px", "left", "#880000", None)
+  
+  # Processa quebras de linha em {msg}:
+  msg = re.sub(r'\n', r'<br/>\n', msg)
 
   # Formata a mensagem:
   html_msg = bloco_texto(msg, None, fam_fonte, "20px", "bold", "5px", "left", "#000000", None)
@@ -261,36 +415,41 @@ def bloco_de_erro(msg):
   html_tudo = html_tit + "<br/>" + html_msg + "<br/>" + html_botao
 
   # Formata:
-  estilo_parag = "\n  width: 600px;\n  margin-top: 2px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  align: center;"
+  estilo_parag = " width: 600px; margin-top: 2px;margin-bottom: 2px; text-indent: 0px; align: center;"
   bloco_final = paragrafo(estilo_parag, html_tudo)
 
   return bloco_final
 
 def span(estilo, conteudo):
-  est = (" style=\"" + estilo + "\n\"" if estilo != "" else "")
+  est = (" style=\"" + estilo + "\"" if estilo != None and estilo != "" else "")
   html = "<span" + est + ">" + conteudo + "</span>"
   return html
 
 def div(estilo, conteudo):
-  est = (" style=\"" + estilo + "\n\"" if estilo != "" else "")
+  est = (" style=\"" + estilo + "\"" if estilo != None and estilo != "" else "")
   html = "<div" + est + ">" + conteudo + "</div>"
   return html
 
+def form(estilo, conteudo):
+  est = (" style=\"" + estilo + "\"" if estilo != None and estilo != "" else "")
+  html = "<form method=\"post\"" + est + ">" + conteudo + "</form>"
+  return html
+
 def paragrafo(estilo, conteudo):
-  est = (" style=\"" + estilo + "\n\"" if estilo != "" else "")
+  est = (" style=\"" + estilo + "\"" if estilo != None and estilo != "" else "")
   html = "<p" + est + ">" + conteudo + "</p>\n"
   return html
 
 def bloco_texto(texto, disp, fam_fonte, tam_fonte, peso_fonte, pad, halign, cor_texto, cor_fundo):
   estilo = \
-    ( "\n  display: " + disp + ";" if disp != None else "") + \
-    ( "\n  font-family:" + fam_fonte + ";" if fam_fonte != None else "") + \
-    ( "\n  font-weight:" + peso_fonte + ";" if peso_fonte != None else "") + \
-    ( "\n  font-size:" + tam_fonte + ";" if tam_fonte != None else "") + \
-    ( "\n  padding:" + pad + ";" if pad != None else "") + \
-    ( "\n  background-color:" + cor_fundo + ";" if cor_fundo != None else "") + \
-    ( "\n  color:" + cor_texto + ";" if cor_texto != None else "") + \
-    ( "\n  text-align:" + halign + ";" if halign != None else "")
+    ( " display: " + disp + ";" if disp != None else "") + \
+    ( " font-family:" + fam_fonte + ";" if fam_fonte != None else "") + \
+    ( " font-weight:" + peso_fonte + ";" if peso_fonte != None else "") + \
+    ( " font-size:" + tam_fonte + ";" if tam_fonte != None else "") + \
+    ( " padding:" + pad + ";" if pad != None else "") + \
+    ( " background-color:" + cor_fundo + ";" if cor_fundo != None else "") + \
+    ( " color:" + cor_texto + ";" if cor_texto != None else "") + \
+    ( " text-align:" + halign + ";" if halign != None else "")
   return span(estilo, texto)
 
 def tabela(linhas):
@@ -312,11 +471,10 @@ def tabela(linhas):
   return html_tab
 
 def input(rotulo, tipo, nome, val_ini, dica, cmd):
-  html_rotulo = label(rotulo)
+  html_rotulo = label(rotulo, ": ")
   html_tipo = " type =\"" + tipo + "\""
   html_nome = " name=\"" + nome + "\" id=\"" + nome + "\""
-  if tipo == "number":
-      html_nome += ' min="1" max="5"\ '
+  if tipo == "number": html_nome += " min=\"1\""
   if val_ini != None and dica != None:
     erro_prog("{val_ini} e {dica} são mutuamente exclusivos")
   html_val_ini = ( " value =\"" + val_ini + "\"" if val_ini != None else "" )
@@ -324,10 +482,10 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_cmd = ( " onchange=\"window.location.href=" + cmd + "\"" if cmd != None else "" )
   html = html_rotulo + "<input" + html_tipo + html_nome + html_val_ini + html_dica + "/>"
   return html
+    
 
-
-def label(rotulo):
+def label(rotulo, sep):
   if rotulo == None or rotulo == "":
     return ""
   else:
-    return "<label>" + rotulo + "</label>"
+    return "<label>" + rotulo + (sep if sep != None else "") + "</label>"

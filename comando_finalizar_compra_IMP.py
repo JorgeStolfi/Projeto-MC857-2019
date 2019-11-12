@@ -14,7 +14,7 @@ def processa(ses, args):
   sys.stderr.write("finalizando compra!\n")
   if ses == None:
     # O usuário não está logado. Exibe a tela de login:
-    return gera_html_pag.entrar(ses)
+    return gera_html_pag.entrar(ses, None)
 
   cliente = sessao.obtem_usuario(ses)
       
@@ -34,5 +34,5 @@ def processa(ses, args):
     sessao.muda_atributos(ses, { 'carrinho': novo_carr })
 
   # Mostra a compra que foi fechada:
-  pag = gera_html_pag.mostra_compra(ses, cpr)
+  pag = gera_html_pag.mostra_compra(ses, cpr, None)
   return pag

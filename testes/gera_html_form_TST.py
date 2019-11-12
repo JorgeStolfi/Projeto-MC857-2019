@@ -4,8 +4,7 @@
 # escrevem formulários HTML5.
 
 # Interfaces usadas por este script:
-from gera_html_form import *
-import sys
+import gera_html_form
 import usuario
 import identificador
 import base_sql
@@ -13,6 +12,9 @@ import tabelas
 import sessao
 import produto
 import compra
+import utils_testes
+
+import sys
 
 sys.stderr.write("Conectando com base de dados...\n")
 res = base_sql.conecta("DB",None,None)
@@ -23,20 +25,13 @@ tabelas.cria_todos_os_testes()
 
 # Testes das funções de {gera_html_form}:
 
-def testa(nome,  funcao, *args):
+def testa(rotulo,  funcao, *args):
   """Testa {funcao(*args)}, grava resultado 
-  em "testes/saida/gera_html_form.{nome}.html"."""
+  em "testes/saida/gera_html_form.{rotulo}.html"."""
   
-  prefixo = "testes/saida/gera_html_form"
-  f = open(prefixo + "." + nome + '.html', 'w')
-  try:
-    res = funcao(*args)
-    f.buffer.write(str(res).encode('utf-8'))
-  except Exception as ex:
-    msg = "testa(" + nome + "): ** erro = " + str(ex) + "\n"
-    sys.stderr.buffer.write(str(msg).encode('utf-8'))
-    f.buffer.write(str(msg).encode('utf-8'))
-  f.close()
+  modulo = gera_html_form
+  frag = True
+  utils_testes.testa_gera_html(modulo, funcao, rotulo, frag, *args)
 
 ses = sessao.busca_por_identificador("S-00000001")
 assert ses != None

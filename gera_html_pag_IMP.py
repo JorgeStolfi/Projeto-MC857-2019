@@ -13,9 +13,15 @@ from utils_testes import erro_prog, mostra
 
 # Outras interfaces usadas por este módulo:
 from datetime import datetime, timezone
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
+import re, sys
   
-def generica(ses, conteudo):
-  cabe = gera_html_elem.cabecalho("Site de compras: Projeto MC857A 2019-2s", True)
+def generica(ses, html_conteudo, erros):
+
+  # Cabeçalho das páginas:
+  html_cabe = gera_html_elem.cabecalho("Site de compras: Projeto MC857A 2019-2s", True)
+  
+  # Menu geral no alto da página:
   logado = (ses != None)
   if logado:
     usr = sessao.obtem_usuario(ses)
@@ -24,11 +30,34 @@ def generica(ses, conteudo):
   else:
     nome_usuario = None
     admin = False
-  menu = gera_html_elem.menu_geral(logado, nome_usuario, admin)
-  roda = gera_html_elem.rodape()
-  return cabe + "\n" + menu + "\n" + conteudo + "\n" + roda
+  html_menu = gera_html_elem.menu_geral(logado, nome_usuario, admin)
+  
+  # Mensagens de erro:
+  if erros == None: 
+    erros = []
+  elif type(erros) == str:
+    # Split lines, create a list:
+    erros = re.split('[\n]', erros)
+  assert type(erros) is list
+  # Cleanup the messages:
+  erros = [ er.strip() for er in erros ]
+  erros = [ er for er in erros if len(er) > 0 ]
+  if len(erros) != 0:
+    erros = "<br/>\n" + "<br/>\n".join(erros)
+    html_erros = gera_html_elem.bloco_de_erro(erros) + "\n"
+  else:
+    html_erros = ""
 
-def principal(ses):
+  # Rodapé da página:
+  html_roda = gera_html_elem.rodape()
+  
+  # Monta a página:
+  pagina = html_cabe + "<br/>" + html_menu + "<br/>" + html_erros + "<br/>" + html_conteudo + "<br/>" + html_roda
+  
+  # Formata o HTML para maior legibilidade:
+  return bsoup(pagina, "html.parser").prettify()
+
+def principal(ses, erros):
   if ses !=None:
     usr = sessao.obtem_usuario(ses)
     atrs = usuario.obtem_atributos(usr)
@@ -43,97 +72,111 @@ def principal(ses):
   cor_fundo = "#eeeeee"
   bloco_texto1 =  gera_html_elem.bloco_texto(texto1, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
   bloco_texto2 =  gera_html_elem.bloco_texto(texto2, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
-  ofertas = comando_ver_ofertas.processa_container(ses, []) #chamar lista de produtos sem o cabeçalho
-  conteudo = bloco_texto1 + ofertas + bloco_texto2
-  pagina = generica(ses, conteudo)
+  ofertas = produto.busca_ofertas()
+  bloco_ofertas = gera_html_elem.bloco_de_lista_de_produtos(ofertas)
+  conteudo = bloco_texto1 + bloco_ofertas + bloco_texto2
+  pagina = generica(ses, conteudo, erros)
   return pagina
 
-def mostra_produto(ses, id_compra, prod, qtd):
+def mostra_produto(ses, id_compra, prod, qtd, erros):
   conteudo = gera_html_elem.bloco_de_produto(id_compra, prod, qtd, True)
-  pagina = generica(ses, conteudo)
+  pagina = generica(ses, conteudo, erros)
   return pagina
 
-def lista_de_produtos(ses, idents):
-  sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de produtos.
-  todos_prods = ""
-  counter = 0
-  for id_prod in idents:
-    prod = produto.busca_por_identificador(id_prod)
-    bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
-    if counter == 2:
-      todos_prods = todos_prods + sep + bloco_prod
-      counter = 0
-    else:
-      todos_prods = todos_prods + bloco_prod
-      counter = counter + 1
-  pagina = generica(ses, todos_prods + sep)
+def lista_de_produtos(ses, idents, erros):
+  conteudo = gera_html_elem.bloco_de_lista_de_produtos(idents)
+  pagina = generica(ses, conteudo, erros)
   return pagina
 
-def container_de_produtos(ses, idents):
-  sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de produtos.
-  todos_prods = ""
-  counter = 0
-  for id_prod in idents:
-    prod = produto.busca_por_identificador(id_prod)
-    bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
-    if counter == 2:
-      todos_prods = todos_prods + sep + bloco_prod
-      counter = 0
-    else:
-      todos_prods = todos_prods + bloco_prod
-      counter = counter + 1
-  return todos_prods + sep
-
-def entrar(ses):
+def entrar(ses, erros):
   conteudo = gera_html_form.entrar()
-  pagina = generica(ses, conteudo)
+  pagina = generica(ses, conteudo, erros)
   return pagina
 
-def cadastrar_usuario(ses):
-  conteudo = gera_html_form.cadastrar_usuario()
-  pagina = generica(ses, conteudo) 
+def alterar_endereco(ses, id_compra, atrs, erros):
+  if atrs == None:
+    # Obtém atributos correntes da compra:
+    cpr = compra.busca_por_identificador(id_compra)
+    atrs = compra.obtem_atributos(cpr)
+  conteudo = gera_html_form.preencher_endereco(id_compra, atrs)
+  pagina = generica(ses, conteudo, erros) 
   return pagina
 
-def preencher_endereco(ses, args):
-  conteudo = gera_html_form.preencher_endereco(args)
-  pagina = generica(ses, conteudo) 
+
+def escolher_pagamento(ses, id_compra, atrs, erros):
+  if atrs == None:
+    # Obtém atributos correntes da compra:
+    cpr = compra.busca_por_identificador(id_compra)
+    atrs = compra.obtem_atributos(cpr)
+  # !!! Completar !!!
+  conteudo = gera_html_form.escolher_pagamento(id_compra, atrs)
+  pagina = generica(ses, conteudo, erros) 
   return pagina
 
-def mostra_carrinho(ses):
-  if ses != None:
+def mostra_carrinho(ses, erros):
+  if ses == None:
+    erros = [ "É necessário fazer login para esta função", ] + (erros if erros != None else [])
+    pagina = mensagem_de_erro(ses, erros)
+    conteudo = ""
+  else:
     carrinho = sessao.obtem_carrinho(ses)
     conteudo = gera_html_elem.bloco_de_compra(carrinho, True)
-    pagina = generica(ses, conteudo)
-  else:
-    pagina = mensagem_de_erro(ses, "É necessário fazer login para esta função")
+  
+  pagina = generica(ses, conteudo, erros)
   return pagina
 
-def mostra_compra(ses, cpr):
+def mostra_compra(ses, cpr, erros):
   detalhe = True
   conteudo = gera_html_elem.bloco_de_compra(cpr, True)
-  pagina = generica(ses, conteudo) 
+  pagina = generica(ses, conteudo, erros) 
+  return pagina
+  
+def cadastrar_usuario(ses, atrs, erros):
+  # Quem está cadastrando é administrador?
+  if ses != None:
+    usr_ses = sessao.obtem_usuario(ses)
+    atrs_ses = usuario.obtem_atributos(usr_ses)
+    admin = (atrs_ses['administrador'] if 'administrador' in atrs_ses else False)
+  else:
+    admin = False
+  # Constrói formulário com dados:
+  html_dados = gera_html_form.cadastrar_usuario(atrs, admin)
+  conteudo = html_dados
+  # Monta a página:
+  pagina = generica(ses, conteudo, erros)
+  return pagina
+  
+def alterar_usuario(ses, id_usuario, atrs, erros):
+  # Quem está cadastrando é administrador?
+  if ses == None:
+    # Não deveria acontecer:
+    erro_prog("usuário deveria estar logado")
+    
+  usr_ses = sessao.obtem_usuario(ses)
+  atrs_ses = usuario.obtem_atributos(usr_ses)
+  admin = (atrs_ses['administrador'] if 'administrador' in atrs_ses else False)
+
+  # Constrói formulário com dados:
+  conteudo = gera_html_form.alterar_usuario(id_usuario, atrs, admin)
+  # Monta a página:
+  pagina = generica(ses, conteudo, erros)
   return pagina
 
-def mostra_usuario(ses, usr):
-  conteudo = gera_html_form.alterar_usuario(usr)
-  pagina = generica(ses, conteudo)
-  return pagina
-
-def mostra_sessao(ses)
-  pagina = mensagem_de_erro(ses,"Função não implementada")
+def mostra_sessao(ses, erros):
+  erros = [ "Função não implementada", ] + (erros if erros != None else [])
+  pagina = mensagem_de_erro(ses, erros)
   return pagina
 
 def mensagem_de_erro(ses, msg):
-  conteudo = gera_html_elem.bloco_de_erro(msg)
-  pagina = generica(ses, conteudo)
+  pagina = generica(ses, "", msg)
   return pagina
 
-def lista_de_compras(ses, idents):
-  sep = gera_html_elem.div("\n  clear: left;", "<hr/>") # Separador de blocos de compras.
+def lista_de_compras(ses, idents, erros):
+  sep = "<br/><hr/>" # Separador de blocos de compras.
   todas_cmprs = ""
   for id_cmpr in idents:
     cmpr = compra.busca_por_identificador(id_cmpr)
     bloco_compra = gera_html_elem.bloco_de_compra(cmpr, False)
     todas_cmprs = todas_cmprs + sep + bloco_compra
-  pagina = generica(ses, todas_cmprs + sep)
+  pagina = generica(ses, todas_cmprs + sep, erros)
   return pagina

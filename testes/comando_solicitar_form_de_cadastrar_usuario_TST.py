@@ -3,7 +3,8 @@
 # Interfaces usadas por este script:
 import sys
 from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
-import comando_ver_carrinho
+
+import comando_solicitar_form_de_cadastrar_usuario
 import base_sql
 import tabelas
 import usuario
@@ -17,10 +18,11 @@ sys.stderr.write("Criando alguns objetos...\n")
 tabelas.cria_todos_os_testes()
 
 ses1 = sessao.busca_por_identificador("S-00000001")
-args1 = { 'coisa': True }
-
-html = comando_ver_carrinho.processa(ses1, args1)
+# !!! Preencher o {args} com dados do produto a comprar !!!
+usu = usuario.cria({'Lucio S.', 'senhasecretadele', 'lucy@domain.com', '123.123.123.12',
+                   'Rua Margarida 12','12345-123', '+55(19)1234-1234', '23.234.254-7'} )
+args1 = { 'usuario': usu }
+html = comando_solicitar_form_de_cadastrar_usuario.processa(ses1, args1)
 html = html + "\n" # In case the fragment does not end with newline.
 
 sys.stdout.buffer.write(html.encode('utf-8'))
-sys.stderr.write("Fim.\n")

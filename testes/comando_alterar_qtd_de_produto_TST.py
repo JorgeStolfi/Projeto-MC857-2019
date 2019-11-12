@@ -2,6 +2,7 @@
 
 # Interfaces usadas por este script:
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 
 import comando_alterar_qtd_de_produto
 from comando_alterar_qtd_de_produto import processa

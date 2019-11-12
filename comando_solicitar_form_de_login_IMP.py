@@ -3,6 +3,6 @@
 import gera_html_pag
 
 def processa(ses, args):
-  pag = gera_html_pag.entrar(ses)
+  pag = gera_html_pag.entrar(ses, None)
   return pag
     

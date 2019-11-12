@@ -30,15 +30,10 @@ def processa(ses, args):
       cpr = compra.busca_por_identificador(id_compra)
       assert compra.obtem_status(cpr) == 'aberto'
       assert ses != None and sessao.obtem_usuario(ses) == compra.obtem_cliente(cpr)
-
-      if qtd == 0:
-        compra.elimina_produto(cpr, prod)
-      else:
-        compra.troca_quantidade(cpr, prod, qtd)
-
-      pag = gera_html_pag.mostra_compra(ses, cpr)
+      compra.troca_quantidade(cpr, prod, qtd);
+      pag = gera_html_pag.mostra_compra(ses, cpr, None)
     else:
       # Alteração de quantidade de produto em uma descrição de produto:
-      pag = gera_html_pag.mostra_produto(ses, None, prod, qtd)
+      pag = gera_html_pag.mostra_produto(ses, None, prod, qtd, None)
   return pag
 

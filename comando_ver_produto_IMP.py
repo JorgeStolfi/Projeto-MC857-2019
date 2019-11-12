@@ -16,5 +16,5 @@ def processa(ses, args):
     qtd = min(float(args['quantidade']), float(atrs_produto['estoque']))
   else:
     qtd = 1.0
-  pag = gera_html_pag.mostra_produto(ses, None, prod, qtd)
+  pag = gera_html_pag.mostra_produto(ses, None, prod, qtd, None)
   return pag

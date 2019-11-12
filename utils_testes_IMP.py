@@ -4,6 +4,7 @@ import sys
 import re
 import inspect
 import json
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 
 def erro_prog(mens):
   fr = inspect.stack()[2]
@@ -64,12 +65,12 @@ def verifica_objeto(modulo, tipo, obj, indice, ident, atrs):
 def testa_gera_html(modulo, funcao, rotulo, frag, *args):
   prefixo = "testes/saida/"
   nome_mod = modulo.__name__
-  nome_fn = funcao.__qualname__
+  nome_fn = funcao.__name__
   nome_arq = nome_mod + "." + nome_fn + "." + rotulo
   f = open(prefixo + nome_arq + '.html', 'w')
   # sys.stderr.buffer.write((str(*args) + "\n").encode('utf-8'))
   cabe = \
-    "<!doctype html>\n" + \
+    "<!DOCTYPE HTML>\n" + \
     "<html>\n" + \
     "<head>\n" + \
     "<meta charset=\"UTF-8\"/>\n" + \
@@ -84,11 +85,15 @@ def testa_gera_html(modulo, funcao, rotulo, frag, *args):
       pag = cabe + res + roda
     else:
       pag = res
+    pag = bsoup(pag + "\n", "html.parser").prettify()
     f.buffer.write(str(pag).encode('utf-8'))
   except Exception as ex:
-    msg = "testa(" + nome_arq + "): ** erro = " + str(ex) + "\n"
-    sys.stderr.buffer.write(str(msg).encode('utf-8'))
+    fr = inspect.stack()[2]
+    msg = ("File %s, line %d, in %s\n" % (fr[1], fr[2], str(fr[3])))
+    msg += ("** erro em testa(%s): %s\n" % (nome_arq, str(ex)))
+    sys.stderr.write(msg + "\n")
     f.buffer.write((cabe + str(msg) + roda).encode('utf-8'))
+    raise
   f.close()
 
 def formata_dict(dados):

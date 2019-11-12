@@ -35,7 +35,7 @@ class ObjUsuario(ObjUsuario_IMP):
   
   Os campos 'CPF' e 'email' de todos os usuários
   devem ser distintos.  Todos os campos podem ser alterados,
-  exceto o índice (e identificador) e o CPF.
+  exceto o índice (e identificador).
   
   REPRESENTAÇÃO NA BASE DE DADOS
 
@@ -52,8 +52,29 @@ def cria(atrs):
   """Cria um novo objeto da classe {ObjUsuario}, com os atributos especificados
   pelo dicionário Python {atrs}, acrescentando-o à tabéla de usuários da base de dados.
   Atribui um identificador único ao usuário, derivado do seu índice na tabela.
-  Retorna o objeto criado."""
+  
+  Não pode haver outro usuário com mesmo email ou CPF.
+  
+  Em caso de sucesso, retorna o objeto criado.  Caso contrário, 
+  levanta a exceção {ErroAtrib} com uma lista de mensagens
+  de erro."""
   return usuario_IMP.cria(atrs)
+
+def muda_atributos(usr, mods):
+  """Modifica alguns atributos do objeto {usr} da classe {ObjUsuario},
+  registrando as alterações na base de dados.
+
+  O parâmetro {mods} deve ser um dicionário cujas chaves são um
+  subconjunto das chaves dos atributos do usuário (excluindo o identificador).
+  Os valores atuais desses atributos são substituídos pelos valores
+  correspondentes em {mods}.
+
+  Se o 'email' ou 'CPF' for alterado, não pode existir nenum outro 
+  usuário na tabela com mesmo email.
+  
+  Em caso de sucesso, não devolve nenhum resultado. Caso contrário,
+  levanta a exceção {ErroAtrib} com uma lista de mensagens de erro."""
+  usuario_IMP.muda_atributos(usr, mods)
 
 def obtem_identificador(usr):
   """Devolve o identificador 'U-{NNNNNNNN}' do usuario."""
@@ -67,20 +88,6 @@ def obtem_atributos(usr):
   """Retorna um dicionário Python que é uma cópia dos atributos do usuário,
   exceto identificador."""
   return usuario_IMP.obtem_atributos(usr)
-
-def muda_atributos(usr, mods):
-  """Modifica alguns atributos do objeto {usr} da classe {ObjUsuario},
-  registrando as alterações na base de dados. Não devolve nenhum resultado.
-
-  O parâmetro {mods} deve ser um dicionário cujas chaves são um
-  subconjunto das chaves dos atributos do usuário (excluindo o identificador).
-  Os valores atuais desses atributos são substituídos pelos valores
-  correspondentes em {mods}.
-
-  O atributo 'CPF'não pode ser alterado; se o dicionário {mods} incluir o campo 'CPF',
-  o valor deve ser o CPF atual. Se o atributo 'email' for alterado,
-  não pode existir nenum outro usuário na tabela com mesmo email."""
-  usuario_IMP.muda_atributos(usr, mods)
 
 def busca_por_identificador(id_usuario):
   """Localiza um usuario com identificador {id_usuario} (uma string da forma
@@ -104,6 +111,22 @@ def busca_por_CPF(CPF):
   "{XXX}.{YYY}.{ZZZ}-{KK}") e devolve o identificador do mesmo (não um objeto);
   ou {None} se não existir tal usuário."""
   return usuario_IMP.busca_por_CPF(CPF)
+
+# UTILIDADES
+
+
+def confere_e_elimina_conf_senha(args):
+  """Se o campo 'senha' está em {args}, exige o campo
+  'conf_senha' com mesmo valor.  Em caso de erro, 
+  levanta a exceção {ErroAtrib} com uma lista de mensagens
+  de erro.  Senão, remove o campo 'conf_senha' de {atrs}
+  e retorna sem resultado.
+  
+  Esta função é útil para processar comandos de 
+  cadastrar novo usuário ou alterar dados de usuário."""
+  return usuario_IMP.confere_e_elimina_conf_senha(args)
+
+# FUNÇÕES PARA DEPURAÇÃO
 
 def cria_testes():
   """Limpa a tabela de usuários com {inicializa(True)}, e cria pelo menos três usuários

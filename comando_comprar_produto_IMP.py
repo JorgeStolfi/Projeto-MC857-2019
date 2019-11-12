@@ -16,5 +16,5 @@ def processa(ses, args):
   quantidade = float(args['quantidade'])
   carrinho = sessao.obtem_carrinho(ses)
   compra.acrescenta_item(carrinho, prod, quantidade)
-  pag = gera_html_pag.mostra_compra(ses, carrinho)
+  pag = gera_html_pag.mostra_compra(ses, carrinho, None)
   return pag

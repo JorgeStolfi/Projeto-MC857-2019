@@ -42,10 +42,10 @@ class ObjSessao_IMP:
 def inicializa(limpa):
   global cache, nome_tb, letra_tb, colunas, diags
   colunas = \
-    ( ( "usr",          usuario.ObjUsuario, 'INTEGER', False,   0,  99999999  ),    # Objeto/índice do usuário.
-      ( "abrt",         type(False),        'INTEGER', False,   0,         1  ),    # Estado da sessao (1 = aberta).
-      ( "cookie",       type("foo"),        'TEXT',    False,  10,        45  ),    # Cookie da sessao
-      ( "carrinho",     compra.ObjCompra,   'INTEGER', True,    0,  99999999  )     # Objeto carrinho
+    ( ( "usr",          usuario.ObjUsuario, 'INTEGER', False ),    # Objeto/índice do usuário logado na sessão.
+      ( "abrt",         type(False),        'INTEGER', False ),    # Estado da sessao (1 = aberta).
+      ( "cookie",       type("foo"),        'TEXT',    False ),    # Cookie da sessao.
+      ( "carrinho",     compra.ObjCompra,   'INTEGER', True  )     # Objeto compra que é o carrinho da sessão.
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
@@ -57,8 +57,7 @@ def cria(usr, cookie, carrinho):
   # Insere na base de dados e obtém o índice na mesma:
   atrs_SQL = { 'usr': usuario.obtem_indice(usr), 'abrt': 1, 'cookie': cookie, 'carrinho' : compra.obtem_indice(carrinho)}
   ses = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
-  if not type(ses) is sessao.ObjSessao:
-    erro_prog("resultado de tipo inválido = " + str(ses))
+  assert type(ses) is sessao.ObjSessao
   return ses
 
 def obtem_identificador(ses):
@@ -101,10 +100,9 @@ def busca_por_indice(ind):
 
 def muda_atributos(ses, mods):
   global cache, nome_tb, letra_tb, colunas, diags
-  mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice);
+  mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, True, tabelas.obj_para_indice);
   res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, ses.id_sessao, mods_SQL)
-  if res != ses:
-    erro_prog("resultado inesperado = " + str(res))
+  assert res == ses
   return
 
 def fecha(ses):
@@ -146,13 +144,14 @@ def def_obj(obj, id_sessao, atrs_SQL):
   global cache, nome_tb, letra_tb, colunas, diags
   if diags: mostra(0, "produto_IMP.def_obj(" + str(obj) + ", " + id_sessao + ", " + str(atrs_SQL) + ") ...")
   if obj == None:
-    atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
+    atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, False, tabelas.indice_para_obj)
     if diags: mostra(2, "criando objeto, atrs_mem = " + str(atrs_mem))
     obj = sessao.ObjSessao(id_sessao, atrs_mem)
   else:
     assert obj.id_sessao == id_sessao
-    mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
+    mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, True, tabelas.indice_para_obj)
     if diags: mostra(2, "modificando objeto, mods_mem = " + str(mods_mem))
+    assert type(mods_mem) is dict
     if len(mods_mem) > len(obj.atrs):
       erro_prog("numero excessivo de atributos a alterar")
     for chave, val in mods_mem.items():

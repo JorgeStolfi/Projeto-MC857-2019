@@ -2,6 +2,7 @@
 
 # Interfaces usadas por este script:
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 
 import comando_solicitar_form_de_login
 import base_sql

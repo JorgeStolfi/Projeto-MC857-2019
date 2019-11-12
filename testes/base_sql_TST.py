@@ -1,10 +1,12 @@
 #! /usr/bin/python3
 
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 import base_sql
 
 base_sql.conecta("DB",None,None)
 nome_tb = "testabela"
+num_ents = 0
 descr_cols = \
   "indice integer PRIMARY KEY," + \
   "nome varchar(40) NOT NULL," + \
@@ -14,17 +16,26 @@ descr_cols = \
   "pernas int(4)"
 
 def testa_insert(atrs):
-  sys.stderr.write("testando INSERT:\n")
+  global nome_tb, num_ents
+  sys.stderr.write("  testando INSERT:\n")
   res = base_sql.executa_comando_INSERT(nome_tb,atrs)
-  sys.stderr.write("resultado: " + str(res) + "\n\n")
+  sys.stderr.write("  resultado: " + str(res) + "\n\n")
+  num_ents += 1
   
 def do_various_tests(rotulo):
+  global nome_tb, num_ents
   sys.stderr.write("%s\n" % ("-" * 70))
   sys.stderr.write(rotulo + "\n")
 
   testa_insert({ 'nome': 'zeca', 'cpf': '123.456.789-10', 'cep':  '13083-851', 'peso':  30.22, 'pernas': 3 })
   testa_insert({ 'nome': 'juca', 'cpf': '987.654.321-00', 'cep':  '13083-851', 'peso': 120.01, 'pernas': 2 })
   testa_insert({ 'nome': 'caco', 'cpf': '111.222.333-44', 'cep':  '13083-851', 'peso':  12.10, 'pernas': 4 })
+  
+  sys.stderr.write("  testando num_entradas:\n")
+  res =  base_sql.num_entradas(nome_tb, 'indice');
+  sys.stderr.write("  resultado: " + str(res) + "\n\n")
+  if type(res) is int:
+    assert res == num_ents
 
   sys.stderr.write("  testando UPDATE:\n")
   res = base_sql.executa_comando_UPDATE(nome_tb, "nome = 'juca'", { 'cep': '13083-705' })
@@ -37,6 +48,7 @@ def do_various_tests(rotulo):
   sys.stderr.write("  testando DELETE:\n")
   res = base_sql.executa_comando_DELETE(nome_tb, "nome =  'juca'")
   sys.stderr.write("  resultado: " + str(res) + "\n\n")
+  num_ents -= 1
 
   sys.stderr.write("  testando SELECT:\n")
   res = base_sql.executa_comando_SELECT(nome_tb,"cep ='13083-851'", ('nome', 'cpf' ))
@@ -50,7 +62,11 @@ def do_various_tests(rotulo):
 
   sys.stderr.write("%s\n" % ("-" * 70))
   return
-  
+ 
+sys.stderr.write("testando DROP_TABLE sem tabela:\n")
+res = base_sql.executa_comando_DROP_TABLE(nome_tb)
+sys.stderr.write("resultado: " + str(res) + "\n\n")
+ 
 sys.stderr.write("testando CREATE_TABLE:\n")
 res = base_sql.executa_comando_CREATE_TABLE (nome_tb, descr_cols)
 sys.stderr.write("resultado: " + str(res) + "\n\n")

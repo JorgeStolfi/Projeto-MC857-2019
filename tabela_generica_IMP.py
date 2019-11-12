@@ -46,14 +46,36 @@ def cria_tabela(nome_tb, cols):
   return
 
 def acrescenta(nome_tb, cache, let, cols, def_obj, atrs_SQL):
-  # Insere na base de dados e obtém o índice na mesma:
-  ind = base_sql.executa_comando_INSERT(nome_tb, atrs_SQL)
-  if not type(ind) is int:
-    erro_prog("indice inválido " + str(ind))
-  # Cria o objeto :
+  # Descobre o indice da última entrada na tabela:
+  num_ents = base_sql.num_entradas(nome_tb, 'indice')
+  if not type(num_ents) is int:
+    erro_prog("base_sql.num_entradas: result = '" + str(num_ents) + "'")
+  # Tenta criar o objeto:
+  ind = num_ents + 1 # Indice esperado do objeto na tabela.
   ident = identificador.de_indice(let, ind)
   obj = def_obj(None, ident, atrs_SQL)
+  # Insere na base de dados e obtém o índice na mesma:
+  ind_insert = base_sql.executa_comando_INSERT(nome_tb, atrs_SQL)
+  if (not type(ind_insert) is int) or (ind_insert != ind):
+    erro_prog("indice de inserção inválido " + str(ind))
   cache[ident] = obj
+  return obj
+
+def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
+  # Obtém o objeto com esse identificador e garante que está em {cache}:
+  obj = busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident)
+  if obj == None:
+    # Objeto não existe:
+    erro_prog("identificador '" + ident + "' nao encontrado")
+  # Atualiza os atributos do objeto na memória:
+  res = def_obj(obj, ident, mods_SQL)
+  assert res == obj
+  # Atualiza a base de dados:
+  ind = identificador.para_indice(let, ident)
+  cond = "indice = " + str(ind)
+  res = base_sql.executa_comando_UPDATE(nome_tb, cond, mods_SQL)
+  if res != None:
+    erro_prog("UPDATE da tabela '" + nome_tb + "' falhou")
   return obj
 
 def busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident):
@@ -121,25 +143,7 @@ def busca_por_valor(nome_tb, let, cols, chaves, valores):
     erro_prog("SELECT falhou " + str(res))
   sys.stderr.write("busca_por_valor: res = " + str(res) + "\n")
   return identificador.de_lista_de_indices(let, res)
-
-
-def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
-  # Obtém o objeto com esse identificador e garante que está em {cache}:
-  obj = busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident)
-  if obj == None:
-    # Objeto não existe:
-    erro_prog("identificador '" + ident + "' nao encontrado")
-  # Atualiza os atributos do objeto na memória:
-  res = def_obj(obj, ident, mods_SQL)
-  assert res == obj
-  # Atualiza a base de dados:
-  ind = identificador.para_indice(let, ident)
-  cond = "indice = " + str(ind)
-  res = base_sql.executa_comando_UPDATE(nome_tb, cond, mods_SQL)
-  if res != None:
-    erro_prog("UPDATE da tabela '" + nome_tb + "' falhou")
-  return obj
-
+ 
 def limpa_tabela(nome_tb, cols):
   res = base_sql.executa_comando_DROP_TABLE(nome_tb);
   if res != None:

@@ -16,14 +16,9 @@
 # Implementação desta interface:
 import conversao_sql_IMP
 
-def valor_mem_para_valor_SQL(val_mem, tipo_mem, tipo_SQL, nulo_ok, vmin, vmax, obj_para_indice):
+def valor_mem_para_valor_SQL(nome, val_mem, tipo_mem, tipo_SQL, nulo_ok, obj_para_indice):
   """Converte um valor de atributo {val_mem} de tipo Python {tipo_mem}
-  para o tipo {tipo_SQL} usado na base de dados. 
-  
-  Os parâmetros {vmin,vmax} são os limites mínimo e máximo
-  para {val_mem}, antes da conversão. Se {tipo_mem} é inteiro ou float, os limites
-  se referem ao valor; se {tipo_mem} é string, referem-se ao
-  comprimento. Estes limites são ignorados nos demais casos. 
+  para o tipo {tipo_SQL} usado na base de dados.
   
   Em particular, se {tipo_mem} é booleano, o {tipo_SQL} deve ser
   'INTEGER'; e o resultado é 0 se {val_mem=False}) e 1 {se val_mem=True}. Se
@@ -35,19 +30,16 @@ def valor_mem_para_valor_SQL(val_mem, tipo_mem, tipo_SQL, nulo_ok, vmin, vmax, o
   Se o parametro {nulo_ok} for {True}, o valor {val_mem} pode ser {None},
   e nesse caso o resultado será {None}.  Se {nulo_ok} for {False}, o
   valor {val_mem} não pode ser {None}.
-  
-  Esta função dá erro se o tipo de {val_mem} for uma lista, tupla, ou dicionário."""
-  return conversao_sql_IMP.valor_mem_para_valor_SQL(val_mem, tipo_mem, tipo_SQL, nulo_ok, vmin, vmax, obj_para_indice)
+    
+  O parâmetro {nome} é usado apenas para formar mensagens de erro.
+  Esta função aborta com erro se os dados forem inválidos;
+  em particular, se o tipo de {val_mem} for uma lista, tupla, ou dicionário."""
+  return conversao_sql_IMP.valor_mem_para_valor_SQL(nome, val_mem, tipo_mem, tipo_SQL, nulo_ok, obj_para_indice)
  
-def valor_SQL_para_valor_mem(val_SQL, tipo_SQL, tipo_mem, nulo_ok, vmin, vmax, indice_para_obj):
+def valor_SQL_para_valor_mem(nome, val_SQL, tipo_SQL, tipo_mem, nulo_ok, indice_para_obj):
   """Converte um valor de atributo {val_SQL} do tipo {tipo_SQL} usado na base 
   de dados para um valor Python de tipo {tipo_mem}, como ficaria na 
   memória.
-  
-  Os parâmetros {vmin,vmax} são os limites mínimo e máximo para o valor
-  resultante da conversão. Se {tipo_mem} é inteiro ou float, os limites
-  se referem ao valor; se {tipo_mem} é string, referem-se ao
-  comprimento. Estes limites são ignorados nos demais casos.
   
   Em particular, se {tipo_mem} é booleano, o {tipo_SQL} deve ser
   'INTEGER'; e o valor inteiro {val_SQL} é convertido para booleano usando a
@@ -59,10 +51,11 @@ def valor_SQL_para_valor_mem(val_SQL, tipo_SQL, tipo_mem, nulo_ok, vmin, vmax, i
   Se o parametro {nulo_ok} for {True}, o valor {val_mem} pode ser {None},
   e nesse caso o resultado será {None}.  Se {nulo_ok} for {False}, o
   valor {val_mem} não pode ser {None}.
-  
-  Esta função dá erro se o {tipo_mem} for um tipo de lista, tupla,
-  ou dicionário."""
-  return conversao_sql_IMP.valor_SQL_para_valor_mem(val_SQL, tipo_SQL, tipo_mem, nulo_ok, vmin, vmax, indice_para_obj)
+    
+  O parâmetro {nome} é usado apenas para formar mensagens de erro.
+  Esta função aborta com erro se os dados forem inválidos;
+  em particular, se o {tipo_mem} for lista, tupla, ou dicionário."""
+  return conversao_sql_IMP.valor_SQL_para_valor_mem(nome, val_SQL, tipo_SQL, tipo_mem, nulo_ok, indice_para_obj)
   
 # CONVERSÂO DE DICIONÁRIOS
 # 
@@ -73,33 +66,44 @@ def valor_SQL_para_valor_mem(val_SQL, tipo_SQL, tipo_mem, nulo_ok, vmin, vmax, i
 # 
 # Nestas funções, o parâmetro {cols} deve ser uma descrição das 
 # colunas da tabela, menos a coluna de índice de linha.
-# Vide {tabela_generica.cria_tabela}.
+# Vide {tabela_generica.cria_tabela}. 
 
   
-def dict_mem_para_dict_SQL(dic_mem, cols, obj_para_indice):
+def dict_mem_para_dict_SQL(dic_mem, cols, falta_ok, obj_para_indice):
   """Supõe que {dic_mem} é um dicionário Python com nomes e valores de
   atributos de um objeto na memória. Converte os valores para
   representações correspondentes na base de dados, usando
   {valor_mem_para_valor_SQL} e os tipos SQL especificados em {cols}.
   
-  Os nomes dos campos em {dic_mem} devem ser um subconjunto dos
+  Se {falta_ok} for {True}, os nomes dos campos em {dic_mem} devem ser um subconjunto dos
   definidos em {cols}. O dicionário retornado terá apenas esses mesmos
   campos.
   
-  A lista de colunas {cols} não deve ter atributos cujo {tipo_mem} for
-  lista, tupla, ou dicionário. """
-  return conversao_sql_IMP.dict_mem_para_dict_SQL(dic_mem, cols, obj_para_indice)
+  Se {falta_ok} for {False}, todos os campos de {cols}
+  devem estar presentes em {dic_mem} (ao menos com valor {None}).
   
-def dict_SQL_para_dict_mem(dic_SQL, cols, indice_para_obj):
+  A lista de colunas {cols} não deve ter atributos cujo {tipo_mem} for
+  lista, tupla, ou dicionário.
+  
+  A função aborta em caso de erro, por exemplo
+  atributos não listados em {cols}, ou com valor que náo é do {tipo_mem}
+  correspondente. """
+  return conversao_sql_IMP.dict_mem_para_dict_SQL(dic_mem, cols, falta_ok, obj_para_indice)
+  
+def dict_SQL_para_dict_mem(dic_SQL, cols, falta_ok, indice_para_obj):
   """Supõe que {dic_SQL} é um dicionário Python com nomes
   e valores extraídos de uma linha de uma tabela da 
   base de dados. Converte os mesmos para nomes e valores 
   usando {valor_SQL_para_valor_mem}.
   
   Os nomes dos campos em {dic_SQL} devem ser um subconjunto dos campos
-  definidos em {cols}.
+  definidos em {cols}.  Se {falta_ok} for {False}, todos os campos de {cols}
+  devem estar presentes em {dic_mem} (ao menos com valor {None}).
   
-  A lista {cols} não deve ter atributso cujo {tipo_mem} for lista, tupla, 
-  ou dicionário."""
-  return conversao_sql_IMP.dict_SQL_para_dict_mem(dic_SQL, cols, indice_para_obj)
+  A lista {cols} não deve ter atributos cujo {tipo_mem} for lista, tupla, 
+  ou dicionário.
+  
+  Se houver violações de limites de valores, ou valores forem indevidamente omitidos,
+  a função aborta com erro."""
+  return conversao_sql_IMP.dict_SQL_para_dict_mem(dic_SQL, cols, falta_ok, indice_para_obj)
   

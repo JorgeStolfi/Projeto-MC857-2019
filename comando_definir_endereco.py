@@ -8,8 +8,8 @@ def processa(ses, args):
     entrega" na descrição de uma compra. 
     
     O identificador da compra "C-{NNNNNNNN}" deve estar em {args['id_compra']}.
-    O novo endereço deve estar em {args['endereco']} (na forma de um string, com até 3 linhas)
-    e o novo CEP deve estar em {args['CEP']}.
+    O novo endereço deve estar em três campos {string} separados de {args}: 
+    'endereco_1', 'endereco_2', 'cidade_UF', e o novo CEP deve estar em {args['CEP']}.
     
     Este comando modifica esses atributos do pedido de compra, inclusive na base de dados.
     A função devolve uma página HTML com a descrição completa da compra, mostrando 

@@ -9,17 +9,6 @@ def processa(ses, args):
   A sessão corrente {ses} e o dicionário de argumentos {args}
   são irrelevantes e podem ser {None}.  
   
-  A função retorna a página HTML {pag}, com uma lista de 10 produtos cujo 
-  preço é menor que R$20.00."""
+  A função retorna a página HTML {pag}, com uma lista de produtos 
+  que tem o atributo 'oferta' com valor {True}."""
   return comando_ver_ofertas_IMP.processa(ses, args)
-
-
-def processa_container(ses, args):
-  """Esta função retorna um container HTML para exibir as ofertas na página
-  principal
-  A sessão corrente {ses} e o dicionário de argumentos {args}
-  são irrelevantes e podem ser {None}.
-
-  A função retorna a página HTML {pag}, com uma lista de 10 produtos cujo
-  preço é menor que R$20.00."""
-  return comando_ver_ofertas_IMP.processa_container(ses, args)

@@ -6,6 +6,7 @@ import base_sql
 import identificador
 import utils_testes
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 from utils_testes import erro_prog, mostra,aviso_prog
 
 
@@ -172,16 +173,16 @@ else:
 
 
 palavra = "animal"
-plist5_cmp = produto.busca_por_palavra(palavra)
-sys.stderr.write("  resultado = " + str(plist5_cmp) + "\n")
-if not type(plist5_cmp) is list:
-  aviso_prog("resultado " + str(plist5_cmp) + " deveria ser lista",True)
+plist6_cmp = produto.busca_por_palavra(palavra)
+sys.stderr.write("  resultado = " + str(plist6_cmp) + "\n")
+if not type(plist6_cmp) is list:
+  aviso_prog("resultado " + str(plist6_cmp) + " deveria ser lista",True)
   ok_global = False
 else:
-  plist5_cmp = sorted(plist5_cmp)
-  plist5_esp = [pident1, pident3]
-  if plist5_cmp != plist5_esp:
-    aviso_prog("resultado foi " + str(plist5_cmp) + " deveria ser " + str(plist5_esp),True)
+  plist6_cmp = sorted(plist6_cmp)
+  plist6_esp = [pident1,]
+  if plist6_cmp != plist6_esp:
+    aviso_prog("resultado foi " + str(plist6_cmp) + " deveria ser " + str(plist6_esp),True)
     ok_global = False
 # ----------------------------------------------------------------------
 # Veredito final:

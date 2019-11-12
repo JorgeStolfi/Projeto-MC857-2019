@@ -27,10 +27,10 @@ diags = False
 def inicializa(limpa):
   global cache, nome_tb, letra_tb, colunas, diags
   colunas = \
-    ( ( 'compra',  compra.ObjCompra,   'INTEGER', False, 10,         10 ), # Objeto/índice da compra.
-      ( 'produto', produto.ObjProduto, 'INTEGER', False, 10,         10 ), # Objeto/índice do produto.
-      ( 'qtd',     type(int),          'INTEGER', False,  0 ,    999999 ), # quantidade do produto referente.
-      ( 'preco',   type(1.5),          'FLOAT',   False,  0 , 999999.99 ), # preco do produto referente.
+    ( ( 'compra',  compra.ObjCompra,   'INTEGER', False ), # Objeto/índice da compra.
+      ( 'produto', produto.ObjProduto, 'INTEGER', False ), # Objeto/índice do produto.
+      ( 'qtd',     type(int),          'INTEGER', False ), # quantidade do produto referente.
+      ( 'preco',   type(1.5),          'FLOAT',   False ), # preco do produto referente.
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)

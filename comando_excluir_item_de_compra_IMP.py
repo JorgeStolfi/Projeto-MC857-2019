@@ -12,7 +12,7 @@ def processa(ses, args):
   if prod != None and cpr != None:
     # Elimina o produto da compra:
     compra.elimina_produto(cpr, prod)
-    pag = gera_html_pag.mostra_compra(ses, cpr)
+    pag = gera_html_pag.mostra_compra(ses, cpr, None)
   else:
     # Retorna página de erro
     # !!! Deveria dar mensagens separadas para as duas condições. !!!

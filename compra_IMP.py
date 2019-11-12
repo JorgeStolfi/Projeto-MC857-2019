@@ -10,8 +10,9 @@ import base_sql
 import conversao_sql
 import identificador
 import frete
-import sys  # Para diagnóstico.
 from utils_testes import erro_prog, mostra
+
+import sys  # Para diagnóstico.
 
 # VARIÁVEIS GLOBAIS DO MÓDULO
 
@@ -47,7 +48,7 @@ class ObjCompra_IMP:
   def __init__(self, id_compra, atrs, itens):
     global cache, nome_tb, letra_tb, colunas, diags
     self.id_compra = id_compra
-    self.atrs = atrs  # Inclui cliente, status, cep e endereço
+    self.atrs = atrs  # Inclui cliente, status, CEP e endereço
     self.itens = itens.copy()
 
 
@@ -56,10 +57,10 @@ class ObjCompra_IMP:
 def inicializa(limpa):
   global cache, nome_tb, letra_tb, colunas, diags
   colunas = \
-    ( ( 'status',   type("foo"),         'TEXT',    False,    4,        10 ), # status da compra: 'aberto', 'pagando', 'pago', etc..
-      ( 'cliente',  usuario.ObjUsuario,  'INTEGER', False,    0,  99999999 ), # Objeto/índice do cliente que realizou a compra.
-      ( 'endereco', type("foo"),         'TEXT',    False,    30,      180 ), # Endereço de entrega
-      ( 'CEP',      type("foo"),         'TEXT',    False,    8,        10 ), # CEP de entrega
+    ( ( 'status',   type("foo"),         'TEXT',    False ), # status da compra: 'aberto', 'pagando', 'pago', etc..
+      ( 'cliente',  usuario.ObjUsuario,  'INTEGER', False ), # Objeto/índice do cliente que realizou a compra.
+      ( 'endereco', type("foo"),         'TEXT',    False ), # Endereço de entrega
+      ( 'CEP',      type("foo"),         'TEXT',    False ), # CEP de entrega
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
@@ -70,19 +71,17 @@ def inicializa(limpa):
 
 def cria(cliente):
   global cache, nome_tb, letra_tb, colunas, diags
+  
   endereco = usuario.obtem_atributos(cliente)['endereco']
-  cep = usuario.obtem_atributos(cliente)['CEP']
-  atrs = {'cliente': cliente, 'status': 'aberto', 'endereco': endereco, 'CEP': cep}
+  CEP = usuario.obtem_atributos(cliente)['CEP']
+  atrs = {'cliente': cliente, 'status': 'aberto', 'endereco': endereco, 'CEP': CEP}
 
   # Converte atributos para formato SQL.
-  atrs_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, tabelas.obj_para_indice)
+  atrs_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, False, tabelas.obj_para_indice)
 
-  # Insere na base de dados e obtém o índice na mesma:
+  # Insere na base de dados e no cache:
   cpr = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
-  if not type(cpr) is compra.ObjCompra:
-    erro_prog("resultado de tipo inválido = " + str(cpr))
-
-  # Como a lista de itens começa vazia, não precisa inserir nada na base de itens.
+  assert type(cpr) is compra.ObjCompra
   return cpr
 
 def obtem_identificador(cpr):
@@ -107,7 +106,7 @@ def obtem_status(cpr):
 
 def obtem_cep(cpr):
   global cache, nome_tb, letra_tb, colunas, diags
-  return cpr.atrs["cep"]
+  return cpr.atrs["CEP"]
 
 def obtem_endereco(cpr):
   global cache, nome_tb, letra_tb, colunas, diags
@@ -133,13 +132,12 @@ def muda_atributos(cpr, mods):
   global cache, nome_tb, letra_tb, colunas, diags
 
   # Converte valores de formato memória para formato SQL.
-  mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, tabelas.obj_para_indice)
+  mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, True, tabelas.obj_para_indice)
 
   # Modifica atributos na tabela e na memória, menos os itens:
   res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, cpr.id_compra, mods_SQL)
-  if res != cpr:
-    erro_prog("resultado inesperado = " + str(res))
-  return
+  assert res == cpr
+  return cpr
 
 def fecha_compra(cpr):
   global cache, nome_tb, letra_tb, colunas, diags
@@ -248,18 +246,25 @@ def def_obj(obj, id_compra, atrs_SQL):
   {atrs_SQL}.  A lista de itens não ser alterada.
 
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
-  equivalentes na memória."""
+  equivalentes na memória.
+  
+  Em caso de sucesso, retorna o objeto {obj}, dado ou criado. Se os parâmetros 
+  forem inválidos ou incompletos, retorna uma ou mais mensagens
+  de erro, na forma de uma lista de strings."""
   global cache, nome_tb, letra_tb, colunas, diags
+  
+  erros = [].copy()
   if diags: mostra(0, "produto_IMP.def_obj(" + str(obj) + ", " + id_compra + ", " + str(atrs_SQL) + ") ...")
   if obj is None:
-    atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
+    atrs_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, False, tabelas.indice_para_obj)
     if diags: mostra(2, "criando objeto, atrs_mem = " + str(atrs_mem))
     itens = itens_de_compras.busca_por_compra(id_compra)
     obj = compra.ObjCompra(id_compra, atrs_mem, itens)
   else:
     assert obj.id_compra == id_compra
-    mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, tabelas.indice_para_obj)
+    mods_mem = conversao_sql.dict_SQL_para_dict_mem(atrs_SQL, colunas, True, tabelas.indice_para_obj)
     if diags: mostra(2, "modificando objeto, mods_mem = " + str(mods_mem))
+    assert type(mods_mem) is dict
     if len(mods_mem) > len(obj.atrs):
       erro_prog("numero excessivo de atributos a alterar")
     for chave, val in mods_mem.items():
@@ -279,11 +284,13 @@ def diagnosticos(val):
   diags = val
   return
 
-def calcular_frete(comp, cep):
+def calcular_frete(comp, CEP):
   peso_total = 0
   volume_total = 0
   for item in compra.obtem_itens(comp):
     peso_total = peso_total + item.peso
     volume_total = volume_total + item.volume
   
-  return frete.calcula(cep,peso_total,volume_total)
+  fator_de_distancia = CEP / 10000000
+  frete = peso_total * fator_de_distancia
+  return frete.calcula(CEP, peso_total, volume_total)

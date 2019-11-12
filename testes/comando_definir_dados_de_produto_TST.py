@@ -2,6 +2,7 @@
 
 # Interfaces usadas por este script:
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 
 import comando_definir_dados_de_produto
 import base_sql

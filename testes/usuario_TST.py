@@ -6,6 +6,7 @@ import base_sql
 import identificador
 import utils_testes
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 from utils_testes import erro_prog, mostra
 
 # ----------------------------------------------------------------------

@@ -2,6 +2,7 @@
 
 # Interfaces usadas por este script:
 import sys
+from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 
 sys.path.insert(1, "/home/cc2016/ra173711/mc857/data/173711")
 

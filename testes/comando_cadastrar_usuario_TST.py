@@ -3,7 +3,8 @@
 # Interfaces usadas por este script:
 import sys
 from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
-import comando_ver_carrinho
+
+import comando_cadastrar_usuario
 import base_sql
 import tabelas
 import usuario
@@ -17,10 +18,12 @@ sys.stderr.write("Criando alguns objetos...\n")
 tabelas.cria_todos_os_testes()
 
 ses1 = sessao.busca_por_identificador("S-00000001")
+# !!! Preencher o {args} com dados de um usuário novo !!!
 args1 = { 'coisa': True }
 
-html = comando_ver_carrinho.processa(ses1, args1)
+html = comando_cadastrar_usuario.processa(ses1, args1)
 html = html + "\n" # In case the fragment does not end with newline.
 
+# !!! Verificar se o usuário foi de fato cadastrado !!!
+
 sys.stdout.buffer.write(html.encode('utf-8'))
-sys.stderr.write("Fim.\n")

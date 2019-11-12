@@ -10,8 +10,8 @@ def processa(ses, args):
   # e retorna uma página de acordo com o resultado:
   if prod != None and type(prod) is ObjProduto:
     qtd = 1
-    pag = gera_html_pag.mostra_produto(ses, None, prod, qtd)
+    pag = gera_html_pag.mostra_produto(ses, None, prod, qtd, None)
   else:
     erro = "Erro ao gerar novo usuário"
-    pag = gera_html_pag.mensagem_de_erro(erro)
+    pag = gera_html_pag.mensagem_de_erro(ses, erro)
   return pag

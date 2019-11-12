@@ -12,5 +12,5 @@ def processa(ses, args):
   else:
     sessao.fecha(ses)
     ses_nova = None
-    pag = gera_html_pag.principal(ses_nova)
+    pag = gera_html_pag.principal(ses_nova, None)
   return pag, ses_nova

@@ -26,24 +26,25 @@ def processa(ses, args):
       qtd = min(float(args['quantidade']), float(atrs_produto['estoque']))
     else:
       qtd = 1.0
-    pag = gera_html_pag.mostra_produto(ses, None, prod, qtd)
+    pag = gera_html_pag.mostra_produto(ses, None, prod, qtd, None)
     return pag
   
   else if type_objeto == "C"
     id_compra = id_objeto
     # Considerando cpr como objeto da classe Compra
     cpr = compra.busca_por_identificador(id_compra)
-    pag = gera_html_pag.mostra_compra(ses,cpr)
+    pag = gera_html_pag.mostra_compra(ses,cpr, None)
     return pag
 
   else if type_objeto == "U"
     id_usuario = id_objeto
     # Considerando usr como objeto da classe Usuário
     usr = usuario.busca_por_identificador(id_usuario)
-    pag = gera_html_pag.mostra_usuario(ses,usr)
+    pag = gera_html_pag.altera_usuario(ses,usr, None)
     return pag
 
   else if type_objeto == "S"
     id_sessao = id_objeto
-    pag = gera_html_pag.mostra_sessao(ses)
+    pag = gera_html_pag.mostra_sessao(ses, None)
+    return pag
     
