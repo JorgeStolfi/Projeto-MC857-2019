@@ -1,9 +1,11 @@
 # Implementação do módulo {gera_html_form}.
 
 # Interfaces importadas por esta implementação:
+import sys
 import gera_html_elem
 import gera_html_botao
 import usuario
+import compra
 from utils_testes import erro_prog, mostra
 
 #Funções exportadas por este módulo:
@@ -217,11 +219,14 @@ def preencher_endereco(id_compra, atrs):
 
   assert id_compra != None
 
+  cpr = compra.busca_por_identificador(id_compra)
+  atrs_cpr = compra.obtem_atributos(cpr)
+
   # Copia os atributos de endereço (apenas) a compra:
   novo_atrs = {}.copy()
   novo_atrs['id_compra'] = id_compra
-  novo_atrs['endereco'] = (atrs['endereco'] if 'endereco' in atrs else none)
-  novo_atrs['CEP'] = (atrs['CEP'] if 'CEP' in atrs else none)
+  novo_atrs['endereco'] = (atrs_cpr['endereco'] if 'endereco' in atrs_cpr else None)
+  novo_atrs['CEP'] = (atrs_cpr['CEP'] if 'CEP' in atrs_cpr else None)
   quebra_endereco(novo_atrs)
 
   # Dados brutos para as linhas. Para cada linha, o rótulo, tipo do "<input>", nome do campo, dica, e {adm_only}.
@@ -273,6 +278,8 @@ def tabela_de_campos(dados_linhas, atrs, admin):
   onde {val} é o valor {args[chave]} apropriadamente convertido para HTML.
   Se o {tipo} for "numeric" também tem "min='1'."""
 
+  sys.stderr.write("TABELA: atrs = %s\n" %str(atrs))
+
   # Converte os dados brutos das linhas para fragmentos HTML:
   linhas = [].copy()
   for rot, tipo, chave, dica, adm_only in dados_linhas:
@@ -281,7 +288,7 @@ def tabela_de_campos(dados_linhas, atrs, admin):
       val = (atrs[chave] if chave in atrs else None)
       # Converte {rot} para rótulo HTML:
       html_rotulo = gera_html_elem.label(rot, ": ")
-      # Cria o elemento "<input .../>":    
+      # Cria o elemento "<input .../>":
       html_campo = campo_editavel(tipo, chave, val, dica);
 
       if html_campo != None:
@@ -331,7 +338,7 @@ def campo_editavel(tipo, chave, val, dica):
 def quebra_endereco(atrs):
   """Quebra-galho.  Substitui o campo 'endereco' no dicionário {atrs}, se existir,
   por tres campos, 'endereco_1', 'endereco_2', e 'cidade_UF'."""
-  if 'endereco' in atrs:
+  if 'endereco' in atrs and atrs['endereco'] != None:
     linhas_endereco = atrs['endereco'].split('\n')
     atrs['endereco_1'] = linhas_endereco[0]
     atrs['endereco_2'] = linhas_endereco[1]
