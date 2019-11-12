@@ -30,6 +30,7 @@ import comando_ver_compra
 import comando_ver_ofertas
 import comando_ver_produto
 import comando_buscar_compras_por_produto
+import comando_buscar_usuarios
 
 import gera_html_elem
 import gera_html_pag
@@ -386,7 +387,11 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/buscar_produtos':
       # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
       pag = comando_buscar_produtos.processa(ses, args)
-
+   
+    elif cmd == '/buscar_usuarios':
+      # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
+      pag = comando_buscar_usuarios.processa(ses, args)
+   
     elif cmd == '/ver_produto':
       # Usuário apertou o botão "Ver" ou equivalente numa descrição curta do produto:
       pag = comando_ver_produto.processa(ses, args)
