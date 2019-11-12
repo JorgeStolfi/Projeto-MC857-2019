@@ -232,6 +232,7 @@ def cria_testes():
         'descr_curta': "Luva com 8 dedos",
         'variado' : False,
         'grupo': "P-00000003",
+        'variedade' : "Tamanho G",
         'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
         'palavras': 'luva, inverno',
         'descr_longa': 
@@ -249,7 +250,6 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
-        'variedade' : "Tamanho G",
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -275,9 +275,9 @@ def cria_testes():
         'oferta' : True, 
       },
       {
+        'descr_curta': "Ferroada",
         'variado' : False,
         'grupo' : None,
-        'descr_curta': "Ferroada",
         'variedade' : None,
         'descr_media': "Espada élfica forjada na cidade de Gondolin.",
         'palavras': 'espada, elfo, senhor dos aneis',
@@ -294,9 +294,9 @@ def cria_testes():
         'oferta' : False,
       },
       {
+        'descr_curta': "Amassador de suspiros",
         'variado' : False,
         'grupo' : None,
-        'descr_curta': "Amassador de suspiros",
         'variedade' : None,
         'descr_media': "Amassador de suspiros lânguidos manual com 5 velocidades e 2 temperaturas.",
         'palavras': 'amassador, suspiro',
@@ -315,9 +315,10 @@ def cria_testes():
         'volume':500.5,
         'oferta' : True,
       },
-      { 'variado' : False,
+      
+      { 'descr_curta': "Cabideiro",
+        'variado' : False,
         'grupo' : None,
-        'descr_curta': "Cabideiro",
         'variedade' : None,
         'descr_media': "Cabideiro com capacidade para 420 cabides", 
         'palavras':'cabide, cabides, roupas, roupa',
@@ -331,7 +332,82 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
-      }
+      },
+
+      { 'descr_curta': "Ácido patético",
+        'variado' : True,
+        'grupo' : None,
+        'variedade' : None,
+        'descr_media': "Ácido patético (H2PeO4) puro ACS para análise", 
+        'palavras':'química,limpeza,elixir',
+        'descr_longa': 
+          """Ácido patético puro para análise<br/>
+          Fabricante: Tox Chic SA<br/>
+          Fórmula: H2PeO4<br/>
+          Pureza: 99.8%<br/>
+          """,
+        'preco': 25.00, 
+        'imagem': "170013.png", 
+        'estoque': 50, 
+        'unidade': "frasco",
+        'peso': 10.0,
+        'volume': 500.5,
+        'oferta' : False,
+      },
+      { 'descr_curta': "Ácido patético - 200 mL",
+        'variado' : False,
+        'grupo' : "P-00000010",
+        'variedade' : "200 mL",
+        'descr_media': "Ácido patético (H2PeO4) puro ACS para análise - 200 mL", 
+        'palavras': None,
+        'descr_longa': 
+          """Ácido patético puro para análise, 200 mL<br/>
+          Embalagem: Garrafa de vidro<br/>
+          """,
+        'preco': 20.00, 
+        'imagem': "170013.png", 
+        'estoque': 50, 
+        'unidade': "frasco",
+        'peso': 300.0,
+        'volume': 200.5,
+        'oferta' : False,
+      },
+      { 'descr_curta': "Ácido patético - 500 mL",
+        'variado' : False,
+        'grupo' : "P-00000010",
+        'variedade' : "500 mL",
+        'descr_media': "Ácido patético (H2PeO4) puro ACS para análise - 500 mL", 
+        'palavras':'química,limpeza,elixir',
+        'descr_longa': 
+          """Ácido patético puro para análise, 500 mL<br/>
+          Embalagem: Garrafa de vidro<br/>
+          """,
+        'preco': 45.00, 
+        'imagem': "170013.png", 
+        'estoque': 50, 
+        'unidade': "frasco",
+        'peso': 650.0,
+        'volume': 500.5,
+        'oferta' : False,
+      },
+      { 'descr_curta': "Ácido patético - 5 litros",
+        'variado' : False,
+        'grupo' : "P-00000010",
+        'variedade' : "5 litros",
+        'descr_media': "Ácido patético (H2PeO4) puro ACS para análise - 5 litros", 
+        'palavras':'química,limpeza,elixir',
+        'descr_longa': 
+          """Ácido patético puro para análise, 5 litros<br/>
+          Embalagem: Bombona de polietileno<br/>
+          """,
+        'preco': 370.00, 
+        'imagem': "170013.png", 
+        'estoque': 50, 
+        'unidade': "frasco",
+        'peso': 7000.0,
+        'volume': 5000.0,
+        'oferta' : False,
+      },
     ]
   for atrs in lista_atrs:
     # Acrescenta o produto à base de dados:
