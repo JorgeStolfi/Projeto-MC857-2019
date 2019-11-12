@@ -16,7 +16,6 @@ def para_indice(let, ident):
   return indice
 
 def de_lista_de_indices(let, indices):
-  sys.stderr.write("indices: %s\n"%str(indices))
   idents = [].copy()
   if indices != None:
     assert type(indices) is tuple or type(indices) is list
