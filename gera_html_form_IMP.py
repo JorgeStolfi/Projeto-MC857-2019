@@ -20,9 +20,9 @@ def buscar_produtos():
 def buscar_objeto():
   cor_cinza = "#fff888"
   estilo = "text-color:" + cor_cinza + ";" + " text-align: left;"
-  html_cond_input = gera_html_elem.input(None, "text", "condicao", None, "Identificador", None)
+  html_cond_input = gera_html_elem.input(None, "text", "id_objeto", None, "Identificador", None)
   html_condicao = gera_html_elem.span(estilo, html_cond_input)
-  html_submit_buscar = gera_html_botao.submit("Buscar", 'comando_ver_objeto', None, '#ed3330')
+  html_submit_buscar = gera_html_botao.submit("Buscar", 'ver_objeto', None, '#ed3330')
   html_campos = html_condicao  + " " + html_submit_buscar
   return monta_formulario(html_campos)
 

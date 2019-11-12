@@ -392,7 +392,7 @@ def processa_comando(tipo, ses, dados):
       # Usuário apertou o botão "Ver" ou equivalente numa descrição curta do produto:
       pag = comando_ver_produto.processa(ses, args)
 
-      elif cmd == '/ver_objeto':
+    elif cmd == '/ver_objeto':
       # Usuário apertou o botão "Ver Objeto" ou equivalente no menu geral:
       pag = comando_ver_objeto.processa(ses, args)
 
