@@ -130,6 +130,11 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
       if grupo != None:
         html_grupo = paragrafo(estilo_parag, bloco_texto(grupo, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
 
+  variado = atrs['variado']
+  prods_grupo = None
+  if variado:
+    prods_grupo = produto.busca_grupo_por_identificador(id_produto)
+
   d_media = atrs['descr_media']
   html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
 
@@ -173,9 +178,28 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
     str_volume = ("%.2f mililitros" % volume)
     html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa + html_qtd + html_preco + html_botao + html_peso + html_volume
+  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa
 
-  bloco_descr = span("\n display: inline-block;", html_descr)
+  if variado:
+    if detalhe:
+      if prods_grupo != None:
+        for prod_g in prods_grupo:
+          id_produto_variedade = produto.obtem_identificador(prod_g)
+          str_variedade = produto.obtem_atributos(prod_g)['variedade']
+          html_variedade = bloco_texto(str_variedade, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+
+          input_qtd = input(None, "text", "quantidade", str(qtd), None, "alterar_qtd_de_produto")
+          btn_comprar = gera_html_botao.submit("Comprar", 'comprar_produto', None, '#55ee55')
+          btn_ver = gera_html_botao.submit("Ver", 'ver_produto', {'id_produto' : id_produto_variedade}, '#60a3bc')
+          variedade_form = form(None, html_variedade + html_preco + input_qtd + btn_comprar + btn_ver)
+          html_descr += paragrafo(estilo_parag, variedade_form)
+        bloco_descr = span("\n display: table-row;", html_descr)
+    else:
+      html_descr += html_qtd + html_preco + html_botao + html_peso + html_volume
+      bloco_descr = span("\n display: inline-block;", html_descr)
+  else:
+    html_descr += html_qtd + html_preco + html_botao + html_peso + html_volume
+    bloco_descr = span("\n display: inline-block;", html_descr)
 
   tam_img = (200 if detalhe else 100)
   nome_img = atrs['imagem']

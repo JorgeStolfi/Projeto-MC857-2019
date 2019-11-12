@@ -104,6 +104,11 @@ def muda_atributos(prod, mods):
   assert res == prod
   return
 
+def busca_grupo_por_identificador(id_produto):
+  global cache, nome_tb, letra_tb, colunas, diags
+  prods = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, 'grupo', id_produto)
+  return map(busca_por_identificador, prods)
+
 def busca_por_identificador(id_produto):
   global cache, nome_tb, letra_tb, colunas, diags
   prod = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_produto)

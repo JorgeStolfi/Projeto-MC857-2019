@@ -4,6 +4,7 @@
 import gera_html_elem
 import gera_html_botao
 import usuario
+import produto
 from utils_testes import erro_prog, mostra
 
 #Funções exportadas por este módulo:
