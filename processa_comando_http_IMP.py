@@ -18,6 +18,7 @@ import comando_excluir_item_de_compra
 import comando_fazer_login
 import comando_fazer_logout
 import comando_finalizar_compra
+import comando_nova_compra
 import comando_solicitar_form_de_dados_de_produto
 import comando_solicitar_form_de_cadastrar_usuario
 import comando_solicitar_form_de_alterar_usuario
@@ -394,6 +395,10 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/ver_ofertas':
       # Usuário apertou o botão "Ofertas" ou equivalente no menu geral:
       pag = comando_ver_ofertas.processa(ses, args)
+
+    elif cmd == '/nova_compra':
+      #Usuário apertou o botão "Nova Compra" no menu 
+      pag = comando_nova_compra.processa(ses, args)
 
     elif cmd == '/comprar_produto':
       # Usuário preencheu a quantidade desejada na página de um produto e apertou o botão "Comprar":

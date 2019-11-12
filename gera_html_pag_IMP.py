@@ -173,10 +173,11 @@ def mensagem_de_erro(ses, msg):
 
 def lista_de_compras(ses, idents, erros):
   sep = "<br/><hr/>" # Separador de blocos de compras.
+  botao_nova_compra = gera_html_botao.simples("Nova Compra", 'nova_compra', None, '#eeeeee'),
   todas_cmprs = ""
   for id_cmpr in idents:
     cmpr = compra.busca_por_identificador(id_cmpr)
     bloco_compra = gera_html_elem.bloco_de_compra(cmpr, False)
     todas_cmprs = todas_cmprs + sep + bloco_compra
-  pagina = generica(ses, todas_cmprs + sep, erros)
+  pagina = generica(ses, botao_nova_compra[0]+todas_cmprs + sep, erros)
   return pagina
