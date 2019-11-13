@@ -48,18 +48,18 @@ def menu_geral(logado, nome_usuario, admin):
   if admin:
     html_menu += menu_geral_linha(menu_geral_botoes_linha_2())
   return html_menu
-  
+
 def menu_geral_linha(botoes):
-  """Monta uma linha do menu geral, dada uma lista de fragmentos HTML que 
+  """Monta uma linha do menu geral, dada uma lista de fragmentos HTML que
   descrevem os botões."""
   html = "<nav>"
   for bt in botoes:
     html += "  " + bt
   html += "</nav>"
   return html
-  
+
 def menu_geral_botoes_linha_1(logado, nome_usuario, admin):
-  """Gera uma lista de fragmentos de HTML que descrevem os botões da linha 1 do menu 
+  """Gera uma lista de fragmentos de HTML que descrevem os botões da linha 1 do menu
   geral.  Estes botões são mostrados para todos os usuários, mas
   dependem do tipo de usuário (normal ou administrador) e se o
   usuário está logado."""
@@ -76,34 +76,35 @@ def menu_geral_botoes_linha_1(logado, nome_usuario, admin):
     # Gera outros botões de usuário deslogado:
     botoes += menu_geral_botoes_linha_1_deslogado()
   return botoes
-  
+
 def menu_geral_botoes_linha_1_logado(nome_usuario, admin):
-  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu 
+  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu
   geral, para um usuário que está logado."""
-  botoes = ( 
+  botoes = (
     gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
     gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
     gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
+    gera_html_botao.simples("Contato", 'solicitar_form_de_contato', None, '#eeeeee'),
     gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
     bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
   )
   return botoes
 
 def menu_geral_botoes_linha_1_deslogado():
-  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu 
+  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu
   geral, para um usuário que não está logado."""
-  botoes = ( 
+  botoes = (
     gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55'),
     gera_html_botao.simples("Cadastrar", 'solicitar_form_de_cadastrar_usuario', None, '#eeeeee'),
   )
   return botoes
-  
+
 def menu_geral_botoes_linha_2():
-  """Gera uma lista de fragmentos de HTML com os botões da linha 2 do menu 
+  """Gera uma lista de fragmentos de HTML com os botões da linha 2 do menu
   geral.  Estes botãoes são mostrados apenas se o usuário está logado
   e é um administrador."""
 
-  botoes = ( 
+  botoes = (
     gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_acrescentar_produto", None, '#ffdd22'),
     gera_html_botao.simples("Compras de produto", "buscar_compras_por_produto", None, '#eeeeee')
   )
@@ -231,7 +232,7 @@ def bloco_de_compra(cpr, detalhe):
     html_itens = tabela(linhas)
   else:
     html_itens = ""
-  
+
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
@@ -247,8 +248,8 @@ def bloco_de_compra(cpr, detalhe):
     elif (status_atual == 'despachado'):
       atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
       html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
-    html_admin = html_recebido if (html_recebido != None and html_recebido != "") else html_entregue 
-  
+    html_admin = html_recebido if (html_recebido != None and html_recebido != "") else html_entregue
+
   html_finalizar = ""
   if (num_itens > 0):
     atributos_finalizar = {'id_compra': id_compra}
@@ -278,7 +279,7 @@ def bloco_de_erro(msg):
   fam_fonte = "Courier"
   # Cabeçalho espalhafatoso:
   html_tit = bloco_texto("ERRO!", None, fam_fonte, "24px", "bold", "5px", "left", "#880000", None)
-  
+
   # Processa quebras de linha em {msg}:
   msg = re.sub(r'\n', r'<br/>\n', msg)
 
@@ -359,7 +360,7 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_cmd = ( " onchange=\"window.location.href=" + cmd + "\"" if cmd != None else "" )
   html = html_rotulo + "<input" + html_tipo + html_nome + html_val_ini + html_dica + "/>"
   return html
-    
+
 
 def label(rotulo, sep):
   if rotulo == None or rotulo == "":

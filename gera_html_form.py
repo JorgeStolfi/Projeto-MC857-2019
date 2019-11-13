@@ -118,37 +118,47 @@ def entrar():
   POST são { 'email': {email}, 'senha': {senha} }."""
   return gera_html_form_IMP.entrar()
 
+def contato():
+  """Retorna o HTML do formulário para contato.
+  O formulário contém campos editáveis onde o usuário deverá digitar
+  a mensagem, e um botão 'Enviar' (de tipo 'submit').
+
+  Quando o usuário clicar no botão 'Enviar', será emitido um comando POST
+  com ação {enviar_mensagem}.  Os argumentos desse
+  POST são { 'email': {email}, 'mensagem': {mensagem} }."""
+  return gera_html_form_IMP.contato()
+
 def cadastrar_usuario(atrs, admin):
   """Retorna o formulário de cadastrar novo usuario.
-  
+
   O formuláro contém campos editáveis para as informações que o usuário
   deve preencher.  Se {atrs} não for {None}, deve ser um dicionário
   que define os valores iniciais dos campos.
-  
+
   O parâmetro {admin} diz que o usuário que pediu a criação do usuário
   (NÃO o usuário que está sendo cadastrado!) é administrador. Se for {True}, o
   formulário vai mostrar um checkbox para definir o novo usuário como
   administrador.
-  
-  O formulário conterá um botão 'Cadastrar' (de tipo 'submit'). 
+
+  O formulário conterá um botão 'Cadastrar' (de tipo 'submit').
   Quando o usuário clicar nesse botão, será emitido um comando POST com ação
-  {cadastrar_usuario}.  Os argumentos desse POST são todos os atributos da classe {ObjUsuario}, 
+  {cadastrar_usuario}.  Os argumentos desse POST são todos os atributos da classe {ObjUsuario},
   com os valores de {atrs} que o usuário deve ter preenchido.  Um argumento
   adicional 'conf_senha' conterá a confirmação de senha.
-  
+
   O formulário também terá um botão simples 'Cancelar',
   que, quando clicado, emite o comando 'principal'."""
   return gera_html_form_IMP.cadastrar_usuario(atrs, admin)
 
 def alterar_usuario(id_usuario, atrs, admin):
-  """Retorna o formulário de alterar dados da conta 
-  do usuario {usr} cujo identificador é {id_usuario}.  
-  
-  O formuláro contém campos editáveis com os atributos 
-  correntes do usuário, especificados no dicionário {atrs}. 
-  O valor de {atrs['senha']} não será mostrado, e haverá um 
-  campo adicional 'conf_senha'.  
-  
+  """Retorna o formulário de alterar dados da conta
+  do usuario {usr} cujo identificador é {id_usuario}.
+
+  O formuláro contém campos editáveis com os atributos
+  correntes do usuário, especificados no dicionário {atrs}.
+  O valor de {atrs['senha']} não será mostrado, e haverá um
+  campo adicional 'conf_senha'.
+
   O parâmetro {admin} diz que o usuário que pediu a alteração (NÃO o
   usuário que está sendo alterado!) é administrador. Se for {True}, o
   formulário vai mostrar um checkbox para definir o usuário {usr} como
@@ -156,29 +166,29 @@ def alterar_usuario(id_usuario, atrs, admin):
 
   Se {admin} for {False}, supõe-se que o formulário foi
   pedido pelo próprio {usr}, que é um cliente comum.
-  
-  O formulário conterá um botão 'Alterar' (de tipo 'submit').  
+
+  O formulário conterá um botão 'Alterar' (de tipo 'submit').
   Quando o usuário clicar nesse botão, será emitido um comando POST com ação
   {alterar_usuario}.  Os argumentos desse POST são todos os atributos da classe
   {ObjUsuario}, com os valores de {atrs} a menos de altetações feitas pelo
-  usuário, mais o atributo 'conf_senha'.  
-  
+  usuário, mais o atributo 'conf_senha'.
+
   O formulário também terá um botão simples 'Cancelar',
   que, quando clicado, emite o comando 'principal'."""
   return gera_html_form_IMP.alterar_usuario(id_usuario, atrs, admin)
 
 def escolher_pagamento(id_compra, atrs):
-  """Retorna o HTML de um formulário para escolher o meio de pagamento, e entrar os 
-  dados do cartão de crédito. 
-  O formulário contém a seleção do meio de pagamento, os campos 
+  """Retorna o HTML de um formulário para escolher o meio de pagamento, e entrar os
+  dados do cartão de crédito.
+  O formulário contém a seleção do meio de pagamento, os campos
   editaveis relacionados ao cartão de crédito(nome,numero, data de validade e
   codigo de segurança) e um botão "Confirmar".
-  
-  Os valores iniciais dos campos serão obtidos do dicionário {atrs}, se não 
+
+  Os valores iniciais dos campos serão obtidos do dicionário {atrs}, se não
   for {None}.
-   
+
   Quando o usuário clicar no botão "Confirmar" ,será emitido um comando POST com ação
-  {definir_meio_de_pagamento}.Os argumentos desse POST serão as informações do 
+  {definir_meio_de_pagamento}.Os argumentos desse POST serão as informações do
   cartão de crédito."""
   return gera_html_form_IMP.escolher_pagamento(id_compra, atrs)
 
@@ -187,15 +197,14 @@ def preencher_endereco(id_compra, atrs):
   compra com identificador {id_compra}. O formulário contém campos editáveis
   com nomes 'endereco_1', 'endereco_2', 'cidade_UF', e 'CEP', cujos valores iniciais
   devem ser obtidos do dicionário {atrs}; e um botão "Confirmar".
-   
+
   Quando o usuário clicar no botão "Confirmar" ,será emitido um comando POST com ação
   {definir_endereco}. Os argumentos desse POST serão os campos acima. """
   return gera_html_form_IMP.preencher_endereco(id_compra, atrs)
 
 def buscar_identificador():
   """Retorna HTML de um formulario para busca textual no identificador do
-  cadastro de produtos.  O formulário contém um campo editável onde o usuário entra 
+  cadastro de produtos.  O formulário contém um campo editável onde o usuário entra
   o identificador na forma "{L}-{NNNNNNNN}", onde {L} pode ser "P", "C", "S", ou "U"
   que deseja procurar, e um botão de 'Ver' que solicita o produto ao servidor."""
   return gera_html_form_IMP.buscar_identificador()
-
