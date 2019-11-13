@@ -199,3 +199,6 @@ def buscar_identificador():
   que deseja procurar, e um botão de 'Ver' que solicita o produto ao servidor."""
   return gera_html_form_IMP.buscar_identificador()
 
+def acrescentar_produto(ses):
+  """Retorna o HTML de um formulario para acrescentar algum produto"""
+  return gera_html_form_IMP.acrescentar_produto(ses)
