@@ -3,10 +3,11 @@
 import gera_html_pag
 from utils_testes import erro_prog
 import sys
+import sessao
 
 def processa(ses, args):
   # Só válido se logado:
-  if ses == None or not session.aberta(ses):
+  if ses == None or not sessao.aberta(ses):
     pag = gera_html_pag.entrar(ses, ["Favor se identificar primeiro",])
   else:
     # Obtem o identificador da compra a alterar:
