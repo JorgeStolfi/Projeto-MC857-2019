@@ -35,6 +35,13 @@ def inicializa(limpa):
   SQL, resetando o contador em 0."""
   itens_de_compras_IMP.inicializa(limpa)
 
+def busca_por_identificador(id_item):
+  """Localiza uma compra com identificador {id_item} (uma string da forma
+  'I-{NNNNNNNN}'), e devolve a mesma na forma de uma tupla ({id_compra},
+  {id_produto},{qtd}, {preco}).
+  Se tal item não existe, devolve {None}."""
+  return itens_de_compra.busca_por_identificador(id_item)
+
 def busca_por_compra(id_compra):
   """Extrai da tabela de itens de compras todas as entradas referente
   ao pedido com identificador {id_compra}. 

@@ -104,6 +104,11 @@ def muda_atributos(prod, mods):
   assert res == prod
   return
 
+def busca_grupo_por_identificador(id_produto):
+  global cache, nome_tb, letra_tb, colunas, diags
+  prods = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, 'grupo', id_produto)
+  return map(busca_por_identificador, prods)
+
 def busca_por_identificador(id_produto):
   global cache, nome_tb, letra_tb, colunas, diags
   prod = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_produto)
@@ -115,6 +120,7 @@ def busca_por_indice(ind):
   return usr
 
 def busca_por_palavra(pal):
+  global cache, nome_tb, letra_tb, colunas, diags
   chaves = ('descr_curta', 'descr_media', 'palavras')
   valores = (pal,)
   busca_com_and = ' AND ' in pal
@@ -129,6 +135,14 @@ def busca_por_palavra(pal):
 def busca_ofertas():
   lista_ids=tabela_generica.busca_por_campo(nome_tb,letra_tb,colunas,"oferta",1)
   return lista_ids
+
+def busca_por_produtos_semelhantes(pal):
+  global cache, nome_tb, letra_tb, colunas, diags
+  chaves = ('palavras',)
+  valores = (pal,) 
+  produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
+
+  return produtos
 
 def cria_testes():
   global cache, nome_tb, letra_tb, colunas, diags
