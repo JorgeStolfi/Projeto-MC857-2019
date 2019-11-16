@@ -93,6 +93,11 @@ def entrar(ses, erros):
   pagina = generica(ses, conteudo, erros)
   return pagina
 
+def contato(ses, erros):
+  conteudo = gera_html_form.contato()
+  pagina = generica(ses, conteudo, [])
+  return pagina
+
 def alterar_endereco(ses, id_compra, atrs, erros):
   if atrs == None:
     # Obtém atributos correntes da compra:
