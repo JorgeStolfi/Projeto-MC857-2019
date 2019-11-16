@@ -104,8 +104,10 @@ def fechar_compra(id_compra):
     html_submit_fechar
   return monta_formulario(html_campos)
 
-def excluir_item_de_compra(prod_id, compr_id):
-  return alterar_qtd_de_produto(0.0, prod_id, compr_id)
+def excluir_item_de_compra(id_produto, id_compra):
+  arg = {'id_produto': str(id_produto), 'id_compra': str(id_compra) }
+  html_botao = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', arg, '#55ee55')
+  return monta_formulario(html_botao)
 
 def alterar_qtd_de_produto(qtd, prod_id, compr_id):
   html_qtd = gera_html_elem.input(None, "number", "quantidade", str(qtd), None, None)
