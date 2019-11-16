@@ -159,15 +159,6 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
     html_d_longa = ""
     html_botao = gera_html_form.ver_produto(id_produto, qtd_inicial)
 
-  if qtd == None:
-    # Preço unitário, sem campo de quantidade:
-    preco = atrs['preco']
-    html_qtd = ""
-  else:
-    preco = produto.calcula_preco(prod, qtd)
-    # !!! Deveria ser um campo editável !!!
-    html_qtd = bloco_texto(("%d" % qtd), None, "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
-
   str_preco = ("R$ %.2f" % preco)
   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
@@ -185,7 +176,7 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
     str_volume = ("%.2f mililitros" % volume)
     html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa + html_qtd + html_preco + html_botao + html_peso + html_volume
+  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa + html_preco + html_botao + html_peso + html_volume
 
   bloco_descr = span("\n display: inline-block;", html_descr)
 
