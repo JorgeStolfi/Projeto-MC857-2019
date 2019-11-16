@@ -4,6 +4,7 @@
 import gera_html_elem
 import gera_html_botao
 import usuario
+import sys
 from utils_testes import erro_prog, mostra
 
 #Funções exportadas por este módulo:
@@ -161,7 +162,7 @@ def dados_de_usuario(id_usuario, atrs, admin, texto_bt, cmd):
     ( "Documento",        "text",     "documento",     "Número, tipo, órgão", False, ),
     ( "Senha",            "password", "senha",         None,                  False, ),
     ( "Confirmar senha",  "password", "conf_senha",    None,                  False, ),
-    ( "Administrador",    "checkbox", "administrador", None,                  True,  ),
+    ( "Administrador",    "checkbox", "administrador", None,                  False, ),
   )
   
   html_tabela = tabela_de_campos(dados_linhas, atrs, admin)
@@ -282,7 +283,7 @@ def tabela_de_campos(dados_linhas, atrs, admin):
       # Converte {rot} para rótulo HTML:
       html_rotulo = gera_html_elem.label(rot, ": ")
       # Cria o elemento "<input .../>":    
-      html_campo = campo_editavel(tipo, chave, val, dica);
+      html_campo = campo_editavel(tipo, chave, val, dica)
 
       if html_campo != None:
         linhas.append((html_rotulo, html_campo,))
