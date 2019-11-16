@@ -15,12 +15,12 @@ from utils_testes import erro_prog, mostra
 from datetime import datetime, timezone
 from bs4 import BeautifulSoup as bsoup  # Pretty-print of HTML
 import re, sys
-  
+
 def generica(ses, html_conteudo, erros):
 
   # Cabeçalho das páginas:
   html_cabe = gera_html_elem.cabecalho("Site de compras: Projeto MC857A 2019-2s", True)
-  
+
   # Menu geral no alto da página:
   logado = (ses != None)
   if logado:
@@ -31,9 +31,9 @@ def generica(ses, html_conteudo, erros):
     nome_usuario = None
     admin = False
   html_menu = gera_html_elem.menu_geral(logado, nome_usuario, admin)
-  
+
   # Mensagens de erro:
-  if erros == None: 
+  if erros == None:
     erros = []
   elif type(erros) == str:
     # Split lines, create a list:
@@ -50,10 +50,10 @@ def generica(ses, html_conteudo, erros):
 
   # Rodapé da página:
   html_roda = gera_html_elem.rodape()
-  
+
   # Monta a página:
   pagina = html_cabe + "<br/>" + html_menu + "<br/>" + html_erros + "<br/>" + html_conteudo + "<br/>" + html_roda
-  
+
   # Formata o HTML para maior legibilidade:
   return bsoup(pagina, "html.parser").prettify()
 
@@ -99,7 +99,7 @@ def alterar_endereco(ses, id_compra, atrs, erros):
     cpr = compra.busca_por_identificador(id_compra)
     atrs = compra.obtem_atributos(cpr)
   conteudo = gera_html_form.preencher_endereco(id_compra, atrs)
-  pagina = generica(ses, conteudo, erros) 
+  pagina = generica(ses, conteudo, erros)
   return pagina
 
 
@@ -110,7 +110,7 @@ def escolher_pagamento(ses, id_compra, atrs, erros):
     atrs = compra.obtem_atributos(cpr)
   # !!! Completar !!!
   conteudo = gera_html_form.escolher_pagamento(id_compra, atrs)
-  pagina = generica(ses, conteudo, erros) 
+  pagina = generica(ses, conteudo, erros)
   return pagina
 
 def mostra_carrinho(ses, erros):
@@ -121,16 +121,16 @@ def mostra_carrinho(ses, erros):
   else:
     carrinho = sessao.obtem_carrinho(ses)
     conteudo = gera_html_elem.bloco_de_compra(carrinho, True)
-  
+
   pagina = generica(ses, conteudo, erros)
   return pagina
 
 def mostra_compra(ses, cpr, erros):
   detalhe = True
   conteudo = gera_html_elem.bloco_de_compra(cpr, True)
-  pagina = generica(ses, conteudo, erros) 
+  pagina = generica(ses, conteudo, erros)
   return pagina
-  
+
 def cadastrar_usuario(ses, atrs, erros):
   # Quem está cadastrando é administrador?
   if ses != None:
@@ -145,13 +145,13 @@ def cadastrar_usuario(ses, atrs, erros):
   # Monta a página:
   pagina = generica(ses, conteudo, erros)
   return pagina
-  
+
 def alterar_usuario(ses, id_usuario, atrs, erros):
   # Quem está cadastrando é administrador?
   if ses == None:
     # Não deveria acontecer:
     erro_prog("usuário deveria estar logado")
-    
+
   usr_ses = sessao.obtem_usuario(ses)
   atrs_ses = usuario.obtem_atributos(usr_ses)
   admin = (atrs_ses['administrador'] if 'administrador' in atrs_ses else False)
