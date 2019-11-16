@@ -396,3 +396,13 @@ def monta_formulario(conteudo):
   html_cru = gera_html_elem.form(None, conteudo)
   html = gera_html_elem.span(estilo, html_cru)
   return html
+
+def acrescentar_produto(ses):
+  html_nome_do_produto = gera_html_elem.input(None, "text", "nome_do_produto", None, "nome do produto", None)
+  html_preco_do_produto = gera_html_elem.input(None, "text", "preco_do_produto", None, "preco do produto", None)
+  html_botao = gera_html_botao.submit("Adicionar", 'adicionar_produto', None, '#55ee55')
+  html_campos = \
+    html_nome_do_produto +  \
+    html_preco_do_produto + \
+    html_botao
+  return monta_formulario(html_campos)

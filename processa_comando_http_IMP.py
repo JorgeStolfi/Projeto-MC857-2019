@@ -25,6 +25,7 @@ import comando_solicitar_form_de_alterar_usuario
 import comando_solicitar_form_de_endereco
 import comando_solicitar_form_de_meio_de_pagamento
 import comando_solicitar_form_de_login
+import comando_solicitar_form_de_acrescentar_produto
 import comando_solicitar_form_de_contato
 import comando_trocar_carrinho
 import comando_ver_carrinho
@@ -459,6 +460,10 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/buscar_compras_por_produto':
       # Usuário apertou o botão "Ver compras com produto" numa descrição de um produto:
       pag = comando_buscar_compras_por_produto.processa(ses, args)
+
+    elif cmd == '/solicitar_form_de_acrescentar_produto':
+      # Administrador apertou o botão acrescentar produto  
+      pag = comando_solicitar_form_de_acrescentar_produto.processa(ses, args)
 
     else:
       # Comando não identificado
