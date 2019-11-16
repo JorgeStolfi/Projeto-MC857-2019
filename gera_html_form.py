@@ -18,6 +18,12 @@ def buscar_produtos():
   procurar, e um botão de 'Buscar' que solicita a busca ao servidor."""
   return gera_html_form_IMP.buscar_produtos()
 
+def buscar_objeto():
+  """Retorna HTML de um formulario para busca textual de objetos.
+  O formulário contém um campo editável onde o usuário entra a palavra a
+  procurar, e um botão de 'Buscar' que solicita a busca ao servidor."""
+  return gera_html_form_IMP.buscar_objeto()
+
 def ver_produto(id_produto, qtd_produto):
   """Retorna o HTML de do formulário que mostra o identificador
   de produto {id_produto} e a quantidade {qtd_produto} (não editáveis)

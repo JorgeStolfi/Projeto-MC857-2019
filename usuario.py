@@ -112,6 +112,14 @@ def busca_por_CPF(CPF):
   ou {None} se não existir tal usuário."""
   return usuario_IMP.busca_por_CPF(CPF)
 
+def busca_por_palavra(pal):
+  """Devolve uma lista com todos os identificadores "U-{NNNNNNNN}"
+  dos produtos que contém a palavra {pal} nos seus 
+  campos 'nome'.  Se não houver nenhum item 
+  satisfazendo a busca, devolve uma lista vazia."""
+  return usuario_IMP.busca_por_palavra(pal)
+
+
 # UTILIDADES
 
 

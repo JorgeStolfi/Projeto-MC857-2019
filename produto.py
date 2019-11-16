@@ -129,6 +129,10 @@ def busca_ofertas():
   satisfazendo a busca, devolve uma lista vazia."""
   return produto_IMP.busca_ofertas()
 
+def busca_por_produtos_semelhantes(pal):
+  """Devolve uma lista com todos os identificadores "P-{NNNNNNNN}" dos produtos que têm a string {pal} no campo {palavras}.  Se não houver nenhum item satisfazendo a busca, devolve uma lista vazia."""
+  return produto_IMP.busca_por_produtos_semelhantes(pal)
+
 def cria_testes():
   """Limpa a tabela de produtos com {inicializa(True)}, e cria pelo menos três produtos
   para fins de teste, incluindo-os na tabela. Não devolve nenhum resultado.

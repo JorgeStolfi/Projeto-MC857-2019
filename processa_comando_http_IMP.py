@@ -18,6 +18,7 @@ import comando_excluir_item_de_compra
 import comando_fazer_login
 import comando_fazer_logout
 import comando_finalizar_compra
+import comando_nova_compra
 import comando_solicitar_form_de_dados_de_produto
 import comando_solicitar_form_de_cadastrar_usuario
 import comando_solicitar_form_de_alterar_usuario
@@ -29,7 +30,9 @@ import comando_ver_carrinho
 import comando_ver_compra
 import comando_ver_ofertas
 import comando_ver_produto
+import comando_ver_objeto
 import comando_buscar_compras_por_produto
+import comando_buscar_usuarios
 
 import gera_html_elem
 import gera_html_pag
@@ -83,7 +86,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 
     # Extrai os dados do comando HTTP na forma de um dicionário:
     dados = self.extrai_dados(tipo)
-
+    
     if tipo == 'GET' and dados['real_path'][0:9] == '/imagens/':
       # Pedido de uma imagem:
       nome_imagem = dados['real_path'][1:]
@@ -386,14 +389,29 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/buscar_produtos':
       # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
       pag = comando_buscar_produtos.processa(ses, args)
-
+   
+    elif cmd == '/buscar_usuarios':
+      # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
+      pag = comando_buscar_usuarios.processa(ses, args)
+   
     elif cmd == '/ver_produto':
       # Usuário apertou o botão "Ver" ou equivalente numa descrição curta do produto:
       pag = comando_ver_produto.processa(ses, args)
 
+    elif cmd == '/ver_objeto':
+      # Usuário apertou o botão "Ver Objeto" ou equivalente no menu geral:
+      pag = comando_ver_objeto.processa(ses, args)
+      
+    elif cmd == '/ver_compra':
+      pag = comando_ver_compra.processa(ses, args)
+
     elif cmd == '/ver_ofertas':
       # Usuário apertou o botão "Ofertas" ou equivalente no menu geral:
       pag = comando_ver_ofertas.processa(ses, args)
+
+    elif cmd == '/nova_compra':
+      #Usuário apertou o botão "Nova Compra" no menu 
+      pag = comando_nova_compra.processa(ses, args)
 
     elif cmd == '/comprar_produto':
       # Usuário preencheu a quantidade desejada na página de um produto e apertou o botão "Comprar":
