@@ -47,4 +47,3 @@ def processa(ses, args):
     id_sessao = args['id_objeto']
     pag = gera_html_pag.mostra_sessao(ses, None)
     return pag
-    
