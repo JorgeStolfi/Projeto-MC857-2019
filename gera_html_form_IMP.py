@@ -5,6 +5,7 @@ import sys
 import gera_html_elem
 import gera_html_botao
 import usuario
+import produto
 import compra
 import sys
 from utils_testes import erro_prog, mostra

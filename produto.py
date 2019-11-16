@@ -100,6 +100,11 @@ def muda_atributos(prod, mods):
   correspondentes em {mods}."""
   produto_IMP.muda_atributos(prod, mods)
 
+def busca_grupo_por_identificador(id_produto):
+  """Busca todos os produtos que estão no grupo cujo produto pai
+  tem identificador {id_produto}"""
+  return produto_IMP.busca_grupo_por_identificador(id_produto)
+
 def busca_por_identificador(id_produto):
   """Localiza um produto com identificador {id_produto} (uma string da forma
   "P-{NNNNNNNN}"), e devolve o mesmo na forma de um objeto da classe {Obj_Produto}.
