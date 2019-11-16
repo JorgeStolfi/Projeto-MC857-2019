@@ -80,13 +80,20 @@ def menu_geral_botoes_linha_1(logado, nome_usuario, admin):
 def menu_geral_botoes_linha_1_logado(nome_usuario, admin):
   """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu 
   geral, para um usuário que está logado."""
-  botoes = ( 
-    gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
-    gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
+  if admin:
+    botoes = (
     gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
     gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
     bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
   )
+  else:
+    botoes = ( 
+      gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
+      gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
+      gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
+      gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
+      bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
+    )
   return botoes
 
 def menu_geral_botoes_linha_1_deslogado():
