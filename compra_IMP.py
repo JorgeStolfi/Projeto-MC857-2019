@@ -285,12 +285,9 @@ def diagnosticos(val):
   return
 
 def calcular_frete(comp, CEP):
-  peso_total = 0
-  volume_total = 0
-  for item in compra.obtem_itens(comp):
-    peso_total = peso_total + item.peso
-    volume_total = volume_total + item.volume
-  
-  fator_de_distancia = CEP / 10000000
-  frete = peso_total * fator_de_distancia
-  return frete.calcula(CEP, peso_total, volume_total)
+  # peso_total = 0
+  # volume_total = 0
+  # for item in compra.obtem_itens(comp):
+  #   peso_total = peso_total + item.peso
+  #   volume_total = volume_total + item.volume
+  return frete.calcula(CEP, len(compra.obtem_itens(comp) ), len(compra.obtem_itens(comp)))

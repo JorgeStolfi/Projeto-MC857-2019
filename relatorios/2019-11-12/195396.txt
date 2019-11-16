@@ -1,0 +1,2 @@
+Acrescentar uma função {gera_elem_html.bloco_de_usuario} semelhante a {gera_elem_html.bloco_de_produto}. 
+Acrescentar função {gera_elem_html.bloco_de_lista_de_usuarios} semelhante a {gera_elem_html.bloco_de_lista_de_produtos}
