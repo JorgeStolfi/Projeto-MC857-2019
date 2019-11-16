@@ -48,18 +48,18 @@ def menu_geral(logado, nome_usuario, admin):
   if admin:
     html_menu += menu_geral_linha(menu_geral_botoes_linha_2())
   return html_menu
-  
+
 def menu_geral_linha(botoes):
-  """Monta uma linha do menu geral, dada uma lista de fragmentos HTML que 
+  """Monta uma linha do menu geral, dada uma lista de fragmentos HTML que
   descrevem os botões."""
   html = "<nav>"
   for bt in botoes:
     html += "  " + bt
   html += "</nav>"
   return html
-  
+
 def menu_geral_botoes_linha_1(logado, nome_usuario, admin):
-  """Gera uma lista de fragmentos de HTML que descrevem os botões da linha 1 do menu 
+  """Gera uma lista de fragmentos de HTML que descrevem os botões da linha 1 do menu
   geral.  Estes botões são mostrados para todos os usuários, mas
   dependem do tipo de usuário (normal ou administrador) e se o
   usuário está logado."""
@@ -76,43 +76,55 @@ def menu_geral_botoes_linha_1(logado, nome_usuario, admin):
     # Gera outros botões de usuário deslogado:
     botoes += menu_geral_botoes_linha_1_deslogado()
   return botoes
-  
+
 def menu_geral_botoes_linha_1_logado(nome_usuario, admin):
-  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu 
+  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu
   geral, para um usuário que está logado."""
-  botoes = ( 
-    gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
-    gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
+  if admin:
+    botoes = (
     gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
     gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
     bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
   )
+  else:
+    botoes = ( 
+      gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
+      gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
+      gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
+      gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
+      bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
+    )
   return botoes
 
 def menu_geral_botoes_linha_1_deslogado():
-  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu 
+  """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu
   geral, para um usuário que não está logado."""
-  botoes = ( 
+  botoes = (
     gera_html_botao.simples("Entrar", 'solicitar_form_de_login', None, '#55ee55'),
     gera_html_botao.simples("Cadastrar", 'solicitar_form_de_cadastrar_usuario', None, '#eeeeee'),
   )
   return botoes
-  
+
 def menu_geral_botoes_linha_2():
-  """Gera uma lista de fragmentos de HTML com os botões da linha 2 do menu 
+  """Gera uma lista de fragmentos de HTML com os botões da linha 2 do menu
   geral.  Estes botãoes são mostrados apenas se o usuário está logado
   e é um administrador."""
 
-  botoes = ( 
+  botoes = (
     gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_acrescentar_produto", None, '#ffdd22'),
     gera_html_botao.simples("Compras de produto", "buscar_compras_por_produto", None, '#eeeeee')
   )
   return botoes
 
-def bloco_de_produto(id_compra, prod, qtd, detalhe):
+def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
   id_produto = produto.obtem_identificador(prod)
   atrs = produto.obtem_atributos(prod)
+  c = kwargs.get('c', None)
 
+  if c == '1':
+      grupo = atrs['grupo']
+      if grupo != None:
+          return
   # Monta o parágrafo de descrição
   estilo_parag = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
 
@@ -147,15 +159,6 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
     html_d_longa = ""
     html_botao = gera_html_form.ver_produto(id_produto, qtd_inicial)
 
-  if qtd == None:
-    # Preço unitário, sem campo de quantidade:
-    preco = atrs['preco']
-    html_qtd = ""
-  else:
-    preco = produto.calcula_preco(prod, qtd)
-    # !!! Deveria ser um campo editável !!!
-    html_qtd = bloco_texto(("%d" % qtd), None, "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
-
   str_preco = ("R$ %.2f" % preco)
   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
@@ -173,7 +176,7 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
     str_volume = ("%.2f mililitros" % volume)
     html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa + html_qtd + html_preco + html_botao + html_peso + html_volume
+  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa + html_preco + html_botao + html_peso + html_volume
 
   bloco_descr = span("\n display: inline-block;", html_descr)
 
@@ -189,6 +192,40 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
   bloco_final = span(estilo_final, html_img + bloco_descr)
   return bloco_final
 
+def bloco_de_usuario(user):
+  atrs = usuario.obtem_atributos(user)
+
+  estilo_parag = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
+
+  nome = atrs['nome']
+  html_nome = paragrafo(estilo_parag, bloco_texto(nome, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  email = atrs['email']
+  html_email = paragrafo(estilo_parag, bloco_texto(email, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  CPF = atrs['CPF']
+  html_CPF = paragrafo(estilo_parag, bloco_texto(CPF, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  endereco = atrs['endereco']
+  html_endereco = paragrafo(estilo_parag, bloco_texto(endereco, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  CEP = atrs['CEP']
+  html_CEP = paragrafo(estilo_parag, bloco_texto(CEP, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  telefone = atrs['telefone']
+  html_telefone = paragrafo(estilo_parag, bloco_texto(telefone, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  documento = atrs['documento']
+  html_documento = paragrafo(estilo_parag, bloco_texto(documento, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  html_final = html_nome + html_email + html_CPF + html_endereco + html_CEP + html_telefone + html_documento
+  bloco_final = span("\n display: inline-block;", html_final)
+  
+  width_pct = ("33%")
+  estilo_final = f"width: {width_pct}; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\ndisplay: flex; align-items: center; float:left"
+  bloco_final = span(estilo_final, bloco_final)
+  return bloco_final
+
 def bloco_de_lista_de_produtos(idents):
   todos_prods = ""
   for id_prod in idents:
@@ -196,6 +233,15 @@ def bloco_de_lista_de_produtos(idents):
     bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
     todos_prods = todos_prods + bloco_prod + "\n"
   lista_html = div("display:inline-block", todos_prods)
+  return lista_html
+
+def bloco_de_lista_de_usuarios(idents):
+  todos_user = ""
+  for id_usuario in idents:
+    user = usuario.busca_por_identificador(id_usuario)
+    bloco_prod = gera_html_elem.bloco_de_usuario(user)
+    todos_user = todos_user + bloco_prod + "\n"
+  lista_html = div("display:inline-block", todos_user)
   return lista_html
 
 def bloco_de_compra(cpr, detalhe):
@@ -238,7 +284,6 @@ def bloco_de_compra(cpr, detalhe):
     html_ends = ""
     html_preco_total = ""
     html_frete = ""
-  
   # Admnistrador
   atrs_cliente = usuario.obtem_atributos(atrs_compra['cliente'])
   html_admin = ""
@@ -254,8 +299,8 @@ def bloco_de_compra(cpr, detalhe):
     elif (status_atual == 'despachado'):
       atributos_entregue = {'id_compra': compra.obtem_identificador(cpr), 'novo_status': 'entregue'}
       html_entregue = gera_html_botao.submit("Entregue", 'mudar_status_de_compra', atributos_entregue, '#55ee55')
-    html_admin = html_recebido if (html_recebido != None and html_recebido != "") else html_entregue 
-  
+    html_admin = html_recebido if (html_recebido != None and html_recebido != "") else html_entregue
+
   html_finalizar = ""
   if (num_itens > 0 and detalhe):
     atributos_finalizar = {'id_compra': id_compra}
@@ -294,7 +339,7 @@ def bloco_de_erro(msg):
   fam_fonte = "Courier"
   # Cabeçalho espalhafatoso:
   html_tit = bloco_texto("ERRO!", None, fam_fonte, "24px", "bold", "5px", "left", "#880000", None)
-  
+
   # Processa quebras de linha em {msg}:
   msg = re.sub(r'\n', r'<br/>\n', msg)
 
@@ -368,14 +413,17 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_tipo = " type =\"" + tipo + "\""
   html_nome = " name=\"" + nome + "\" id=\"" + nome + "\""
   if tipo == "number": html_nome += " min=\"1\""
+    
   if val_ini != None and dica != None:
     erro_prog("{val_ini} e {dica} são mutuamente exclusivos")
   html_val_ini = ( " value =\"" + val_ini + "\"" if val_ini != None else "" )
+  if val_ini == 'on' and tipo == 'checkbox':
+    html_val_ini += ' checked '
   html_dica = ( " placeholder=\"" + dica + "\"" if dica != None else "" )
   html_cmd = ( " onchange=\"window.location.href=" + cmd + "\"" if cmd != None else "" )
   html = html_rotulo + "<input" + html_tipo + html_nome + html_val_ini + html_dica + "/>"
   return html
-    
+
 
 def label(rotulo, sep):
   if rotulo == None or rotulo == "":
