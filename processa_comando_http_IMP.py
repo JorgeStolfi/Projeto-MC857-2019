@@ -353,6 +353,7 @@ def processa_comando(tipo, ses, dados):
       # Usuário apertou o botão "Meu Carrinho" do menu geral:
       pag = comando_ver_carrinho.processa(ses, args)
 
+      
     elif cmd == '/buscar_compras':
       # Usuário apertou o botão "Minhas compras" do menu geral:
       pag = comando_buscar_compras.processa(ses, args)
@@ -363,7 +364,7 @@ def processa_comando(tipo, ses, dados):
 
     elif cmd == '/definir_dados_de_produto':
       # Usuário apertou o botão "Confirma" num formulário de acrescentar/alterar produto:
-      pag = comando_defini_dados_de_produto.processa(ses, args)
+      pag = comando_definir_dados_de_produto.processa(ses, args)
 
     elif cmd == '/fazer_login':
       # Usuário preencheu o formulário de login apertou "Entrar":

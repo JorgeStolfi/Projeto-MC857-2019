@@ -112,8 +112,8 @@ def menu_geral_botoes_linha_2():
 
   botoes = (
     gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_acrescentar_produto", None, '#ffdd22'),
-    gera_html_botao.simples("Compras de produto", "buscar_compras_por_produto", None, '#eeeeee'),
-    gera_html_form.buscar_objeto()
+    gera_html_form.compras_de_produto(),
+    gera_html_form.buscar_objeto(),
   )
   return botoes
 

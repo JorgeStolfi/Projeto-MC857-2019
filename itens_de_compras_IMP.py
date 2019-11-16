@@ -66,8 +66,13 @@ def busca_por_compra(id_compra):
 def busca_por_produto(id_produto):
   indice = identificador.para_indice("P", id_produto)
   # Obtem lista de identificadores de itens referentes a esta compra:
-  compras = tabela_generica.busca_por_campo("itens_de_compras", "I", "id_compra", "id_produto", indice)
+  compras = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "produto", indice)
   return compras
+
+def busca_por_identificador(id_compra):
+  global cache, nome_tb, letra_tb, colunas, diags
+  cpr = tabela_generica.busca_por_identificador(nome_tb, cache, letra_tb, colunas, def_obj, id_compra)
+  return cpr
 
 def atualiza_lista(id_compra, lit, prod, qtd_velho, qtd_novo):
   global cache, nome_tb, letra_tb, colunas, diags
