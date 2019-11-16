@@ -100,6 +100,11 @@ def muda_atributos(prod, mods):
   correspondentes em {mods}."""
   produto_IMP.muda_atributos(prod, mods)
 
+def busca_grupo_por_identificador(id_produto):
+  """Busca todos os produtos que estão no grupo cujo produto pai
+  tem identificador {id_produto}"""
+  return produto_IMP.busca_grupo_por_identificador(id_produto)
+
 def busca_por_identificador(id_produto):
   """Localiza um produto com identificador {id_produto} (uma string da forma
   "P-{NNNNNNNN}"), e devolve o mesmo na forma de um objeto da classe {Obj_Produto}.
@@ -123,6 +128,10 @@ def busca_ofertas():
   dos produtos que tem o campo {oferta} = True .  Se não houver nenhum item 
   satisfazendo a busca, devolve uma lista vazia."""
   return produto_IMP.busca_ofertas()
+
+def busca_por_produtos_semelhantes(pal):
+  """Devolve uma lista com todos os identificadores "P-{NNNNNNNN}" dos produtos que têm a string {pal} no campo {palavras}.  Se não houver nenhum item satisfazendo a busca, devolve uma lista vazia."""
+  return produto_IMP.busca_por_produtos_semelhantes(pal)
 
 def cria_testes():
   """Limpa a tabela de produtos com {inicializa(True)}, e cria pelo menos três produtos

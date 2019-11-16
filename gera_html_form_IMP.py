@@ -1,9 +1,13 @@
 # Implementação do módulo {gera_html_form}.
 
 # Interfaces importadas por esta implementação:
+import sys
 import gera_html_elem
 import gera_html_botao
 import usuario
+import produto
+import compra
+import sys
 from utils_testes import erro_prog, mostra
 
 #Funções exportadas por este módulo:
@@ -17,16 +21,34 @@ def buscar_produtos():
   html_campos = html_condicao  + " " + html_submit_buscar
   return monta_formulario(html_campos)
 
+def compras_de_produto():
+  cor_cinza = "#fff888"
+  estilo = "text-color:" + cor_cinza + ";" + " text-align: left;"
+  html_cond_input = gera_html_elem.input(None, "text", "id_produto", None, "P-", None)
+  html_condicao = gera_html_elem.span(estilo, html_cond_input)
+  html_submit_compras = gera_html_botao.submit("Compras de Produto", 'buscar_compras_por_produto', None, '#ed3330')
+  html_campos = html_condicao  + " " + html_submit_compras
+  return monta_formulario(html_campos)
+
+def buscar_objeto():
+  cor_cinza = "#fff888"
+  estilo = "text-color:" + cor_cinza + ";" + " text-align: left;"
+  html_cond_input = gera_html_elem.input(None, "text", "id_objeto", None, "Identificador", None)
+  html_condicao = gera_html_elem.span(estilo, html_cond_input)
+  html_submit_buscar = gera_html_botao.submit("Buscar", 'ver_objeto', None, '#ed3330')
+  html_campos = html_condicao  + " " + html_submit_buscar
+  return monta_formulario(html_campos)
+
 def ver_produto(id_produto, qtd_produto):
   html_id_produto = gera_html_elem.input(None, "hidden", "id_produto", id_produto, None, None)
   html_qtd = ( gera_html_elem.input(None, "hidden", "quantidade", str(qtd_produto), None, None) if qtd_produto != None else "" )
   html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
-  
+
   html_campos = \
     html_id_produto + \
     ( html_qtd if html_qtd != "" else "" ) + \
     html_submit_ver
-  
+
   return monta_formulario(html_campos)
 
 def trocar_carrinho(id_compra):
@@ -82,8 +104,10 @@ def fechar_compra(id_compra):
     html_submit_fechar
   return monta_formulario(html_campos)
 
-def excluir_item_de_compra(prod_id, compr_id):
-  return alterar_qtd_de_produto(0.0, prod_id, compr_id)
+def excluir_item_de_compra(id_produto, id_compra):
+  arg = {'id_produto': str(id_produto), 'id_compra': str(id_compra) }
+  html_botao = gera_html_botao.submit("Excluir", 'excluir_item_de_compra', arg, '#55ee55')
+  return monta_formulario(html_botao)
 
 def alterar_qtd_de_produto(qtd, prod_id, compr_id):
   html_qtd = gera_html_elem.input(None, "number", "quantidade", str(qtd), None, None)
@@ -108,7 +132,7 @@ def entrar():
 
   # Monta a tabela com os fragmentos HTML:
   html_tabela = gera_html_elem.tabela(linhas)
-  
+
   html_bt_login = gera_html_botao.submit("Entrar", 'fazer_login', None, '#55ee55')
 
   html_campos = \
@@ -116,7 +140,23 @@ def entrar():
     html_bt_login
 
   return monta_formulario(html_campos)
-  
+
+def contato():
+  linhas = [].copy()
+  html_campo = gera_html_elem.input('Mensagem', "text", 'mensagem', None, None, None)
+  linhas.append((html_campo,))
+
+  # Monta a tabela com os fragmentos HTML:
+  html_tabela = gera_html_elem.tabela(linhas)
+
+  html_bt_enviar = gera_html_botao.submit("Enviar", 'enviar_mensagem', None, '#55ee55')
+
+  html_campos = \
+    html_tabela + \
+    html_bt_enviar
+
+  return monta_formulario(html_campos)
+
 def cadastrar_usuario(atrs, admin):
   return dados_de_usuario(None, atrs, admin, "Cadastrar", "cadastrar_usuario")
 
@@ -125,9 +165,9 @@ def alterar_usuario(id_usuario, atrs, admin):
 
 def dados_de_usuario(id_usuario, atrs, admin, texto_bt, cmd):
   """Se {id_usuario} é {None}, retorna formulário de cadastrar novo usuário.
-  Senão retorma o formulário para alterar os dados do usuário existente {usr} 
+  Senão retorma o formulário para alterar os dados do usuário existente {usr}
   cujo identificador é {id_usuario} e cujos atributos atuais estão em {atrs}.
-  
+
   O formulário terá um botão "submit" com texto {texto_bt} e ação POST {cmd}."""
 
   if id_usuario != None:
@@ -141,10 +181,10 @@ def dados_de_usuario(id_usuario, atrs, admin, texto_bt, cmd):
   else:
     novo = True
     html_id_usuario = ""
-    
+
   # For simplicity:
   if atrs == None: atrs = {}.copy()
-      
+
   # Substitui o atributo 'endereco' por 4 campos 'endereco_1', 'endereco_2', 'cidade_UF'
   quebra_endereco(atrs)
 
@@ -161,15 +201,15 @@ def dados_de_usuario(id_usuario, atrs, admin, texto_bt, cmd):
     ( "Documento",        "text",     "documento",     "Número, tipo, órgão", False, ),
     ( "Senha",            "password", "senha",         None,                  False, ),
     ( "Confirmar senha",  "password", "conf_senha",    None,                  False, ),
-    ( "Administrador",    "checkbox", "administrador", None,                  True,  ),
+    ( "Administrador",    "checkbox", "administrador", None,                  False, ),
   )
-  
+
   html_tabela = tabela_de_campos(dados_linhas, atrs, admin)
 
   html_submit = gera_html_botao.submit(texto_bt, cmd, None, '#55ee55')
 
   html_cancel = gera_html_botao.simples("Cancelar", 'principal', None, '#ee5555')
-  
+
   html_campos = \
     ( "    " + html_id_usuario + "\n" if html_id_usuario != "" else "") + \
     ( html_tabela + "\n" ) + \
@@ -217,11 +257,14 @@ def preencher_endereco(id_compra, atrs):
 
   assert id_compra != None
 
+  cpr = compra.busca_por_identificador(id_compra)
+  atrs_cpr = compra.obtem_atributos(cpr)
+
   # Copia os atributos de endereço (apenas) a compra:
   novo_atrs = {}.copy()
   novo_atrs['id_compra'] = id_compra
-  novo_atrs['endereco'] = (atrs['endereco'] if 'endereco' in atrs else none)
-  novo_atrs['CEP'] = (atrs['CEP'] if 'CEP' in atrs else none)
+  novo_atrs['endereco'] = (atrs_cpr['endereco'] if 'endereco' in atrs_cpr else None)
+  novo_atrs['CEP'] = (atrs_cpr['CEP'] if 'CEP' in atrs_cpr else None)
   quebra_endereco(novo_atrs)
 
   # Dados brutos para as linhas. Para cada linha, o rótulo, tipo do "<input>", nome do campo, dica, e {adm_only}.
@@ -236,7 +279,7 @@ def preencher_endereco(id_compra, atrs):
   html_tabela = tabela_de_campos(dados_linhas, novo_atrs, False)
 
   html_submit = gera_html_botao.submit("Confirmar", 'definir_endereco', None, '#55ee55')
-  
+
   html_campos = \
     html_tabela + \
     html_submit
@@ -254,24 +297,26 @@ def buscar_identificador():
   return monta_formulario(html_campos)
 
 # FUNÇÕES INTERNAS:
-  
+
 def tabela_de_campos(dados_linhas, atrs, admin):
-  """Retorna HTML de uma tabela com duas colunas: rótulos "<label>...<label/> e campos 
-  editáveis <input.../>".  Os valores iniciais dos campos são obtidos do 
+  """Retorna HTML de uma tabela com duas colunas: rótulos "<label>...<label/> e campos
+  editáveis <input.../>".  Os valores iniciais dos campos são obtidos do
   dicionário {atrs}.  O parâmetro booleano {admin} diz se o usuário
   que pediu o formulário é administrador ({True}) ou cliente ({False}).
-  
+
   O parâmetro {dados_linhas} é uma seqüência de quíntuplas
-  {(rot,tipo,chave,dica,adm_only)}, uma para cada linha da tabela. 
-  
+  {(rot,tipo,chave,dica,adm_only)}, uma para cada linha da tabela.
+
   O elemento {rot} é o texto a mostrar no rótulo, ou {None} para omitir o rótulo.
-  O elemento {adm_only} é um booleano que diz se o campo só deve ser editável 
+  O elemento {adm_only} é um booleano que diz se o campo só deve ser editável
   para administradores. Se for {True}, o campo será "readonly" para usuários normais.
-  
-  O campo editável será 
+
+  O campo editável será
   "<input type='{tipo}' name='{chave}' id='{chave}' value='{val}' placeholder='{dica}'/>"
   onde {val} é o valor {args[chave]} apropriadamente convertido para HTML.
   Se o {tipo} for "numeric" também tem "min='1'."""
+
+  sys.stderr.write("TABELA: atrs = %s\n" %str(atrs))
 
   # Converte os dados brutos das linhas para fragmentos HTML:
   linhas = [].copy()
@@ -281,26 +326,25 @@ def tabela_de_campos(dados_linhas, atrs, admin):
       val = (atrs[chave] if chave in atrs else None)
       # Converte {rot} para rótulo HTML:
       html_rotulo = gera_html_elem.label(rot, ": ")
-      # Cria o elemento "<input .../>":    
-      html_campo = campo_editavel(tipo, chave, val, dica);
-
+      # Cria o elemento "<input .../>":
+      html_campo = campo_editavel(tipo, chave, val, dica)
       if html_campo != None:
         linhas.append((html_rotulo, html_campo,))
 
   # Monta a tabela com os fragmentos HTML:
   html_tabela = gera_html_elem.tabela(linhas)
-  
+
   return html_tabela
 
 def campo_editavel(tipo, chave, val, dica):
   """Retorna o HTML de um item "input" do formulário
   de dados de usuário. Pode devolver {None} para não mostrar esse item.
-  
-  O elemento terá o dado {tipo} ("text", "password", etc.), nome {chave}, 
-  valor inicial {val}, e a {dica} especificada (se {val} for {None}). 
+
+  O elemento terá o dado {tipo} ("text", "password", etc.), nome {chave},
+  valor inicial {val}, e a {dica} especificada (se {val} for {None}).
   O valor inicial {val} é convertido para string de maneira adequada
   ao seu tipo.
-  
+
   Se a chave for 'senha', não mostra o {val}"""
 
   if chave == 'senha': val = None
@@ -319,7 +363,7 @@ def campo_editavel(tipo, chave, val, dica):
   else:
     erro_prog("valor inválido = \"" + str(val) + "\"")
 
-  # Dica e valor inicial são mutuamente exclusivos: 
+  # Dica e valor inicial são mutuamente exclusivos:
   if html_valor == None:
     html_dica = dica
   else:
@@ -331,7 +375,7 @@ def campo_editavel(tipo, chave, val, dica):
 def quebra_endereco(atrs):
   """Quebra-galho.  Substitui o campo 'endereco' no dicionário {atrs}, se existir,
   por tres campos, 'endereco_1', 'endereco_2', e 'cidade_UF'."""
-  if 'endereco' in atrs:
+  if 'endereco' in atrs and atrs['endereco'] != None:
     linhas_endereco = atrs['endereco'].split('\n')
     atrs['endereco_1'] = linhas_endereco[0]
     atrs['endereco_2'] = linhas_endereco[1]
@@ -339,7 +383,7 @@ def quebra_endereco(atrs):
     del atrs['endereco']
 
 def monta_formulario(conteudo):
-  """Dado um trecho de HTML {conteudo} que define os campos "<input ...>" necessários, envolve o mesmo 
+  """Dado um trecho de HTML {conteudo} que define os campos "<input ...>" necessários, envolve o mesmo
   em "<form>...</form>", com rótulos etc num estilo padrão."""
   fam_fonte = "Courier"
   peso_fonte = None

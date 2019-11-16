@@ -18,6 +18,7 @@ import comando_excluir_item_de_compra
 import comando_fazer_login
 import comando_fazer_logout
 import comando_finalizar_compra
+import comando_nova_compra
 import comando_solicitar_form_de_dados_de_produto
 import comando_solicitar_form_de_cadastrar_usuario
 import comando_solicitar_form_de_alterar_usuario
@@ -25,12 +26,15 @@ import comando_solicitar_form_de_endereco
 import comando_solicitar_form_de_meio_de_pagamento
 import comando_solicitar_form_de_login
 import comando_solicitar_form_de_acrescentar_produto
+import comando_solicitar_form_de_contato
 import comando_trocar_carrinho
 import comando_ver_carrinho
 import comando_ver_compra
 import comando_ver_ofertas
 import comando_ver_produto
+import comando_ver_objeto
 import comando_buscar_compras_por_produto
+import comando_buscar_usuarios
 
 import gera_html_elem
 import gera_html_pag
@@ -84,7 +88,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 
     # Extrai os dados do comando HTTP na forma de um dicionário:
     dados = self.extrai_dados(tipo)
-
+    
     if tipo == 'GET' and dados['real_path'][0:9] == '/imagens/':
       # Pedido de uma imagem:
       nome_imagem = dados['real_path'][1:]
@@ -159,7 +163,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     dados['headers'] = self.extrai_cabecalhos_http()
 
     dados['cookies'] = self.extrai_cookies(dados['headers'])
-    
+
     dados['query_data'] = urllib.parse.parse_qs(dados['query'])
 
     dados['form_data'] = self.extrai_dados_de_formulario()
@@ -173,12 +177,12 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
     for name, value in self.headers.items():
        hds[name] = value.rstrip()
     return hds
-  
+
   def extrai_cookies(self, dados):
     """Analisa a cadeia {cook_str} que é o campo 'Cookie'
         do dicionário {dados}, que veio com os headers HTTP, convertendo-a
     em um dicionário Python.
-    
+
     Supõe que {cook_str} é uma cadeia com formato '{chave1}={valor1};
     {chave2}={valor2}; {...}'. Os campos de valor não podem conter ';'
     ou '='. Se algum valor estiver envolvido em aspas, remove as aspas.
@@ -342,6 +346,11 @@ def processa_comando(tipo, ses, dados):
       # ATENÇÃO: Este comando só mostra o formulário de login, não muda a sessão ainda.
       pag = comando_solicitar_form_de_login.processa(ses, args)
 
+    elif cmd == '/solicitar_form_de_contato':
+      # Usuário apertou o botão "Contato" do menu geral:
+      # ATENÇÃO: Este comando só mostra o formulário de contato, não muda a sessão ainda.
+      pag = comando_solicitar_form_de_contato.processa(ses, args)
+
     elif cmd == '/fazer_logout':
       # Usuário apertou o botão "Sair" (logout) do menu geral:
       # ATENÇÃO: devolve também a nova sessão (que geralmente vai ser {None}).
@@ -351,6 +360,7 @@ def processa_comando(tipo, ses, dados):
       # Usuário apertou o botão "Meu Carrinho" do menu geral:
       pag = comando_ver_carrinho.processa(ses, args)
 
+      
     elif cmd == '/buscar_compras':
       # Usuário apertou o botão "Minhas compras" do menu geral:
       pag = comando_buscar_compras.processa(ses, args)
@@ -361,7 +371,7 @@ def processa_comando(tipo, ses, dados):
 
     elif cmd == '/definir_dados_de_produto':
       # Usuário apertou o botão "Confirma" num formulário de acrescentar/alterar produto:
-      pag = comando_defini_dados_de_produto.processa(ses, args)
+      pag = comando_definir_dados_de_produto.processa(ses, args)
 
     elif cmd == '/fazer_login':
       # Usuário preencheu o formulário de login apertou "Entrar":
@@ -387,14 +397,29 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/buscar_produtos':
       # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
       pag = comando_buscar_produtos.processa(ses, args)
-
+   
+    elif cmd == '/buscar_usuarios':
+      # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
+      pag = comando_buscar_usuarios.processa(ses, args)
+   
     elif cmd == '/ver_produto':
       # Usuário apertou o botão "Ver" ou equivalente numa descrição curta do produto:
       pag = comando_ver_produto.processa(ses, args)
 
+    elif cmd == '/ver_objeto':
+      # Usuário apertou o botão "Ver Objeto" ou equivalente no menu geral:
+      pag = comando_ver_objeto.processa(ses, args)
+      
+    elif cmd == '/ver_compra':
+      pag = comando_ver_compra.processa(ses, args)
+
     elif cmd == '/ver_ofertas':
       # Usuário apertou o botão "Ofertas" ou equivalente no menu geral:
       pag = comando_ver_ofertas.processa(ses, args)
+
+    elif cmd == '/nova_compra':
+      #Usuário apertou o botão "Nova Compra" no menu 
+      pag = comando_nova_compra.processa(ses, args)
 
     elif cmd == '/comprar_produto':
       # Usuário preencheu a quantidade desejada na página de um produto e apertou o botão "Comprar":
@@ -435,9 +460,11 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/buscar_compras_por_produto':
       # Usuário apertou o botão "Ver compras com produto" numa descrição de um produto:
       pag = comando_buscar_compras_por_produto.processa(ses, args)
+
     elif cmd == '/solicitar_form_de_acrescentar_produto':
       # Administrador apertou o botão acrescentar produto  
       pag = comando_solicitar_form_de_acrescentar_produto.processa(ses, args)
+
     else:
       # Comando não identificado
       pag =  gera_html_pag.mensagem_de_erro(ses, ("** comando POST \"%s\" inválido" % cmd))

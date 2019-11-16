@@ -117,6 +117,18 @@ def busca_por_CPF(CPF):
   global cache, nome_tb, letra_tb, colunas, diags
   return busca_por_campo_unico('CPF', CPF)
 
+def busca_por_palavra(pal):
+  chaves = ('nome',)
+  valores = (pal,)
+  busca_com_and = ' AND ' in pal
+  
+  if busca_com_and:
+    valores = pal.split(' AND ')
+    valores = tuple(valores)
+ 
+  usuarios =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
+  return usuarios
+
 def cria_testes():
   global cache, nome_tb, letra_tb, colunas, diags
   inicializa(True)
