@@ -80,13 +80,20 @@ def menu_geral_botoes_linha_1(logado, nome_usuario, admin):
 def menu_geral_botoes_linha_1_logado(nome_usuario, admin):
   """Gera uma lista de fragmentos HTML com os botões da linha 1 do menu
   geral, para um usuário que está logado."""
-  botoes = (
-    gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
-    gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
+  if admin:
+    botoes = (
     gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
     gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
     bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
   )
+  else:
+    botoes = ( 
+      gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
+      gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
+      gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
+      gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
+      bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
+    )
   return botoes
 
 def menu_geral_botoes_linha_1_deslogado():
@@ -194,6 +201,40 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
   bloco_final = span(estilo_final, html_img + bloco_descr)
   return bloco_final
 
+def bloco_de_usuario(user):
+  atrs = usuario.obtem_atributos(user)
+
+  estilo_parag = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
+
+  nome = atrs['nome']
+  html_nome = paragrafo(estilo_parag, bloco_texto(nome, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  email = atrs['email']
+  html_email = paragrafo(estilo_parag, bloco_texto(email, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  CPF = atrs['CPF']
+  html_CPF = paragrafo(estilo_parag, bloco_texto(CPF, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  endereco = atrs['endereco']
+  html_endereco = paragrafo(estilo_parag, bloco_texto(endereco, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  CEP = atrs['CEP']
+  html_CEP = paragrafo(estilo_parag, bloco_texto(CEP, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  telefone = atrs['telefone']
+  html_telefone = paragrafo(estilo_parag, bloco_texto(telefone, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  documento = atrs['documento']
+  html_documento = paragrafo(estilo_parag, bloco_texto(documento, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+
+  html_final = html_nome + html_email + html_CPF + html_endereco + html_CEP + html_telefone + html_documento
+  bloco_final = span("\n display: inline-block;", html_final)
+  
+  width_pct = ("33%")
+  estilo_final = f"width: {width_pct}; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\ndisplay: flex; align-items: center; float:left"
+  bloco_final = span(estilo_final, bloco_final)
+  return bloco_final
+
 def bloco_de_lista_de_produtos(idents):
   todos_prods = ""
   for id_prod in idents:
@@ -201,6 +242,15 @@ def bloco_de_lista_de_produtos(idents):
     bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
     todos_prods = todos_prods + bloco_prod + "\n"
   lista_html = div("display:inline-block", todos_prods)
+  return lista_html
+
+def bloco_de_lista_de_usuarios(idents):
+  todos_user = ""
+  for id_usuario in idents:
+    user = usuario.busca_por_identificador(id_usuario)
+    bloco_prod = gera_html_elem.bloco_de_usuario(user)
+    todos_user = todos_user + bloco_prod + "\n"
+  lista_html = div("display:inline-block", todos_user)
   return lista_html
 
 def bloco_de_compra(cpr, detalhe):
@@ -357,9 +407,12 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_tipo = " type =\"" + tipo + "\""
   html_nome = " name=\"" + nome + "\" id=\"" + nome + "\""
   if tipo == "number": html_nome += " min=\"1\""
+    
   if val_ini != None and dica != None:
     erro_prog("{val_ini} e {dica} são mutuamente exclusivos")
   html_val_ini = ( " value =\"" + val_ini + "\"" if val_ini != None else "" )
+  if val_ini == 'on' and tipo == 'checkbox':
+    html_val_ini += ' checked '
   html_dica = ( " placeholder=\"" + dica + "\"" if dica != None else "" )
   html_cmd = ( " onchange=\"window.location.href=" + cmd + "\"" if cmd != None else "" )
   html = html_rotulo + "<input" + html_tipo + html_nome + html_val_ini + html_dica + "/>"

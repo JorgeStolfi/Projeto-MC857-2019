@@ -12,6 +12,7 @@ import sys
 
 def processa(ses, args):
   sys.stderr.write("finalizando compra!\n")
+  print("\n----\n\n\nprocessa args: \n" + str(args) + "\n\n\n---\n")
   if ses == None:
     # O usuário não está logado. Exibe a tela de login:
     return gera_html_pag.entrar(ses, None)
@@ -23,7 +24,7 @@ def processa(ses, args):
     erro_prog("carrinho fechado?")
      
   # Localiza a compra {cpr}:
-  id_compra = args['id_compra']
+  id_compra = args['id_compra'][0]
   cpr = compra.busca_por_identificador(id_compra)
   # !!! Deveria verificar se {ses} e {cpr} pertencem ao mesmo usuário !!!
   compra.fecha_compra(cpr)
