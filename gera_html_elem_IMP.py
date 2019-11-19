@@ -118,7 +118,7 @@ def menu_geral_botoes_linha_2():
   )
   return botoes
 
-def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
+def bloco_de_produto(id_compra, prod, qtd, detalhe,comprar, **kwargs):
   id_produto = produto.obtem_identificador(prod)
   atrs = produto.obtem_atributos(prod)
   c = kwargs.get('c', None)
@@ -161,7 +161,10 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
   if detalhe:
     d_longa = atrs['descr_longa']
     html_d_longa = paragrafo(estilo_parag, bloco_texto(d_longa, None, "Courier", "14px", "normal", "0px", "left", "#000000", None))
-    html_botao = gera_html_form.comprar_produto(id_compra, id_produto, qtd_inicial)
+    if(comprar):
+      html_botao = gera_html_form.comprar_produto(id_compra, id_produto, qtd_inicial)
+    else:
+      html_botao = ""
   else:
     html_d_longa = ""
     html_botao = gera_html_form.ver_produto(id_produto, qtd_inicial)
@@ -203,7 +206,10 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
           html_variedade = bloco_texto(str_variedade, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
           input_qtd = input(None, "text", "quantidade", str(qtd), None, "alterar_qtd_de_produto")
-          btn_comprar = gera_html_botao.submit("Comprar", 'comprar_produto', None, '#55ee55')
+          if(comprar):
+            btn_comprar = gera_html_botao.submit("Comprar", 'comprar_produto', None, '#55ee55')
+          else:
+            btn_comprar = ""
           btn_ver = gera_html_botao.submit("Ver", 'ver_produto', {'id_produto' : id_produto_variedade}, '#60a3bc')
           variedade_form = form(None, html_variedade + html_preco + input_qtd + btn_comprar + btn_ver)
           html_descr += paragrafo(estilo_parag, variedade_form)
@@ -261,11 +267,11 @@ def bloco_de_usuario(user):
   bloco_final = span(estilo_final, bloco_final)
   return bloco_final
 
-def bloco_de_lista_de_produtos(idents):
+def bloco_de_lista_de_produtos(idents,comprar):
   todos_prods = ""
   for id_prod in idents:
     prod = produto.busca_por_identificador(id_prod)
-    bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
+    bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False,comprar)
     todos_prods = todos_prods + bloco_prod + "\n"
   lista_html = div("display:inline-block", todos_prods)
   return lista_html

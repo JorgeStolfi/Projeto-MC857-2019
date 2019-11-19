@@ -3,6 +3,8 @@
 import gera_html_pag
 import produto
 import tabela_generica
+import sessao
+import usuario
 from utils_testes import erro_prog, mostra
 
 def processa(ses, args):

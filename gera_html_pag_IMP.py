@@ -63,7 +63,9 @@ def principal(ses, erros):
     atrs = usuario.obtem_atributos(usr)
     nome = atrs['nome']
     texto1 = "<hr/>Seja bem vindo(a) <b>"+nome+"</b> ao nosso site de compras!"
+    admin=atrs['administrador']
   else:
+    admin=False
     texto1 = "<hr/>Seja bem vindo(a) ao nosso site de compras!"
   now = datetime.now(timezone.utc)
   data = now.strftime("%Y-%m-%d %H:%M:%S %z")
@@ -73,18 +75,30 @@ def principal(ses, erros):
   bloco_texto1 =  gera_html_elem.bloco_texto(texto1, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
   bloco_texto2 =  gera_html_elem.bloco_texto(texto2, None,"Courier","16px","normal","5px","center", cor_texto, cor_fundo)
   ofertas = produto.busca_ofertas()
-  bloco_ofertas = gera_html_elem.bloco_de_lista_de_produtos(ofertas)
+  bloco_ofertas = gera_html_elem.bloco_de_lista_de_produtos(ofertas,not(admin))
   conteudo = bloco_texto1 + bloco_ofertas + bloco_texto2
   pagina = generica(ses, conteudo, erros)
   return pagina
 
 def mostra_produto(ses, id_compra, prod, qtd, erros):
-  conteudo = gera_html_elem.bloco_de_produto(id_compra, prod, qtd, True)
+  if ses !=None:
+    usr = sessao.obtem_usuario(ses)
+    atrs = usuario.obtem_atributos(usr)
+    admin=atrs['administrador']
+  else:
+    admin=False
+  conteudo = gera_html_elem.bloco_de_produto(id_compra, prod, qtd, True,not(admin))
   pagina = generica(ses, conteudo, erros)
   return pagina
 
 def lista_de_produtos(ses, idents, erros):
-  conteudo = gera_html_elem.bloco_de_lista_de_produtos(idents)
+  if ses !=None:
+    usr = sessao.obtem_usuario(ses)
+    atrs = usuario.obtem_atributos(usr)
+    admin=atrs['administrador']
+  else:
+    admin=False
+  conteudo = gera_html_elem.bloco_de_lista_de_produtos(idents,not(admin))
   pagina = generica(ses, conteudo, erros)
   return pagina
 

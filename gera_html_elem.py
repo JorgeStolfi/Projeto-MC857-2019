@@ -37,7 +37,7 @@ def bloco_de_erro(msg):
   A mensagem pode incluir quebras de linha '\n'."""
   return gera_html_elem_IMP.bloco_de_erro(msg)
 
-def bloco_de_produto(id_compra, prod, qtd, detalhe):
+def bloco_de_produto(id_compra, prod, qtd, detalhe,comprar):
   """Devolve um fragmento HTMP que decreve o produto {prod}, um objeto da classe {ObjProduto}.
   
   Se {detalhe} for {False}, mostra apenas o identificador do produto,
@@ -52,21 +52,23 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe):
   
   Em qualquer caso, se {qtd} não for {None}, mostra a quantidade {qtd}
   e o preço para essa quantidade.  Se {qtd} for {None},
-  mostra apenas o preço unitário, sem a quantidade."""
-  return gera_html_elem_IMP.bloco_de_produto(id_compra, prod, qtd, detalhe)
+  mostra apenas o preço unitário, sem a quantidade.
+  
+  Se {comprar} for {False},omite a opção de comprar para o usuario."""
+  return gera_html_elem_IMP.bloco_de_produto(id_compra, prod, qtd, detalhe,comprar)
 
 def bloco_de_usuario(user):
   """Devolve um fragmento HTML que decreve o usuãrio {user}, um objeto da classe {ObjUsuario}."""
   return gera_html_elem_IMP.bloco_de_usuario(user)
 
-def bloco_de_lista_de_produtos(idents):
+def bloco_de_lista_de_produtos(idents,comprar):
   """Dada uma lista {idents} de identificadores de produtos,
   retorna o HTML da descrição resumida de todos esses produtos.
 
   Cada descrição será gerada por
   {gera_html_elem.bloco_de_produto(None, prod, qtd, False)},
   e terá um botão 'Ver' para mostrar a descrição detalhada."""
-  return gera_html_elem_IMP.bloco_de_lista_de_produtos(idents)
+  return gera_html_elem_IMP.bloco_de_lista_de_produtos(idents,comprar)
 
 def bloco_de_lista_de_usuarios(idents):
   """Dada uma lista {idents} de identificadores de usuarios,
