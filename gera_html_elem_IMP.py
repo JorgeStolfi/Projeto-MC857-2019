@@ -128,21 +128,20 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
       if grupo != None:
           return
   # Monta o parágrafo de descrição
-  estilo_parag = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
 
   d_curta = atrs['descr_curta']
-  html_d_curta = paragrafo(estilo_parag, bloco_texto(d_curta, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_d_curta = paragrafo_default(d_curta)
 
   html_variedade = ""
   variedade = atrs['variedade']
   if variedade != None:
-    html_variedade = paragrafo(estilo_parag, bloco_texto(variedade, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
+    html_variedade = paragrafo(conteudo = bloco_texto(variedade, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
 
   html_grupo = ""
   if detalhe == True:
       grupo = atrs['grupo']
       if grupo != None:
-        html_grupo = paragrafo(estilo_parag, bloco_texto(grupo, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
+        html_grupo = paragrafo(conteudo = bloco_texto(grupo, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
 
   variado = atrs['variado']
   prods_grupo = None
@@ -150,17 +149,17 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
     prods_grupo = produto.busca_grupo_por_identificador(id_produto)
 
   d_media = atrs['descr_media']
-  html_d_media = paragrafo(estilo_parag, bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
+  html_d_media = paragrafo(conteudo = bloco_texto(d_media, None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
 
   em_oferta = atrs['oferta']
   html_em_oferta = ""
   if em_oferta:
-    html_em_oferta = paragrafo(estilo_parag, bloco_texto("OFERTA!", None, "Courier", "24px", "normal", "5px 5px 5px 5px", "center", "#000000", "#ffff00"))
+    html_em_oferta = paragrafo(conteudo = bloco_texto("OFERTA!", None, "Courier", "24px", "normal", "5px 5px 5px 5px", "center", "#000000", "#ffff00"))
 
   qtd_inicial = (qtd if qtd != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
   if detalhe:
     d_longa = atrs['descr_longa']
-    html_d_longa = paragrafo(estilo_parag, bloco_texto(d_longa, None, "Courier", "14px", "normal", "0px", "left", "#000000", None))
+    html_d_longa = paragrafo(conteudo = bloco_texto(d_longa, None, "Courier", "14px", "normal", "0px", "left", "#000000", None))
     html_botao = gera_html_form.comprar_produto(id_compra, id_produto, qtd_inicial)
   else:
     html_d_longa = ""
@@ -227,31 +226,36 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
   bloco_final = span(estilo_final, html_img + bloco_descr)
   return bloco_final
 
+def bloco_texto_default(texto):
+  return bloco_texto(texto, None, "Courier", "20px", "bold", "2px", "left", "#263238", None)
+
+def paragrafo_default(texto, estilo_parag = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"):
+  return paragrafo(estilo_parag, bloco_texto_default(texto))
+
+
 def bloco_de_usuario(user):
   atrs = usuario.obtem_atributos(user)
 
-  estilo_parag = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;"
-
   nome = atrs['nome']
-  html_nome = paragrafo(estilo_parag, bloco_texto(nome, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_nome = paragrafo_default(nome)
 
   email = atrs['email']
-  html_email = paragrafo(estilo_parag, bloco_texto(email, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_email = paragrafo_default(email)
 
   CPF = atrs['CPF']
-  html_CPF = paragrafo(estilo_parag, bloco_texto(CPF, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_CPF = paragrafo_default(CPF)
 
   endereco = atrs['endereco']
-  html_endereco = paragrafo(estilo_parag, bloco_texto(endereco, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_endereco = paragrafo_default(endereco)
 
   CEP = atrs['CEP']
-  html_CEP = paragrafo(estilo_parag, bloco_texto(CEP, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_CEP = paragrafo_default(CEP)
 
   telefone = atrs['telefone']
-  html_telefone = paragrafo(estilo_parag, bloco_texto(telefone, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_telefone = paragrafo_default(telefone)
 
   documento = atrs['documento']
-  html_documento = paragrafo(estilo_parag, bloco_texto(documento, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_documento = paragrafo_default(documento)
 
   html_final = html_nome + html_email + html_CPF + html_endereco + html_CEP + html_telefone + html_documento
   bloco_final = span("\n display: inline-block;", html_final)
@@ -290,7 +294,7 @@ def bloco_de_compra(cpr, detalhe):
   id_usr = compra.obtem_cliente(cpr)
   # Monta o parágrafo de descrição
   estilo_parag = "width: 600px; margin-top: 10px; margin-bottom: 2px; text-indent: 0px;  line-height: 75%;"
-  html_ident = paragrafo(estilo_parag, bloco_texto(id_compra, None, "Courier", "20px", "bold", "2px", "left", "#263238", None))
+  html_ident = paragrafo_default(id_compra, estilo_parag)
   html_usr = paragrafo(estilo_parag, bloco_texto(str(id_usr), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_num_itens = paragrafo(estilo_parag, bloco_texto(str(num_itens), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
   html_custo_total = paragrafo(estilo_parag, bloco_texto("Custo total: " + str(custo_total), None, "Courier", "16px", "normal", "0px", "left", "#000000", None))
@@ -408,7 +412,7 @@ def form(estilo, conteudo):
   html = "<form method=\"post\"" + est + ">" + conteudo + "</form>"
   return html
 
-def paragrafo(estilo, conteudo):
+def paragrafo(estilo = "\n display:block; word-wrap:break-word;  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-indent: 0px;\n  line-height: 75%;", conteudo = ""):
   est = (" style=\"" + estilo + "\"" if estilo != None and estilo != "" else "")
   html = "<p" + est + ">" + conteudo + "</p>\n"
   return html
