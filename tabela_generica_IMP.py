@@ -146,13 +146,27 @@ def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   sys.stderr.write("busca_por_semelhanca: res = " + str(res) + "\n")
   return identificador.de_lista_de_indices(let, res)
 
-def busca_por_valor(nome_tb, let, cols, chaves, valores):
-  cond = "preco < " + str(valores)
-  res = base_sql.executa_comando_SELECT(nome_tb, cond, ['indice'])
-  if res != None and type(res) is str:
+def busca_por_intervalo(nome_tb, let, cols, chave, vmin, vmax, res_cols):
+  # Converte {vmin} e {vmax} para string na linguagem SQL:
+  vmin = base_sql.codifica_valor(vmin)
+  vmax = base_sql.codifica_valor(vmax)
+
+  # Supõe que o cache é um subconjuto da base em disco, então procura só na última:
+  cond = chave + " >= " + vmin + " and " + chave + " <= " + vmax
+  if res_cols == None:
+    cols = ['indice']
+  else:
+    cols = res_cols
+  res = base_sql.executa_comando_SELECT(nome_tb, cond, cols)
+  if res == None:
+    res = [].copy()
+  elif type(res) is str:
     erro_prog("SELECT falhou " + str(res))
-  sys.stderr.write("busca_por_valor: res = " + str(res) + "\n")
-  return identificador.de_lista_de_indices(let, res)
+  else:
+    if res_cols == None:
+      # Converte lista de índices para lista de identificadores:
+      res = identificador.de_lista_de_indices(let, res)
+  return res
  
 def limpa_tabela(nome_tb, cols):
   res = base_sql.executa_comando_DROP_TABLE(nome_tb);
