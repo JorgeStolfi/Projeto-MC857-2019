@@ -191,8 +191,27 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
     volume = atrs['volume']
     str_volume = ("%.2f mililitros" % volume)
     html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+  
+  html_semelhante = ""
+  if detalhe:
+    lista_semelhante = produto.busca_por_produtos_semelhantes(atrs['palavras'])
+    lista_semelhante = lista_semelhante[:10]
+    str_nomes = ""
+    for id_prod_sem in lista_semelhante:
+      if id_produto != id_prod_sem:
+        prod_sem = produto.busca_por_identificador(id_prod_sem)
+        atrs_sem = produto.obtem_atributos(prod_sem)
+        str_nomes += atrs_sem['descr_curta']
+        variedade_sem = atrs_sem['variedade']
+        if variedade_sem != None:
+          str_nomes += " " + variedade_sem
+        str_nomes += '; '
+    str_semelhante = ""
+    if str_nomes != "":
+      str_semelhante = "Veja também: " + str_nomes
+    html_semelhante = paragrafo(estilo_parag, bloco_texto(str_semelhante, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
 
-  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa
+  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa + html_semelhante
 
   if variado:
     if detalhe:
@@ -207,6 +226,8 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
           btn_ver = gera_html_botao.submit("Ver", 'ver_produto', {'id_produto' : id_produto_variedade}, '#60a3bc')
           variedade_form = form(None, html_variedade + html_preco + input_qtd + btn_comprar + btn_ver)
           html_descr += paragrafo(estilo_parag, variedade_form)
+
+        
         bloco_descr = span("\n display: table-row;", html_descr)
     else:
       html_descr += html_qtd + html_preco + html_botao + html_peso + html_volume
@@ -215,6 +236,7 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
     html_descr += html_qtd + html_preco + html_botao + html_peso + html_volume
     bloco_descr = span("\n display: inline-block;", html_descr)
 
+  
   tam_img = (200 if detalhe else 100)
   nome_img = atrs['imagem']
   html_img_crua = ("<img src=\"imagens/" + nome_img + "\" alt=\"" + id_produto + "\" style=\"float:left;height:%dpx;\"/>" % tam_img)
