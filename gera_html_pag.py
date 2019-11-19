@@ -50,6 +50,12 @@ def lista_de_produtos(ses, idents, erros):
   e terá um botão 'Ver' para mostrar a descrição detalhada."""
   return gera_html_pag_IMP.lista_de_produtos(ses, idents, erros)
 
+def acrescentar_produto(ses, args, erros):
+    """Retorna uma página contendo o formulário de acrescentar produto,
+    com campos para entrada de produto e um botão
+    "Adicionar" para submeter o formulário."""
+    return gera_html_pag_IMP.acrescentar_produto(ses, args, erros)
+
 def entrar(ses, erros):
   """Retorna uma página contendo o formulário de entrar (login),
   com campos para entrada de usuário e senha e um botão

@@ -398,11 +398,48 @@ def monta_formulario(conteudo):
   return html
 
 def acrescentar_produto(ses):
-  html_nome_do_produto = gera_html_elem.input(None, "text", "nome_do_produto", None, "nome do produto", None)
-  html_preco_do_produto = gera_html_elem.input(None, "text", "preco_do_produto", None, "preco do produto", None)
+  quebra_de_linha = "<br/><br/>"
+  html_descr_curta = html_preco_do_produto = gera_html_elem.input(None, "text", "descr_curta", None, "Descricao curta do produto", None)
+  html_descr_media = html_preco_do_produto = gera_html_elem.input(None, "text", "descr_media", None, "Descricao media do produto", None)
+  html_descr_longa = html_preco_do_produto = gera_html_elem.input(None, "text", "descr_longa", None, "Descricao longa do produto", None)
+  html_palavras = html_preco_do_produto = gera_html_elem.input(None, "text", "palavras", None, "Palavras chaves (Separe por virgulas)", None)
+  html_unidade = html_preco_do_produto = gera_html_elem.input(None, "text", "unidade", None, "Unidade de venda", None)
+  html_preco = html_preco_do_produto = gera_html_elem.input(None, "number", "preco", None, "Preco do produto", None)
+  html_imagem = html_preco_do_produto = gera_html_elem.input(None, "file", "imagem", None, "Imagem do produto", None)
+  html_peso = html_preco_do_produto = gera_html_elem.input(None, "number", "peso", None, "Peso do produto", None)
+  html_volume = html_preco_do_produto = gera_html_elem.input(None, "number", "volume", None, "Volume do produto", None)
+  html_estoque = html_preco_do_produto = gera_html_elem.input(None, "number", "estoque", None, "Quantidade em estoque", None)
+  html_oferta = html_preco_do_produto = gera_html_elem.input(None, "checkbox", "oferta", None, "Produto esta em oferta?", None)
+  html_variado = html_preco_do_produto = gera_html_elem.input(None, "checkbox", "variado", None, "Produto possui variedades?", None)
+  html_grupo = html_preco_do_produto = gera_html_elem.input(None, "text", "grupo", None, "Identificador do grupo do produto", None)
+  html_variedade = html_preco_do_produto = gera_html_elem.input(None, "text", "variedade", None, "Descrição curta relativa ao grupo", None)
   html_botao = gera_html_botao.submit("Adicionar", 'adicionar_produto', None, '#55ee55')
   html_campos = \
-    html_nome_do_produto +  \
-    html_preco_do_produto + \
+    gera_html_elem.label("Descricao curta: ", None) + html_descr_curta +  \
+    quebra_de_linha + \
+    gera_html_elem.label("Descricao Media: ", None) + html_descr_media + \
+    quebra_de_linha + \
+    gera_html_elem.label("Descricao Longa: ", None) + html_descr_longa + \
+    quebra_de_linha + \
+    gera_html_elem.label("Palavras chaves: ", None) + html_palavras + \
+    quebra_de_linha + \
+    gera_html_elem.label("Unidade de venda: ", None) + html_unidade + \
+    quebra_de_linha + \
+    gera_html_elem.label("Preco: ", None) + html_preco + \
+    quebra_de_linha + \
+    gera_html_elem.label("Imagem do produto: ", None) + html_imagem + \
+    quebra_de_linha + \
+    gera_html_elem.label("Peso do produto: ", None) + html_peso + \
+    quebra_de_linha + \
+    gera_html_elem.label("Volume do produto: ", None) + html_volume + \
+    quebra_de_linha + \
+    gera_html_elem.label("Quantidade em estoque: ", None) + html_estoque + \
+    quebra_de_linha + \
+    gera_html_elem.label("O produto possue variacoes? ", None) + html_variado + \
+    quebra_de_linha + \
+    gera_html_elem.label("Grupo do produto: ", None) + html_grupo + \
+    quebra_de_linha + \
+    gera_html_elem.label("Descricao curta relativa ao grupo: ", None) + html_variedade + \
+    quebra_de_linha + \
     html_botao
   return monta_formulario(html_campos)

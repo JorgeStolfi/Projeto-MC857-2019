@@ -83,6 +83,11 @@ def mostra_produto(ses, id_compra, prod, qtd, erros):
   pagina = generica(ses, conteudo, erros)
   return pagina
 
+def acrescentar_produto(ses, args, erros):
+    conteudo = gera_html_form.acrescentar_produto(ses)
+    pagina = generica(ses, conteudo, erros)
+    return pagina
+
 def lista_de_produtos(ses, idents, erros):
   conteudo = gera_html_elem.bloco_de_lista_de_produtos(idents)
   pagina = generica(ses, conteudo, erros)
