@@ -1,0 +1,1 @@
+Fatorar as chamadas semelhantes de funções internas de {gera_html_elem}, como {bloco_texto} e {paragrafo}.
