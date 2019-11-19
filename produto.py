@@ -123,6 +123,13 @@ def busca_por_palavra(pal):
   satisfazendo a busca, devolve uma lista vazia."""
   return produto_IMP.busca_por_palavra(pal)
 
+def busca_por_intervalo_de_estoque(vmin, vmax):
+  """Devolve uma lista com todos os identificadores "P-{NNNNNNNN}"
+  dos produtos que contém estoque >= a {vmin} e <= a {vmax}.  
+  Se não houver nenhum item satisfazendo a busca, 
+  devolve uma lista vazia."""
+  return produto_IMP.busca_por_intervalo_de_estoque(vmin, vmax)
+
 def busca_ofertas():
   """Devolve uma lista com todos os identificadores "P-{NNNNNNNN}"
   dos produtos que tem o campo {oferta} = True .  Se não houver nenhum item 

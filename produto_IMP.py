@@ -132,6 +132,11 @@ def busca_por_palavra(pal):
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
   return produtos
 
+def busca_por_intervalo_de_estoque(vmin, vmax):
+  global cache, nome_tb, letra_tb, colunas, diags
+  produtos =  tabela_generica.busca_por_intervalo(nome_tb, letra_tb, colunas, 'estoque', vmin, vmax, None)
+  return produtos
+
 def busca_ofertas():
   global cache, nome_tb, letra_tb, colunas, diags
   lista_ids=tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "oferta", 1, None)
