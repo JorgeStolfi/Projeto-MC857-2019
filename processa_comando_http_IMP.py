@@ -481,7 +481,8 @@ def processa_comando(tipo, ses, dados):
 
   if mostra_cmd:
     # Acrescenta os dados para depuração:
-    pag = re.sub(r'</body>', ("<br/>%s<br/></body>" % formata_dados_http(cmd,args,dados)), pag)
+    # pag = re.sub(r'</body>', ("<br/>%s<br/></body>" % formata_dados_http(cmd,args,dados)), pag)
+    pass
 
   return pag, ses_nova
 
