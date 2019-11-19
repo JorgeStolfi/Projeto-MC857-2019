@@ -9,6 +9,7 @@ import gera_html_elem
 import gera_html_form
 import comando_ver_ofertas
 import gera_html_botao
+import pprint
 from utils_testes import erro_prog, mostra
 
 # Outras interfaces usadas por este módulo:
@@ -168,8 +169,22 @@ def alterar_usuario(ses, id_usuario, atrs, erros):
   return pagina
 
 def mostra_sessao(ses, erros):
-  erros = [ "Função não implementada", ] + (erros if erros != None else [])
-  pagina = mensagem_de_erro(ses, erros)
+  if ses:
+    s = ses.__dict__
+
+    id_sessao = "<b>Id da sessao:</b> " + str(s['id_sessao'])
+    abrt = "<br><b>Sessao aberta:</b> " + str(s['atrs']['abrt']) 
+    cookie = "<br><b>Cookie:</b> " + str(s['atrs']['cookie']) 
+    dic_carrinho =  pprint.pformat(s['atrs']['carrinho'].__dict__, indent=5)
+    dic_usr = pprint.pformat(s['atrs']['usr'].__dict__, indent=5)
+    carrinho = "<br><b>Carrinho:</b><br>" + dic_carrinho
+    usr = "<br><b>Usuario:</b><br>" + dic_usr
+
+    html_conteudo = id_sessao + abrt + cookie + "<br>" + usr + "<br>" + carrinho
+    pagina = generica(ses, html_conteudo, None)
+  else:
+    pagina =  generica(ses, "", "Sessão não encontrada")
+  
   return pagina
 
 def mensagem_de_erro(ses, msg):

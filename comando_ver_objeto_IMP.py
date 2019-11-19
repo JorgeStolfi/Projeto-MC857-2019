@@ -40,10 +40,11 @@ def processa(ses, args):
     id_usuario = args['id_objeto']
     # Considerando usr como objeto da classe Usuário
     usr = usuario.busca_por_identificador(id_usuario)
-    pag = gera_html_pag.altera_usuario(ses,usr, None)
+    pag = gera_html_pag.alterar_usuario(ses,usr, None, None)
     return pag
 
   elif type_objeto == "S":
     id_sessao = args['id_objeto']
-    pag = gera_html_pag.mostra_sessao(ses, None)
+    s = sessao.busca_por_identificador(id_sessao)
+    pag = gera_html_pag.mostra_sessao(s, None)
     return pag
