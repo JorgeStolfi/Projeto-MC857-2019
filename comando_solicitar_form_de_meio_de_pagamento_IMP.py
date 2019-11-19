@@ -11,10 +11,12 @@ def processa(ses, args):
   sys.stderr.write("args = " + str(args) + "\n")
   if 'id_compra' in args:
     # Supõe que o objetivo é mostrar/alterar um usuário existente:
-    id_usuario = args['id_usuario']
+    cliente = sessao.obtem_usuario(ses)
+    id_usuario = cliente.id_usuario
     id_compra = args['id_compra']
     usr = usuario.busca_por_identificador(id_usuario)
     cpr = compra.busca_por_identificador(id_compra)
+    cpr_atrs = cpr.atrs
     assert ses != None and usr == sessao.obtem_usuario(ses)
     assert compra.obtem_status(cpr) == "aberto" and compra.obtem_endereco(cpr) != None
     pag = gera_html_pag.escolher_pagamento(ses, id_compra, cpr_atrs, None)

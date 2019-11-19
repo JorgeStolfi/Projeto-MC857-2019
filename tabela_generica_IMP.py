@@ -79,6 +79,9 @@ def atualiza(nome_tb, cache, let, cols, def_obj, ident, mods_SQL):
   return obj
 
 def busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident):
+  if isinstance(ident, list):
+    ident = ident[0]
+
   if ident in cache:
     return cache[ident]
   else:

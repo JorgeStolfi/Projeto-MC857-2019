@@ -61,6 +61,7 @@ def inicializa(limpa):
       ( 'cliente',  usuario.ObjUsuario,  'INTEGER', False ), # Objeto/índice do cliente que realizou a compra.
       ( 'endereco', type("foo"),         'TEXT',    False ), # Endereço de entrega
       ( 'CEP',      type("foo"),         'TEXT',    False ), # CEP de entrega
+      ( 'pagamento',      type("foo"),         'TEXT',    False ), # Forma de pagamento
     )
   if limpa:
     tabela_generica.limpa_tabela(nome_tb, colunas)
@@ -74,7 +75,7 @@ def cria(cliente):
   
   endereco = usuario.obtem_atributos(cliente)['endereco']
   CEP = usuario.obtem_atributos(cliente)['CEP']
-  atrs = {'cliente': cliente, 'status': 'aberto', 'endereco': endereco, 'CEP': CEP}
+  atrs = {'cliente': cliente, 'status': 'aberto', 'endereco': endereco, 'CEP': CEP, 'pagamento': 'Diameante'}
 
   # Converte atributos para formato SQL.
   atrs_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, False, tabelas.obj_para_indice)
@@ -111,6 +112,10 @@ def obtem_cep(cpr):
 def obtem_endereco(cpr):
   global cache, nome_tb, letra_tb, colunas, diags
   return cpr.atrs["endereco"]
+
+def obtem_pagamento(cpr):
+  global cache, nome_tb, letra_tb, colunas, diags
+  return cpr.atrs["pagamento"]
 
 def obtem_itens(cpr):
   global cache, nome_tb, letra_tb, colunas, diags

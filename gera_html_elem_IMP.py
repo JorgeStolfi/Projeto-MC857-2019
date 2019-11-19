@@ -444,7 +444,10 @@ def tabela(linhas):
   return html_tab
 
 def input(rotulo, tipo, nome, val_ini, dica, cmd):
-  html_rotulo = label(rotulo, ": ")
+  if tipo == "radio":
+    html_rotulo = rotulo
+  else:  
+    html_rotulo = label(rotulo, ": ")
   html_tipo = " type =\"" + tipo + "\""
   html_nome = " name=\"" + nome + "\" id=\"" + nome + "\""
   if tipo == "number": html_nome += " min=\"1\""

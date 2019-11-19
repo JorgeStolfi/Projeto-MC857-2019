@@ -204,7 +204,7 @@ def escolher_pagamento(id_compra, atrs):
   Quando o usuário clicar no botão "Confirmar" ,será emitido um comando POST com ação
   {definir_meio_de_pagamento}.Os argumentos desse POST serão as informações do
   cartão de crédito."""
-  return gera_html_form_IMP.escolher_pagamento(id_compra, atrs)
+  return gera_html_form_IMP.escolher_pagamento()
 
 def preencher_endereco(id_compra, atrs):
   """Retorna o HTML de um formulário para preenchimento do endereço do pedido de

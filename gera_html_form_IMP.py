@@ -220,15 +220,15 @@ def dados_de_usuario(id_usuario, atrs, admin, texto_bt, cmd):
 def escolher_pagamento():
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  html_nome = gera_html_elem.input("Nome: ", "text", "Nome", None, None, None)
-  html_num1 = gera_html_elem.input("Número do cartão: ", "text", "n1", None, None, None)
-  html_num2 = gera_html_elem.input(" - " , "text", "n2", None, None, None)
-  html_num3 = gera_html_elem.input(" - ", "text", "n3", None, None, None)
-  html_num4 = gera_html_elem.input(" - ", "text", "n4", None, None, None)
-  html_val = gera_html_elem.input("Data de validade: ", "text", "mes_val", None, None, None)
-  html_val2 = gera_html_elem.input("/", "text", "ano_val", None, None, None)
-  html_sec = gera_html_elem.input("Código de segurança: ", "number", "código de segurança", None, None, None)
-  html_submit = gera_html_botao.submit("Confirmar", 'definir_forma_de_pagamento', None, '#55ee55')
+  html_radio1 = gera_html_elem.input("Cartão de crédito", "radio", "pag", None, None, None)
+  html_radio2 = gera_html_elem.input("Cartão de débito", "radio", "pag", None, None, None)
+  html_radio3 = gera_html_elem.input("Transferência bancária", "radio", "pag", None, None, None)
+  html_radio4 = gera_html_elem.input("Boleto", "radio", "pag", None, None, None)
+  html_radio5 = gera_html_elem.input("PicPay", "radio", "pag", None, None, None)
+  html_radio6 = gera_html_elem.input("Diamante", "radio", "pag", None, None, None)
+  html_radio7 = gera_html_elem.input("Ouro", "radio", "pag", None, None, None)
+  html_radio8 = gera_html_elem.input("PayPal", "radio", "pag", None, None, None)
+  html_submit = gera_html_botao.submit("Confirmar", 'definir_meio_de_pagamento', None, '#55ee55')
   return \
     "<span style=\"" + \
     " display: inline-block;" + \
@@ -237,17 +237,22 @@ def escolher_pagamento():
     " padding: 5px;" + \
     "\">" + \
     "<form method=\"post\">" + \
-    (  html_nome + "\n" ) +  \
+    (  html_radio1 + "\n" ) +  \
     "   <br/>" + \
-    (  html_num1 + "\n" ) + \
-    (  html_num2 + "\n" ) + \
-    (  html_num3 + "\n" ) + \
-    (  html_num4 + "\n" ) + \
+    (  html_radio2 + "\n" ) +  \
     "   <br/>" + \
-    (  html_val + "\n" ) + \
-    (  html_val2 + "\n" ) + \
+    (  html_radio3 + "\n" ) +  \
     "   <br/>" + \
-    (  html_sec + "\n" ) + \
+    (  html_radio4 + "\n" ) +  \
+    "   <br/>" + \
+    (  html_radio5 + "\n" ) +  \
+    "   <br/>" + \
+    (  html_radio6 + "\n" ) +  \
+    "   <br/>" + \
+    (  html_radio7 + "\n" ) +  \
+    "   <br/>" + \
+    (  html_radio8 + "\n" ) +  \
+    "   <br/>" + \
     (  html_submit + "\n" ) + \
     "   <br/>" + \
     "  </form>" + \

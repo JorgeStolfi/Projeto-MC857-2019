@@ -95,7 +95,7 @@ def alterar_endereco(ses, id_compra, atrs, erros):
 
 def escolher_pagamento(ses, id_compra, atrs, erros):
   """ !!! Documentar !!! """
-  return gera_html_pag_IMP.escolher_pagamento(ses, erros)
+  return gera_html_pag_IMP.escolher_pagamento(ses, id_compra, atrs, erros)
 
 def mostra_carrinho(ses, erros):
   """Retorna uma página com os dados do carrinho de compras {cpr} da sessão {ses}, como
