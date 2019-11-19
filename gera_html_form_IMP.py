@@ -61,7 +61,7 @@ def comprar_produto(id_compra, id_produto, qtd_produto):
     html_compra = gera_html_elem.input(None, "hidden", "id_compra", id_compra, None, None)
   else:
     html_compra = None
-  html_produto = gera_html_elem.input(None, "readonly", "id_produto", id_produto, None, None)
+  html_produto = gera_html_elem.input(None, "hidden", "id_produto", id_produto, None, None)
   html_quantidade = gera_html_elem.input(None, "text", "quantidade", str(qtd_produto), None, "alterar_qtd_de_produto")
   html_submit_comprar = gera_html_botao.submit("Comprar", 'comprar_produto', None, '#55ee55')
   html_campos = \

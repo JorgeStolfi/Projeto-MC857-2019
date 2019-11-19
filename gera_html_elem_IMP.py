@@ -144,6 +144,8 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
       if grupo != None:
         html_grupo = paragrafo(estilo_parag, bloco_texto(grupo, None, "Courier", "20px", "bold", "2px", "left", "#000000", None))
 
+  html_id_produto = paragrafo(estilo_parag, bloco_texto("<br>ID do produto:"+id_produto, None, "Courier", "10px", "normal", "0px", "left", "#000000", None))
+
   variado = atrs['variado']
   prods_grupo = None
   if variado:
@@ -176,7 +178,7 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
     html_qtd = bloco_texto(("%d" % qtd), None, "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
 
   str_preco = ("R$ %.2f" % preco)
-  html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+  html_preco = bloco_texto(str_preco+"/unidade", "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
   # !!! Peso e volume devem ser mostrados apenas ao mostrar detalhes do produto. !!!
 
@@ -186,13 +188,13 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
   if detalhe:
     peso = atrs['peso']
     str_peso  = ("%.0f gramas" % peso)
-    html_peso = bloco_texto(str_peso, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+    html_peso = paragrafo(estilo_parag,bloco_texto("Peso da embalagem: "+str_peso, None, "Courier", "14px", "normal", "0px", "left", "#000000", None))
 
     volume = atrs['volume']
     str_volume = ("%.2f mililitros" % volume)
-    html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
+    html_volume = paragrafo(estilo_parag, bloco_texto('Volume da embalagem: '+str_volume, None, "Courier", "14px", "normal", "0px", "left", "#000000", None))
 
-  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa
+  html_descr = html_em_oferta + html_d_curta + html_variedade + html_d_media + html_d_longa
 
   if variado:
     if detalhe:
@@ -209,10 +211,10 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
           html_descr += paragrafo(estilo_parag, variedade_form)
         bloco_descr = span("\n display: table-row;", html_descr)
     else:
-      html_descr += html_qtd + html_preco + html_botao + html_peso + html_volume
+      html_descr += html_peso + html_volume + "<br>" + html_botao + html_preco + html_id_produto
       bloco_descr = span("\n display: inline-block;", html_descr)
   else:
-    html_descr += html_qtd + html_preco + html_botao + html_peso + html_volume
+    html_descr += html_peso + html_volume  + "<br>" + html_botao + html_preco+  html_id_produto
     bloco_descr = span("\n display: inline-block;", html_descr)
 
   tam_img = (200 if detalhe else 100)
