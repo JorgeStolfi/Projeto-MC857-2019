@@ -88,12 +88,25 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
     html_submit_excluir
   return monta_formulario(html_campos)
 
+def alterar_pagamento(id_compra, id_produto, qtd_produto):
+  if id_compra != None:
+    html_compra = gera_html_elem.input(None, "hidden", "id_compra", id_compra, None, None)
+  else:
+    html_compra = None
+  html_quantidade = gera_html_elem.input(None, "text", "quantidade", "Teste", None, "alterar_metodo_de_pagamento")
+  html_submit_ver = gera_html_botao.submit("Ver", 'ver_produto', None, '#60a3bc')
+  html_campos = \
+    ( html_compra if html_compra != None else "" ) + \
+    html_quantidade + \
+    html_submit_ver 
+  return monta_formulario(html_campos)
+
 def ver_compra(id_compra):
   html_compra = gera_html_elem.input(None, "readonly", "id_compra", id_compra, None, None)
   html_submit_ver = gera_html_botao.submit("Ver", 'ver_compra', None, '#60a3bc')
   html_campos = \
     ( html_compra if html_compra != None else "" ) + \
-    tml_submit_ver
+    html_submit_ver
   return monta_formulario(html_campos)
 
 def fechar_compra(id_compra):
@@ -217,18 +230,20 @@ def dados_de_usuario(id_usuario, atrs, admin, texto_bt, cmd):
     ( "    " + html_cancel + "\n" )
   return monta_formulario(html_campos)
 
-def escolher_pagamento():
+def escolher_pagamento(id_compra, atrs):
   fam_fonte = "Courier"
   tam_fonte = "18px"
-  html_nome = gera_html_elem.input("Nome: ", "text", "Nome", None, None, None)
-  html_num1 = gera_html_elem.input("Número do cartão: ", "text", "n1", None, None, None)
-  html_num2 = gera_html_elem.input(" - " , "text", "n2", None, None, None)
-  html_num3 = gera_html_elem.input(" - ", "text", "n3", None, None, None)
-  html_num4 = gera_html_elem.input(" - ", "text", "n4", None, None, None)
-  html_val = gera_html_elem.input("Data de validade: ", "text", "mes_val", None, None, None)
-  html_val2 = gera_html_elem.input("/", "text", "ano_val", None, None, None)
-  html_sec = gera_html_elem.input("Código de segurança: ", "number", "código de segurança", None, None, None)
+  html_nome = gera_html_elem.input("Nome ", "text", "Nome", None, None, None)
+  html_num1 = gera_html_elem.input("Número do cartão ", "text", "n1", None, None, None)
+  html_num2 = gera_html_elem.input("" , "text", "n2", None, None, None)
+  html_num3 = gera_html_elem.input("", "text", "n3", None, None, None)
+  html_num4 = gera_html_elem.input("", "text", "n4", None, None, None)
+  html_val = gera_html_elem.input("Data de validade ", "text", "mes_val", None, None, None)
+  html_val2 = gera_html_elem.input("", "text", "ano_val", None, None, None)
+  html_sec = gera_html_elem.input("Código de segurança ", "number", "código de segurança", None, None, None)
   html_submit = gera_html_botao.submit("Confirmar", 'definir_forma_de_pagamento', None, '#55ee55')
+  metodo = "cartão"
+   # "<select><option value=\">"+str(metodo)+"\"</option></select>"+\
   return \
     "<span style=\"" + \
     " display: inline-block;" + \
@@ -236,6 +251,7 @@ def escolher_pagamento():
     " font-size:" + tam_fonte + ";" + \
     " padding: 5px;" + \
     "\">" + \
+    "<p>Pagamento por cartão</p>" +\
     "<form method=\"post\">" + \
     (  html_nome + "\n" ) +  \
     "   <br/>" + \

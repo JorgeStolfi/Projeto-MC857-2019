@@ -88,6 +88,16 @@ def alterar_quantidade(id_compra, id_produto, qtd_produto):
   esse argumento tambem é excluído dos argumentos do comando POST."""
   return gera_html_form_IMP.alterar_quantidade(id_compra, id_produto, qtd_produto)
 
+def alterar_pagamento(id_compra, id_produto, qtd_produto):
+  """Retorna o HTML de do formulário que mostra o identificador de
+  produto {id_produto} (não editável), um campo com quantidade (editável),
+  e botões 'Ver' e 'Excluir' (de tipo 'submit'). Esta função NÃO mostra
+  os dados do produto ou da compra.
+
+  O campo {id_compra} não é mostrado no formulário. Se {id_compra} for {None},
+  esse argumento tambem é excluído dos argumentos do comando POST."""
+  return gera_html_form_IMP.alterar_pagamento(id_compra, id_produto, qtd_produto)
+
 def ver_compra(id_compra):
   """Retorna o HTML de um formulário que mostra o identificador de compra {id_compra}
   (não editável) e um botão 'Ver' (de tipo 'submit'). Esta função NÃO mostra os dados da compra.
@@ -121,6 +131,7 @@ def excluir_item_de_compra(prod_id, compr_id):
 def alterar_qtd_de_produto(qtd, prod_id, compr_id):
   # !!! Documentar !!!
   return gera_html_form_IMP.alterar_qtd_de_produto(qtd, prod_id, compr_id)
+
 
 def entrar():
   """Retorna o HTML do formulário para login do usuário.

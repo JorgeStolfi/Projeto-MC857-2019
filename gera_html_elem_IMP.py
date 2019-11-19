@@ -344,10 +344,10 @@ def bloco_de_compra(cpr, detalhe):
   html_trocar_carrinho = gera_html_form.trocar_carrinho(id_compra)
   atrs_alterar = { 'id_compra': id_compra }
   html_alterar_endereco = ""
-  html_alt_met_pag = ""
+  html_alt_met_pag = gera_html_form.escolher_pagamento(id_compra, None)
   html_ver = ""
   if detalhe:
-    html_alt_met_pag = gera_html_botao.simples("Alterar método de pagamento", 'solicitar_form_de_meio_de_pagamento', atrs_alterar, '#ffffff')
+    html_alt_met_pag = gera_html_form.escolher_pagamento(id_compra, None)
     html_alterar_endereco = gera_html_botao.simples("Alterar Endereço", 'solicitar_form_de_endereco', atrs_alterar, '#ffffff')
   else:
     html_ver = gera_html_botao.submit("Ver", 'ver_compra', {"id_compra" : id_compra}, '#60a3bc')
@@ -459,6 +459,12 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html = html_rotulo + "<input" + html_tipo + html_nome + html_val_ini + html_dica + "/>"
   return html
 
+def select(nome, opcoes, form):
+  for opcao in opcoes:
+    html_opcoes += "<option value=\""+ opcao +"\">"+opcao+" </option>"
+  html = "<select name=\""+ nome+ "\" form=\""+form+"\">" 
+  html += html_opcoes +"</select>"
+  return html
 
 def label(rotulo, sep):
   if rotulo == None or rotulo == "":

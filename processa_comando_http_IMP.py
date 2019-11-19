@@ -429,6 +429,11 @@ def processa_comando(tipo, ses, dados):
       # Usuário alterou a quantidade desejada numa descrição de produto ou num item de uma compra:
       pag = comando_alterar_qtd_de_produto.processa(ses, args)
 
+    elif cmd == '/alterar_metodo_de_pagamento':
+      # Usuário alterou o método de pagamento de uma compra:
+      # pag = comando_alterar_metodo_de_pagamento.processa(ses, args)
+      sys.stderr.write("Alterando método de pagamento\n")
+      
     elif cmd == '/excluir_item_de_compra':
       # Usuário apertou o botão "Excluir" do carrinho:
       pag = comando_excluir_item_de_compra.processa(ses, args)

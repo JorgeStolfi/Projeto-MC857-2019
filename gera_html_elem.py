@@ -161,6 +161,8 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   "action" default do formulário."""  
   return gera_html_elem_IMP.input(rotulo, tipo, nome, val_ini, dica, cmd)
 
+def select (nome, opcoes, form):
+  """Devolve o elemento <select> com suas opções em formato de string"""
 def label(rotulo, sep):
   """Deolve o elemento HTML "<label>{rotulo}{sep}</label>",
   ou "" se o {rotulo} for {None} ou a cadeia vazia ."""
