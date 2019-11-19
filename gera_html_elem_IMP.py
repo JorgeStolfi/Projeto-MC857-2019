@@ -156,6 +156,14 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
   html_em_oferta = ""
   if em_oferta:
     html_em_oferta = paragrafo(estilo_parag, bloco_texto("OFERTA!", None, "Courier", "24px", "normal", "5px 5px 5px 5px", "center", "#000000", "#ffff00"))
+  
+  galeria = atrs['galeria']
+  tam_galeria = 100
+  html_galeria = ""
+  if galeria:
+      html_galeria_crua = ("<img src=\"imagens/" + galeria + "\" alt=\"" + id_produto + "\" style=\"float:left;height:%dpx;\"/>" % tam_galeria)
+      html_galeria = "<a href=\"imagens/" + galeria + "\" border=0px>" + html_galeria_crua + "</a>"
+      
 
   qtd_inicial = (qtd if qtd != None else 1.0) # Quantidade a pedir no formulário de ver ou comprar o produto:
   if detalhe:
@@ -192,7 +200,7 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
     str_volume = ("%.2f mililitros" % volume)
     html_volume = bloco_texto(str_volume, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 
-  html_descr = html_em_oferta + html_d_curta + html_variedade + html_grupo + html_d_media + html_d_longa
+  html_descr = html_em_oferta + html_d_curta + html_galeria + html_variedade + html_grupo + html_d_media + html_d_longa
 
   if variado:
     if detalhe:
