@@ -25,7 +25,7 @@
 import produto
 
 # Implementaçao deste módulo:
-import itens_de_compras_IMP
+import itens_de_compras_IMP; from itens_de_compras_IMP import ObjItensDeCompras_IMP
 
 def inicializa(limpa):
   """Inicializa o modulo, criando a tabela "itens_de_compras" na base de dados.
@@ -35,12 +35,15 @@ def inicializa(limpa):
   SQL, resetando o contador em 0."""
   itens_de_compras_IMP.inicializa(limpa)
 
+class ObjItensDeCompras(ObjItensDeCompras_IMP):
+  """Mapeia o objeto de itens de compras"""
+
 def busca_por_identificador(id_item):
   """Localiza uma compra com identificador {id_item} (uma string da forma
   'I-{NNNNNNNN}'), e devolve a mesma na forma de uma tupla ({id_compra},
   {id_produto},{qtd}, {preco}).
   Se tal item não existe, devolve {None}."""
-  return itens_de_compra.busca_por_identificador(id_item)
+  return itens_de_compras_IMP.busca_por_identificador(id_item)
 
 def busca_por_compra(id_compra):
   """Extrai da tabela de itens de compras todas as entradas referente

@@ -9,6 +9,7 @@ import gera_html_elem
 import gera_html_form
 import comando_ver_ofertas
 import gera_html_botao
+import itens_de_compras
 from utils_testes import erro_prog, mostra
 
 # Outras interfaces usadas por este módulo:
@@ -181,8 +182,8 @@ def lista_de_compras(ses, idents, erros):
   sep = "<br/><hr/>" # Separador de blocos de compras.
   botao_nova_compra = gera_html_botao.simples("Nova Compra", 'nova_compra', None, '#eeeeee'),
   todas_cmprs = ""
-  for id_item in idents:
-    cmpr = itens_de_compra.busca_por_identificador(id_item)
+  for id_compra in idents:
+    cmpr = compra.busca_por_identificador(id_compra)
     bloco_compra = gera_html_elem.bloco_de_compra(cmpr, False)
     todas_cmprs = todas_cmprs + sep + bloco_compra
   pagina = generica(ses, botao_nova_compra[0]+todas_cmprs + sep, erros)
