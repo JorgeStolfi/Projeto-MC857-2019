@@ -37,6 +37,7 @@ colunas = \
     ( 'variado',     type(True),  'INTEGER', False ), # Produto possui variedades.
     ( 'grupo',       type("foo"), 'TEXT',    True  ), # Identificador de produto do grupo.
     ( 'variedade',   type("foo"), 'TEXT',    True  ), # Descrição super-curta do produto, relativa ao grupo.
+    ( 'galeria',     type("foo"), 'TEXT',    True  ), # Conjunto de imagens detalhadas na descr_longa
   )
   # Descrição das colunas da tabela na base de dados.
 
@@ -172,6 +173,7 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'galeria': "156931.png"
       },
       {
         'descr_curta': "Furadeira telepática (x 2)",
@@ -196,6 +198,8 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'galeria': "155951.png"
+
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -219,6 +223,8 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'galeria': None,
+
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -242,6 +248,8 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'galeria': None,
+
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -265,6 +273,8 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'galeria': None,
+
       },
       {
         'descr_curta': "Luva com 8 dedos",
@@ -287,7 +297,9 @@ def cria_testes():
         'unidade': "1 unidade",
         'peso':10.0,
         'volume':500.5,
-        'oferta' : True, 
+        'oferta' : True,
+        'galeria': None,
+
       },
       {
         'descr_curta': "Ferroada",
@@ -307,6 +319,8 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'galeria': "156931.png"
+
       },
       {
         'descr_curta': "Amassador de suspiros",
@@ -329,6 +343,8 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : True,
+        'galeria': None,
+
       },
       
       { 'descr_curta': "Cabideiro",
@@ -347,6 +363,8 @@ def cria_testes():
         'peso':10.0,
         'volume':500.5,
         'oferta' : False,
+        'galeria': None,
+
       },
 
       { 'descr_curta': "Ácido pernóstico",
@@ -368,6 +386,7 @@ def cria_testes():
         'peso': 10.0,
         'volume': 500.5,
         'oferta' : False,
+        'galeria': None,
       },
       { 'descr_curta': "Ácido pernóstico",
         'variado' : False,
@@ -388,6 +407,7 @@ def cria_testes():
         'peso': 300.0,
         'volume': 200.5,
         'oferta' : False,
+        'galeria': None,
       },
       { 'descr_curta': "Ácido pernóstico",
         'variado' : False,
@@ -408,6 +428,7 @@ def cria_testes():
         'peso': 650.0,
         'volume': 500.5,
         'oferta' : True,
+        'galeria': None,
       },
       { 'descr_curta': "Ácido pernóstico",
         'variado' : False,
@@ -428,6 +449,7 @@ def cria_testes():
         'peso': 7000.0,
         'volume': 5000.0,
         'oferta' : False,
+        'galeria': None,
       },
     ]
   for atrs in lista_atrs:
@@ -483,4 +505,3 @@ def diagnosticos(val):
   global cache, nome_tb, letra_tb, colunas, diags
   diags = val
   return
-
