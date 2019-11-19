@@ -38,7 +38,7 @@ def bloco_de_erro(msg):
   return gera_html_elem_IMP.bloco_de_erro(msg)
 
 def bloco_de_produto(id_compra, prod, qtd, detalhe):
-  """Devolve um fragmento HTMP que decreve o produto {prod}, um objeto da classe {ObjProduto}.
+  """Devolve um fragmento HTML que decreve o produto {prod}, um objeto da classe {ObjProduto}.
   
   Se {detalhe} for {False}, mostra apenas o identificador do produto,
   a descrição curta e a descrição média, com uma imagem pequena,
