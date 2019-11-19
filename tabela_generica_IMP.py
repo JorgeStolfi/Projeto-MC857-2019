@@ -113,16 +113,26 @@ def busca_por_identificador_e_indice(nome_tb, cache, let, cols, def_obj, ident, 
   cache[ident] = obj
   return obj
 
-def busca_por_campo(nome_tb, let, cols, chave, valor):
+def busca_por_campo(nome_tb, let, cols, chave, valor, res_cols):
   # Converte {valor} para string na linguagem SQL:
   valor = base_sql.codifica_valor(valor)
 
   # Supõe que o cache é um subconjuto da base em disco, então procura só na última:
   cond = chave + " = " + valor
-  res = base_sql.executa_comando_SELECT(nome_tb, cond, ['indice'])
-  if res != None and type(res) is str:
+  if res_cols == None:
+    cols = ['indice']
+  else:
+    cols = res_cols
+  res = base_sql.executa_comando_SELECT(nome_tb, cond, cols)
+  if res == None:
+    res = [].copy()
+  elif type(res) is str:
     erro_prog("SELECT falhou " + str(res))
-  return identificador.de_lista_de_indices(let, res)
+  else:
+    if res_cols == None:
+      # Converte lista de índices para lista de identificadores:
+      res = identificador.de_lista_de_indices(let, res)
+  return res
 
 def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   cond = ""

@@ -28,16 +28,15 @@ def mostra_obj(rotulo, obj, id, atrs):
   else:
     erro_prog("resultado "  + str(obj) + " não é objeto do tipo correto")
 
-def mostra_lista_ids(rotulo, res):
-  """Mostra uma lista de ids que devem resultar de uma busca por campos."""
-  sys.stderr.write(rotulo + " = ")
-  if type(res) is list or type(res) is tuple:
-    for ident in res:
-      sys.stderr.write("  " + str(ident) + "\n")
-      obj = tabela_generica.busca_por_identificador(nome_tb, cache, let, cols, def_obj, ident)
-      mostra_obj("  ", obj, ident, None)
+def verifica_resultado(rotulo, res_cmp, res_esp):
+  """Verifica se o resultado {res_cmp} de uma chamada é o resultado esperado {res_esp}."""
+  sys.stderr.write(rotulo + ": ")
+  sys.stderr.write("tipo resultado = \"" + str(type(res_cmp)) + "\"")
+  assert type(res_cmp) is list or type(res_cmp) is tuple
+  if res_cmp != res_esp:
+    erro_prog("resultado = \"" + str(res_cmp) + "\" não é o esperado = \"" + str(res_esp) + "\"")
   else:
-    erro_prog("resultado " + str(res) + " não é lista ou tupla")
+    sys.stderr.write(" CONFERE\n")
 
 # ----------------------------------------------------------------------
 
@@ -96,25 +95,44 @@ sys.stderr.write("Resultado = " + str(res) + "\n")
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {tabela_generica.acrescenta}:\n")
+nome1 = "José Primeiro"
+email1 = "primeiro@ic.unicamp.br"
+CPF1 = "123.456.789-00" 
 atrs1 = {
-  "nome": "José Primeiro", 
-  "email": "primeiro@ic.unicamp.br", 
-  "CPF": "123.456.789-00", 
+  "nome": nome1, 
+  "email": email1, 
+  "CPF": CPF1, 
   "pernas": 4
 }
 id1 = "X-00000001"
 obj1 = tabela_generica.acrescenta(nome_tb, cache, let, cols, def_obj, atrs1)
 mostra_obj("obj1", obj1, id1, atrs1)
 
+nome2 = "João Segundo"
+email2 = "segundo@ic.unicamp.br"
+CPF2 = "987.654.321-99"
 atrs2 = {
-  "nome": "João Segundo", 
-  "email": "segundo@ic.unicamp.br", 
-  "CPF": "987.654.321-99", 
+  "nome": nome2, 
+  "email": email2, 
+  "CPF": CPF2, 
   "pernas": 2
 }
 id2 = "X-00000002"
 obj2 = tabela_generica.acrescenta(nome_tb, cache, let, cols, def_obj, atrs2)
 mostra_obj("obj2", obj2, id2, atrs2)
+
+nome3 = "Juca Terceiro"
+email3 = "terceiro@ic.unicamp.br"
+CPF3 = "333.333.333-33"
+atrs3 = {
+  "nome": nome3, 
+  "email": email3, 
+  "CPF": CPF3, 
+  "pernas": 2
+}
+id3 = "X-00000003"
+obj3 = tabela_generica.acrescenta(nome_tb, cache, let, cols, def_obj, atrs3)
+mostra_obj("obj3", obj3, id3, atrs3)
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {tabela_generica.busca_por_identificador}:\n")
@@ -125,13 +143,17 @@ mostra_obj("obj1_a", obj1_a, id1, atrs1)
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {tabela_generica.busca_por_campo}:\n")
 
-em2 = atrs2['email']
-res = tabela_generica.busca_por_campo(nome_tb, let, cols, 'email', em2) 
-mostra_lista_ids("email = " + em2, res)
+em_a = email2
+res = tabela_generica.busca_por_campo(nome_tb, let, cols, 'email', em_a, None) 
+verifica_resultado("email" + em_a, res, [id2,])
 
-CPF1 = "123.456.789-00"
-res = tabela_generica.busca_por_campo(nome_tb, let, cols, 'CPF', CPF1)
-mostra_lista_ids("CPF = " + CPF1, res)
+CPF_b = CPF1
+res = tabela_generica.busca_por_campo(nome_tb, let, cols, 'CPF', CPF_b, None)
+verifica_resultado("CPF" + CPF_b, res, [id1,])
+
+pernas_c = 2
+res = tabela_generica.busca_por_campo(nome_tb, let, cols, 'pernas', 2, ('nome', 'CPF'))
+verifica_resultado("pernas" + str(pernas_c), res, [(nome2, CPF2), (nome3, CPF3)])
 
 # ----------------------------------------------------------------------
 sys.stderr.write("testando {tabela_generica.atualiza}:\n")

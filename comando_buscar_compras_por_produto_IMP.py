@@ -30,7 +30,7 @@ def processa(ses, args):
     return gera_html_pag.mensagem_de_erro(ses, "Este identificador não esta atrelado a nenhum produto.")
   
   ids_compras = itens_de_compras.busca_por_produto(args['id_produto'])
-  usuario_da_sessao = sessao.obtem_usuario(ses)
+  usuario_da_sessao = (sessao.obtem_usuario(ses) if ses != None else None)
 
   if usuario_da_sessao == None:
     # Não deveria acontecer, mas...

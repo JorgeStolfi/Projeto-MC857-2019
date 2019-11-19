@@ -106,7 +106,7 @@ def muda_atributos(prod, mods):
 
 def busca_grupo_por_identificador(id_produto):
   global cache, nome_tb, letra_tb, colunas, diags
-  prods = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, 'grupo', id_produto)
+  prods = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, 'grupo', id_produto, None)
   return map(busca_por_identificador, prods)
 
 def busca_por_identificador(id_produto):
@@ -133,7 +133,8 @@ def busca_por_palavra(pal):
   return produtos
 
 def busca_ofertas():
-  lista_ids=tabela_generica.busca_por_campo(nome_tb,letra_tb,colunas,"oferta",1)
+  global cache, nome_tb, letra_tb, colunas, diags
+  lista_ids=tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "oferta", 1, None)
   return lista_ids
 
 def busca_por_produtos_semelhantes(pal):
@@ -348,74 +349,80 @@ def cria_testes():
         'oferta' : False,
       },
 
-      { 'descr_curta': "Ácido patético",
+      { 'descr_curta': "Ácido pernóstico",
         'variado' : True,
         'grupo' : None,
         'variedade' : None,
-        'descr_media': "Ácido patético (H2PeO4) puro ACS para análise", 
+        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise", 
         'palavras':'química,limpeza,elixir',
         'descr_longa': 
-          """Ácido patético puro para análise<br/>
-          Fabricante: Tox Chic SA<br/>
-          Fórmula: H2PeO4<br/>
+          """Fabricante: Tox Chic SA<br/>
+          Fórmula: H2PeO4·3H2O<br/>
           Pureza: 99.8%<br/>
+          Padrão: ACS, INPM
           """,
         'preco': 25.00, 
-        'imagem': "170013.png", 
+        'imagem': "170013-g.png", 
         'estoque': 50, 
         'unidade': "frasco",
         'peso': 10.0,
         'volume': 500.5,
         'oferta' : False,
       },
-      { 'descr_curta': "Ácido patético - 200 mL",
+      { 'descr_curta': "Ácido pernóstico",
         'variado' : False,
         'grupo' : "P-00000010",
         'variedade' : "200 mL",
-        'descr_media': "Ácido patético (H2PeO4) puro ACS para análise - 200 mL", 
+        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise", 
         'palavras': None,
         'descr_longa': 
-          """Ácido patético puro para análise, 200 mL<br/>
-          Embalagem: Garrafa de vidro<br/>
+          """Fórmula: H2PeO4·3H2O<br/>
+          Pureza: 99.8%<br/>
+          Padrão: ACS, INPM<br/>
+          Embalagem: garrafa de vidro com batoque
           """,
         'preco': 20.00, 
-        'imagem': "170013.png", 
+        'imagem': "170013-1.png", 
         'estoque': 50, 
         'unidade': "frasco",
         'peso': 300.0,
         'volume': 200.5,
         'oferta' : False,
       },
-      { 'descr_curta': "Ácido patético - 500 mL",
+      { 'descr_curta': "Ácido pernóstico",
         'variado' : False,
         'grupo' : "P-00000010",
         'variedade' : "500 mL",
-        'descr_media': "Ácido patético (H2PeO4) puro ACS para análise - 500 mL", 
+        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise", 
         'palavras':'química,limpeza,elixir',
         'descr_longa': 
-          """Ácido patético puro para análise, 500 mL<br/>
-          Embalagem: Garrafa de vidro<br/>
+          """Fórmula: H2PeO4·3H2O<br/>
+          Pureza: 99.8%<br/>
+          Padrão: ACS, INPM<br/>
+          Embalagem: garrafa de vidro com batoque
           """,
         'preco': 45.00, 
-        'imagem': "170013.png", 
+        'imagem': "170013-2.png", 
         'estoque': 50, 
         'unidade': "frasco",
         'peso': 650.0,
         'volume': 500.5,
-        'oferta' : False,
+        'oferta' : True,
       },
-      { 'descr_curta': "Ácido patético - 5 litros",
+      { 'descr_curta': "Ácido pernóstico",
         'variado' : False,
         'grupo' : "P-00000010",
         'variedade' : "5 litros",
-        'descr_media': "Ácido patético (H2PeO4) puro ACS para análise - 5 litros", 
+        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise", 
         'palavras':'química,limpeza,elixir',
         'descr_longa': 
-          """Ácido patético puro para análise, 5 litros<br/>
-          Embalagem: Bombona de polietileno<br/>
+          """Fórmula: H2PeO4·3H2O<br/>
+          Pureza: 99.8%<br/>
+          Padrão: ACS, INPM<br/>
+          Embalagem: bombona de polietileno com batoque
           """,
         'preco': 370.00, 
-        'imagem': "170013.png", 
+        'imagem': "170013-3.png", 
         'estoque': 50, 
         'unidade': "frasco",
         'peso': 7000.0,

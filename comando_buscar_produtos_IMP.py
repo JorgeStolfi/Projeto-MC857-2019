@@ -11,7 +11,7 @@ def processa(ses, args):
     
   if cond != "":  
     ids_prods = produto.busca_por_palavra(cond)
-    pag = gera_html_pag.lista_de_produtos(ses, ids_prods, None, c='1')
+    pag = gera_html_pag.lista_de_produtos(ses, ids_prods, None)
   else:
     pag = gera_html_pag.mensagem_de_erro(ses, "Favor informar palavra para busca do produto.")
   return pag

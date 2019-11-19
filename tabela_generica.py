@@ -151,15 +151,23 @@ def busca_por_indice(nome_tb, cache, let, cols, def_obj, ind):
   em vez do identificador do objeto."""
   return tabela_generica_IMP.busca_por_indice(nome_tb, cache, let, cols, def_obj, ind)
 
-def busca_por_campo(nome_tb, let, cols, chave, valor):
+def busca_por_campo(nome_tb, let, cols, chave, valor, res_cols):
   """Procura na tabela {nome_tb} objetos que tem o valor {val}
   na coluna de nome {chave}.  A {chave} deve ser o nome de uma
   coluna da tabela, como definido em {cols}.
   
-  Devolve uma lista com os *identificadores* dos objetos
-  encontrados (não os objetos em si). Se nenhuma linha
-  satisfizer o critério da busca, devolve uma lista vazia."""
-  return tabela_generica_IMP.busca_por_campo(nome_tb, let, cols, chave, valor)
+  Se {res_cols} não for {None}, deve ser uma 
+  lista ou tupla de nomes de colunas da tabela.  Nesse caso,
+  o resultado será uma lista de tuplas, uma para cada linha 
+  que satisfaz o critério de busca; onde cada tupla terá os valores
+  dessas colunas.
+  
+  Se {res_cols} for {None}, devolve uma lista com os 
+  *identificadores* dos objetos encontrados (não os objetos em si). 
+  
+  Em qualquer caso, se nenhuma linha satisfizer o critério da busca, 
+  devolve uma lista vazia."""
+  return tabela_generica_IMP.busca_por_campo(nome_tb, let, cols, chave, valor, res_cols)
 
 def busca_por_semelhanca(nome_tb, let, cols, chaves, valores):
   #@TODO documentar interface

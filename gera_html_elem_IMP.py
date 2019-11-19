@@ -166,6 +166,15 @@ def bloco_de_produto(id_compra, prod, qtd, detalhe, **kwargs):
     html_d_longa = ""
     html_botao = gera_html_form.ver_produto(id_produto, qtd_inicial)
 
+  if qtd == None:
+    # Preço unitário, sem campo de quantidade:
+    preco = atrs['preco']
+    html_qtd = ""
+  else:
+    preco = produto.calcula_preco(prod, qtd)
+    # !!! Deveria ser um campo editável !!!
+    html_qtd = bloco_texto(("%d" % qtd), None, "Courier", "36px", "bold", "0px", "left", "#0000ff", "#fff888")
+
   str_preco = ("R$ %.2f" % preco)
   html_preco = bloco_texto(str_preco, "inline-block", "Courier", "20px", "bold", "2px", "left", "#000000", None)
 

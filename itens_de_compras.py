@@ -55,13 +55,17 @@ def busca_por_compra(id_compra):
   nem entradas com {qtd} nulo ou negativo."""
   return itens_de_compras_IMP.busca_por_compra(id_compra)
 
-
 def busca_por_produto(id_produto):
   """Extrai da tabela de itens de compras todas as entradas referente
   ao produto com identificador {id_produto}.
 
-  Devolve uma lista de identificadores de compras que possuem o produto com
-  o {id_produto} fornecido """
+  Devolve uma lista de triplas ({cpr}, {qtd}, {prc}), onde {cpr} é um
+  objeto da classe {ObjCompra}, {qtd} é um {float}, a quantidade do
+  produto nessa compra. e {prc} é um {float}, o preço dessa quantidade
+  do produto.
+  
+  Nessa lista, não haverá duas entradas com a mesma compra,
+  nem entradas com {qtd} nulo ou negativo."""
   return itens_de_compras_IMP.busca_por_produto(id_produto)
 
 def atualiza_lista(id_compra, lit, prod, qtd_velho, qtd_novo):

@@ -376,7 +376,7 @@ def busca_por_campo_unico(chave, val):
   encontrar, devolve o identificador desse usuário,
   senão devolve {None}"""
   global cache, nome_tb, letra_tb, colunas, diags
-  res = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, chave, val)
+  res = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, chave, val, None)
   if res == None:
     # Não achou ninguém?
     return None

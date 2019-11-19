@@ -47,11 +47,11 @@ def posicao_do_item(lit, prod):
   return None
 
 def busca_por_compra(id_compra):
-  indice = identificador.para_indice("C", id_compra)
-  # Obtem lista de identificadores de itens referentes a esta compra:
-  cond = 'compra = ' + str(indice)
-  nomes_cols = ('produto', 'qtd', 'preco')
-  lit_SQL = base_sql.executa_comando_SELECT(nome_tb, cond, nomes_cols)
+  global cache, nome_tb, letra_tb, colunas, diags
+  ind_compra = identificador.para_indice("C", id_compra)
+  # Obtem lista de itens da compra:
+  res_cols = ('produto', 'qtd', 'preco')
+  lit_SQL = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, 'compra', ind_compra, res_cols)
   # Converte para lista de itens na memória:
   lit_mem = [].copy()
   for it_SQL in lit_SQL:
@@ -64,10 +64,21 @@ def busca_por_compra(id_compra):
   return lit_mem
 
 def busca_por_produto(id_produto):
-  indice = identificador.para_indice("P", id_produto)
-  # Obtem lista de identificadores de itens referentes a esta compra:
-  compras = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "produto", indice)
-  return compras
+  global cache, nome_tb, letra_tb, colunas, diags
+  ind_produto = identificador.para_indice("P", id_produto)
+  # Obtem lista de itens do produto:
+  res_cols = ('compra', 'qtd', 'preco')
+  lit_SQL = tabela_generica.busca_por_campo(nome_tb, letra_tb, colunas, "produto", ind_produto, res_cols)
+  # Converte para lista de itens na memória:
+  lit_mem = [].copy()
+  for it_SQL in lit_SQL:
+    assert ((type(it_SQL) is list) or (type(it_SQL) is tuple))  and (len(it_SQL) == 3);
+    cpr = compra.busca_por_indice(it_SQL[0])
+    qtd = float(it_SQL[1])
+    preco = float(it_SQL[2])
+    it_mem = (cpr, qtd, preco)
+    lit_mem.append(it_mem)
+  return lit_mem
 
 def busca_por_identificador(id_compra):
   global cache, nome_tb, letra_tb, colunas, diags
