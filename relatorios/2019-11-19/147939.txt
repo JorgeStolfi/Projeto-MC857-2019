@@ -1,0 +1,4 @@
+A atividade designada foi: fazer funcionar {comando_ver_objeto.py} para usuários ("U-00000001"):
+    Para essa correção, foi alterada a chamada da função gera_html_pag.alterar_usuario em {comando_ver_objeto.py}, na função {processa}, pois estava com o nome incorreto, informando parâmetros incorretos e faltando parâmetros.
+    Os atributos também não estavam sendo preenchidos, por isso foi necessário fazer a alteração para que fosse criado corretamente.
+    Adicionada verificação de existência de usuário. Caso não exista, mostra um erro.

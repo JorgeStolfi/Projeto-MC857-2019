@@ -169,7 +169,8 @@ def dados_de_usuario(id_usuario, atrs, admin, texto_bt, cmd):
   cujo identificador é {id_usuario} e cujos atributos atuais estão em {atrs}.
 
   O formulário terá um botão "submit" com texto {texto_bt} e ação POST {cmd}."""
-
+  print("################################################################")
+  print(atrs)
   if id_usuario != None:
     novo = False
     # Inclui campo 'id_usuario' no formulário:

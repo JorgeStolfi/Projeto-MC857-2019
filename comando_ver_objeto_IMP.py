@@ -39,8 +39,15 @@ def processa(ses, args):
   elif type_objeto == "U":
     id_usuario = args['id_objeto']
     # Considerando usr como objeto da classe Usuário
+    erros = []
     usr = usuario.busca_por_identificador(id_usuario)
-    pag = gera_html_pag.altera_usuario(ses,usr, None)
+    if(usr == None):
+      erros.append("Usuário não encontrado")
+    else:
+      erros = None
+      args = usuario.obtem_atributos(usr)
+
+    pag = gera_html_pag.alterar_usuario(ses,id_usuario, args, erros)
     return pag
 
   elif type_objeto == "S":

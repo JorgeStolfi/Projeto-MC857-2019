@@ -161,8 +161,11 @@ def alterar_usuario(ses, id_usuario, atrs, erros):
   atrs_ses = usuario.obtem_atributos(usr_ses)
   admin = (atrs_ses['administrador'] if 'administrador' in atrs_ses else False)
 
-  # Constrói formulário com dados:
-  conteudo = gera_html_form.alterar_usuario(id_usuario, atrs, admin)
+  conteudo = ""
+  # Constrói formulário com dados, se não tiver erros:
+  if(erros == None):
+    conteudo = gera_html_form.alterar_usuario(id_usuario, atrs, admin)
+
   # Monta a página:
   pagina = generica(ses, conteudo, erros)
   return pagina
