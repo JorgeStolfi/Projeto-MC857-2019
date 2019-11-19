@@ -5,6 +5,7 @@
 import sessao
 import usuario
 
+import comando_adicionar_produto
 import comando_alterar_qtd_de_produto
 import comando_buscar_compras
 import comando_buscar_produtos
@@ -428,6 +429,10 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/alterar_qtd_de_produto':
       # Usuário alterou a quantidade desejada numa descrição de produto ou num item de uma compra:
       pag = comando_alterar_qtd_de_produto.processa(ses, args)
+      
+    elif cmd == '/adicionar_produto':
+      # Usuário alterou a quantidade desejada numa descrição de produto ou num item de uma compra:
+      pag = comando_adicionar_produto.processa(ses, args)
 
     elif cmd == '/excluir_item_de_compra':
       # Usuário apertou o botão "Excluir" do carrinho:
