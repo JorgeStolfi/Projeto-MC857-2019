@@ -34,6 +34,7 @@ import comando_ver_ofertas
 import comando_ver_produto
 import comando_ver_objeto
 import comando_buscar_compras_por_produto
+import comando_busca_por_intervalo_de_estoque
 import comando_buscar_usuarios
 
 import gera_html_elem
@@ -88,7 +89,7 @@ class Processador_de_pedido_HTTP(BaseHTTPRequestHandler):
 
     # Extrai os dados do comando HTTP na forma de um dicionário:
     dados = self.extrai_dados(tipo)
-    
+
     if tipo == 'GET' and dados['real_path'][0:9] == '/imagens/':
       # Pedido de uma imagem:
       nome_imagem = dados['real_path'][1:]
@@ -360,7 +361,7 @@ def processa_comando(tipo, ses, dados):
       # Usuário apertou o botão "Meu Carrinho" do menu geral:
       pag = comando_ver_carrinho.processa(ses, args)
 
-      
+
     elif cmd == '/buscar_compras':
       # Usuário apertou o botão "Minhas compras" do menu geral:
       pag = comando_buscar_compras.processa(ses, args)
@@ -397,11 +398,11 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/buscar_produtos':
       # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
       pag = comando_buscar_produtos.processa(ses, args)
-   
+
     elif cmd == '/buscar_usuarios':
       # Usuário preencheu o campo de busca de produtos e apertou "Buscar":
       pag = comando_buscar_usuarios.processa(ses, args)
-   
+
     elif cmd == '/ver_produto':
       # Usuário apertou o botão "Ver" ou equivalente numa descrição curta do produto:
       pag = comando_ver_produto.processa(ses, args)
@@ -409,7 +410,7 @@ def processa_comando(tipo, ses, dados):
     elif cmd == '/ver_objeto':
       # Usuário apertou o botão "Ver Objeto" ou equivalente no menu geral:
       pag = comando_ver_objeto.processa(ses, args)
-      
+
     elif cmd == '/ver_compra':
       pag = comando_ver_compra.processa(ses, args)
 
@@ -418,7 +419,7 @@ def processa_comando(tipo, ses, dados):
       pag = comando_ver_ofertas.processa(ses, args)
 
     elif cmd == '/nova_compra':
-      #Usuário apertou o botão "Nova Compra" no menu 
+      #Usuário apertou o botão "Nova Compra" no menu
       pag = comando_nova_compra.processa(ses, args)
 
     elif cmd == '/comprar_produto':
@@ -461,8 +462,12 @@ def processa_comando(tipo, ses, dados):
       # Usuário apertou o botão "Ver compras com produto" numa descrição de um produto:
       pag = comando_buscar_compras_por_produto.processa(ses, args)
 
+    elif cmd == '/busca_por_intervalo_de_estoque':
+      # Usuário apertou o botão "Estoque" na segunda linha do menu de administrador:
+      pag = comando_busca_por_intervalo_de_estoque.processa(ses, args)
+
     elif cmd == '/solicitar_form_de_acrescentar_produto':
-      # Administrador apertou o botão acrescentar produto  
+      # Administrador apertou o botão acrescentar produto
       pag = comando_solicitar_form_de_acrescentar_produto.processa(ses, args)
 
     else:

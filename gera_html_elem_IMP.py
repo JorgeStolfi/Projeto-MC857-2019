@@ -84,11 +84,12 @@ def menu_geral_botoes_linha_1_logado(nome_usuario, admin):
     botoes = (
       gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
       gera_html_botao.simples("Contato", 'solicitar_form_de_contato', None, '#eeeeee'),
-      gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
       bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
+      gera_html_botao.simples("Sair", 'fazer_logout', None, '#eeeeee'),
+
     )
   else:
-    botoes = ( 
+    botoes = (
       gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
       gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
       gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
@@ -115,6 +116,7 @@ def menu_geral_botoes_linha_2():
     gera_html_botao.simples("Acrescentar produto", "solicitar_form_de_acrescentar_produto", None, '#ffdd22'),
     gera_html_form.compras_de_produto(),
     gera_html_form.buscar_objeto(),
+    gera_html_form.estoque_de_produto(),
   )
   return botoes
 
@@ -255,7 +257,7 @@ def bloco_de_usuario(user):
 
   html_final = html_nome + html_email + html_CPF + html_endereco + html_CEP + html_telefone + html_documento
   bloco_final = span("\n display: inline-block;", html_final)
-  
+
   width_pct = ("33%")
   estilo_final = f"width: {width_pct}; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\ndisplay: flex; align-items: center; float:left"
   bloco_final = span(estilo_final, bloco_final)
@@ -448,7 +450,7 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_tipo = " type =\"" + tipo + "\""
   html_nome = " name=\"" + nome + "\" id=\"" + nome + "\""
   if tipo == "number": html_nome += " min=\"1\""
-    
+
   if val_ini != None and dica != None:
     erro_prog("{val_ini} e {dica} são mutuamente exclusivos")
   html_val_ini = ( " value =\"" + val_ini + "\"" if val_ini != None else "" )

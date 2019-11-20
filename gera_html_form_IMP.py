@@ -30,6 +30,16 @@ def compras_de_produto():
   html_campos = html_condicao  + " " + html_submit_compras
   return monta_formulario(html_campos)
 
+def estoque_de_produto():
+  cor_cinza = "#fff888"
+  estilo = "text-color:" + cor_cinza + ";" + " text-align: left;"
+  html_cond_input = gera_html_elem.input(None, "text", "id_produto", None, "Quantidade", None)
+  html_condicao = gera_html_elem.span(estilo, html_cond_input)
+  html_submit_compras = gera_html_botao.submit("Estoque", 'busca_por_intervalo_de_estoque', None, '#ed3330')
+  html_campos = html_submit_compras + " " + html_condicao
+  return monta_formulario(html_campos)
+
+
 def buscar_objeto():
   cor_cinza = "#fff888"
   estilo = "text-color:" + cor_cinza + ";" + " text-align: left;"

@@ -22,9 +22,15 @@ def buscar_produtos():
 def compras_de_produto():
   """Retorna HTML de um formulario para busca textual de compras de produtos.
   O formulário contém um campo editável onde o usuário entra o identificador do
-  produto a ser procurado, e um botão de 'Compras de Produtos' 
+  produto a ser procurado, e um botão de 'Compras de Produtos'
   que solicita a busca ao servidor."""
   return gera_html_form_IMP.compras_de_produto()
+
+def estoque_de_produto():
+  """Retorna HTML de um formulario para busca de estoque de produtos.
+  O formulário contém um campo editável onde o usuário entra com um valor de estoque a ser procurado, e um botão de 'Estoque'
+  que solicita a busca ao servidor."""
+  return gera_html_form_IMP.estoque_de_produto()
 
 def buscar_objeto():
   """Retorna HTML de um formulario para busca textual de objetos.
@@ -226,4 +232,3 @@ def buscar_identificador():
 def acrescentar_produto(ses):
   """Retorna o HTML de um formulario para acrescentar algum produto"""
   return gera_html_form_IMP.acrescentar_produto(ses)
-

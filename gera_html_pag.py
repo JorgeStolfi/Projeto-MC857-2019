@@ -62,7 +62,6 @@ def contato(ses, erros):
     "Enviar" para submeter o formulário."""
     return gera_html_pag_IMP.contato(ses, erros)
 
-
 def cadastrar_usuario(ses, atrs, erros):
   """Retorna uma página com o formulário de cadastramento de
   novo usuario.
