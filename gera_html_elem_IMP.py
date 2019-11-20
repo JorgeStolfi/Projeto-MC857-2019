@@ -88,7 +88,7 @@ def menu_geral_botoes_linha_1_logado(nome_usuario, admin):
       bloco_texto("Oi " + nome_usuario, "inline_block", "Courier", "18px", "bold", None, None, None, None),
     )
   else:
-    botoes = ( 
+    botoes = (
       gera_html_botao.simples("Meu Carrinho", 'ver_carrinho', None, '#eeeeee'),
       gera_html_botao.simples("Minhas Compras", 'buscar_compras', None, '#eeeeee'),
       gera_html_botao.simples("Minha Conta", 'solicitar_form_de_alterar_usuario', None, '#eeeeee'),
@@ -255,18 +255,32 @@ def bloco_de_usuario(user):
 
   html_final = html_nome + html_email + html_CPF + html_endereco + html_CEP + html_telefone + html_documento
   bloco_final = span("\n display: inline-block;", html_final)
-  
+
   width_pct = ("33%")
   estilo_final = f"width: {width_pct}; padding: 15px; border-radius: 15px 50px 20px; display: inline-block;\ndisplay: flex; align-items: center; float:left"
   bloco_final = span(estilo_final, bloco_final)
   return bloco_final
 
 def bloco_de_lista_de_produtos(idents):
+  prods = [].copy()
+  for iden in idents:
+    prods.append(produto.busca_por_identificador(iden))
+
   todos_prods = ""
-  for id_prod in idents:
-    prod = produto.busca_por_identificador(id_prod)
-    bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
-    todos_prods = todos_prods + bloco_prod + "\n"
+  for prod in prods:
+      atrs = produto.obtem_atributos(prod)
+
+      if 'variedade' in atrs and atrs['variedade'] != None:
+          id_grupo = atrs['grupo']
+          grupo = produto.busca_por_identificador(id_grupo)
+
+          if grupo not in prods:
+              bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
+              todos_prods = todos_prods + bloco_prod + "\n"
+      else:
+          bloco_prod = gera_html_elem.bloco_de_produto(None, prod, None, False)
+          todos_prods = todos_prods + bloco_prod + "\n"
+
   lista_html = div("display:inline-block", todos_prods)
   return lista_html
 
@@ -448,7 +462,7 @@ def input(rotulo, tipo, nome, val_ini, dica, cmd):
   html_tipo = " type =\"" + tipo + "\""
   html_nome = " name=\"" + nome + "\" id=\"" + nome + "\""
   if tipo == "number": html_nome += " min=\"1\""
-    
+
   if val_ini != None and dica != None:
     erro_prog("{val_ini} e {dica} são mutuamente exclusivos")
   html_val_ini = ( " value =\"" + val_ini + "\"" if val_ini != None else "" )

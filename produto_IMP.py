@@ -41,7 +41,7 @@ colunas = \
   # Descrição das colunas da tabela na base de dados.
 
 diags = False
-  # Quando {True}, mostra comandos e resultados em {stderr}. 
+  # Quando {True}, mostra comandos e resultados em {stderr}.
 
 class ObjProduto_IMP():
   # Definição interna da classe {ObjUsuario}:
@@ -58,14 +58,14 @@ def inicializa(limpa):
     tabela_generica.limpa_tabela(nome_tb, colunas)
   else:
     tabela_generica.cria_tabela(nome_tb, colunas)
-    
+
 def cria(atrs):
   global cache, nome_tb, letra_tb, colunas, diags
   if diags: mostra(0, "produto_IMP.cria(" + str(atrs) + ") ...")
-  
+
   # Converte atributos para formato SQL.
   atrs_SQL = conversao_sql.dict_mem_para_dict_SQL(atrs, colunas, False, tabelas.obj_para_indice)
-  
+
   # Insere na base de dados e obtém o índice na mesma:
   prod = tabela_generica.acrescenta(nome_tb, cache, letra_tb, colunas, def_obj, atrs_SQL)
   assert type(prod) is produto.ObjProduto
@@ -96,9 +96,9 @@ def calcula_preco(prod, qtd):
 
 def muda_atributos(prod, mods):
   global cache, nome_tb, letra_tb, colunas, diags
-  # Converte valores de formato memória para formato SQL. 
+  # Converte valores de formato memória para formato SQL.
   mods_SQL = conversao_sql.dict_mem_para_dict_SQL(mods, colunas, True, tabelas.obj_para_indice)
-  
+
   # Modifica atributos na tabela e na memória:
   res = tabela_generica.atualiza(nome_tb, cache, letra_tb, colunas, def_obj, prod.id_produto, mods_SQL)
   assert res == prod
@@ -121,14 +121,14 @@ def busca_por_indice(ind):
 
 def busca_por_palavra(pal):
   global cache, nome_tb, letra_tb, colunas, diags
-  chaves = ('descr_curta', 'descr_media', 'palavras')
+  chaves = ('descr_curta', 'descr_media', 'palavras', 'variedade')
   valores = (pal,)
   busca_com_and = ' AND ' in pal
-  
+
   if busca_com_and:
     valores = pal.split(' AND ')
     valores = tuple(valores)
- 
+
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
   return produtos
 
@@ -140,7 +140,7 @@ def busca_ofertas():
 def busca_por_produtos_semelhantes(pal):
   global cache, nome_tb, letra_tb, colunas, diags
   chaves = ('palavras',)
-  valores = (pal,) 
+  valores = (pal,)
   produtos =  tabela_generica.busca_por_semelhanca(nome_tb, letra_tb, colunas, chaves, valores)
 
   return produtos
@@ -149,7 +149,7 @@ def cria_testes():
   global cache, nome_tb, letra_tb, colunas, diags
   inicializa(True)
   lista_atrs = \
-    [ 
+    [
       {
         'descr_curta': "Escovador de ouriço",
         'variado' : False,
@@ -157,7 +157,7 @@ def cria_testes():
         'variedade' : None,
         'descr_media': "Escovador para ouriços ou porcos-espinho portátil em aço inox e marfim orgânico, com haste elongável, cabo de força, 20 acessórios, e valise.",
         'palavras': 'escovador, animal, ourico, animais, portátil',
-        'descr_longa': 
+        'descr_longa':
           """Fabricante: Ouricex LTD<br/>
           Origem: Cochinchina<br/>
           Modelo: EO-22<br/>
@@ -180,7 +180,7 @@ def cria_testes():
         'variedade' : None,
         'descr_media': "Kit com duas furadeiras telepáticas 700 W para canos de até 2 polegadas com acoplador para guarda-chuva e cabo de força",
         'palavras': 'furadeira, marcenaria',
-        'descr_longa': 
+        'descr_longa':
           """"Fabricante: Ferramentas Tres Dedos SA<br/>
           Origem: Brasil<br/>
           Modelo: FT7T<br/>
@@ -204,7 +204,7 @@ def cria_testes():
         'variedade' : None,
         'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
         'palavras': 'luva, inverno',
-        'descr_longa': 
+        'descr_longa':
           """Fabricante: United Trash Inc.<br/>
           Origem: USA<br/>
           Modelo: 8-EB<br/>
@@ -227,7 +227,7 @@ def cria_testes():
         'variedade' : "Tamanho M",
         'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
         'palavras': 'luva, inverno',
-        'descr_longa': 
+        'descr_longa':
           """Fabricante: United Trash Inc.<br/>
           Origem: USA<br/>
           Modelo: 8-EB<br/>
@@ -250,7 +250,7 @@ def cria_testes():
         'variedade' : "Tamanho G",
         'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
         'palavras': 'luva, inverno',
-        'descr_longa': 
+        'descr_longa':
           """Fabricante: United Trash Inc.<br/>
           Origem: USA<br/>
           Modelo: 8-EB<br/>
@@ -273,7 +273,7 @@ def cria_testes():
         'variedade' : "Tamanho P",
         'descr_media': "Luva para mão esquerda com 8 dedos, em camurça, com forro de bom-bril",
         'palavras': 'luva, inverno',
-        'descr_longa': 
+        'descr_longa':
           """Fabricante: United Trash Inc.<br/>
           Origem: USA<br/>
           Modelo: 8-EB<br/>
@@ -287,7 +287,7 @@ def cria_testes():
         'unidade': "1 unidade",
         'peso':10.0,
         'volume':500.5,
-        'oferta' : True, 
+        'oferta' : True,
       },
       {
         'descr_curta': "Ferroada",
@@ -296,7 +296,7 @@ def cria_testes():
         'variedade' : None,
         'descr_media': "Espada élfica forjada na cidade de Gondolin.",
         'palavras': 'espada, elfo, senhor dos aneis',
-        'descr_longa': 
+        'descr_longa':
           """Fabricante: Gondolin Ferreiros SA<br/>
           Origem: Gondolin<br/>
           Dono Original: Bilbo""",
@@ -315,7 +315,7 @@ def cria_testes():
         'variedade' : None,
         'descr_media': "Amassador de suspiros lânguidos manual com 5 velocidades e 2 temperaturas.",
         'palavras': 'amassador, suspiro',
-        'descr_longa': 
+        'descr_longa':
           """Fabricante: Produits Ineffables SA<br/>
           Origem: França<br/>
           Acionamento: manual<br/>
@@ -330,19 +330,19 @@ def cria_testes():
         'volume':500.5,
         'oferta' : True,
       },
-      
+
       { 'descr_curta': "Cabideiro",
         'variado' : False,
         'grupo' : None,
         'variedade' : None,
-        'descr_media': "Cabideiro com capacidade para 420 cabides", 
+        'descr_media': "Cabideiro com capacidade para 420 cabides",
         'palavras':'cabide, cabides, roupas, roupa',
-        'descr_longa': 
+        'descr_longa':
           """Lindo cabideiro com suporte para 420 cabides, ideal para você, seus pais, filhos, irmãos, tios e cachorros<br/>
           Fabricante: Gargah Lar SA""",
-        'preco': 69.00, 
-        'imagem': "146752.png", 
-        'estoque': 1, 
+        'preco': 69.00,
+        'imagem': "146752.png",
+        'estoque': 1,
         'unidade': "01 (hum) cabideiro",
         'peso':10.0,
         'volume':500.5,
@@ -353,17 +353,17 @@ def cria_testes():
         'variado' : True,
         'grupo' : None,
         'variedade' : None,
-        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise", 
+        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise",
         'palavras':'química,limpeza,elixir',
-        'descr_longa': 
+        'descr_longa':
           """Fabricante: Tox Chic SA<br/>
           Fórmula: H2PeO4·3H2O<br/>
           Pureza: 99.8%<br/>
           Padrão: ACS, INPM
           """,
-        'preco': 25.00, 
-        'imagem': "170013-g.png", 
-        'estoque': 50, 
+        'preco': 25.00,
+        'imagem': "170013-g.png",
+        'estoque': 50,
         'unidade': "frasco",
         'peso': 10.0,
         'volume': 500.5,
@@ -373,17 +373,17 @@ def cria_testes():
         'variado' : False,
         'grupo' : "P-00000010",
         'variedade' : "200 mL",
-        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise", 
+        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise",
         'palavras': None,
-        'descr_longa': 
+        'descr_longa':
           """Fórmula: H2PeO4·3H2O<br/>
           Pureza: 99.8%<br/>
           Padrão: ACS, INPM<br/>
           Embalagem: garrafa de vidro com batoque
           """,
-        'preco': 20.00, 
-        'imagem': "170013-1.png", 
-        'estoque': 50, 
+        'preco': 20.00,
+        'imagem': "170013-1.png",
+        'estoque': 50,
         'unidade': "frasco",
         'peso': 300.0,
         'volume': 200.5,
@@ -393,17 +393,17 @@ def cria_testes():
         'variado' : False,
         'grupo' : "P-00000010",
         'variedade' : "500 mL",
-        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise", 
+        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise",
         'palavras':'química,limpeza,elixir',
-        'descr_longa': 
+        'descr_longa':
           """Fórmula: H2PeO4·3H2O<br/>
           Pureza: 99.8%<br/>
           Padrão: ACS, INPM<br/>
           Embalagem: garrafa de vidro com batoque
           """,
-        'preco': 45.00, 
-        'imagem': "170013-2.png", 
-        'estoque': 50, 
+        'preco': 45.00,
+        'imagem': "170013-2.png",
+        'estoque': 50,
         'unidade': "frasco",
         'peso': 650.0,
         'volume': 500.5,
@@ -413,17 +413,17 @@ def cria_testes():
         'variado' : False,
         'grupo' : "P-00000010",
         'variedade' : "5 litros",
-        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise", 
+        'descr_media': "Ácido pernóstico (H2PeO4) puro ACS para análise",
         'palavras':'química,limpeza,elixir',
-        'descr_longa': 
+        'descr_longa':
           """Fórmula: H2PeO4·3H2O<br/>
           Pureza: 99.8%<br/>
           Padrão: ACS, INPM<br/>
           Embalagem: bombona de polietileno com batoque
           """,
-        'preco': 370.00, 
-        'imagem': "170013-3.png", 
-        'estoque': 50, 
+        'preco': 370.00,
+        'imagem': "170013-3.png",
+        'estoque': 50,
         'unidade': "frasco",
         'peso': 7000.0,
         'volume': 5000.0,
@@ -446,12 +446,12 @@ def cria_testes():
 def def_obj(obj, id_produto, atrs_SQL):
   """Se {obj} for {None}, cria um novo objeto da classe {ObjProduto} com
   identificador {id_produto} e atributos {atrs_SQL}, tais como extraidos
-  da tabela de sessoes. O objeto *não* é inserido na base de dados. 
-  
+  da tabela de sessoes. O objeto *não* é inserido na base de dados.
+
   Se {obj} não é {None}, deve ser um objeto da classe {ObjProduto}; nesse
   caso a função altera os atributos de {obj} conforme especificado em
   {atrs_SQL}.
-  
+
   Em qualquer caso, os valores em {atr_SQL} são convertidos para valores
   equivalentes na memória."""
   global cache, nome_tb, letra_tb, colunas, diags
@@ -483,4 +483,3 @@ def diagnosticos(val):
   global cache, nome_tb, letra_tb, colunas, diags
   diags = val
   return
-
